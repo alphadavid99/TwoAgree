@@ -9,8 +9,13 @@ import AuthScreen from "./screens/AuthScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import StartScreen from "./screens/StartScreen";
 import SessionApp from "./screens/SessionApp";
+import { Logo } from "./components/Logo";
 
-const Wordmark = () => <div className="wordmark">aligned &#10022;</div>;
+const Wordmark = () => (
+  <div className="brandhead">
+    <Logo size={40} />
+  </div>
+);
 
 const Boot = ({ label }: { label: string }) => (
   <>

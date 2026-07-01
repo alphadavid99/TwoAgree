@@ -3,6 +3,7 @@ import { lvlQs, nLevels } from "../lib/leveling";
 import { writeAnswer, writeGuess, markLevelDone } from "../lib/session";
 import { DECKS, type Question } from "../lib/questions";
 import type { DeckData, Role, AnswerValue } from "../lib/scoring";
+import { TopBar } from "../components/TopBar";
 
 // The answering flow for one level: answer each question, and for guessable
 // (non-open) questions, predict your partner. Ported from the legacy question
@@ -15,6 +16,7 @@ export default function PlayScreen({
   deck,
   partnerName,
   onFinish,
+  onExit,
 }: {
   code: string;
   slug: string;
@@ -23,6 +25,7 @@ export default function PlayScreen({
   deck: DeckData | undefined;
   partnerName: string;
   onFinish: () => void;
+  onExit: () => void;
 }) {
   const qs = useMemo(() => lvlQs(slug, level), [slug, level]);
 
@@ -90,12 +93,8 @@ export default function PlayScreen({
     const yourText = q.type === "scale" ? `${pendAns} / 5` : q.opts?.[pendAns as number];
     return (
       <section>
-        <div className="center">
-          <div className="wordmark" style={{ color: "var(--amber)" }}>
-            aligned &#10022;
-          </div>
-        </div>
-        <div className="qcard" style={{ marginTop: 26, borderColor: "#F3E6CF" }}>
+        <TopBar onExit={onExit} />
+        <div className="qcard" style={{ marginTop: 20, borderColor: "#F3E6CF" }}>
           <div className="qrow">
             <div className="eyebrow">{DECKS[slug].name.toUpperCase()}</div>
             <span className="badge honey">&#10022; GUESS</span>
@@ -139,9 +138,7 @@ export default function PlayScreen({
 
   return (
     <section>
-      <div className="center">
-        <div className="wordmark">aligned &#10022;</div>
-      </div>
+      <TopBar onExit={onExit} />
       <div className="qprog">
         <i style={{ width: `${Math.round(((idx + 1) / qs.length) * 100)}%` }} />
       </div>

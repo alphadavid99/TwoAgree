@@ -11,9 +11,18 @@ import ResultsScreen from "./ResultsScreen";
 import ProfileScreen from "./ProfileScreen";
 import PlayScreen from "./PlayScreen";
 import RevealScreen from "./RevealScreen";
+import { TopBar } from "../components/TopBar";
+import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
 
 type Tab = "home" | "decks" | "results" | "profile";
 type Flow = null | "play" | "review";
+
+const TABS: { key: Tab; label: string; Icon: (p: { size?: number }) => React.JSX.Element }[] = [
+  { key: "home", label: "Home", Icon: IconHome },
+  { key: "decks", label: "Decks", Icon: IconDecks },
+  { key: "results", label: "Results", Icon: IconResults },
+  { key: "profile", label: "Profile", Icon: IconProfile },
+];
 
 export default function SessionApp({
   code,
@@ -44,7 +53,7 @@ export default function SessionApp({
   if (denied || !session || !role) {
     return (
       <section>
-        <div className="wordmark">aligned &#10022;</div>
+        <TopBar />
         <div className="banner" style={{ marginTop: 24 }}>
           This session isn’t available on your account. It may have been closed,
           or the code is wrong.
@@ -58,6 +67,11 @@ export default function SessionApp({
 
   const deck = session.decks?.[slug];
   const partnerName = session.members?.[other(role)]?.name ?? "your partner";
+
+  const exitToHome = () => {
+    setFlow(null);
+    setTab("home");
+  };
 
   const openDeck = (s: string) => {
     setSlug(s);
@@ -83,6 +97,7 @@ export default function SessionApp({
         deck={deck}
         partnerName={partnerName}
         onFinish={() => setFlow("review")}
+        onExit={exitToHome}
       />
     );
   }
@@ -108,9 +123,7 @@ export default function SessionApp({
     const total = lvlQs(slug, level).length;
     return (
       <section>
-        <div className="center">
-          <div className="wordmark">aligned &#10022;</div>
-        </div>
+        <TopBar onExit={exitToHome} />
         <div className="spin" />
         <h2 className="h1 center" style={{ fontSize: 24 }}>
           All yours are in.
@@ -163,14 +176,17 @@ export default function SessionApp({
       </div>
 
       <nav className="bnav">
-        {(["home", "decks", "results", "profile"] as Tab[]).map((t) => (
+        {TABS.map(({ key, label, Icon }) => (
           <button
-            key={t}
+            key={key}
             type="button"
-            className={`bnav-item ${tab === t ? "on" : ""}`}
-            onClick={() => setTab(t)}
+            className={`bnav-item ${tab === key ? "on" : ""}`}
+            onClick={() => setTab(key)}
+            aria-label={label}
+            aria-current={tab === key ? "page" : undefined}
           >
-            {t[0].toUpperCase() + t.slice(1)}
+            <Icon size={23} />
+            <span>{label}</span>
           </button>
         ))}
       </nav>

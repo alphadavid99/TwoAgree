@@ -11,6 +11,7 @@ import {
 } from "../lib/scoring";
 import { DECKS, type Question } from "../lib/questions";
 import { PctRing } from "../components/Ring";
+import { TopBar } from "../components/TopBar";
 
 const VERDICT_COLOR: Record<Verdict, string> = {
   Matched: "#2fa96b",
@@ -51,7 +52,8 @@ export default function RevealScreen({
 
   return (
     <section>
-      <div className="eyebrow center" style={{ marginTop: 24 }}>
+      <TopBar onExit={onDone} />
+      <div className="eyebrow center" style={{ marginTop: 10 }}>
         {DECKS[slug].name.toUpperCase()}
         {multi ? ` · LEVEL ${level + 1} OF ${nLevels(slug)}` : ""}
       </div>

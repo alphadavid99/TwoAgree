@@ -1,0 +1,26 @@
+name: CI
+
+# Lint, test and build on every push and PR. No secrets required — this runs
+# immediately. The Firebase web config is absent here, which is fine: the build
+# only needs it at runtime, and vite compiles cleanly without it.
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Build Cloud Functions
+        run: |
+          npm --prefix functions ci
+          npm --prefix functions run build

@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "sessions": {
+      "$code": {
+        ".read": "auth != null && data.child('uids').child(auth.uid).exists()",
+        ".write": "auth != null && (data.child('uids').child(auth.uid).exists() || !data.child('members/guest').exists())",
+        "uids": {
+          "$uid": {
+            ".validate": "auth.uid === $uid"
+          }
+        }
+      }
+    }
+  }
+}

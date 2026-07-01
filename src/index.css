@@ -1,0 +1,40 @@
+:root {
+  /* Aligned brand tokens (from index.html). White backgrounds, never cream. */
+  --berry: #682d5c;
+  --berry2: #7c3c69;
+  --honey: #e5a93c;
+  --honeyD: #8f5a12; /* text-safe amber */
+  --blush: #f8e9ec;
+  --ink: #2e2230;
+  --bg: #ffffff;
+
+  --font-display: "Fraunces", "Lora", Georgia, serif;
+  --font-ui: "Hanken Grotesk", "Poppins", system-ui, sans-serif;
+
+  /* 4 / 8 spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--bg);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+}

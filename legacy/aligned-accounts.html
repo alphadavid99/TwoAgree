@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>aligned · accounts (test)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@400;500;600;700&display=swap');
+:root{
+ --berry:#682D5C;--berry2:#7C3C69;--ink:#2E2230;--rose:#9C4A6E;
+ --honey:#E5A93C;--honeyD:#D9963A;--amber:#8F5A12;
+ --sub:#8A6A78;--mut:#7E6B76;
+ --cardb:#F1E4E7;--optbg:#F8E9EC;--honbg:#FBEBDC;--blush:#F4DCE0;--track:#F0DEE2;
+ --r-sm:16px;--r-md:22px;--r-lg:30px;
+ --e1:0 2px 10px rgba(104,45,92,.06);--e2:0 10px 24px rgba(104,45,92,.10);
+ --e-btn:0 12px 26px rgba(104,45,92,.30);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:#fff;font-family:'Poppins',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.phone{max-width:440px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 28px) 22px calc(env(safe-area-inset-bottom,0px) + 36px)}
+.serif{font-family:'Lora',Georgia,serif;text-wrap:balance}
+.wordmark{font-family:'Lora',serif;font-style:italic;font-size:24px;color:var(--berry);text-align:center}
+.h1{font-family:'Lora',Georgia,serif;font-size:30px}
+.sub{color:var(--sub);font-size:15px;line-height:1.55}
+.muted{color:var(--mut)}
+.eyebrow{font-size:12px;letter-spacing:3px;color:var(--amber);font-weight:600;text-transform:uppercase}
+label{display:block;font-size:13px;font-weight:600;color:var(--berry);margin:18px 4px 7px}
+.input{width:100%;padding:15px 16px;font-size:16px;font-family:inherit;color:var(--ink);
+ background:#fff;border:1.5px solid var(--cardb);border-radius:var(--r-sm);outline:none;transition:border-color .15s,box-shadow .15s}
+.input:focus{border-color:var(--berry);box-shadow:0 0 0 3px rgba(104,45,92,.10)}
+textarea.input{resize:none;min-height:84px;line-height:1.5}
+.btn{width:100%;padding:16px;font-size:16px;font-weight:600;font-family:inherit;color:#fff;border:none;border-radius:var(--r-sm);
+ background:linear-gradient(135deg,var(--berry2),var(--berry));box-shadow:var(--e-btn);cursor:pointer;margin-top:22px;transition:transform .1s,opacity .15s}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.out{background:#fff;color:var(--berry);border:1.5px solid var(--cardb);box-shadow:none;margin-top:12px}
+.btn.ghost{background:none;box-shadow:none;color:var(--mut);font-weight:500;font-size:14px;margin-top:16px;padding:8px}
+.google{display:flex;align-items:center;justify-content:center;gap:10px}
+.google svg{width:18px;height:18px}
+.link{color:var(--berry);font-weight:600;cursor:pointer;text-decoration:none}
+.err{color:#B23A48;font-size:14px;margin-top:14px;min-height:1px;line-height:1.5}
+.ok{color:var(--sage,#5E7A4E);font-size:14px;margin-top:14px}
+.card{background:#fff;border:1px solid var(--cardb);border-radius:var(--r-lg);box-shadow:var(--e1);padding:22px}
+.banner{background:var(--honbg);border:1px solid #EAD3B2;border-radius:var(--r-sm);padding:16px 18px;margin-bottom:22px;font-size:14px;line-height:1.6;color:#6B4A16}
+.banner b{color:var(--amber)}
+.avatarwrap{display:flex;flex-direction:column;align-items:center;margin-top:8px}
+.avatar{width:104px;height:104px;border-radius:50%;object-fit:cover;background:var(--berry);color:#fff;
+ display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:40px;box-shadow:var(--e2);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.photobtn{margin-top:14px;font-size:14px;font-weight:600;color:var(--berry);background:var(--optbg);
+ border:none;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.hide{display:none!important}
+.foot{margin-top:28px;text-align:center;font-size:12px;color:var(--mut);line-height:1.6;word-break:break-all}
+.spin{width:26px;height:26px;border:3px solid var(--track);border-top-color:var(--berry);border-radius:50%;animation:sp .8s linear infinite;margin:40px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.divider{display:flex;align-items:center;gap:12px;margin:22px 2px 4px;color:var(--mut);font-size:13px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--cardb)}
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <div style="text-align:center">
+    <div class="wordmark">aligned &#10022;</div>
+  </div>
+
+  <!-- shown until Firebase is configured / reachable -->
+  <div id="setupBanner" class="banner hide"></div>
+
+  <!-- BOOT SPINNER -->
+  <div id="bootView"><div class="spin"></div>
+    <p class="muted" style="text-align:center;font-size:14px">Checking your account…</p></div>
+
+  <!-- AUTH -->
+  <section id="authView" class="hide">
+    <div class="eyebrow" style="text-align:center;margin-top:34px">Your account</div>
+    <h1 class="h1" id="authTitle" style="text-align:center;margin-top:8px">Create your account</h1>
+    <p class="sub serif" id="authSubtitle" style="font-style:italic;text-align:center;margin:10px 20px 26px">
+      One profile that stays with you across every session.</p>
+
+    <label for="email">Email</label>
+    <input class="input" id="email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
+
+    <label for="pw">Password</label>
+    <input class="input" id="pw" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+
+    <div class="err" id="authErr"></div>
+    <div class="ok" id="authOk"></div>
+
+    <button class="btn" id="primaryBtn" onclick="submitAuth()">Create account &#8594;</button>
+
+    <button class="btn out google" id="googleBtn" onclick="googleAuth()">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+
+    <button class="btn ghost" id="resetBtn" onclick="resetPw()">Forgot password?</button>
+
+    <p class="muted" style="text-align:center;font-size:14px;margin-top:8px">
+      <span id="toggleText">Already have an account?</span>
+      <a class="link" id="toggleLink" onclick="toggleMode()">Sign in</a>
+    </p>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="profileView" class="hide">
+    <div class="eyebrow" style="text-align:center;margin-top:30px">Your profile</div>
+
+    <div class="card" style="margin-top:16px;text-align:center">
+      <div class="avatarwrap">
+        <div class="avatar" id="avatar">?</div>
+        <button class="photobtn" onclick="document.getElementById('photoInput').click()">Change photo</button>
+        <input id="photoInput" type="file" accept="image/*" class="hide" onchange="onPhoto(event)">
+      </div>
+
+      <div style="text-align:left">
+        <label for="name">Name <span class="muted" style="font-weight:400">(your partner sees this)</span></label>
+        <input class="input" id="name" maxlength="20" placeholder="e.g. Sarah">
+
+        <label for="bio">A line about you <span class="muted" style="font-weight:400">(optional)</span></label>
+        <textarea class="input" id="bio" maxlength="140" placeholder="Something honest and short."></textarea>
+      </div>
+
+      <div class="err" id="profErr"></div>
+      <div class="ok" id="profOk"></div>
+      <button class="btn" id="saveBtn" onclick="saveProfile()">Save profile</button>
+    </div>
+
+    <button class="btn out" onclick="signOut()">Sign out</button>
+    <div class="foot" id="foot"></div>
+  </section>
+
+</div>
+
+<!-- Firebase SDK (compat build via CDN — one HTML file, no build step). Bump the version if you like. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+/* =====================================================================
+   PASTE YOUR FIREBASE WEB CONFIG HERE
+   Firebase console → Project settings (gear) → "Your apps" → Web app →
+   "SDK setup and configuration" → Config. Copy the whole object over this one.
+   The databaseURL below is already yours; apiKey / messagingSenderId / appId
+   must come from the console (I can't know those).
+   ===================================================================== */
+const firebaseConfig = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "aligned-9f843.firebaseapp.com",
+  databaseURL: "https://aligned-9f843-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aligned-9f843",
+  storageBucket: "aligned-9f843.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+/* ===================================================================== */
+
+let auth=null, db=null, mode='signup', pendingPhoto=null, currentUser=null;
+
+function el(id){return document.getElementById(id);}
+function show(id){['bootView','authView','profileView'].forEach(v=>el(v).classList.toggle('hide',v!==id));}
+function banner(html){const b=el('setupBanner');b.innerHTML=html;b.classList.remove('hide');}
+
+/* ---- init with graceful degradation ---- */
+(function init(){
+  if(typeof firebase==='undefined'){
+    show('authView');
+    banner('<b>Firebase SDK didn\u2019t load.</b> You\u2019re likely offline or gstatic.com is blocked. Open this page on a normal connection to test sign-in.');
+    return;
+  }
+  if(firebaseConfig.apiKey==='PASTE_API_KEY'){
+    show('authView');
+    banner('<b>Almost there \u2014 paste your config.</b> Open this file, find the <code>firebaseConfig</code> block near the bottom, and replace it with the object from your Firebase console (Project settings \u2192 Your apps \u2192 Web app). Then reload.');
+    ['email','pw','primaryBtn','googleBtn','resetBtn'].forEach(i=>{const e=el(i);if(e)e.setAttribute('disabled','');});
+    return;
+  }
+  try{
+    firebase.initializeApp(firebaseConfig);
+    auth=firebase.auth(); db=firebase.database();
+    auth.onAuthStateChanged(u=>{
+      currentUser=u;
+      if(u){ loadProfile(u); }
+      else { show('authView'); }
+    });
+  }catch(e){
+    show('authView');
+    banner('<b>Couldn\u2019t start Firebase.</b> '+(e&&e.message?e.message:'Check the config values.'));
+  }
+})();
+
+/* ---- auth mode toggle ---- */
+function toggleMode(){
+  mode = mode==='signup' ? 'signin' : 'signup';
+  el('authTitle').textContent      = mode==='signup' ? 'Create your account' : 'Welcome back';
+  el('authSubtitle').textContent   = mode==='signup' ? 'One profile that stays with you across every session.' : 'Sign in to pick up where you left off.';
+  el('primaryBtn').innerHTML        = mode==='signup' ? 'Create account \u2192' : 'Sign in \u2192';
+  el('toggleText').textContent      = mode==='signup' ? 'Already have an account?' : 'New here?';
+  el('toggleLink').textContent      = mode==='signup' ? 'Sign in' : 'Create one';
+  el('pw').setAttribute('autocomplete', mode==='signup'?'new-password':'current-password');
+  clearMsg('auth');
+}
+function clearMsg(scope){el(scope+'Err').textContent='';const ok=el(scope+'Ok');if(ok)ok.textContent='';}
+
+/* ---- email / password ---- */
+function submitAuth(){
+  clearMsg('auth');
+  const email=el('email').value.trim(), pw=el('pw').value;
+  if(!email||!pw){el('authErr').textContent='Enter your email and a password.';return;}
+  const btn=el('primaryBtn');btn.setAttribute('disabled','');const orig=btn.innerHTML;btn.textContent='One moment\u2026';
+  const done=()=>{btn.removeAttribute('disabled');btn.innerHTML=orig;};
+  const p = mode==='signup'
+    ? auth.createUserWithEmailAndPassword(email,pw)
+    : auth.signInWithEmailAndPassword(email,pw);
+  p.catch(err=>{ done(); el('authErr').textContent=pretty(err); });
+  // on success, onAuthStateChanged swaps the view.
+}
+function googleAuth(){
+  clearMsg('auth');
+  const provider=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(err=>{ el('authErr').textContent=pretty(err); });
+}
+function resetPw(){
+  clearMsg('auth');
+  const email=el('email').value.trim();
+  if(!email){el('authErr').textContent='Enter your email first, then tap reset.';return;}
+  auth.sendPasswordResetEmail(email)
+    .then(()=>{el('authOk').textContent='Check your inbox for a reset link.';})
+    .catch(err=>{el('authErr').textContent=pretty(err);});
+}
+
+/* ---- profile ---- */
+function loadProfile(u){
+  show('profileView');
+  el('foot').textContent='Signed in as '+ (u.email||'(google account)') +' \u00b7 uid '+u.uid;
+  db.ref('users/'+u.uid).once('value').then(snap=>{
+    const p=snap.val()||{};
+    el('name').value = p.name || (u.displayName||'');
+    el('bio').value  = p.bio  || '';
+    setAvatar(p.photo, el('name').value || u.email);
+  }).catch(err=>{ el('profErr').textContent=pretty(err); setAvatar(null, u.email); });
+}
+function setAvatar(photo, nameOrEmail){
+  const a=el('avatar');
+  if(photo){ a.innerHTML='<img src="'+photo+'" alt="">'; }
+  else { a.textContent=(nameOrEmail||'?').trim().charAt(0).toUpperCase()||'?'; }
+}
+function saveProfile(){
+  clearMsg('prof');
+  if(!currentUser){el('profErr').textContent='Not signed in.';return;}
+  const name=el('name').value.trim();
+  if(!name){el('profErr').textContent='Your name is needed \u2014 your partner sees it.';return;}
+  const btn=el('saveBtn');btn.setAttribute('disabled','');btn.textContent='Saving\u2026';
+  const data={
+    name: name,
+    bio:  el('bio').value.trim(),
+    email: currentUser.email || '',
+    updated: Date.now()
+  };
+  if(pendingPhoto) data.photo = pendingPhoto;      // only overwrite photo if a new one was chosen
+  db.ref('users/'+currentUser.uid).update(data)    // update = auto-creates the node, never writes {}
+    .then(()=>{ pendingPhoto=null; el('profOk').textContent='Saved.'; })
+    .catch(err=>{ el('profErr').textContent=pretty(err); })
+    .finally(()=>{ btn.removeAttribute('disabled'); btn.textContent='Save profile'; });
+}
+function signOut(){ auth.signOut(); }
+
+/* ---- photo: square-crop + downscale to 256px JPEG, stored as base64 in the profile node ---- */
+function onPhoto(ev){
+  const file=ev.target.files&&ev.target.files[0];
+  if(!file)return;
+  clearMsg('prof');
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const side=Math.min(img.width,img.height);
+      const sx=(img.width-side)/2, sy=(img.height-side)/2;
+      const out=256;
+      const c=document.createElement('canvas');c.width=out;c.height=out;
+      c.getContext('2d').drawImage(img, sx,sy,side,side, 0,0,out,out);
+      pendingPhoto=c.toDataURL('image/jpeg',0.82);
+      setAvatar(pendingPhoto,null);
+      el('profOk').textContent='Photo ready \u2014 tap Save profile to keep it.';
+    };
+    img.onerror=()=>{el('profErr').textContent='That image couldn\u2019t be read.';};
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ---- friendlier error text ---- */
+function pretty(err){
+  const c=err&&err.code||'';
+  const m={
+    'auth/email-already-in-use':'That email already has an account \u2014 try signing in.',
+    'auth/invalid-email':'That email doesn\u2019t look right.',
+    'auth/weak-password':'Use at least 6 characters.',
+    'auth/wrong-password':'That password doesn\u2019t match.',
+    'auth/user-not-found':'No account with that email yet.',
+    'auth/invalid-credential':'Email or password is incorrect.',
+    'auth/too-many-requests':'Too many attempts \u2014 wait a moment and try again.',
+    'auth/popup-closed-by-user':'Google sign-in was closed before finishing.',
+    'auth/operation-not-allowed':'That sign-in method isn\u2019t enabled in your Firebase console yet.',
+    'PERMISSION_DENIED':'Database rules blocked that \u2014 check your security rules.'
+  };
+  return m[c] || (err&&err.message) || 'Something went wrong.';
+}
+</script>
+</body>
+</html>

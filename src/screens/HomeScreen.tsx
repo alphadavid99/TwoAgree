@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete } from "../lib/progress";
 import { other, type DeckData, type Role } from "../lib/scoring";
+import { createInvite } from "../lib/functions";
+import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
 
@@ -48,10 +51,30 @@ export default function HomeScreen({
         ? "Continue →"
         : "Start answering →";
 
+  const [inviteMsg, setInviteMsg] = useState("");
+  const [inviteBusy, setInviteBusy] = useState(false);
+
   const share = () => {
     const txt = `Join me on aligned — our code is ${code}`;
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});
     else if (navigator.clipboard) navigator.clipboard.writeText(code);
+  };
+
+  const sendInviteLink = async () => {
+    setInviteBusy(true);
+    setInviteMsg("");
+    try {
+      const res = await createInvite({ code });
+      const link = `${window.location.origin}/?t=${res.data.token}`;
+      const txt = `Join me on aligned — ${link}`;
+      if (navigator.share) await navigator.share({ text: txt }).catch(() => {});
+      else if (navigator.clipboard) await navigator.clipboard.writeText(link);
+      setInviteMsg("Invite link ready — sent to your share sheet or copied.");
+    } catch (e) {
+      setInviteMsg(prettyError(e));
+    } finally {
+      setInviteBusy(false);
+    }
   };
 
   return (
@@ -66,6 +89,18 @@ export default function HomeScreen({
           <button className="codechip" type="button" onClick={share}>
             {code}
           </button>
+          <button
+            className="btn out"
+            type="button"
+            style={{ marginTop: 14 }}
+            onClick={sendInviteLink}
+            disabled={inviteBusy}
+          >
+            {inviteBusy ? "Creating link…" : "Send an invite link instead"}
+          </button>
+          {inviteMsg && (
+            <div style={{ marginTop: 8, fontSize: 13 }}>{inviteMsg}</div>
+          )}
         </div>
       )}
 

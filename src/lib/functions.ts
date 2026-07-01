@@ -22,3 +22,18 @@ export const deleteMyAccount = httpsCallable<
   void,
   { ok: boolean; sessionsUpdated: number; sessionsDeleted: number }
 >(functions, "deleteMyAccount");
+
+export const joinByCode = httpsCallable<{ code: string }, { code: string }>(
+  functions,
+  "joinByCode",
+);
+
+export const createInvite = httpsCallable<{ code: string }, { token: string }>(
+  functions,
+  "createInvite",
+);
+
+export const redeemInvite = httpsCallable<{ token: string }, { code: string }>(
+  functions,
+  "redeemInvite",
+);

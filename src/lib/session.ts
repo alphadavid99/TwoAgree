@@ -3,7 +3,7 @@
 // written into the host/guest member slot so the host/guest scoring layer is
 // untouched. Every write is a scalar leaf (never {}) so RTDB auto-creates
 // intermediates — the hard-won gotcha in §6.
-import { ref, get, update } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
 
@@ -16,44 +16,33 @@ function randCode(): string {
   return s;
 }
 
-// Host creates a session. Returns the new code. We can read our own writes, so
-// we probe for a free code first (a fresh code node is world-writable only in
-// the sense that its guest slot is empty — see database.rules.json).
+// Host creates a session. Rules allow a write only to a brand-new code (or by a
+// member), and deny reads of codes we're not in — so we can't pre-check. We
+// just attempt the write and, on the rare collision with a live session (write
+// denied), retry with a fresh code.
 export async function createSession(
   uid: string,
   name: string,
 ): Promise<string> {
-  let code = randCode();
-  // Avoid an accidental collision with a live session.
-  for (let tries = 0; tries < 5; tries++) {
-    const snap = await get(ref(db, `sessions/${code}/created`)).catch(() => null);
-    if (!snap || !snap.exists()) break;
-    code = randCode();
+  for (let tries = 0; tries < 6; tries++) {
+    const code = randCode();
+    try {
+      await update(ref(db, `sessions/${code}`), {
+        created: Date.now(),
+        "members/host/name": name,
+        "members/host/uid": uid,
+        [`uids/${uid}`]: true,
+      });
+      return code;
+    } catch {
+      // code already taken by someone else's session — try another
+    }
   }
-  await update(ref(db, `sessions/${code}`), {
-    created: Date.now(),
-    "members/host/name": name,
-    "members/host/uid": uid,
-    [`uids/${uid}`]: true,
-  });
-  return code;
+  throw new Error("Couldn’t start a session — please try again.");
 }
 
-// Guest joins by code. Rules only let us WRITE our guest slot (when it's empty
-// and a host exists) — we can't read the session until we're a member — so this
-// is a blind write; a bad code / full session is rejected by the rules and
-// surfaces as an error. After it lands, useSession can read as a member.
-export async function joinSession(
-  uid: string,
-  name: string,
-  code: string,
-): Promise<void> {
-  await update(ref(db, `sessions/${code}`), {
-    "members/guest/name": name,
-    "members/guest/uid": uid,
-    [`uids/${uid}`]: true,
-  });
-}
+// Guest join is server-side now (joinByCode / redeemInvite callables) so the
+// sessions write rule can stay locked to members. See src/lib/functions.ts.
 
 export function writeAnswer(
   code: string,

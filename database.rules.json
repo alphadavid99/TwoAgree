@@ -9,18 +9,17 @@
     "sessions": {
       "$code": {
         ".read": "auth != null && data.child('uids').child(auth.uid).exists()",
-        ".write": "auth != null && (data.child('uids').child(auth.uid).exists() || !data.child('members/guest').exists())",
+        ".write": "auth != null && (data.child('uids').child(auth.uid).exists() || !data.exists())",
         "uids": {
           "$uid": {
             ".validate": "auth.uid === $uid"
           }
-        },
-        "members": {
-          "guest": {
-            ".validate": "newData.parent().child('host').exists()"
-          }
         }
       }
+    },
+    "invites": {
+      ".read": false,
+      ".write": false
     }
   }
 }

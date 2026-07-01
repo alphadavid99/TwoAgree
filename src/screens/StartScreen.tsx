@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { createSession, joinSession } from "../lib/session";
+import { createSession } from "../lib/session";
+import { joinByCode } from "../lib/functions";
 import { setActiveCode } from "../lib/local";
 import { prettyError } from "../lib/errors";
 
@@ -45,10 +46,10 @@ export default function StartScreen({
     }
     setBusy(true);
     try {
-      await joinSession(uid, name, c);
-      enter(c);
-    } catch {
-      setErr("Couldn’t join — check the code and that no one else has joined.");
+      const res = await joinByCode({ code: c });
+      enter(res.data.code);
+    } catch (e) {
+      setErr(prettyError(e));
       setBusy(false);
     }
   };

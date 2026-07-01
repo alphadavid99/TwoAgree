@@ -12,6 +12,7 @@ import ProfileScreen from "./ProfileScreen";
 import PlayScreen from "./PlayScreen";
 import RevealScreen from "./RevealScreen";
 import { TopBar } from "../components/TopBar";
+import { Logo } from "../components/Logo";
 import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
 
 type Tab = "home" | "decks" | "results" | "profile";
@@ -38,6 +39,8 @@ export default function SessionApp({
   const [slug, setSlug] = useState(ORDER[0]);
   const [level, setLevel] = useState(0);
   const [flow, setFlow] = useState<Flow>(null);
+  // Which tab the play/reveal flow was entered from, so × returns there.
+  const [flowReturn, setFlowReturn] = useState<Tab>("home");
 
   if (loading) {
     return (
@@ -68,12 +71,14 @@ export default function SessionApp({
   const deck = session.decks?.[slug];
   const partnerName = session.members?.[other(role)]?.name ?? "your partner";
 
-  const exitToHome = () => {
+  // Leave the play/reveal flow, returning to whichever tab it was opened from.
+  const exitFlow = () => {
     setFlow(null);
-    setTab("home");
+    setTab(flowReturn);
   };
 
   const openDeck = (s: string) => {
+    setFlowReturn(tab); // remember where we came from (Home or Decks)
     setSlug(s);
     const d = session.decks?.[s];
     if (catComplete(s, d, role)) {
@@ -97,7 +102,7 @@ export default function SessionApp({
         deck={deck}
         partnerName={partnerName}
         onFinish={() => setFlow("review")}
-        onExit={exitToHome}
+        onExit={exitFlow}
       />
     );
   }
@@ -113,17 +118,14 @@ export default function SessionApp({
           level={level}
           role={role}
           deck={deck}
-          onDone={() => {
-            setFlow(null);
-            setTab("home");
-          }}
+          onDone={exitFlow}
         />
       );
     }
     const total = lvlQs(slug, level).length;
     return (
       <section>
-        <TopBar onExit={exitToHome} />
+        <TopBar onExit={exitFlow} />
         <div className="spin" />
         <h2 className="h1 center" style={{ fontSize: 24 }}>
           All yours are in.
@@ -140,14 +142,7 @@ export default function SessionApp({
             <b>{partnerName}</b> {doneInLevel(slug, level, deck, other(role))}/{total}
           </span>
         </p>
-        <button
-          className="btn out"
-          type="button"
-          onClick={() => {
-            setFlow(null);
-            setTab("home");
-          }}
-        >
+        <button className="btn out" type="button" onClick={exitFlow}>
           Keep exploring
         </button>
       </section>
@@ -158,6 +153,9 @@ export default function SessionApp({
   return (
     <>
       <div className="tabwrap">
+        <div className="brandhead" style={{ padding: "2px 0 10px" }}>
+          <Logo size={30} />
+        </div>
         {tab === "home" && (
           <HomeScreen
             code={code}

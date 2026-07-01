@@ -20,7 +20,7 @@ export function Logo({
           fill="var(--berry)"
         />
       </svg>
-      {word && <span className="logo-word">aligned</span>}
+      {word && <span className="logo-word">Aligned</span>}
     </div>
   );
 }

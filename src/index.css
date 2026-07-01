@@ -608,8 +608,9 @@ textarea.input {
 }
 .logo-word {
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
   color: var(--berry);
   line-height: 1;
 }

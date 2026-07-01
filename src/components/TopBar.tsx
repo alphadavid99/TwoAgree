@@ -8,7 +8,7 @@ export function TopBar({ onExit }: { onExit?: () => void }) {
   return (
     <div className="topbar">
       <span className="topbar-slot" />
-      <Logo size={26} />
+      <Logo size={26} word={false} />
       <span className="topbar-slot topbar-slot--right">
         {onExit && (
           <button

@@ -154,7 +154,8 @@ export default function SessionApp({
     <>
       <div className="tabwrap">
         <div className="brandhead" style={{ padding: "2px 0 10px" }}>
-          <Logo size={30} />
+          {/* Full wordmark on Home + Profile; caret only on Decks + Results. */}
+          <Logo size={30} word={tab === "home" || tab === "profile"} />
         </div>
         {tab === "home" && (
           <HomeScreen

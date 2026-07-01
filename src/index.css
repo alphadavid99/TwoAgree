@@ -611,6 +611,7 @@ textarea.input {
   font-style: normal;
   font-weight: 500;
   font-size: 23px;
+  letter-spacing: 3px;
   color: var(--berry);
   line-height: 1;
 }

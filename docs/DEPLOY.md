@@ -19,22 +19,23 @@ Live site: https://aligned-9f843.web.app
 
 `.github/workflows/ci.yml` runs lint + tests + build on every push/PR — active now, no setup.
 
-`.github/workflows/deploy.yml` auto-deploys **Hosting** on push to `main`, but is
-**dormant** until you complete this one-time setup:
+`.github/workflows/deploy.yml` auto-deploys **Hosting** on every push to `main`.
+It needs **one** thing: a repo secret named `FIREBASE_SERVICE_ACCOUNT`. Until
+that secret exists the job runs but no-ops (main stays green). The public web
+config lives in the committed `.env.production`, so no repo Variables are needed.
 
-1. **Service account secret.** Easiest path — run once locally:
-   ```bash
-   firebase init hosting:github
-   ```
-   It creates a service account and stores the `FIREBASE_SERVICE_ACCOUNT` secret
-   in the repo for you. (Or add a "Firebase Hosting Admin" service-account JSON
-   key manually as the repo secret `FIREBASE_SERVICE_ACCOUNT`.)
-2. **Public web config as repo Variables** (Settings → Secrets and variables →
-   Actions → **Variables**): `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
-   `VITE_FIREBASE_DATABASE_URL`, `VITE_FIREBASE_PROJECT_ID`,
-   `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID`,
-   `VITE_FIREBASE_APP_ID`. (These are public by design — safe as variables.)
-3. **Enable it:** add repo Variable `DEPLOY_ENABLED = true`.
+**One-time setup — add the deploy key (browser only):**
+
+1. **Get the key.** Firebase Console → your project → ⚙ **Project settings** →
+   **Service accounts** tab → **Generate new private key** → confirm. A `.json`
+   file downloads. Open it in any text editor and copy *all* of it.
+2. **Add it to GitHub.** Repo → **Settings** → **Secrets and variables** →
+   **Actions** → **Secrets** tab → **New repository secret**. Name it exactly
+   `FIREBASE_SERVICE_ACCOUNT`, paste the JSON as the value, **Add secret**.
+
+That's it — the next push/merge to `main` publishes automatically. (If a deploy
+ever fails on permissions, grant that service account the **Firebase Hosting
+Admin** role in Google Cloud Console → IAM.)
 
 Functions + rules stay manual (they change rarely and deploying them from CI
 needs broader IAM). Deploy them with `firebase deploy --only functions,database`.

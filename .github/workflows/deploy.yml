@@ -2,21 +2,13 @@ name: Deploy to Firebase Hosting
 
 # Auto-deploys the web app to Firebase Hosting on every push to main.
 #
-# ONE-TIME SETUP (Dave) before this works — see also docs/DEPLOY.md:
-#   1. Generate a CI service account:
-#        firebase init hosting:github   (writes the secret for you)
-#      OR create a service account with the "Firebase Hosting Admin" role and
-#      add its JSON key as the repo secret FIREBASE_SERVICE_ACCOUNT.
-#   2. Add the (public) Firebase web config as repo *Variables*
-#      (Settings → Secrets and variables → Actions → Variables):
-#        VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN,
-#        VITE_FIREBASE_DATABASE_URL, VITE_FIREBASE_PROJECT_ID,
-#        VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID,
-#        VITE_FIREBASE_APP_ID
+# ONE-TIME SETUP (Dave): add a single repo secret named FIREBASE_SERVICE_ACCOUNT
+# (a Firebase service-account JSON key). Step-by-step in docs/DEPLOY.md.
 #
-# Until the FIREBASE_SERVICE_ACCOUNT secret exists, this job is skipped.
-# Cloud Functions and database rules are still deployed manually
-# (`firebase deploy --only functions,database`) — they change rarely.
+# The public Firebase web config lives in the committed .env.production, so no
+# repo Variables are needed. Until the secret exists this job runs but no-ops,
+# keeping main green. Cloud Functions + database rules are still deployed
+# manually (`firebase deploy --only functions,database`) — they change rarely.
 on:
   push:
     branches: [main]
@@ -24,27 +16,36 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Dormant until Dave sets the repo Variable DEPLOY_ENABLED=true (after adding
-    # the FIREBASE_SERVICE_ACCOUNT secret + VITE_FIREBASE_* vars). Keeps main
-    # green in the meantime instead of failing on a missing secret.
-    if: ${{ vars.DEPLOY_ENABLED == 'true' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      # Gate on the secret being present. No secret yet → skip the deploy steps
+      # instead of failing, so main stays green until setup is done.
+      - id: gate
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$SA" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "FIREBASE_SERVICE_ACCOUNT is not set yet — skipping deploy."
+          fi
+
+      - if: steps.gate.outputs.ready == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
-        env:
-          VITE_FIREBASE_API_KEY: ${{ vars.VITE_FIREBASE_API_KEY }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}
-          VITE_FIREBASE_DATABASE_URL: ${{ vars.VITE_FIREBASE_DATABASE_URL }}
-          VITE_FIREBASE_PROJECT_ID: ${{ vars.VITE_FIREBASE_PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ vars.VITE_FIREBASE_STORAGE_BUCKET }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ vars.VITE_FIREBASE_APP_ID }}
+
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm ci
+
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm run build
+
       - name: Deploy to Firebase Hosting (live)
+        if: steps.gate.outputs.ready == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

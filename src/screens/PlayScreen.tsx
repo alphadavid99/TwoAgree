@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
 import { lvlQs, nLevels } from "../lib/leveling";
 import { writeAnswer, writeGuess, markLevelDone } from "../lib/session";
-import { DECKS, type Question } from "../lib/questions";
+import { type Question } from "../lib/questions";
+import { deckName, localizeQuestion } from "../lib/questions.fr";
 import type { DeckData, Role, AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
-import { useT } from "../lib/i18n";
+import { useT, useLang } from "../lib/i18n";
 
 // Intensity words for the 1–5 scale. The endpoints are already labelled per
 // question (q.lo / q.hi); these name the position so the middle is never
@@ -47,6 +48,7 @@ export default function PlayScreen({
   onExit: () => void;
 }) {
   const t = useT();
+  const lang = useLang();
   const qs = useMemo(() => lvlQs(slug, level), [slug, level]);
 
   // Start at the first question this role hasn't answered.
@@ -81,7 +83,7 @@ export default function PlayScreen({
   };
 
   if (idx >= qs.length) return null;
-  const q = qs[idx];
+  const q = localizeQuestion(qs[idx], lang);
 
   const submitAnswer = async () => {
     if (pendAns == null || busy) return;
@@ -106,7 +108,7 @@ export default function PlayScreen({
 
   const multi = nLevels(slug) > 1;
   const eyebrow =
-    DECKS[slug].name.toUpperCase() +
+    deckName(slug, lang).toUpperCase() +
     (multi
       ? t(
           ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
@@ -121,7 +123,7 @@ export default function PlayScreen({
         <TopBar onExit={onExit} />
         <div className="qcard" style={{ marginTop: 20, borderColor: "#F3E6CF" }}>
           <div className="qrow">
-            <div className="eyebrow">{DECKS[slug].name.toUpperCase()}</div>
+            <div className="eyebrow">{deckName(slug, lang).toUpperCase()}</div>
             <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
           </div>
           <div className="qtext">{q.q}</div>

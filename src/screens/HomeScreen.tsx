@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete } from "../lib/progress";
 import { other, type DeckData, type Role } from "../lib/scoring";
@@ -8,7 +7,8 @@ import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
 import { Avatar } from "../components/Avatar";
-import { useT } from "../lib/i18n";
+import { deckName } from "../lib/questions.fr";
+import { useT, useLang } from "../lib/i18n";
 
 export default function HomeScreen({
   code,
@@ -26,6 +26,7 @@ export default function HomeScreen({
   onBrowse: () => void;
 }) {
   const t = useT();
+  const lang = useLang();
   const deck: DeckData | undefined = session.decks?.[slug];
   const myName = session.members?.[role]?.name ?? t("You", "Vous");
   const partner = session.members?.[other(role)];
@@ -141,7 +142,7 @@ export default function HomeScreen({
           {myName} &amp; {joined ? partnerName : "…"}
         </div>
         <button className="badge tap" type="button" onClick={onBrowse}>
-          {DECKS[slug].name} &#9662;
+          {deckName(slug, lang)} &#9662;
         </button>
         {L > 1 && (
           <div className="muted" style={{ fontSize: 13, marginTop: 8, letterSpacing: 1 }}>

@@ -5,6 +5,17 @@ import { DECKS, type Question } from "../lib/questions";
 import type { DeckData, Role, AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 
+// Intensity words for the 1–5 scale. The endpoints are already labelled per
+// question (q.lo / q.hi); these name the position so the middle is never
+// ambiguous. Direction is carried by which orb the label sits under.
+const SCALE_WORDS = [
+  "Strongly",
+  "Leaning",
+  "Right in the middle",
+  "Leaning",
+  "Strongly",
+];
+
 // The answering flow for one level: answer each question, and for guessable
 // (non-open) questions, predict your partner. Ported from the legacy question
 // flow. When the level is exhausted, mark it done and hand back to the shell.
@@ -209,6 +220,20 @@ function QuestionInput({
               onClick={() => onPick(i)}
             >
               {i}
+            </div>
+          ))}
+        </div>
+        {/* Live label anchored under the chosen orb — names the middle so the
+            user never has to work out "is 3 neutral or a lean?" (Pillar 3). */}
+        <div className="orblabels" aria-hidden={value == null}>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="orblabel-cell">
+              {value === i && (
+                <>
+                  <span className="caret" />
+                  <span className="orblabel">{SCALE_WORDS[i - 1]}</span>
+                </>
+              )}
             </div>
           ))}
         </div>

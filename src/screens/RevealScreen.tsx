@@ -13,10 +13,12 @@ import { DECKS, type Question } from "../lib/questions";
 import { PctRing } from "../components/Ring";
 import { TopBar } from "../components/TopBar";
 
+// "Differed" is deliberately a calm, neutral ink — not alarm-red. Difference
+// here is an invitation to talk, never a failure state (see the subline below).
 const VERDICT_COLOR: Record<Verdict, string> = {
   Matched: "#2fa96b",
   Close: "var(--honeyD)",
-  Differed: "var(--rose)",
+  Differed: "#6a5a66",
   Complementary: "#8250b8",
   Shared: "var(--sub)",
 };
@@ -89,6 +91,9 @@ export default function RevealScreen({
               >
                 {r.verdict}
               </span>
+              {r.verdict === "Differed" && (
+                <div className="verline">Worth a conversation.</div>
+              )}
             </div>
           );
         })}

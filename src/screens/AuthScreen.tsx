@@ -7,13 +7,15 @@ import {
 } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
 import { prettyError } from "../lib/errors";
+import { hasReturned } from "../lib/local";
 
 type Mode = "signup" | "signin";
 
 // Email/password + Google + password reset. On success, the top-level
 // onAuthStateChanged (useAuth) swaps the view — this screen just kicks it off.
 export default function AuthScreen() {
-  const [mode, setMode] = useState<Mode>("signup");
+  // Returning devices land on "Sign in"; genuinely new visitors on "Create".
+  const [mode, setMode] = useState<Mode>(hasReturned() ? "signin" : "signup");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);
@@ -101,61 +103,30 @@ export default function AuthScreen() {
           : "Sign in to pick up where you left off."}
       </p>
 
-      <form onSubmit={submit}>
-        <label htmlFor="email">Email</label>
-        <input
-          className="input"
-          id="email"
-          type="email"
-          autoComplete="email"
-          inputMode="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      {isSignup && (
+        <label className="consent" style={{ marginTop: 0 }}>
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+          />
+          <span>
+            I agree to the{" "}
+            <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">
+              Privacy Policy
+            </a>
+            . Aligned collects sensitive answers (faith, values, intimacy) to
+            show the two of you where you align.
+          </span>
+        </label>
+      )}
 
-        <label htmlFor="pw">Password</label>
-        <input
-          className="input"
-          id="pw"
-          type="password"
-          autoComplete={isSignup ? "new-password" : "current-password"}
-          placeholder="At least 6 characters"
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-        />
-
-        {err && <div className="err">{err}</div>}
-        {ok && <div className="ok">{ok}</div>}
-
-        {isSignup && (
-          <label className="consent">
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={(e) => setAgreed(e.target.checked)}
-            />
-            <span>
-              I agree to the{" "}
-              <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">
-                Privacy Policy
-              </a>
-              . Aligned collects sensitive answers (faith, values, intimacy) to
-              show the two of you where you align.
-            </span>
-          </label>
-        )}
-
-        <button className="btn" type="submit" disabled={busy}>
-          {busy
-            ? "One moment…"
-            : isSignup
-              ? "Create account →"
-              : "Sign in →"}
-        </button>
-      </form>
-
-      <button className="btn out google" type="button" onClick={google}>
+      <button
+        className="btn out google"
+        type="button"
+        onClick={google}
+        style={{ marginTop: 18 }}
+      >
         <svg viewBox="0 0 48 48" aria-hidden="true">
           <path
             fill="#EA4335"
@@ -177,9 +148,49 @@ export default function AuthScreen() {
         Continue with Google
       </button>
 
-      <button className="btn ghost" type="button" onClick={resetPw}>
-        Forgot password?
-      </button>
+      <div className="authdiv">or use email</div>
+
+      <form onSubmit={submit}>
+        <label htmlFor="email">Email</label>
+        <input
+          className="input"
+          id="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label htmlFor="pw">Password</label>
+        <input
+          className="input"
+          id="pw"
+          type="password"
+          autoComplete={isSignup ? "new-password" : "current-password"}
+          placeholder={isSignup ? "At least 6 characters" : "Your password"}
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+        />
+
+        {err && <div className="err">{err}</div>}
+        {ok && <div className="ok">{ok}</div>}
+
+        <button className="btn" type="submit" disabled={busy}>
+          {busy
+            ? "One moment…"
+            : isSignup
+              ? "Create account →"
+              : "Sign in →"}
+        </button>
+      </form>
+
+      {!isSignup && (
+        <button className="btn ghost" type="button" onClick={resetPw}>
+          Forgot password?
+        </button>
+      )}
 
       <p className="muted center" style={{ fontSize: 14, marginTop: 8 }}>
         {isSignup ? "Already have an account? " : "New here? "}

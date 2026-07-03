@@ -62,13 +62,35 @@ export default function StartScreen({
       <h1 className="h1 center" style={{ marginTop: 8 }}>
         Start a session
       </h1>
-      <p
-        className="sub serif center"
-        style={{ fontStyle: "italic", margin: "10px 20px 26px" }}
-      >
-        One of you creates it and shares the code; the other joins. You each
-        answer on your own.
-      </p>
+      {mode === "choose" ? (
+        <ol className="steps">
+          <li className="step">
+            <span className="stepn">1</span>
+            <span className="stept">
+              <b>You create a code</b> — it takes one tap
+            </span>
+          </li>
+          <li className="step">
+            <span className="stepn">2</span>
+            <span className="stept">
+              <b>Share it</b> with your partner
+            </span>
+          </li>
+          <li className="step">
+            <span className="stepn">3</span>
+            <span className="stept">
+              <b>You each answer</b> privately, on your own
+            </span>
+          </li>
+        </ol>
+      ) : (
+        <p
+          className="sub serif center"
+          style={{ fontStyle: "italic", margin: "10px 20px 26px" }}
+        >
+          Enter the 4-character code your partner shared with you.
+        </p>
+      )}
 
       {mode === "choose" ? (
         <>

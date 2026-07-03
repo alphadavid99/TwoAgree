@@ -263,7 +263,7 @@ export default function ProfileScreen({
       </div>
 
       <div className="foot">
-        Signed in as {user.email || "(google account)"} · uid {user.uid}
+        Signed in as {user.email || "your Google account"}
       </div>
     </section>
   );

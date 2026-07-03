@@ -14,3 +14,15 @@ export function setActiveCode(uid: string, code: string): void {
 export function clearActiveCode(uid: string): void {
   localStorage.removeItem(activeKey(uid));
 }
+
+// Device-level flag: has anyone ever signed in on this browser? Lets the auth
+// screen default returning users to "Sign in" instead of "Create account".
+const RETURNING_KEY = "aligned_returning";
+
+export function markReturning(): void {
+  localStorage.setItem(RETURNING_KEY, "1");
+}
+
+export function hasReturned(): boolean {
+  return localStorage.getItem(RETURNING_KEY) === "1";
+}

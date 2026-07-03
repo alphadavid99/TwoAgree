@@ -4,6 +4,7 @@ import { curLevel, catComplete } from "../lib/progress";
 import { type DeckData, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
+import { DeckIcon } from "../components/icons";
 
 export default function DecksScreen({
   session,
@@ -54,7 +55,7 @@ export default function DecksScreen({
               return (
                 <div key={slug} className="row" onClick={() => onPlay(slug)}>
                   <div className="catico" style={{ background: `${d.color}1A`, color: d.color }}>
-                    <span style={{ width: 10, height: 10, borderRadius: 3, background: d.color, display: "block" }} />
+                    <DeckIcon icon={d.icon} size={22} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 17, fontWeight: 600 }}>{d.name}</div>

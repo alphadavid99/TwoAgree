@@ -32,6 +32,14 @@ export default function ResultsScreen({
   }
   const overallPct = n ? Math.round(sum / n) : null;
 
+  // Surface the signal, don't bury it: the lowest deck IS the product — the
+  // topic most worth a conversation. Rank ascending so the eye lands on it
+  // first, and call out the closest + the one worth talking about by name.
+  const ranked = [...rows].sort((a, b) => a.pct - b.pct);
+  const lowest = ranked[0];
+  const closest = ranked[ranked.length - 1];
+  const showSynth = ranked.length >= 2 && lowest.slug !== closest.slug;
+
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 24 }}>
@@ -54,9 +62,32 @@ export default function ResultsScreen({
           <p className="sub serif center" style={{ fontStyle: "italic", margin: "0 24px 20px" }}>
             Across {rows.length} completed {rows.length === 1 ? "deck" : "decks"}.
           </p>
-          <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-            {rows.map(({ slug, pct }) => (
-              <div key={slug} className="resrow">
+
+          {showSynth && (
+            <div className="synth">
+              <div className="scall">
+                <div>
+                  <div className="lb">Closest alignment</div>
+                  <div className="nm">{DECKS[closest.slug].name}</div>
+                </div>
+                <div className="pc">{closest.pct}%</div>
+              </div>
+              <div className="scall warm">
+                <div>
+                  <div className="lb">Most worth a conversation</div>
+                  <div className="nm">{DECKS[lowest.slug].name}</div>
+                </div>
+                <div className="pc">{lowest.pct}%</div>
+              </div>
+            </div>
+          )}
+
+          <div className="card" style={{ padding: 0, overflow: "hidden", marginTop: 14 }}>
+            {ranked.map(({ slug, pct }) => (
+              <div
+                key={slug}
+                className={`resrow${showSynth && slug === lowest.slug ? " hot" : ""}`}
+              >
                 <span style={{ flex: 1, fontWeight: 600 }}>{DECKS[slug].name}</span>
                 <span style={{ color: "var(--berry)", fontWeight: 700 }}>{pct}%</span>
               </div>

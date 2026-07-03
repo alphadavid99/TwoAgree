@@ -7,6 +7,7 @@ import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
+import { Avatar } from "../components/Avatar";
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -105,8 +106,18 @@ export default function HomeScreen({
       )}
 
       <div className="qcard" style={{ textAlign: "center", padding: "32px 26px 36px", marginTop: 16 }}>
-        <div className="eyebrow" style={{ marginBottom: 14 }}>
-          {(myName + " & " + (joined ? partnerName : "…")).toUpperCase()}
+        <div className="avstack">
+          <Avatar name={myName} tone="berry" />
+          {joined ? (
+            <Avatar name={partnerName} tone="honey" />
+          ) : (
+            <div className="avatar-disc avatar-wait" style={{ width: 46, height: 46 }}>
+              ?
+            </div>
+          )}
+        </div>
+        <div style={{ fontSize: 15, fontWeight: 600, margin: "8px 0 14px" }}>
+          {myName} &amp; {joined ? partnerName : "…"}
         </div>
         <button className="badge tap" type="button" onClick={onBrowse}>
           {DECKS[slug].name} &#9662;
@@ -121,9 +132,12 @@ export default function HomeScreen({
         </div>
         <div style={{ margin: "16px 0 22px", fontSize: 15, color: "var(--sub)" }}>
           {joined ? (
-            <span>
-              <b style={{ color: "var(--ink)" }}>{partnerName}</b> {theirs}/{lvlTotal}
-              {L > 1 ? " this level" : ""}
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <Avatar name={partnerName} tone="honey" size={26} ring={false} />
+              <span>
+                <b style={{ color: "var(--ink)" }}>{partnerName}</b> {theirs}/{lvlTotal}
+                {L > 1 ? " this level" : ""}
+              </span>
             </span>
           ) : (
             <span className="muted">Waiting for your partner to join…</span>

@@ -802,34 +802,43 @@ textarea.input {
   font-style: italic;
 }
 
-/* ---- reveal: "how well you know each other" callout ---- */
-.knowcard {
+/* ---- reveal: "how well you know each other" — a secondary (smaller, warmer)
+   ring that gives couples a positive counterweight to a low alignment score ---- */
+.knowblock {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  background: var(--optbg);
-  border-radius: var(--r-md);
-  padding: 14px 18px;
-  margin: 16px 2px 0;
-}
-.knowpct {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 1;
-  color: var(--berry);
-  font-variant-numeric: tabular-nums;
-  flex: 0 0 auto;
-}
-.knowtitle {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--ink);
+  text-align: center;
+  margin: 22px 0 4px;
 }
 .knowsub {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--sub);
-  margin-top: 2px;
+  margin-top: 4px;
+}
+
+/* ---- reveal entrance motion (respects prefers-reduced-motion) ---- */
+@keyframes revealRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal-rise {
+  animation: revealRise 0.5s ease both;
+}
+.row-rise {
+  animation: revealRise 0.42s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-rise,
+  .row-rise {
+    animation: none;
+  }
 }
 
 /* ---- reveal: per-question guess reveal (predict-your-partner payoff) ---- */

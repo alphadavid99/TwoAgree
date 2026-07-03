@@ -98,35 +98,37 @@ export default function RevealScreen({
           {t("What you each said", "Ce que chacun a dit")}
         </h1>
       )}
-      <p className="sub serif center" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
+      <p className="sub serif center reveal-rise" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
         {t(
           "Not a verdict — a place to start talking.",
           "Pas un verdict — un point de départ pour discuter.",
         )}
       </p>
       {know.pct != null && (
-        <div className="knowcard">
-          <div className="knowpct">{know.pct}%</div>
-          <div>
-            <div className="knowtitle">
-              {t("How well you know each other", "À quel point vous vous connaissez")}
-            </div>
-            <div className="knowsub">
-              {t(
-                `You guessed right ${know.right} of ${know.made} times`,
-                `Vous avez deviné juste ${know.right} fois sur ${know.made}`,
-              )}
-            </div>
+        <div className="knowblock reveal-rise">
+          <div className="eyebrow" style={{ color: "var(--amber)", marginBottom: 8 }}>
+            {t("How well you know each other", "À quel point vous vous connaissez")}
+          </div>
+          <PctRing pct={know.pct} size={124} color="var(--honeyD)" label="" />
+          <div className="knowsub">
+            {t(
+              `${know.right} of ${know.made} guesses right`,
+              `${know.right} bons paris sur ${know.made}`,
+            )}
           </div>
         </div>
       )}
 
       <div className="card" style={{ marginTop: 20, padding: 0, overflow: "hidden" }}>
-        {joint.map((q) => {
+        {joint.map((q, i) => {
           const r = scoreQ(q, data, role);
           const lq = localizeQuestion(q, lang);
           return (
-            <div key={q.id} className="verrow">
+            <div
+              key={q.id}
+              className="verrow row-rise"
+              style={{ animationDelay: `${Math.min(i * 45, 500)}ms` }}
+            >
               <div className="verq">{lq.q}</div>
               <div className="veranswers">
                 <span>

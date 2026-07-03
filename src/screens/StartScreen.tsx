@@ -3,6 +3,7 @@ import { createSession } from "../lib/session";
 import { joinByCode } from "../lib/functions";
 import { setActiveCode } from "../lib/local";
 import { prettyError } from "../lib/errors";
+import { useT } from "../lib/i18n";
 
 // Create a new session or join a partner's by code. The signed-in user's
 // profile name rides into the member slot (the account graft).
@@ -15,6 +16,7 @@ export default function StartScreen({
   name: string;
   onEnter: (code: string) => void;
 }) {
+  const t = useT();
   const [mode, setMode] = useState<"choose" | "join">("choose");
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
@@ -41,7 +43,12 @@ export default function StartScreen({
     setErr("");
     const c = code.trim().toUpperCase();
     if (c.length < 4) {
-      setErr("Enter the 4-character code your partner shared.");
+      setErr(
+        t(
+          "Enter the 4-character code your partner shared.",
+          "Saisissez le code à 4 caractères partagé par votre partenaire.",
+        ),
+      );
       return;
     }
     setBusy(true);
@@ -57,29 +64,32 @@ export default function StartScreen({
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 30 }}>
-        The two of you
+        {t("The two of you", "Vous deux")}
       </div>
       <h1 className="h1 center" style={{ marginTop: 8 }}>
-        Start a session
+        {t("Start a session", "Démarrer une session")}
       </h1>
       {mode === "choose" ? (
         <ol className="steps">
           <li className="step">
             <span className="stepn">1</span>
             <span className="stept">
-              <b>You create a code</b> — it takes one tap
+              <b>{t("You create a code", "Vous créez un code")}</b>{" "}
+              {t("— it takes one tap", "— un seul appui suffit")}
             </span>
           </li>
           <li className="step">
             <span className="stepn">2</span>
             <span className="stept">
-              <b>Share it</b> with your partner
+              <b>{t("Share it", "Partagez-le")}</b>{" "}
+              {t("with your partner", "avec votre partenaire")}
             </span>
           </li>
           <li className="step">
             <span className="stepn">3</span>
             <span className="stept">
-              <b>You each answer</b> privately, on your own
+              <b>{t("You each answer", "Vous répondez chacun")}</b>{" "}
+              {t("privately, on your own", "en privé, de votre côté")}
             </span>
           </li>
         </ol>
@@ -88,14 +98,19 @@ export default function StartScreen({
           className="sub serif center"
           style={{ fontStyle: "italic", margin: "10px 20px 26px" }}
         >
-          Enter the 4-character code your partner shared with you.
+          {t(
+            "Enter the 4-character code your partner shared with you.",
+            "Saisissez le code à 4 caractères que votre partenaire vous a partagé.",
+          )}
         </p>
       )}
 
       {mode === "choose" ? (
         <>
           <button className="btn" type="button" onClick={create} disabled={busy}>
-            {busy ? "One moment…" : "Create a session →"}
+            {busy
+              ? t("One moment…", "Un instant…")
+              : t("Create a session →", "Créer une session →")}
           </button>
           <button
             className="btn out"
@@ -105,13 +120,13 @@ export default function StartScreen({
               setMode("join");
             }}
           >
-            I have a code
+            {t("I have a code", "J’ai un code")}
           </button>
           {err && <div className="err">{err}</div>}
         </>
       ) : (
         <>
-          <label htmlFor="code">Partner’s code</label>
+          <label htmlFor="code">{t("Partner’s code", "Code du partenaire")}</label>
           <input
             className="input"
             id="code"
@@ -124,7 +139,7 @@ export default function StartScreen({
           />
           {err && <div className="err">{err}</div>}
           <button className="btn" type="button" onClick={join} disabled={busy}>
-            {busy ? "Joining…" : "Join →"}
+            {busy ? t("Joining…", "Connexion…") : t("Join →", "Rejoindre →")}
           </button>
           <button
             className="btn ghost"
@@ -134,7 +149,7 @@ export default function StartScreen({
               setMode("choose");
             }}
           >
-            ← Back
+            {t("← Back", "← Retour")}
           </button>
         </>
       )}

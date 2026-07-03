@@ -8,12 +8,14 @@ import {
 import { auth, googleProvider } from "../firebase";
 import { prettyError } from "../lib/errors";
 import { hasReturned } from "../lib/local";
+import { useT } from "../lib/i18n";
 
 type Mode = "signup" | "signin";
 
 // Email/password + Google + password reset. On success, the top-level
 // onAuthStateChanged (useAuth) swaps the view — this screen just kicks it off.
 export default function AuthScreen() {
+  const t = useT();
   // Returning devices land on "Sign in"; genuinely new visitors on "Create".
   const [mode, setMode] = useState<Mode>(hasReturned() ? "signin" : "signup");
   const [email, setEmail] = useState("");
@@ -39,11 +41,18 @@ export default function AuthScreen() {
     e.preventDefault();
     clear();
     if (!email.trim() || !pw) {
-      setErr("Enter your email and a password.");
+      setErr(
+        t("Enter your email and a password.", "Saisissez votre e-mail et un mot de passe."),
+      );
       return;
     }
     if (isSignup && !agreed) {
-      setErr("Please agree to the Privacy Policy to create an account.");
+      setErr(
+        t(
+          "Please agree to the Privacy Policy to create an account.",
+          "Veuillez accepter la politique de confidentialité pour créer un compte.",
+        ),
+      );
       return;
     }
     setBusy(true);
@@ -62,7 +71,12 @@ export default function AuthScreen() {
   const google = async () => {
     clear();
     if (isSignup && !agreed) {
-      setErr("Please agree to the Privacy Policy to create an account.");
+      setErr(
+        t(
+          "Please agree to the Privacy Policy to create an account.",
+          "Veuillez accepter la politique de confidentialité pour créer un compte.",
+        ),
+      );
       return;
     }
     try {
@@ -75,12 +89,22 @@ export default function AuthScreen() {
   const resetPw = async () => {
     clear();
     if (!email.trim()) {
-      setErr("Enter your email first, then tap reset.");
+      setErr(
+        t(
+          "Enter your email first, then tap reset.",
+          "Saisissez d’abord votre e-mail, puis appuyez sur réinitialiser.",
+        ),
+      );
       return;
     }
     try {
       await sendPasswordResetEmail(auth, email.trim());
-      setOk("Check your inbox for a reset link.");
+      setOk(
+        t(
+          "Check your inbox for a reset link.",
+          "Consultez votre boîte mail pour le lien de réinitialisation.",
+        ),
+      );
     } catch (e2) {
       setErr(prettyError(e2));
     }
@@ -89,18 +113,26 @@ export default function AuthScreen() {
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 34 }}>
-        Your account
+        {t("Your account", "Votre compte")}
       </div>
       <h1 className="h1 center" style={{ marginTop: 8 }}>
-        {isSignup ? "Create your account" : "Welcome back"}
+        {isSignup
+          ? t("Create your account", "Créez votre compte")
+          : t("Welcome back", "Bon retour")}
       </h1>
       <p
         className="sub serif center"
         style={{ fontStyle: "italic", margin: "10px 20px 26px" }}
       >
         {isSignup
-          ? "One profile that stays with you across every session."
-          : "Sign in to pick up where you left off."}
+          ? t(
+              "One profile that stays with you across every session.",
+              "Un seul profil qui vous suit à chaque session.",
+            )
+          : t(
+              "Sign in to pick up where you left off.",
+              "Connectez-vous pour reprendre où vous en étiez.",
+            )}
       </p>
 
       {isSignup && (
@@ -111,12 +143,14 @@ export default function AuthScreen() {
             onChange={(e) => setAgreed(e.target.checked)}
           />
           <span>
-            I agree to the{" "}
+            {t("I agree to the", "J’accepte la")}{" "}
             <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">
-              Privacy Policy
+              {t("Privacy Policy", "politique de confidentialité")}
             </a>
-            . Aligned collects sensitive answers (faith, values, intimacy) to
-            show the two of you where you align.
+            {t(
+              ". Aligned collects sensitive answers (faith, values, intimacy) to show the two of you where you align.",
+              ". Aligned recueille des réponses sensibles (foi, valeurs, intimité) pour vous montrer, à tous les deux, où vous vous rejoignez.",
+            )}
           </span>
         </label>
       )}
@@ -145,13 +179,13 @@ export default function AuthScreen() {
             d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
           />
         </svg>
-        Continue with Google
+        {t("Continue with Google", "Continuer avec Google")}
       </button>
 
-      <div className="authdiv">or use email</div>
+      <div className="authdiv">{t("or use email", "ou par e-mail")}</div>
 
       <form onSubmit={submit}>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">{t("Email", "E-mail")}</label>
         <input
           className="input"
           id="email"
@@ -163,13 +197,17 @@ export default function AuthScreen() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <label htmlFor="pw">Password</label>
+        <label htmlFor="pw">{t("Password", "Mot de passe")}</label>
         <input
           className="input"
           id="pw"
           type="password"
           autoComplete={isSignup ? "new-password" : "current-password"}
-          placeholder={isSignup ? "At least 6 characters" : "Your password"}
+          placeholder={
+            isSignup
+              ? t("At least 6 characters", "Au moins 6 caractères")
+              : t("Your password", "Votre mot de passe")
+          }
           value={pw}
           onChange={(e) => setPw(e.target.value)}
         />
@@ -179,23 +217,25 @@ export default function AuthScreen() {
 
         <button className="btn" type="submit" disabled={busy}>
           {busy
-            ? "One moment…"
+            ? t("One moment…", "Un instant…")
             : isSignup
-              ? "Create account →"
-              : "Sign in →"}
+              ? t("Create account →", "Créer le compte →")
+              : t("Sign in →", "Se connecter →")}
         </button>
       </form>
 
       {!isSignup && (
         <button className="btn ghost" type="button" onClick={resetPw}>
-          Forgot password?
+          {t("Forgot password?", "Mot de passe oublié ?")}
         </button>
       )}
 
       <p className="muted center" style={{ fontSize: 14, marginTop: 8 }}>
-        {isSignup ? "Already have an account? " : "New here? "}
+        {isSignup
+          ? t("Already have an account? ", "Vous avez déjà un compte ? ")
+          : t("New here? ", "Nouveau ici ? ")}
         <button className="link" type="button" onClick={toggleMode}>
-          {isSignup ? "Sign in" : "Create one"}
+          {isSignup ? t("Sign in", "Se connecter") : t("Create one", "Créer un compte")}
         </button>
       </p>
     </section>

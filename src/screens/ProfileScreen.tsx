@@ -5,6 +5,7 @@ import { useProfile } from "../hooks/useProfile";
 import { fileToAvatarDataUrl } from "../lib/device/photo";
 import { prettyError } from "../lib/errors";
 import { exportMyData, deleteMyAccount } from "../lib/functions";
+import { useT, useLang, setLang, LANGS } from "../lib/i18n";
 import type { Profile } from "../types";
 
 export default function ProfileScreen({
@@ -14,6 +15,8 @@ export default function ProfileScreen({
   user: User;
   onLeave?: () => void;
 }) {
+  const t = useT();
+  const lang = useLang();
   const { profile, loading, saveProfile } = useProfile(user.uid);
 
   const [name, setName] = useState("");
@@ -58,7 +61,7 @@ export default function ProfileScreen({
       a.download = "aligned-my-data.json";
       a.click();
       URL.revokeObjectURL(url);
-      setDataMsg("Your data has been downloaded.");
+      setDataMsg(t("Your data has been downloaded.", "Vos données ont été téléchargées."));
     } catch (e) {
       setDataMsg(prettyError(e));
     } finally {
@@ -85,7 +88,12 @@ export default function ProfileScreen({
     try {
       const dataUrl = await fileToAvatarDataUrl(file);
       setPendingPhoto(dataUrl);
-      setOk("Photo ready — tap Save profile to keep it.");
+      setOk(
+        t(
+          "Photo ready — tap Save profile to keep it.",
+          "Photo prête — appuyez sur Enregistrer pour la garder.",
+        ),
+      );
     } catch (e2) {
       setErr(prettyError(e2));
     }
@@ -94,7 +102,12 @@ export default function ProfileScreen({
   const save = async () => {
     clear();
     if (!name.trim()) {
-      setErr("Your name is needed — your partner sees it.");
+      setErr(
+        t(
+          "Your name is needed — your partner sees it.",
+          "Votre nom est requis — votre partenaire le voit.",
+        ),
+      );
       return;
     }
     setBusy(true);
@@ -108,7 +121,7 @@ export default function ProfileScreen({
     try {
       await saveProfile(data);
       setPendingPhoto(null);
-      setOk("Saved.");
+      setOk(t("Saved.", "Enregistré."));
     } catch (e2) {
       setErr(prettyError(e2));
     } finally {
@@ -121,7 +134,7 @@ export default function ProfileScreen({
       <>
         <div className="spin" />
         <p className="muted center" style={{ fontSize: 14 }}>
-          Loading your profile…
+          {t("Loading your profile…", "Chargement de votre profil…")}
         </p>
       </>
     );
@@ -134,7 +147,7 @@ export default function ProfileScreen({
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 30 }}>
-        Your profile
+        {t("Your profile", "Votre profil")}
       </div>
 
       <div className="card" style={{ marginTop: 16, textAlign: "center" }}>
@@ -147,7 +160,7 @@ export default function ProfileScreen({
             type="button"
             onClick={() => fileInput.current?.click()}
           >
-            Change photo
+            {t("Change photo", "Changer la photo")}
           </button>
           <input
             ref={fileInput}
@@ -160,31 +173,31 @@ export default function ProfileScreen({
 
         <div style={{ textAlign: "left" }}>
           <label htmlFor="name">
-            Name{" "}
+            {t("Name", "Nom")}{" "}
             <span className="muted" style={{ fontWeight: 400 }}>
-              (your partner sees this)
+              {t("(your partner sees this)", "(votre partenaire le voit)")}
             </span>
           </label>
           <input
             className="input"
             id="name"
             maxLength={20}
-            placeholder="e.g. Sarah"
+            placeholder={t("e.g. Sarah", "p. ex. Sarah")}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
           <label htmlFor="bio">
-            A line about you{" "}
+            {t("A line about you", "Une ligne sur vous")}{" "}
             <span className="muted" style={{ fontWeight: 400 }}>
-              (optional)
+              {t("(optional)", "(facultatif)")}
             </span>
           </label>
           <textarea
             className="input"
             id="bio"
             maxLength={140}
-            placeholder="Something honest and short."
+            placeholder={t("Something honest and short.", "Quelque chose d’honnête et de court.")}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
@@ -194,27 +207,52 @@ export default function ProfileScreen({
         {ok && <div className="ok">{ok}</div>}
 
         <button className="btn" type="button" onClick={save} disabled={busy}>
-          {busy ? "Saving…" : "Save profile"}
+          {busy ? t("Saving…", "Enregistrement…") : t("Save profile", "Enregistrer le profil")}
         </button>
+      </div>
+
+      <div className="card" style={{ marginTop: 20 }}>
+        <div className="eyebrow">{t("Language", "Langue")}</div>
+        <p className="muted" style={{ fontSize: 13, margin: "8px 0 14px" }}>
+          {t(
+            "Choose the language for the app.",
+            "Choisissez la langue de l’application.",
+          )}
+        </p>
+        <div className="langrow">
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              className={`langopt ${lang === l.code ? "on" : ""}`}
+              onClick={() => setLang(l.code)}
+              aria-pressed={lang === l.code}
+            >
+              {l.native}
+            </button>
+          ))}
+        </div>
       </div>
 
       {onLeave && (
         <button className="btn out" type="button" onClick={onLeave}>
-          Leave this session
+          {t("Leave this session", "Quitter cette session")}
         </button>
       )}
       <button className="btn out" type="button" onClick={() => signOut(auth)}>
-        Sign out
+        {t("Sign out", "Se déconnecter")}
       </button>
 
       <div className="card" style={{ marginTop: 20 }}>
-        <div className="eyebrow">Your data</div>
+        <div className="eyebrow">{t("Your data", "Vos données")}</div>
         <p className="muted" style={{ fontSize: 13, margin: "8px 0 14px" }}>
-          Aligned holds sensitive answers. You can take them with you or erase
-          everything, at any time.
+          {t(
+            "Aligned holds sensitive answers. You can take them with you or erase everything, at any time.",
+            "Aligned conserve des réponses sensibles. Vous pouvez les emporter ou tout effacer, à tout moment.",
+          )}
         </p>
         <button className="btn out" type="button" onClick={doExport} disabled={dataBusy}>
-          {dataBusy ? "Working…" : "Export my data"}
+          {dataBusy ? t("Working…", "En cours…") : t("Export my data", "Exporter mes données")}
         </button>
 
         {!confirmDelete ? (
@@ -225,13 +263,15 @@ export default function ProfileScreen({
             onClick={() => setConfirmDelete(true)}
             disabled={dataBusy}
           >
-            Delete my account
+            {t("Delete my account", "Supprimer mon compte")}
           </button>
         ) : (
           <>
             <p className="err">
-              This permanently erases your profile and removes you from every
-              session. It can’t be undone.
+              {t(
+                "This permanently erases your profile and removes you from every session. It can’t be undone.",
+                "Ceci efface définitivement votre profil et vous retire de toutes les sessions. C’est irréversible.",
+              )}
             </p>
             <button
               className="btn"
@@ -240,7 +280,9 @@ export default function ProfileScreen({
               onClick={doDelete}
               disabled={dataBusy}
             >
-              {dataBusy ? "Deleting…" : "Yes, delete everything"}
+              {dataBusy
+                ? t("Deleting…", "Suppression…")
+                : t("Yes, delete everything", "Oui, tout supprimer")}
             </button>
             <button
               className="btn ghost"
@@ -248,22 +290,23 @@ export default function ProfileScreen({
               onClick={() => setConfirmDelete(false)}
               disabled={dataBusy}
             >
-              Cancel
+              {t("Cancel", "Annuler")}
             </button>
           </>
         )}
         {dataMsg && <div className="ok">{dataMsg}</div>}
         <p className="muted" style={{ fontSize: 12, marginTop: 12 }}>
-          See our{" "}
+          {t("See our", "Consultez notre")}{" "}
           <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">
-            Privacy Policy
+            {t("Privacy Policy", "Politique de confidentialité")}
           </a>
           .
         </p>
       </div>
 
       <div className="foot">
-        Signed in as {user.email || "your Google account"}
+        {t("Signed in as", "Connecté en tant que")}{" "}
+        {user.email || t("your Google account", "votre compte Google")}
       </div>
     </section>
   );

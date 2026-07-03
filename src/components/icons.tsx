@@ -54,6 +54,14 @@ export const IconProfile = ({ size = 24 }: P) =>
 export const IconBack = ({ size = 24 }: P) =>
   svg(size, <path d="M15 5l-7 7 7 7" />);
 
+export const IconSettings = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.5v3M12 18.5v3M4.2 7l2.6 1.5M17.2 15.5l2.6 1.5M4.2 17l2.6-1.5M17.2 8.5l2.6-1.5" />
+    </>
+  ));
+
 export const IconClose = ({ size = 24 }: P) =>
   svg(size, (
     <>

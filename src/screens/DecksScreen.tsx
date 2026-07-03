@@ -5,6 +5,14 @@ import { type DeckData, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
 import { DeckIcon } from "../components/icons";
+import { useT } from "../lib/i18n";
+
+// French labels for the three stages (parallel to STAGES in leveling.ts).
+const STAGES_FR: [string, string][] = [
+  ["Échauffement", "Des débuts légers et simples"],
+  ["Cœur", "L’essentiel du quotidien"],
+  ["Profond et honnête", "Convictions et vérités plus difficiles"],
+];
 
 export default function DecksScreen({
   session,
@@ -15,6 +23,7 @@ export default function DecksScreen({
   role: Role;
   onPlay: (slug: string) => void;
 }) {
+  const t = useT();
   const buckets: string[][] = [[], [], []];
   ORDER.forEach((slug) => buckets[stageOf(slug)].push(slug));
 
@@ -24,18 +33,18 @@ export default function DecksScreen({
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 24 }}>
-        The decks
+        {t("The decks", "Les thèmes")}
       </div>
       <h1 className="h1 center" style={{ margin: "8px 0 20px" }}>
-        Where to go next
+        {t("Where to go next", "Où aller ensuite")}
       </h1>
 
       {buckets.map((bucket, i) =>
         bucket.length ? (
           <div key={i}>
             <div className="stagelabel">
-              <span>{STAGES[i][0]}</span>
-              <span className="muted">{STAGES[i][1]}</span>
+              <span>{t(STAGES[i][0], STAGES_FR[i][0])}</span>
+              <span className="muted">{t(STAGES[i][1], STAGES_FR[i][1])}</span>
             </div>
             {bucket.map((slug) => {
               const d = DECKS[slug];
@@ -47,11 +56,20 @@ export default function DecksScreen({
               const sub =
                 L > 1
                   ? catComplete(slug, deck, role)
-                    ? `All ${L} levels done · ${total} questions`
-                    : `Level ${lvl + 1} of ${L} · ${total} questions`
+                    ? t(
+                        `All ${L} levels done · ${total} questions`,
+                        `Les ${L} niveaux terminés · ${total} questions`,
+                      )
+                    : t(
+                        `Level ${lvl + 1} of ${L} · ${total} questions`,
+                        `Niveau ${lvl + 1} sur ${L} · ${total} questions`,
+                      )
                   : mine > 0
-                    ? `${mine} of ${total} answered`
-                    : `${total} questions`;
+                    ? t(
+                        `${mine} of ${total} answered`,
+                        `${mine} sur ${total} répondues`,
+                      )
+                    : t(`${total} questions`, `${total} questions`);
               return (
                 <div key={slug} className="row" onClick={() => onPlay(slug)}>
                   <div className="catico" style={{ background: `${d.color}1A`, color: d.color }}>
@@ -71,8 +89,15 @@ export default function DecksScreen({
         ) : null,
       )}
       <p className="muted center" style={{ fontSize: 12, marginTop: 18 }}>
-        {ORDER.filter((s) => catComplete(s, session.decks?.[s], role)).length} of{" "}
-        {ORDER.length} decks complete
+        {(() => {
+          const done = ORDER.filter((s) =>
+            catComplete(s, session.decks?.[s], role),
+          ).length;
+          return t(
+            `${done} of ${ORDER.length} decks complete`,
+            `${done} thèmes terminés sur ${ORDER.length}`,
+          );
+        })()}
       </p>
     </section>
   );

@@ -640,6 +640,44 @@ textarea.input {
   align-items: center;
 }
 
+/* language switcher (Settings) */
+.langrow {
+  display: flex;
+  gap: 10px;
+}
+.langopt {
+  flex: 1;
+  padding: 13px 12px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--berry);
+  background: #fff;
+  border: 1.5px solid var(--cardb);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.langopt.on {
+  border-color: var(--berry);
+  background: rgba(104, 45, 92, 0.05);
+}
+
+/* pre-session landing header: centred logo + settings gear on the right */
+.landinghead {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0 12px;
+}
+.landinghead-action {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .consent {
   display: flex;
   gap: 10px;

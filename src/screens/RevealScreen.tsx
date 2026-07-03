@@ -9,10 +9,11 @@ import {
   type Verdict,
   type AnswerValue,
 } from "../lib/scoring";
-import { DECKS, type Question } from "../lib/questions";
+import { type Question } from "../lib/questions";
+import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { PctRing } from "../components/Ring";
 import { TopBar } from "../components/TopBar";
-import { useT } from "../lib/i18n";
+import { useT, useLang } from "../lib/i18n";
 
 // Display labels for each verdict when the language is French.
 const VERDICT_FR: Record<Verdict, string> = {
@@ -48,36 +49,53 @@ export default function RevealScreen({
   role,
   deck,
   onDone,
+  questions,
+  review = false,
 }: {
   slug: string;
   level: number;
   role: Role;
   deck: DeckData | undefined;
   onDone: () => void;
+  // Review mode passes the whole deck's questions so a finished deck can be
+  // reopened to see the full per-question breakdown (what each of you answered).
+  questions?: Question[];
+  review?: boolean;
 }) {
   const t = useT();
-  const qs = lvlQs(slug, level);
+  const lang = useLang();
+  const qs = questions ?? lvlQs(slug, level);
   const data = deck ?? {};
   const pct = overall(qs, data, role);
   const know = knowScore(qs, data, role);
   const joint = jointQuestions(qs, data);
   const multi = nLevels(slug) > 1;
+  // Reflection-only decks have nothing to score — show the answers, not a 0% ring.
+  const hasScore = joint.some((q) => q.type !== "open");
 
   return (
     <section>
       <TopBar onExit={onDone} />
       <div className="eyebrow center" style={{ marginTop: 10 }}>
-        {DECKS[slug].name.toUpperCase()}
-        {multi
-          ? t(
-              ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
-              ` · NIVEAU ${level + 1} SUR ${nLevels(slug)}`,
-            )
-          : ""}
+        {deckName(slug, lang).toUpperCase()}
+        {review
+          ? t(" · REVIEW", " · RÉCAP")
+          : multi
+            ? t(
+                ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
+                ` · NIVEAU ${level + 1} SUR ${nLevels(slug)}`,
+              )
+            : ""}
       </div>
-      <div className="center" style={{ margin: "18px 0 6px" }}>
-        <PctRing pct={pct} size={180} label={t("aligned", "alignés")} />
-      </div>
+      {hasScore ? (
+        <div className="center" style={{ margin: "18px 0 6px" }}>
+          <PctRing pct={pct} size={180} label={t("aligned", "alignés")} />
+        </div>
+      ) : (
+        <h1 className="h1 center" style={{ margin: "16px 0 6px" }}>
+          {t("What you each said", "Ce que chacun a dit")}
+        </h1>
+      )}
       <p className="sub serif center" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
         {t(
           "Not a verdict — a place to start talking.",
@@ -96,15 +114,16 @@ export default function RevealScreen({
       <div className="card" style={{ marginTop: 20, padding: 0, overflow: "hidden" }}>
         {joint.map((q) => {
           const r = scoreQ(q, data, role);
+          const lq = localizeQuestion(q, lang);
           return (
             <div key={q.id} className="verrow">
-              <div className="verq">{q.q}</div>
+              <div className="verq">{lq.q}</div>
               <div className="veranswers">
                 <span>
-                  {t("You:", "Vous :")} <b>{optLabel(q, r.me)}</b>
+                  {t("You:", "Vous :")} <b>{optLabel(lq, r.me)}</b>
                 </span>
                 <span>
-                  {t("Them:", "L’autre :")} <b>{optLabel(q, r.th)}</b>
+                  {t("Them:", "L’autre :")} <b>{optLabel(lq, r.th)}</b>
                 </span>
               </div>
               <span

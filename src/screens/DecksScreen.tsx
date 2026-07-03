@@ -5,7 +5,8 @@ import { type DeckData, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
 import { DeckIcon } from "../components/icons";
-import { useT } from "../lib/i18n";
+import { deckName } from "../lib/questions.fr";
+import { useT, useLang } from "../lib/i18n";
 
 // French labels for the three stages (parallel to STAGES in leveling.ts).
 const STAGES_FR: [string, string][] = [
@@ -24,6 +25,7 @@ export default function DecksScreen({
   onPlay: (slug: string) => void;
 }) {
   const t = useT();
+  const lang = useLang();
   const buckets: string[][] = [[], [], []];
   ORDER.forEach((slug) => buckets[stageOf(slug)].push(slug));
 
@@ -76,7 +78,7 @@ export default function DecksScreen({
                     <DeckIcon icon={d.icon} size={22} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 17, fontWeight: 600 }}>{d.name}</div>
+                    <div style={{ fontSize: 17, fontWeight: 600 }}>{deckName(slug, lang)}</div>
                     <div className="muted" style={{ fontSize: 13 }}>
                       {sub}
                     </div>

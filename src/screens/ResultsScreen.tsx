@@ -3,17 +3,21 @@ import { catComplete } from "../lib/progress";
 import { overall, jointQuestions, type DeckData, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { PctRing } from "../components/Ring";
-import { useT } from "../lib/i18n";
+import { deckName } from "../lib/questions.fr";
+import { useT, useLang } from "../lib/i18n";
 
 // Overall alignment across every deck both partners have fully finished.
 export default function ResultsScreen({
   session,
   role,
+  onOpen,
 }: {
   session: Session;
   role: Role;
+  onOpen?: (slug: string) => void;
 }) {
   const t = useT();
+  const lang = useLang();
   const completed = ORDER.filter((slug) =>
     catComplete(slug, session.decks?.[slug], role),
   );
@@ -75,7 +79,7 @@ export default function ResultsScreen({
               <div className="scall">
                 <div>
                   <div className="lb">{t("Closest alignment", "Alignement le plus fort")}</div>
-                  <div className="nm">{DECKS[closest.slug].name}</div>
+                  <div className="nm">{deckName(closest.slug, lang)}</div>
                 </div>
                 <div className="pc">{closest.pct}%</div>
               </div>
@@ -84,7 +88,7 @@ export default function ResultsScreen({
                   <div className="lb">
                     {t("Most worth a conversation", "À aborder en priorité")}
                   </div>
-                  <div className="nm">{DECKS[lowest.slug].name}</div>
+                  <div className="nm">{deckName(lowest.slug, lang)}</div>
                 </div>
                 <div className="pc">{lowest.pct}%</div>
               </div>
@@ -96,9 +100,14 @@ export default function ResultsScreen({
               <div
                 key={slug}
                 className={`resrow${showSynth && slug === lowest.slug ? " hot" : ""}`}
+                onClick={() => onOpen?.(slug)}
+                style={onOpen ? { cursor: "pointer" } : undefined}
               >
-                <span style={{ flex: 1, fontWeight: 600 }}>{DECKS[slug].name}</span>
+                <span style={{ flex: 1, fontWeight: 600 }}>{deckName(slug, lang)}</span>
                 <span style={{ color: "var(--berry)", fontWeight: 700 }}>{pct}%</span>
+                {onOpen && (
+                  <span style={{ color: "var(--mut)", marginLeft: 10 }}>&#8250;</span>
+                )}
               </div>
             ))}
           </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { User } from "firebase/auth";
-import { ORDER } from "../lib/questions";
+import { ORDER, DECKS } from "../lib/questions";
 import { lvlQs } from "../lib/leveling";
 import { curLevel, levelDone, levelComplete, catComplete, doneInLevel } from "../lib/progress";
 import { jointQuestions, other } from "../lib/scoring";
@@ -17,7 +17,7 @@ import { IconHome, IconDecks, IconResults, IconProfile } from "../components/ico
 import { useT } from "../lib/i18n";
 
 type Tab = "home" | "decks" | "results" | "profile";
-type Flow = null | "play" | "review";
+type Flow = null | "play" | "review" | "reviewDeck";
 
 const TABS: {
   key: Tab;
@@ -92,8 +92,9 @@ export default function SessionApp({
     setSlug(s);
     const d = session.decks?.[s];
     if (catComplete(s, d, role)) {
-      setFlow(null);
-      setTab("results");
+      // Finished deck → reopen the full breakdown so you can see what each of
+      // you answered, not just the score.
+      setFlow("reviewDeck");
       return;
     }
     const lvl = curLevel(s, d, role);
@@ -113,6 +114,22 @@ export default function SessionApp({
         partnerName={partnerName}
         onFinish={() => setFlow("review")}
         onExit={exitFlow}
+      />
+    );
+  }
+
+  // Reopen a finished deck's full breakdown — the whole deck, every question,
+  // showing what each of you answered.
+  if (flow === "reviewDeck") {
+    return (
+      <RevealScreen
+        slug={slug}
+        level={0}
+        role={role}
+        deck={deck}
+        questions={DECKS[slug].questions}
+        review
+        onDone={exitFlow}
       />
     );
   }
@@ -184,7 +201,9 @@ export default function SessionApp({
         {tab === "decks" && (
           <DecksScreen session={session} role={role} onPlay={openDeck} />
         )}
-        {tab === "results" && <ResultsScreen session={session} role={role} />}
+        {tab === "results" && (
+          <ResultsScreen session={session} role={role} onOpen={openDeck} />
+        )}
         {tab === "profile" && <ProfileScreen user={user} onLeave={onLeave} />}
       </div>
 

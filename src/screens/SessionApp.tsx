@@ -14,15 +14,21 @@ import RevealScreen from "./RevealScreen";
 import { TopBar } from "../components/TopBar";
 import { Logo } from "../components/Logo";
 import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
+import { useT } from "../lib/i18n";
 
 type Tab = "home" | "decks" | "results" | "profile";
 type Flow = null | "play" | "review";
 
-const TABS: { key: Tab; label: string; Icon: (p: { size?: number }) => React.JSX.Element }[] = [
-  { key: "home", label: "Home", Icon: IconHome },
-  { key: "decks", label: "Decks", Icon: IconDecks },
-  { key: "results", label: "Results", Icon: IconResults },
-  { key: "profile", label: "Profile", Icon: IconProfile },
+const TABS: {
+  key: Tab;
+  en: string;
+  fr: string;
+  Icon: (p: { size?: number }) => React.JSX.Element;
+}[] = [
+  { key: "home", en: "Home", fr: "Accueil", Icon: IconHome },
+  { key: "decks", en: "Decks", fr: "Thèmes", Icon: IconDecks },
+  { key: "results", en: "Results", fr: "Résultats", Icon: IconResults },
+  { key: "profile", en: "Profile", fr: "Profil", Icon: IconProfile },
 ];
 
 export default function SessionApp({
@@ -34,6 +40,7 @@ export default function SessionApp({
   user: User;
   onLeave: () => void;
 }) {
+  const t = useT();
   const { session, role, loading, denied } = useSession(code, user.uid);
   const [tab, setTab] = useState<Tab>("home");
   const [slug, setSlug] = useState(ORDER[0]);
@@ -47,7 +54,7 @@ export default function SessionApp({
       <>
         <div className="spin" />
         <p className="muted center" style={{ fontSize: 14 }}>
-          Opening your session…
+          {t("Opening your session…", "Ouverture de votre session…")}
         </p>
       </>
     );
@@ -58,18 +65,21 @@ export default function SessionApp({
       <section>
         <TopBar />
         <div className="banner" style={{ marginTop: 24 }}>
-          This session isn’t available on your account. It may have been closed,
-          or the code is wrong.
+          {t(
+            "This session isn’t available on your account. It may have been closed, or the code is wrong.",
+            "Cette session n’est pas disponible sur votre compte. Elle a peut-être été fermée, ou le code est incorrect.",
+          )}
         </div>
         <button className="btn out" type="button" onClick={onLeave}>
-          Back to start
+          {t("Back to start", "Retour au début")}
         </button>
       </section>
     );
   }
 
   const deck = session.decks?.[slug];
-  const partnerName = session.members?.[other(role)]?.name ?? "your partner";
+  const partnerName =
+    session.members?.[other(role)]?.name ?? t("your partner", "votre partenaire");
 
   // Leave the play/reveal flow, returning to whichever tab it was opened from.
   const exitFlow = () => {
@@ -128,22 +138,26 @@ export default function SessionApp({
         <TopBar onExit={exitFlow} />
         <div className="spin" />
         <h2 className="h1 center" style={{ fontSize: 24 }}>
-          All yours are in.
+          {t("All yours are in.", "Les vôtres sont enregistrées.")}
         </h2>
         <p className="sub center" style={{ margin: "10px 24px 20px" }}>
-          Your alignment unlocks once you’ve <b>both</b> finished — so you always
-          see the same score.
+          {t("Your alignment unlocks once you’ve ", "Votre alignement se révèle une fois que vous avez ")}
+          <b>{t("both", "tous les deux")}</b>
+          {t(
+            " finished — so you always see the same score.",
+            " terminé — pour que vous voyiez toujours le même score.",
+          )}
         </p>
         <p className="center" style={{ fontSize: 15 }}>
           <span style={{ color: "var(--berry)" }}>
-            <b>You</b> {doneInLevel(slug, level, deck, role)}/{total}
+            <b>{t("You", "Vous")}</b> {doneInLevel(slug, level, deck, role)}/{total}
           </span>
           <span style={{ margin: "0 14px", color: "var(--amber)" }}>
             <b>{partnerName}</b> {doneInLevel(slug, level, deck, other(role))}/{total}
           </span>
         </p>
         <button className="btn out" type="button" onClick={exitFlow}>
-          Keep exploring
+          {t("Keep exploring", "Continuer d’explorer")}
         </button>
       </section>
     );
@@ -175,19 +189,22 @@ export default function SessionApp({
       </div>
 
       <nav className="bnav">
-        {TABS.map(({ key, label, Icon }) => (
-          <button
-            key={key}
-            type="button"
-            className={`bnav-item ${tab === key ? "on" : ""}`}
-            onClick={() => setTab(key)}
-            aria-label={label}
-            aria-current={tab === key ? "page" : undefined}
-          >
-            <Icon size={23} />
-            <span>{label}</span>
-          </button>
-        ))}
+        {TABS.map(({ key, en, fr, Icon }) => {
+          const label = t(en, fr);
+          return (
+            <button
+              key={key}
+              type="button"
+              className={`bnav-item ${tab === key ? "on" : ""}`}
+              onClick={() => setTab(key)}
+              aria-label={label}
+              aria-current={tab === key ? "page" : undefined}
+            >
+              <Icon size={23} />
+              <span>{label}</span>
+            </button>
+          );
+        })}
       </nav>
     </>
   );

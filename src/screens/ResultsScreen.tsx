@@ -3,6 +3,7 @@ import { catComplete } from "../lib/progress";
 import { overall, jointQuestions, type DeckData, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { PctRing } from "../components/Ring";
+import { useT } from "../lib/i18n";
 
 // Overall alignment across every deck both partners have fully finished.
 export default function ResultsScreen({
@@ -12,6 +13,7 @@ export default function ResultsScreen({
   session: Session;
   role: Role;
 }) {
+  const t = useT();
   const completed = ORDER.filter((slug) =>
     catComplete(slug, session.decks?.[slug], role),
   );
@@ -32,31 +34,69 @@ export default function ResultsScreen({
   }
   const overallPct = n ? Math.round(sum / n) : null;
 
+  // Surface the signal, don't bury it: the lowest deck IS the product — the
+  // topic most worth a conversation. Rank ascending so the eye lands on it
+  // first, and call out the closest + the one worth talking about by name.
+  const ranked = [...rows].sort((a, b) => a.pct - b.pct);
+  const lowest = ranked[0];
+  const closest = ranked[ranked.length - 1];
+  const showSynth = ranked.length >= 2 && lowest.slug !== closest.slug;
+
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 24 }}>
-        The two of you
+        {t("The two of you", "Vous deux")}
       </div>
       <h1 className="h1 center" style={{ margin: "8px 0 4px" }}>
-        Where you landed
+        {t("Where you landed", "Où vous en êtes")}
       </h1>
 
       {overallPct == null ? (
         <p className="sub serif center" style={{ fontStyle: "italic", margin: "20px 24px" }}>
-          Finish a deck together and your shared alignment appears here — not to
-          judge, but to open the conversation.
+          {t(
+            "Finish a deck together and your shared alignment appears here — not to judge, but to open the conversation.",
+            "Terminez un thème ensemble et votre alignement commun apparaît ici — non pour juger, mais pour ouvrir la conversation.",
+          )}
         </p>
       ) : (
         <>
           <div className="center" style={{ margin: "16px 0 6px" }}>
-            <PctRing pct={overallPct} size={190} />
+            <PctRing pct={overallPct} size={190} label={t("aligned", "alignés")} />
           </div>
           <p className="sub serif center" style={{ fontStyle: "italic", margin: "0 24px 20px" }}>
-            Across {rows.length} completed {rows.length === 1 ? "deck" : "decks"}.
+            {t(
+              `Across ${rows.length} completed ${rows.length === 1 ? "deck" : "decks"}.`,
+              `Sur ${rows.length} thème${rows.length === 1 ? "" : "s"} terminé${rows.length === 1 ? "" : "s"}.`,
+            )}
           </p>
-          <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-            {rows.map(({ slug, pct }) => (
-              <div key={slug} className="resrow">
+
+          {showSynth && (
+            <div className="synth">
+              <div className="scall">
+                <div>
+                  <div className="lb">{t("Closest alignment", "Alignement le plus fort")}</div>
+                  <div className="nm">{DECKS[closest.slug].name}</div>
+                </div>
+                <div className="pc">{closest.pct}%</div>
+              </div>
+              <div className="scall warm">
+                <div>
+                  <div className="lb">
+                    {t("Most worth a conversation", "À aborder en priorité")}
+                  </div>
+                  <div className="nm">{DECKS[lowest.slug].name}</div>
+                </div>
+                <div className="pc">{lowest.pct}%</div>
+              </div>
+            </div>
+          )}
+
+          <div className="card" style={{ padding: 0, overflow: "hidden", marginTop: 14 }}>
+            {ranked.map(({ slug, pct }) => (
+              <div
+                key={slug}
+                className={`resrow${showSynth && slug === lowest.slug ? " hot" : ""}`}
+              >
                 <span style={{ flex: 1, fontWeight: 600 }}>{DECKS[slug].name}</span>
                 <span style={{ color: "var(--berry)", fontWeight: 700 }}>{pct}%</span>
               </div>

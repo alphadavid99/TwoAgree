@@ -4,6 +4,25 @@ import { writeAnswer, writeGuess, markLevelDone } from "../lib/session";
 import { DECKS, type Question } from "../lib/questions";
 import type { DeckData, Role, AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
+import { useT } from "../lib/i18n";
+
+// Intensity words for the 1–5 scale. The endpoints are already labelled per
+// question (q.lo / q.hi); these name the position so the middle is never
+// ambiguous. Direction is carried by which orb the label sits under.
+const SCALE_WORDS = [
+  "Strongly",
+  "Leaning",
+  "Right in the middle",
+  "Leaning",
+  "Strongly",
+];
+const SCALE_WORDS_FR = [
+  "Fortement",
+  "Plutôt",
+  "Pile au milieu",
+  "Plutôt",
+  "Fortement",
+];
 
 // The answering flow for one level: answer each question, and for guessable
 // (non-open) questions, predict your partner. Ported from the legacy question
@@ -27,6 +46,7 @@ export default function PlayScreen({
   onFinish: () => void;
   onExit: () => void;
 }) {
+  const t = useT();
   const qs = useMemo(() => lvlQs(slug, level), [slug, level]);
 
   // Start at the first question this role hasn't answered.
@@ -87,7 +107,12 @@ export default function PlayScreen({
   const multi = nLevels(slug) > 1;
   const eyebrow =
     DECKS[slug].name.toUpperCase() +
-    (multi ? ` · LEVEL ${level + 1} OF ${nLevels(slug)}` : "");
+    (multi
+      ? t(
+          ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
+          ` · NIVEAU ${level + 1} SUR ${nLevels(slug)}`,
+        )
+      : "");
 
   if (guessPhase) {
     const yourText = q.type === "scale" ? `${pendAns} / 5` : q.opts?.[pendAns as number];
@@ -97,19 +122,21 @@ export default function PlayScreen({
         <div className="qcard" style={{ marginTop: 20, borderColor: "#F3E6CF" }}>
           <div className="qrow">
             <div className="eyebrow">{DECKS[slug].name.toUpperCase()}</div>
-            <span className="badge honey">&#10022; GUESS</span>
+            <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
           </div>
           <div className="qtext">{q.q}</div>
           <div className="yousaid">
             <div>
               <div className="eyebrow" style={{ fontSize: 10 }}>
-                YOU SAID
+                {t("YOU SAID", "VOUS AVEZ DIT")}
               </div>
               <div className="yousaid-val">{yourText}</div>
             </div>
           </div>
           <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
-            Now — what will <span style={{ color: "var(--amber)" }}>{partnerName}</span> say?
+            {t("Now — what will ", "Maintenant — que va répondre ")}
+            <span style={{ color: "var(--amber)" }}>{partnerName}</span>
+            {t(" say?", " ?")}
           </p>
           <QuestionInput
             q={q}
@@ -127,10 +154,10 @@ export default function PlayScreen({
           disabled={pendGuess == null || busy}
           onClick={lockGuess}
         >
-          Lock it in →
+          {t("Lock it in →", "Je valide →")}
         </button>
         <button className="btn ghost" type="button" onClick={() => advance(idx)}>
-          Skip
+          {t("Skip", "Passer")}
         </button>
       </section>
     );
@@ -145,7 +172,7 @@ export default function PlayScreen({
       <div className="qcard" style={{ marginTop: 18 }}>
         <div className="qrow">
           <div className="eyebrow">{eyebrow}</div>
-          <span className="badge">TIER {q.tier}</span>
+          <span className="badge">{t(`TIER ${q.tier}`, `NIVEAU ${q.tier}`)}</span>
         </div>
         <div className="qtext">{q.q}</div>
         <QuestionInput
@@ -163,15 +190,17 @@ export default function PlayScreen({
         disabled={pendAns == null || busy}
         onClick={submitAnswer}
       >
-        {idx + 1 === qs.length ? "Finish level →" : "Next →"}
+        {idx + 1 === qs.length
+          ? t("Finish level →", "Terminer le niveau →")
+          : t("Next →", "Suivant →")}
       </button>
       <div className="hint">
-        {idx + 1} OF {qs.length}
+        {t(`${idx + 1} OF ${qs.length}`, `${idx + 1} SUR ${qs.length}`)}
         {q.type === "open"
-          ? " · OPEN REFLECTION"
+          ? t(" · OPEN REFLECTION", " · RÉFLEXION LIBRE")
           : q.type === "rank"
-            ? " · RANK YOUR ORDER"
-            : " · TAP TO ANSWER"}
+            ? t(" · RANK YOUR ORDER", " · CLASSEZ PAR ORDRE")
+            : t(" · TAP TO ANSWER", " · APPUYEZ POUR RÉPONDRE")}
       </div>
     </section>
   );
@@ -194,6 +223,7 @@ function QuestionInput({
   setRankOrder: (v: number[]) => void;
   setPend: (v: AnswerValue | null) => void;
 }) {
+  const t = useT();
   if (q.type === "scale") {
     return (
       <>
@@ -212,6 +242,22 @@ function QuestionInput({
             </div>
           ))}
         </div>
+        {/* Live label anchored under the chosen orb — names the middle so the
+            user never has to work out "is 3 neutral or a lean?" (Pillar 3). */}
+        <div className="orblabels" aria-hidden={value == null}>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="orblabel-cell">
+              {value === i && (
+                <>
+                  <span className="caret" />
+                  <span className="orblabel">
+                    {t(SCALE_WORDS[i - 1], SCALE_WORDS_FR[i - 1])}
+                  </span>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </>
     );
   }
@@ -219,7 +265,10 @@ function QuestionInput({
     return (
       <textarea
         className="ta"
-        placeholder="Write as much or as little as you like…"
+        placeholder={t(
+          "Write as much or as little as you like…",
+          "Écrivez autant ou aussi peu que vous le souhaitez…",
+        )}
         value={(value as string) ?? ""}
         onChange={(e) => setPend(e.target.value.trim() === "" ? null : e.target.value)}
       />
@@ -229,7 +278,10 @@ function QuestionInput({
     return (
       <>
         <div className="muted" style={{ fontSize: 13, marginBottom: 12 }}>
-          Tap in order of priority — 1 = most important.
+          {t(
+            "Tap in order of priority — 1 = most important.",
+            "Appuyez par ordre de priorité — 1 = le plus important.",
+          )}
         </div>
         {q.opts?.map((o, i) => {
           const pos = rankOrder.indexOf(i);

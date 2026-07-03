@@ -47,10 +47,12 @@ export function PctRing({
   pct,
   size = 160,
   color = "var(--honey)",
+  label = "aligned",
 }: {
   pct: number;
   size?: number;
   color?: string;
+  label?: string;
 }) {
   const sw = 12;
   const r = size / 2 - sw;
@@ -91,7 +93,7 @@ export function PctRing({
         fill="var(--sub)"
         fontFamily="var(--font-ui)"
       >
-        aligned
+        {label}
       </text>
     </svg>
   );

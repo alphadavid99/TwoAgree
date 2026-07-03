@@ -7,11 +7,8 @@ import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { ProgressRing } from "../components/Ring";
-
-function greeting(): string {
-  const h = new Date().getHours();
-  return h < 12 ? "Good morning." : h < 18 ? "Good afternoon." : "Good evening.";
-}
+import { Avatar } from "../components/Avatar";
+import { useT } from "../lib/i18n";
 
 export default function HomeScreen({
   code,
@@ -28,11 +25,20 @@ export default function HomeScreen({
   onPlay: (slug: string) => void;
   onBrowse: () => void;
 }) {
+  const t = useT();
   const deck: DeckData | undefined = session.decks?.[slug];
-  const myName = session.members?.[role]?.name ?? "You";
+  const myName = session.members?.[role]?.name ?? t("You", "Vous");
   const partner = session.members?.[other(role)];
-  const partnerName = partner?.name ?? "your partner";
+  const partnerName = partner?.name ?? t("your partner", "votre partenaire");
   const joined = !!partner;
+
+  const h = new Date().getHours();
+  const greeting =
+    h < 12
+      ? t("Good morning.", "Bonjour.")
+      : h < 18
+        ? t("Good afternoon.", "Bon après-midi.")
+        : t("Good evening.", "Bonsoir.");
 
   const L = nLevels(slug);
   const lvl = curLevel(slug, deck, role);
@@ -42,20 +48,23 @@ export default function HomeScreen({
   const allDone = catComplete(slug, deck, role);
 
   const cta = allDone
-    ? "See your alignment →"
+    ? t("See your alignment →", "Voir votre alignement →")
     : L > 1
       ? mine > 0
-        ? `Continue Level ${lvl + 1} →`
-        : `Start Level ${lvl + 1} →`
+        ? t(`Continue Level ${lvl + 1} →`, `Continuer le niveau ${lvl + 1} →`)
+        : t(`Start Level ${lvl + 1} →`, `Commencer le niveau ${lvl + 1} →`)
       : mine > 0
-        ? "Continue →"
-        : "Start answering →";
+        ? t("Continue →", "Continuer →")
+        : t("Start answering →", "Commencer à répondre →");
 
   const [inviteMsg, setInviteMsg] = useState("");
   const [inviteBusy, setInviteBusy] = useState(false);
 
   const share = () => {
-    const txt = `Join me on aligned — our code is ${code}`;
+    const txt = t(
+      `Join me on aligned — our code is ${code}`,
+      `Rejoignez-moi sur aligned — notre code est ${code}`,
+    );
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});
     else if (navigator.clipboard) navigator.clipboard.writeText(code);
   };
@@ -66,10 +75,18 @@ export default function HomeScreen({
     try {
       const res = await createInvite({ code });
       const link = `${window.location.origin}/?t=${res.data.token}`;
-      const txt = `Join me on aligned — ${link}`;
+      const txt = t(
+        `Join me on aligned — ${link}`,
+        `Rejoignez-moi sur aligned — ${link}`,
+      );
       if (navigator.share) await navigator.share({ text: txt }).catch(() => {});
       else if (navigator.clipboard) await navigator.clipboard.writeText(link);
-      setInviteMsg("Invite link ready — sent to your share sheet or copied.");
+      setInviteMsg(
+        t(
+          "Invite link ready — sent to your share sheet or copied.",
+          "Lien d’invitation prêt — envoyé au partage ou copié.",
+        ),
+      );
     } catch (e) {
       setInviteMsg(prettyError(e));
     } finally {
@@ -80,12 +97,15 @@ export default function HomeScreen({
   return (
     <section>
       <p className="muted center" style={{ marginTop: 20, fontSize: 14 }}>
-        {greeting()}
+        {greeting}
       </p>
 
       {!joined && (
         <div className="banner" style={{ marginTop: 16 }}>
-          Share your code so your partner can join:{" "}
+          {t(
+            "Share your code so your partner can join:",
+            "Partagez votre code pour que votre partenaire vous rejoigne :",
+          )}{" "}
           <button className="codechip" type="button" onClick={share}>
             {code}
           </button>
@@ -96,7 +116,9 @@ export default function HomeScreen({
             onClick={sendInviteLink}
             disabled={inviteBusy}
           >
-            {inviteBusy ? "Creating link…" : "Send an invite link instead"}
+            {inviteBusy
+              ? t("Creating link…", "Création du lien…")
+              : t("Send an invite link instead", "Envoyer plutôt un lien d’invitation")}
           </button>
           {inviteMsg && (
             <div style={{ marginTop: 8, fontSize: 13 }}>{inviteMsg}</div>
@@ -105,15 +127,25 @@ export default function HomeScreen({
       )}
 
       <div className="qcard" style={{ textAlign: "center", padding: "32px 26px 36px", marginTop: 16 }}>
-        <div className="eyebrow" style={{ marginBottom: 14 }}>
-          {(myName + " & " + (joined ? partnerName : "…")).toUpperCase()}
+        <div className="avstack">
+          <Avatar name={myName} tone="berry" />
+          {joined ? (
+            <Avatar name={partnerName} tone="honey" />
+          ) : (
+            <div className="avatar-disc avatar-wait" style={{ width: 46, height: 46 }}>
+              ?
+            </div>
+          )}
+        </div>
+        <div style={{ fontSize: 15, fontWeight: 600, margin: "8px 0 14px" }}>
+          {myName} &amp; {joined ? partnerName : "…"}
         </div>
         <button className="badge tap" type="button" onClick={onBrowse}>
           {DECKS[slug].name} &#9662;
         </button>
         {L > 1 && (
           <div className="muted" style={{ fontSize: 13, marginTop: 8, letterSpacing: 1 }}>
-            LEVEL {lvl + 1} OF {L}
+            {t(`LEVEL ${lvl + 1} OF ${L}`, `NIVEAU ${lvl + 1} SUR ${L}`)}
           </div>
         )}
         <div style={{ marginTop: 18 }}>
@@ -121,19 +153,24 @@ export default function HomeScreen({
         </div>
         <div style={{ margin: "16px 0 22px", fontSize: 15, color: "var(--sub)" }}>
           {joined ? (
-            <span>
-              <b style={{ color: "var(--ink)" }}>{partnerName}</b> {theirs}/{lvlTotal}
-              {L > 1 ? " this level" : ""}
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <Avatar name={partnerName} tone="honey" size={26} ring={false} />
+              <span>
+                <b style={{ color: "var(--ink)" }}>{partnerName}</b> {theirs}/{lvlTotal}
+                {L > 1 ? t(" this level", " ce niveau") : ""}
+              </span>
             </span>
           ) : (
-            <span className="muted">Waiting for your partner to join…</span>
+            <span className="muted">
+              {t("Waiting for your partner to join…", "En attente de votre partenaire…")}
+            </span>
           )}
         </div>
         <button className="btn" type="button" onClick={() => onPlay(slug)}>
           {cta}
         </button>
         <div className="link" style={{ marginTop: 18, fontSize: 14 }} onClick={onBrowse}>
-          Browse all decks
+          {t("Browse all decks", "Parcourir tous les thèmes")}
         </div>
       </div>
     </section>

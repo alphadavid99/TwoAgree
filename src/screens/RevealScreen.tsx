@@ -130,14 +130,35 @@ export default function RevealScreen({
               style={{ animationDelay: `${Math.min(i * 45, 500)}ms` }}
             >
               <div className="verq">{lq.q}</div>
-              <div className="veranswers">
-                <span>
-                  {t("You:", "Vous :")} <b>{optLabel(lq, r.me)}</b>
-                </span>
-                <span>
-                  {t("Them:", "L’autre :")} <b>{optLabel(lq, r.th)}</b>
-                </span>
-              </div>
+              {lq.type === "rank" && r.A && r.B ? (
+                <div className="rankcmp">
+                  <div className="rankcol">
+                    <div className="rankcol-h">{t("You", "Vous")}</div>
+                    <ol className="ranklist">
+                      {r.A.map((idx, k) => (
+                        <li key={k}>{lq.opts?.[idx] ?? idx}</li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="rankcol">
+                    <div className="rankcol-h">{t("Them", "L’autre")}</div>
+                    <ol className="ranklist">
+                      {r.B.map((idx, k) => (
+                        <li key={k}>{lq.opts?.[idx] ?? idx}</li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+              ) : (
+                <div className="veranswers">
+                  <span>
+                    {t("You:", "Vous :")} <b>{optLabel(lq, r.me)}</b>
+                  </span>
+                  <span>
+                    {t("Them:", "L’autre :")} <b>{optLabel(lq, r.th)}</b>
+                  </span>
+                </div>
+              )}
               <span
                 className="verbadge"
                 style={{ color: VERDICT_COLOR[r.verdict], borderColor: VERDICT_COLOR[r.verdict] }}

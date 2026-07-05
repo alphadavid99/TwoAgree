@@ -329,6 +329,10 @@ textarea.input {
   border-radius: 999px;
   padding: 7px 14px;
   font-family: inherit;
+  white-space: nowrap; /* "TIER 2" must never wrap into a blob */
+}
+.qrow .badge {
+  flex: 0 0 auto;
 }
 .badge.honey {
   color: var(--amber);
@@ -1713,6 +1717,61 @@ textarea.input {
   margin-top: 12px;
 }
 
+/* >90% escalation — the grand bloom: a slow gold pulse behind the ring and
+   a ring of sparks that bursts outward as the score lands. */
+.bloomwrap.grand .goldwash {
+  position: absolute;
+  inset: -46px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(229, 169, 60, 0.38) 0%,
+    rgba(246, 196, 107, 0.16) 45%,
+    transparent 70%
+  );
+  animation: goldPulse 2.6s ease-in-out 0.9s 2 both;
+  pointer-events: none;
+}
+@keyframes goldPulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+.bloomwrap .spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: #f6c46b;
+  box-shadow: 0 0 9px 2px rgba(229, 169, 60, 0.75);
+  opacity: 0;
+  animation: sparkOut 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) both;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes sparkOut {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.9);
+  }
+}
+
 /* celebration overlay — constrained to the app column, taps pass through */
 .celebrate {
   position: fixed;
@@ -1782,6 +1841,8 @@ textarea.input {
   .meetpair > *,
   .meetline,
   .lvlup-rise,
+  .bloomwrap.grand .goldwash,
+  .bloomwrap .spark,
   .celebrate .wash,
   .petal {
     animation: none !important;
@@ -1940,29 +2001,10 @@ textarea.input {
   margin-top: 1px;
 }
 
-/* The orb meter — one orb per question this level, in the same visual
-   language as the 1–5 answer orbs inside the play screen. */
-.morbs {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  margin: 16px 4px 0;
-}
-.morb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid #e7d3da;
-  flex: 0 0 auto;
-}
-.morb.on {
-  background: var(--honey);
-  border-color: var(--honey);
-  box-shadow: inset 0 0 0 3px #fff;
-}
-.morb.cur {
-  border-color: var(--berry);
-  box-shadow: 0 0 0 3px rgba(104, 45, 92, 0.12);
+/* The featured card's meter — the same honey line as the play screen's
+   progress bar (Dave's pick over the orb row). */
+.featprog {
+  margin: 16px 2px 0;
 }
 .capline {
   text-align: center;

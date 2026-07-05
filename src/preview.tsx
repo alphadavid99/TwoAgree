@@ -33,13 +33,15 @@ function answerFor(qType: string, opts: string[] | undefined, who: "host" | "gue
 }
 
 // Fill `levels` levels of a deck with both partners' answers + done marks.
-function fakeDeck(slug: string, levels: number, minePartialNext = 0): DeckData {
+// `perfect` makes the partners agree on everything (a >90% ceremony).
+function fakeDeck(slug: string, levels: number, minePartialNext = 0, perfect = false): DeckData {
   const deck: DeckData = { answers: {}, guesses: {}, done: {} };
   for (let l = 0; l < levels; l++) {
     lvlQs(slug, l).forEach((q, i) => {
+      const host = answerFor(q.type, q.opts, "host", i);
       deck.answers![q.id] = {
-        host: answerFor(q.type, q.opts, "host", i),
-        guest: answerFor(q.type, q.opts, "guest", i),
+        host,
+        guest: perfect ? host : answerFor(q.type, q.opts, "guest", i),
       };
       if (q.guessable && q.type !== "rank" && i % 2 === 0) {
         deck.guesses![q.id] = {
@@ -67,8 +69,8 @@ const slugC = ORDER[0]; // one level revealed
 const session: Session = {
   created: 0,
   members: {
-    host: { name: "Sarah", uid: "u1" },
-    guest: { name: "Judah", uid: "u2" },
+    host: { name: "Sarah Elizabeth", uid: "u1" },
+    guest: { name: "Judah Michael", uid: "u2" },
   },
   decks: {
     [slugA]: fakeDeck(slugA, 1, 4), // level 1 revealed, level 2 in progress
@@ -138,13 +140,15 @@ function Preview() {
         <FakeNav on="results" />
       </div>
     );
-  // reveal ceremony (fresh) and answers (review)
+  // reveal ceremony (fresh, normal or >90% grand) and answers (review)
+  const deck =
+    view === "reveal90" ? fakeDeck(slugB, 1, 0, true) : session.decks![slugB];
   return (
     <RevealScreen
       slug={slugB}
       level={0}
       role="host"
-      deck={session.decks![slugB]}
+      deck={deck}
       myName="Sarah"
       partnerName="Judah"
       questions={view === "answers" ? lvlQs(slugB, 0) : undefined}

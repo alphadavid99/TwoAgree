@@ -4,13 +4,9 @@ import { chromium } from "playwright-core";
 const OUT = process.env.OUT_DIR;
 const base = "http://localhost:5199/preview.html";
 const shots = [
-  { view: "auth", wait: 1600 },
   { view: "home", wait: 1600 },
-  { view: "decks", wait: 1400 },
-  { view: "results", wait: 1400 },
-  { view: "reveal", wait: 2600, name: "reveal-levelup" },
-  { view: "reveal", wait: 4600, name: "reveal-levelup-late" },
-  { view: "answers", wait: 1800 },
+  { view: "reveal90", wait: 3400, name: "reveal-grand" },
+  { view: "reveal90", wait: 4800, name: "reveal-grand-late" },
 ];
 
 const browser = await chromium.launch({

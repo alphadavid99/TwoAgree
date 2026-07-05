@@ -34,9 +34,13 @@ export default function HomeScreen({
   const t = useT();
   const lang = useLang();
   const deck: DeckData | undefined = session.decks?.[slug];
-  const myName = session.members?.[role]?.name ?? t("You", "Vous");
+  // Home speaks in first names — full names elongate the chip and greeting.
+  const firstName = (n: string) => n.trim().split(/\s+/)[0] || n;
+  const myName = firstName(session.members?.[role]?.name ?? t("You", "Vous"));
   const partner = session.members?.[other(role)];
-  const partnerName = partner?.name ?? t("your partner", "votre partenaire");
+  const partnerName = firstName(
+    partner?.name ?? t("your partner", "votre partenaire"),
+  );
   const joined = !!partner;
 
   // Celebrate the moment the partner arrives while we're watching — their
@@ -250,13 +254,12 @@ export default function HomeScreen({
             </span>
           </button>
         </div>
-        <div className="morbs" aria-hidden="true">
-          {Array.from({ length: lvlTotal }, (_, i) => (
-            <span
-              key={i}
-              className={`morb${i < mine ? " on" : i === mine && !allDone ? " cur" : ""}`}
-            />
-          ))}
+        <div className="qprog featprog" aria-hidden="true">
+          <i
+            style={{
+              width: `${allDone ? 100 : lvlTotal ? Math.round((mine / lvlTotal) * 100) : 0}%`,
+            }}
+          />
         </div>
         <div className="capline">
           {allDone ? (

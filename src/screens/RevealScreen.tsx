@@ -163,11 +163,38 @@ export default function RevealScreen({
         {stage >= 2 && (
           <div className="levelup">
             <div className="center">
-              {/* Bloom fires after the ring finishes drawing — the milestone moment. */}
-              <span className="bloomwrap">
+              {/* Bloom fires after the ring finishes drawing — the milestone
+                  moment. Over 90% the ring grows, a gold halo pulses and a
+                  ring of sparks bursts outward behind the confetti. */}
+              <span className={`bloomwrap${pct > 90 ? " grand" : ""}`}>
+                {pct > 90 && !reduced && (
+                  <>
+                    <span className="goldwash" />
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const a = (i / 12) * Math.PI * 2;
+                      return (
+                        <span
+                          key={i}
+                          className="spark"
+                          style={
+                            {
+                              "--dx": `${Math.cos(a) * 150}px`,
+                              "--dy": `${Math.sin(a) * 150}px`,
+                              animationDelay: `${1 + (i % 4) * 0.07}s`,
+                            } as React.CSSProperties
+                          }
+                        />
+                      );
+                    })}
+                  </>
+                )}
                 <span className="glint g1" />
                 <span className="glint g2" />
-                <PctRing pct={pct} size={210} label={t("aligned", "alignés")} />
+                <PctRing
+                  pct={pct}
+                  size={pct > 90 ? 234 : 210}
+                  label={t("aligned", "alignés")}
+                />
               </span>
             </div>
             {know.pct != null && (
@@ -297,7 +324,7 @@ export default function RevealScreen({
 // dense, larger, and runs in two waves. Pointer-events pass through; the
 // parent unmounts it after ~5s.
 function Celebration({ big }: { big: boolean }) {
-  const count = big ? 58 : 26;
+  const count = big ? 96 : 26;
   const petals = Array.from({ length: count }, (_, i) => i);
   const colors = big
     ? ["#7C3C69", "#E5A93C", "#D9963A", "#F1C8D2", "#9C4A6E", "#F6C46B"]

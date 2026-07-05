@@ -1720,74 +1720,13 @@ textarea.input {
   }
 }
 
-/* doves (>90%) — a spooked flock bursting upward: mixed sizes and depths,
-   two-frame wingbeats, one large foreground bird sweeping across the screen */
-.dove2 {
-  position: absolute;
-  bottom: -16vh;
-  animation: doveRise cubic-bezier(0.3, 0.6, 0.45, 1) both;
-  filter: drop-shadow(0 5px 10px rgba(104, 45, 92, 0.35));
-  will-change: transform;
-}
-@keyframes doveRise {
-  0% {
-    transform: translate(0, 6vh);
-    opacity: 0;
-  }
-  7% {
-    opacity: 1;
-  }
-  55% {
-    transform: translate(calc(var(--dx) * 0.5), -58vh);
-  }
-  100% {
-    transform: translate(var(--dx), -125vh);
-    opacity: 1;
-  }
-}
-.dovebody {
-  display: block;
-  transform: rotate(var(--rot, -16deg)) scaleX(var(--mx, 1));
-}
-.dove2 svg {
-  overflow: visible;
-  display: block;
-}
-.dove2 .fA {
-  animation: flapA var(--fs, 0.3s) steps(1) infinite;
-}
-.dove2 .fB {
-  animation: flapB var(--fs, 0.3s) steps(1) infinite;
-}
-@keyframes flapA {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-@keyframes flapB {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .meetpair > *,
   .meetline,
   .herostage,
   .herostage .bloomwrap,
   .celebrate .wash,
-  .petal,
-  .dove2,
-  .dove2 .fA,
-  .dove2 .fB {
+  .petal {
     animation: none !important;
     transition: none !important;
   }

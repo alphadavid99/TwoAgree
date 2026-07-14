@@ -30,7 +30,24 @@
   --font-display: "Fraunces", "Lora", Georgia, serif;
   --font-ui: "Hanken Grotesk", "Poppins", system-ui, sans-serif;
 
+  /* TwoAgree mark tokens (TWOAGREE-MARK.md §2). Honey is the accent for the
+     mark's bar ONLY — never a stroke, background, border, text or hover. */
+  --twoagree-claret: #3e1a2e;
+  --twoagree-claret-ink: #2a1120;
+  --twoagree-honey: #c6913c;
+  --twoagree-paper: #fbf6f0;
+  --twoagree-blush: #f3ded6;
+
   color-scheme: light;
+}
+
+/* Questrial carries the wordmark. One weight exists; nothing is synthesised. */
+@font-face {
+  font-family: "Questrial";
+  src: url("/fonts/Questrial-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -73,12 +90,44 @@ body {
   font-family: var(--font-display);
   text-wrap: balance;
 }
-.wordmark {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 24px;
-  color: var(--berry);
-  text-align: center;
+
+/* ---- TwoAgree wordmark (TWOAGREE-MARK.md §5.2) — live type, the mark
+   inlined as the A. On light grounds the mark is complete in one ink
+   (RULE 2); only on claret does the bar turn gold. ---- */
+.twoagree-wordmark {
+  font-family: "Questrial", system-ui, sans-serif;
+  font-weight: 400; /* the only weight that exists */
+  font-style: normal; /* there is no italic */
+  font-synthesis: none; /* CRITICAL — no faked bold, ever */
+  letter-spacing: -0.005em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--twoagree-claret);
+}
+.twoagree-wordmark svg {
+  height: 1.015cap; /* apex overshoots the capline by 1.5% */
+  width: calc(1.015cap * 0.91283);
+  vertical-align: baseline; /* feet land on the baseline */
+  margin-left: -0.0017em; /* Questrial's own A sidebearings */
+  margin-right: 0.002em;
+  display: inline-block;
+  fill: currentColor;
+}
+.twoagree-wordmark svg .bar {
+  fill: currentColor; /* RULE 2 */
+}
+.on-claret .twoagree-wordmark {
+  color: var(--twoagree-paper);
+}
+.on-claret .twoagree-wordmark svg .bar {
+  fill: var(--twoagree-honey);
+}
+/* standalone display cut inherits the same one-ink rule */
+.logo {
+  color: var(--twoagree-claret);
+}
+.on-claret .logo {
+  color: var(--twoagree-paper);
 }
 .h1 {
   font-family: var(--font-display);
@@ -728,19 +777,9 @@ textarea.input {
   justify-content: center;
 }
 .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-}
-.logo-word {
-  font-family: var(--font-display);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 23px;
-  letter-spacing: 3px;
-  color: var(--berry);
-  line-height: 1;
 }
 .topbar {
   display: flex;
@@ -1400,23 +1439,8 @@ textarea.input {
   }
 }
 
-/* 8. first impression — caret rises, wordmark settles, fields stagger */
-.brand-enter .logo svg {
-  animation: caretIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.brand-enter .logo-word {
-  animation: riseIn 0.55s ease 0.25s both;
-}
-@keyframes caretIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
+/* 8. first impression — fields stagger. (The mark itself never animates —
+   TWOAGREE-MARK.md §7 — so the old caret entrance/breath are gone.) */
 @keyframes riseIn {
   from {
     opacity: 0;
@@ -1471,18 +1495,7 @@ textarea.input {
     opacity: 0;
   }
 }
-.bwrap .logo svg {
-  animation: caretBreath 3.2s ease-in-out infinite;
-}
-@keyframes caretBreath {
-  0%,
-  100% {
-    transform: scale(0.96);
-  }
-  50% {
-    transform: scale(1.06);
-  }
-}
+/* The waiting mark holds still (marks never animate); the rings breathe. */
 
 /* 6. milestone bloom — on the reveal's hero ring, after it draws */
 .bloomwrap {
@@ -1609,15 +1622,12 @@ textarea.input {
   .glide-in,
   .pane-in,
   .screen-enter > *,
-  .brand-enter .logo svg,
-  .brand-enter .logo-word,
   .orb.sel,
   .opt.sel,
   .opt.sel .dot,
   .rankopt.sel .rankno,
   .qtick,
   .bring,
-  .bwrap .logo svg,
   .bloomwrap,
   .bloomwrap::before,
   .bloomwrap .glint,

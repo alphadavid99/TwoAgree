@@ -101,6 +101,33 @@ function FakeNav({ on }: { on: string }) {
 const view = new URLSearchParams(window.location.search).get("view") ?? "home";
 
 function Preview() {
+  if (view === "brand")
+    // §6 check: wordmark at 16/32/64px — feet on the baseline (the underline),
+    // apex level with or a hair above the T capline. Plus both mark colourways.
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 28, paddingTop: 30 }}>
+        {[16, 32, 64].map((fs) => (
+          <div key={fs} style={{ textDecoration: "underline", textUnderlineOffset: 0 }}>
+            <Logo size={fs / 0.8} />
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+          <Logo size={64} word={false} />
+          <span
+            className="on-claret"
+            style={{ background: "var(--twoagree-claret)", padding: 24, display: "inline-flex" }}
+          >
+            <Logo size={64} word={false} />
+          </span>
+          <span
+            className="on-claret"
+            style={{ background: "var(--twoagree-claret)", padding: 24, display: "inline-flex" }}
+          >
+            <Logo size={40} />
+          </span>
+        </div>
+      </div>
+    );
   if (view === "auth")
     return (
       <>

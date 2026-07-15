@@ -10,6 +10,7 @@ import type { DeckData, AnswerValue } from "./lib/scoring";
 import type { Session } from "./types";
 import HomeScreen from "./screens/HomeScreen";
 import DecksScreen from "./screens/DecksScreen";
+import PlayScreen from "./screens/PlayScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -183,6 +184,19 @@ function Preview() {
         <DecksScreen session={session} role="host" onPlay={noop} />
         <FakeNav on="decks" />
       </div>
+    );
+  if (view === "play")
+    return (
+      <PlayScreen
+        code="ABCD"
+        slug={slugC}
+        level={0}
+        role="host"
+        deck={{}}
+        partnerName="Judah"
+        onFinish={noop}
+        onExit={noop}
+      />
     );
   if (view === "results")
     return (

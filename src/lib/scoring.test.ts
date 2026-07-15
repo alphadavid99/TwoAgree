@@ -7,6 +7,7 @@ import {
   jointQuestions,
   weightOf,
   combinedImportance,
+  NOT_YET,
   type DeckData,
 } from "./scoring";
 import type { Question } from "./questions";
@@ -138,6 +139,20 @@ describe("aggregate scores", () => {
     const guessable = [{ ...mc("C"), guessable: true }];
     const r = knowScore(guessable, deck({ C: { host: 0, guest: 1 } }, { C: { host: 1, guest: 0 } }), "host");
     expect(r).toEqual({ pct: 100, made: 2, right: 2 });
+  });
+});
+
+describe("Not yet (§7)", () => {
+  it("drops the question from joint/agreement/known but not from 'answered'", () => {
+    const qs = [mc("A"), mc("B")];
+    const d = deck(
+      { A: { host: NOT_YET, guest: 0 }, B: { host: 0, guest: 0 } },
+      { A: { host: 1 } }, // even a (wrong) guess on a not-yet must not score
+    );
+    expect(jointQuestions(qs, d).map((q) => q.id)).toEqual(["B"]);
+    expect(overall(qs, d, "host")).toBe(100); // only B counts, and it's agreed
+    // A still reads as answered by host (non-null) — that's the null-vs-chosen line
+    expect(d.answers!.A.host).toBe(NOT_YET);
   });
 });
 

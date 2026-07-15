@@ -16,6 +16,8 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** Offers a first-class, unscored "Not yet" answer (brief §7). */
+  notYet?: boolean;
   /** Options for mc / rank questions. */
   opts?: string[];
   /** Scale endpoint labels (type === "scale"). */

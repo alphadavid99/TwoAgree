@@ -45,6 +45,13 @@ export interface ScoreResult {
 
 export const other = (r: Role): Role => (r === "host" ? "guest" : "host");
 
+// "Not yet" (brief §7): a first-class, unscored answer. Stored distinctly from
+// unanswered — null means untouched, this sentinel means deliberately chosen —
+// so it counts as answered for progress but is excluded from every score.
+export const NOT_YET = "__not_yet__";
+export const isNotYet = (v: AnswerValue | null | undefined): boolean =>
+  v === NOT_YET;
+
 // ---- Weighting (brief §2) ------------------------------------------------
 // Every question carries a `tier` (1/2/3) — the default importance weight.
 // A partner-supplied importance rating (1..5), when present, overrides it.
@@ -196,11 +203,19 @@ export function scoreQ(q: Question, deck: DeckData, role: Role): ScoreResult {
   };
 }
 
-// Questions both partners have answered.
+// Questions both partners have actually answered. A "Not yet" from either side
+// drops the question out — it's neither agreement nor a gap, so it never reaches
+// scoring, Known, flags or the breakdown (brief §7).
 export function jointQuestions(qs: Question[], deck: DeckData): Question[] {
   return qs.filter((q) => {
     const a = deck.answers?.[q.id];
-    return a && a.host != null && a.guest != null;
+    return (
+      a &&
+      a.host != null &&
+      a.guest != null &&
+      !isNotYet(a.host) &&
+      !isNotYet(a.guest)
+    );
   });
 }
 

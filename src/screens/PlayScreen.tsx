@@ -3,7 +3,7 @@ import { lvlQs, nLevels } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import type { DeckData, Role, AnswerValue } from "../lib/scoring";
+import { NOT_YET, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang } from "../lib/i18n";
 
@@ -119,6 +119,17 @@ export default function PlayScreen({
     } else {
       afterAnswer();
     }
+  };
+
+  // "Not yet" — a deliberate, unscored answer (only on flagged questions). It
+  // banks a sentinel and moves on, skipping the importance and guess steps
+  // entirely: there's nothing to weight and nothing to predict.
+  const answerNotYet = async () => {
+    if (busy) return;
+    setBusy(true);
+    await writeAnswer(code, slug, q.id, role, NOT_YET);
+    setBusy(false);
+    advance(idx);
   };
 
   const submitImportance = async () => {
@@ -296,6 +307,16 @@ export default function PlayScreen({
           ? t("Finish part →", "Terminer la partie →")
           : t("Next →", "Suivant →")}
       </button>
+      {q.notYet && (
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={answerNotYet}
+          disabled={busy}
+        >
+          {t("Not yet", "Pas encore")}
+        </button>
+      )}
       <div className="hint">
         {t(`${idx + 1} OF ${qs.length}`, `${idx + 1} SUR ${qs.length}`)}
         {q.type === "open"

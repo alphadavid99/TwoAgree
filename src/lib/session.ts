@@ -48,6 +48,16 @@ export async function createSession(
 // Guest join is server-side now (joinByCode / redeemInvite callables) so the
 // sessions write rule can stay locked to members. See src/lib/functions.ts.
 
+// Article 9 consent, captured per person with a timestamp (brief 2 §A4/§B3).
+// Stored on the user, because one person cannot consent for two.
+export function recordConsent(uid: string, name: string): Promise<void> {
+  return update(ref(db, `users/${uid}`), {
+    name,
+    "consent/agreed": true,
+    "consent/at": Date.now(),
+  });
+}
+
 export function writeAnswer(
   code: string,
   slug: string,

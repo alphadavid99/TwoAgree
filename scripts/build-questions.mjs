@@ -158,12 +158,19 @@ function runtimeQuestion(q) {
   return o;
 }
 
+// Resolve each conversation's A7 hook (brief 2 §A7) from a question id to live
+// text at build time, so rewording the question moves the hook with it.
+const byId = new Map(questions.map((q) => [q.id, q]));
 const decksLiteral = {};
 for (const d of decks) {
+  if (d.hook && !byId.has(d.hook)) {
+    fail(`deck "${d.slug}" hook "${d.hook}" is not a question id`);
+  }
   decksLiteral[d.slug] = {
     name: d.name,
     color: d.color,
     icon: d.icon,
+    ...(d.hook ? { hook: { id: d.hook, q: byId.get(d.hook).q } } : {}),
     questions: byDeck.get(d.slug).map(runtimeQuestion),
   };
 }
@@ -207,6 +214,8 @@ export interface Deck {
   name: string;
   color: string;
   icon: string;
+  /** A7 onboarding hook — a real question from inside, resolved at build time. */
+  hook?: { id: string; q: string };
   questions: Question[];
 }
 

@@ -35,6 +35,8 @@ export interface Deck {
   name: string;
   color: string;
   icon: string;
+  /** A7 onboarding hook — a real question from inside, resolved at build time. */
+  hook?: { id: string; q: string };
   questions: Question[];
 }
 
@@ -69,6 +71,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Home",
     "color": "#B0865E",
     "icon": "home",
+    "hook": {
+      "id": "HOME-006",
+      "q": "How tidy do you need our home to be?"
+    },
     "questions": [
       {
         "id": "HOME-001",
@@ -218,6 +224,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Money",
     "color": "#5E7A4E",
     "icon": "coin",
+    "hook": {
+      "id": "FIN-009",
+      "q": "Be honest - are you more of a saver or a spender?"
+    },
     "questions": [
       {
         "id": "FIN-009",
@@ -436,6 +446,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Faith",
     "color": "#682D5C",
     "icon": "faith",
+    "hook": {
+      "id": "FAITH-019",
+      "q": "When your time with God and time with your partner compete for the same hour, which usually wins?"
+    },
     "questions": [
       {
         "id": "FAITH-001",
@@ -852,6 +866,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Roles",
     "color": "#6E7A8A",
     "icon": "compass",
+    "hook": {
+      "id": "ROLE-011",
+      "q": "Bins, spiders and the car — whose job?"
+    },
     "questions": [
       {
         "id": "ROLE-011",
@@ -1640,6 +1658,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Intimacy",
     "color": "#A8554E",
     "icon": "heart",
+    "hook": {
+      "id": "INT-019",
+      "q": "How much does feeling emotionally close affect wanting to be physically close?"
+    },
     "questions": [
       {
         "id": "INT-012",
@@ -1885,6 +1907,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Conflict",
     "color": "#B06A5E",
     "icon": "chat",
+    "hook": {
+      "id": "CONF-021",
+      "q": "When someone interrupts you, how do you usually react?"
+    },
     "questions": [
       {
         "id": "CONF-001",
@@ -2322,6 +2348,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "In-Laws",
     "color": "#9C7A4A",
     "icon": "family",
+    "hook": {
+      "id": "INLAW-013",
+      "q": "What do you call your partner's parents?"
+    },
     "questions": [
       {
         "id": "INLAW-013",
@@ -2510,6 +2540,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Fun",
     "color": "#E0A93C",
     "icon": "star",
+    "hook": {
+      "id": "FUN-011",
+      "q": "Who's more likely to fall asleep during the sermon?"
+    },
     "questions": [
       {
         "id": "FUN-002",
@@ -2828,6 +2862,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Deal-breakers",
     "color": "#B0504E",
     "icon": "shield",
+    "hook": {
+      "id": "DEAL-021",
+      "q": "Have you ever stayed in a relationship past a line you'd set for yourself?"
+    },
     "questions": [
       {
         "id": "DEAL-022",
@@ -3498,6 +3536,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Character",
     "color": "#5E8074",
     "icon": "star",
+    "hook": {
+      "id": "SELF-019",
+      "q": "How do you feel about small 'white lies'?"
+    },
     "questions": [
       {
         "id": "SELF-013",
@@ -3814,6 +3856,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Us",
     "color": "#9C4A6E",
     "icon": "heart",
+    "hook": {
+      "id": "US-024",
+      "q": "How much are you counting on me changing after we marry?"
+    },
     "questions": [
       {
         "id": "US-008",
@@ -4798,6 +4844,10 @@ export const DECKS: Record<string, Deck> = {
     "name": "Where We Are Now",
     "color": "#7A6A9C",
     "icon": "compass",
+    "hook": {
+      "id": "NOW-025",
+      "q": "When did we last properly laugh together?"
+    },
     "questions": [
       {
         "id": "NOW-025",

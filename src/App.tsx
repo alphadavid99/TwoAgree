@@ -5,10 +5,10 @@ import { useProfile } from "./hooks/useProfile";
 import { getActiveCode, setActiveCode, clearActiveCode } from "./lib/local";
 import { redeemInvite } from "./lib/functions";
 import { prettyError } from "./lib/errors";
-import AuthScreen from "./screens/AuthScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import StartScreen from "./screens/StartScreen";
 import SessionApp from "./screens/SessionApp";
+import Onboarding from "./screens/Onboarding";
 import { Logo } from "./components/Logo";
 import { IconSettings, IconBack } from "./components/icons";
 import { useT } from "./lib/i18n";
@@ -155,6 +155,23 @@ function SignedIn({ user }: { user: User }) {
   );
 }
 
+// The no-account front door (brief 2 Part B §5). Whoever isn't signed into a
+// REAL account lands in onboarding, which signs them in anonymously along the
+// way — so a session code plus a first name reaches a reveal, no sign-up. When
+// onboarding hands back a code we drop into the app; a real account can be
+// linked later, additively, at the first moment they'd lose something.
+function OnboardingGate({ user }: { user: User | null }) {
+  const [code, setCode] = useState<string | null>(null);
+  if (code && user) {
+    return (
+      <SessionApp code={code} user={user} onLeave={() => setCode(null)} />
+    );
+  }
+  return (
+    <Onboarding inviteToken={inviteToken} onEnter={(c) => setCode(c)} />
+  );
+}
+
 export default function App() {
   const { user, loading } = useAuth();
   const t = useT();
@@ -166,13 +183,11 @@ export default function App() {
           <Wordmark />
           <Boot label={t("Checking your account…", "Vérification de votre compte…")} />
         </>
-      ) : user ? (
+      ) : user && !user.isAnonymous ? (
+        // Returning real-account users keep the existing create/join flow.
         <SignedIn user={user} />
       ) : (
-        <>
-          <Wordmark />
-          <AuthScreen />
-        </>
+        <OnboardingGate user={user} />
       )}
     </div>
   );

@@ -2757,3 +2757,94 @@ textarea.input {
   justify-content: center;
   opacity: 0.9;
 }
+
+/* Onboarding (brief 2 Part B) */
+.obwelcome {
+  margin-top: 10px;
+}
+.verse {
+  font-size: 21px;
+  line-height: 1.45;
+  color: var(--berry);
+  margin: 8px 20px 22px;
+  text-align: center;
+}
+.verse-ref {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.consentcard {
+  background: #fff;
+  border-radius: var(--r-md);
+  box-shadow: var(--e1);
+  padding: 20px;
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.consent-not {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--berry);
+}
+/* A7 menu cards */
+.menucards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.menucard {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid transparent;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
+  padding: 16px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.menucard:active {
+  transform: translateY(1px);
+}
+.menucard-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.menucard-nm {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+.menucard-depth {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--amber);
+  white-space: nowrap;
+}
+.menucard-hook {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--berry);
+  margin: 8px 0 8px;
+}
+.menucard-count {
+  font-size: 12px;
+  color: var(--mut);
+}

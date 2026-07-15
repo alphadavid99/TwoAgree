@@ -13,6 +13,8 @@ import DecksScreen from "./screens/DecksScreen";
 import PlayScreen from "./screens/PlayScreen";
 import StartScreen from "./screens/StartScreen";
 import PartPicker from "./screens/PartPicker";
+import Onboarding from "./screens/Onboarding";
+import StartMenu from "./screens/StartMenu";
 import ResultsScreen from "./screens/ResultsScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -225,6 +227,10 @@ function Preview() {
       />
     );
   }
+  if (view === "onboard") return <Onboarding inviteToken={null} onEnter={noop} />;
+  if (view === "joinb") return <Onboarding inviteToken="demo" onEnter={noop} />;
+  if (view === "menu")
+    return <StartMenu stage="engaged" onPick={noop} onSeeAll={noop} />;
   if (view === "start")
     return <StartScreen uid="u1" name="Sarah" onEnter={noop} />;
   if (view === "play")

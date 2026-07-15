@@ -4,6 +4,16 @@ import { joinByCode } from "../lib/functions";
 import { setActiveCode } from "../lib/local";
 import { prettyError } from "../lib/errors";
 import { useT } from "../lib/i18n";
+import type { Stage } from "../types";
+
+// Relationship stage, captured on the couple at pairing (brief §8). The order
+// mirrors a rough journey; "blended" sits apart as a family shape, not a step.
+const STAGES: { key: Stage; en: string; fr: string }[] = [
+  { key: "dating", en: "Dating", fr: "En couple" },
+  { key: "engaged", en: "Engaged", fr: "Fiancés" },
+  { key: "married", en: "Married", fr: "Mariés" },
+  { key: "blended", en: "Blended family", fr: "Famille recomposée" },
+];
 
 // Create a new session or join a partner's by code. The signed-in user's
 // profile name rides into the member slot (the account graft).
@@ -19,6 +29,7 @@ export default function StartScreen({
   const t = useT();
   const [mode, setMode] = useState<"choose" | "join">("choose");
   const [code, setCode] = useState("");
+  const [stage, setStage] = useState<Stage | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
@@ -31,7 +42,7 @@ export default function StartScreen({
     setErr("");
     setBusy(true);
     try {
-      const c = await createSession(uid, name);
+      const c = await createSession(uid, name, stage ?? undefined);
       enter(c);
     } catch (e) {
       setErr(prettyError(e));
@@ -107,6 +118,24 @@ export default function StartScreen({
 
       {mode === "choose" ? (
         <>
+          <div className="stagepick">
+            <div className="stagepick-q">
+              {t("Where are the two of you?", "Où en êtes-vous tous les deux ?")}
+            </div>
+            <div className="stagegrid">
+              {STAGES.map((s) => (
+                <button
+                  key={s.key}
+                  type="button"
+                  className={`stagechip ${stage === s.key ? "on" : ""}`}
+                  onClick={() => setStage(stage === s.key ? null : s.key)}
+                  aria-pressed={stage === s.key}
+                >
+                  {t(s.en, s.fr)}
+                </button>
+              ))}
+            </div>
+          </div>
           <button className={busy ? "btn pill busy" : "btn pill"} type="button" onClick={create} disabled={busy}>
             {busy
               ? t("One moment…", "Un instant…")

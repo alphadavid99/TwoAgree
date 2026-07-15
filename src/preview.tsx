@@ -11,6 +11,7 @@ import type { Session } from "./types";
 import HomeScreen from "./screens/HomeScreen";
 import DecksScreen from "./screens/DecksScreen";
 import PlayScreen from "./screens/PlayScreen";
+import StartScreen from "./screens/StartScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -185,6 +186,8 @@ function Preview() {
         <FakeNav on="decks" />
       </div>
     );
+  if (view === "start")
+    return <StartScreen uid="u1" name="Sarah" onEnter={noop} />;
   if (view === "play")
     return (
       <PlayScreen

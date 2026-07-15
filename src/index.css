@@ -2515,3 +2515,36 @@ textarea.input {
   color: var(--amber);
   margin-top: 10px;
 }
+
+/* Stage capture at pairing (brief §8) — a soft 2×2 of blush chips. */
+.stagepick {
+  margin-top: 24px;
+}
+.stagepick-q {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--berry);
+  margin: 0 4px 10px;
+}
+.stagegrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.stagechip {
+  padding: 13px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--optbg);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.stagechip.on {
+  border-color: var(--berry);
+  background: #fff;
+  color: var(--berry);
+}

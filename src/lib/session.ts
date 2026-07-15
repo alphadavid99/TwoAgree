@@ -6,6 +6,7 @@
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
+import type { Stage } from "../types";
 
 const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
@@ -23,12 +24,15 @@ function randCode(): string {
 export async function createSession(
   uid: string,
   name: string,
+  stage?: Stage,
 ): Promise<string> {
   for (let tries = 0; tries < 6; tries++) {
     const code = randCode();
     try {
       await update(ref(db, `sessions/${code}`), {
         created: Date.now(),
+        // Only write stage when chosen — never a nullish leaf (RTDB gotcha §6).
+        ...(stage ? { stage } : {}),
         "members/host/name": name,
         "members/host/uid": uid,
         [`uids/${uid}`]: true,

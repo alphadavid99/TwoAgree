@@ -15,8 +15,14 @@ export interface Member {
   uid: string;
 }
 
+// Relationship stage, captured on the couple at pairing (brief §8). Stored on
+// the session (not the individual) because it describes the two of you. Drives
+// conversation ordering later, and eventually Paths — which are out of scope now.
+export type Stage = "dating" | "engaged" | "married" | "blended";
+
 export interface Session {
   created?: number;
+  stage?: Stage;
   members?: Partial<Record<Role, Member>>;
   uids?: Record<string, boolean>;
   decks?: Record<string, DeckData>;

@@ -2556,3 +2556,295 @@ textarea.input {
   font-weight: 600;
   color: var(--amber);
 }
+
+/* Part picker (brief 2 §A7d) — pick any part; see both partners' per-part state */
+.partlist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.partrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
+  padding: 14px 16px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.partrow.here {
+  border-color: var(--honey);
+}
+.partrow.done {
+  background: var(--optbg);
+}
+.partrow-main {
+  min-width: 0;
+}
+.partrow-t {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-weight: 700;
+  font-size: 15.5px;
+  color: var(--ink);
+}
+.partrow-depth {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.partrow-sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: var(--sub);
+}
+.partrow-track {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+.ptick {
+  font-size: 11px;
+  color: var(--mut);
+  white-space: nowrap;
+}
+.ptick.on {
+  color: var(--sage);
+  font-weight: 700;
+}
+
+/* The Core headline (brief 2 §C) — Known is the hero, denominators on screen. */
+.core {
+  text-align: center;
+  margin-top: 4px;
+}
+.core-stats {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 30px;
+}
+.corestat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.corenum {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 1;
+  color: var(--berry);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+.corenum span {
+  font-size: 21px;
+}
+.corestat.hero .corenum {
+  font-size: 66px;
+  color: var(--amber);
+}
+.corestat.hero .corenum span {
+  font-size: 30px;
+}
+.corelb {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-top: 7px;
+}
+.corestat.hero .corelb {
+  color: var(--amber);
+}
+.coredenom {
+  font-size: 12px;
+  color: var(--mut);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.core-pull {
+  font-size: 13px;
+  color: var(--sub);
+  font-style: italic;
+  margin: 14px 24px 0;
+}
+
+/* Share card (§C9) — Core only, leads with Known, no leaderboard ever. */
+.sharewrap {
+  position: fixed;
+  inset: 0;
+  background: rgba(46, 34, 48, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  z-index: 50;
+}
+.sharewrap .btn {
+  max-width: 360px;
+}
+.sharewrap .btn.ghost {
+  color: #fff;
+}
+.sharecard {
+  width: min(360px, 86vw);
+  background: linear-gradient(160deg, #ffffff, #fbf2f5);
+  border-radius: 26px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+  padding: 30px 24px;
+  text-align: center;
+}
+.sharecard-names {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--berry);
+  letter-spacing: 0.3px;
+}
+.sharecard-hero {
+  margin: 20px 0 6px;
+}
+.sharecard-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -2px;
+}
+.sharecard-num span {
+  font-size: 34px;
+}
+.sharecard-lb {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 6px;
+}
+.sharecard-denom {
+  font-size: 13px;
+  color: var(--mut);
+  margin-top: 4px;
+}
+.sharecard-agree {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--cardb);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--berry);
+}
+.sharecard-mark {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+/* Onboarding (brief 2 Part B) */
+.obwelcome {
+  margin-top: 10px;
+}
+.verse {
+  font-size: 21px;
+  line-height: 1.45;
+  color: var(--berry);
+  margin: 8px 20px 22px;
+  text-align: center;
+}
+.verse-ref {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.consentcard {
+  background: #fff;
+  border-radius: var(--r-md);
+  box-shadow: var(--e1);
+  padding: 20px;
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.consent-not {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--berry);
+}
+/* A7 menu cards */
+.menucards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.menucard {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid transparent;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
+  padding: 16px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.menucard:active {
+  transform: translateY(1px);
+}
+.menucard-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.menucard-nm {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+.menucard-depth {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--amber);
+  white-space: nowrap;
+}
+.menucard-hook {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--berry);
+  margin: 8px 0 8px;
+}
+.menucard-count {
+  font-size: 12px;
+  color: var(--mut);
+}

@@ -7,8 +7,9 @@ name: Deploy to Firebase Hosting
 #
 # The public Firebase web config lives in the committed .env.production, so no
 # repo Variables are needed. Until the secret exists this job runs but no-ops,
-# keeping main green. Cloud Functions + database rules are still deployed
-# manually (`firebase deploy --only functions,database`) — they change rarely.
+# keeping main green. Database rules (database.rules.json) deploy here too, so a
+# rules change (e.g. the consents node) reaches production without a manual step.
+# Cloud Functions are still deployed manually (`firebase deploy --only functions`).
 on:
   push:
     branches: [main]
@@ -52,3 +53,20 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: aligned-9f843
           channelId: live
+
+      # Deploy the Realtime Database security rules from database.rules.json.
+      # The Hosting action above never touches rules, so without this the
+      # committed rules (e.g. the consents/{uid} node onboarding writes to)
+      # never reach production and those writes get PERMISSION_DENIED.
+      - name: Deploy Realtime Database rules (live)
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx --yes firebase-tools@latest deploy \
+            --only database \
+            --project aligned-9f843 \
+            --non-interactive
+          rm -f "$RUNNER_TEMP/sa.json"

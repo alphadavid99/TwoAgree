@@ -269,7 +269,7 @@ export default function Onboarding({
           <ul className="obfacts">
             <li>{t("It takes two — nothing happens until you're both in.", "Il en faut deux — rien ne se passe tant que vous n'êtes pas là tous les deux.")}</li>
             <li>{t("Neither of you sees the other's answers until you've both answered.", "Aucun de vous ne voit les réponses de l'autre avant que vous ayez tous deux répondu.")}</li>
-            <li>{t("There's no money, ever.", "Il n'y a pas d'argent, jamais.")}</li>
+            <li>{t("There's no winner and no score — it opens a conversation, it doesn't judge it.", "Il n'y a ni gagnant ni score — cela ouvre la conversation, sans la juger.")}</li>
           </ul>
         </div>
         <button className="btn pill" type="button" onClick={() => setStepA("names")}>

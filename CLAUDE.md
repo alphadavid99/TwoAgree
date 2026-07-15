@@ -136,10 +136,14 @@ Dave is not a lawyer; flag legal specifics for him to confirm, don't invent them
 
 ## 9. Question bank
 
-- Types: `SCALE`, `MC`, `RANK`, `HHB` (all scoreable) and `OPEN` (kept deliberately for disclosure/identity prompts — OPEN cannot feed alignment scores).
-- A **Guessable** flag marks questions that support the "predict your partner" scoring layer.
-- **Complementary scoring:** some flagged questions score as fully aligned even when answers differ (shown with a purple "Complementary" verdict). `PAR-004` is flagged; candidates `SELF-018, SELF-004, SELF-013, CONF-017` are pending Dave's confirmation.
-- The `.xlsx` and the HTML viewer are BOTH canonical — keep them in sync after any batch. Run recalc validation after every xlsx save.
+**Single source of truth: `data/questions.json`** (+ `data/decks.json` for deck metadata + display order + ID-prefix map). The `.xlsx`/TSV and the HTML viewer are **dead** — the xlsx has been deleted; anything left under `legacy/` is a frozen historical snapshot, never a source. Do NOT reintroduce a parallel authoring surface; there is exactly one bank and it lives in the repo.
+
+- `data/questions.json` is a flat array, one object per question. Fields: `id`, `deck` (slug), `type`, `tier` ("1"–"3"), `level` (1–5), `q`, plus `opts` (mc/rank) or `lo`+`hi` (scale), `guessable` (bool), optional `complement`, `ref`, `note`, and authoring metadata `subcat`/`status`/`source`/`dateAdded`.
+- **Build:** `npm run build:questions` validates the bank and regenerates the typed `src/data/questions.generated.ts` (a discriminated bank keyed by deck). The app imports from `src/lib/questions.ts`, which just re-exports the generated file — do not hand-edit either generated file. `prebuild`/`pretest` run `--check`, which fails the build if the JSON is invalid **or** the generated file is stale, so the two can never drift.
+- **Validation (fails loudly with the offending ID):** unique IDs; ID prefix matches its deck; mc/rank have ≥2 options; scale has `lo`+`hi` (no opts); open has neither; `tier` 1–3; `level` 1–5.
+- **Adding questions (the only workflow now):** drop new objects into `data/questions.json` and run `npm run build:questions`. IDs are allocated as the next free number per prefix by reading the current bank, so a hand-supplied block can't collide. Runtime types (`SCALE`/`MC`/`RANK`/`OPEN`) — legacy `HHB` folds into `mc`. `OPEN` is kept deliberately for disclosure/identity prompts and cannot feed alignment scores.
+- A **Guessable** flag marks questions that support the "predict your partner" scoring layer. All 16 `RANK` questions are non-guessable.
+- **Complementary scoring:** some flagged questions score as fully aligned even when answers differ (shown with a purple "Complementary" verdict). No question in the current bank carries the `complement` flag yet; `scoring.ts` also holds a `COMPLEMENT` id-set. `PAR-004` is the intended flag; candidates `SELF-018, SELF-004, SELF-013, CONF-017` are pending Dave's confirmation.
 - Question principle: don't take a prompt literally — extract the underlying value. Don't be too quick to dismiss as duplicate/unscoreable; re-mine harder when challenged.
 
 ---

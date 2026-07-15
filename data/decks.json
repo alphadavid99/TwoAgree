@@ -1,0 +1,135 @@
+[
+  {
+    "slug": "in-the-home",
+    "prefix": "HOME",
+    "name": "In the Home",
+    "color": "#B0865E",
+    "icon": "home"
+  },
+  {
+    "slug": "finances-money",
+    "prefix": "FIN",
+    "name": "Finances & Money",
+    "color": "#5E7A4E",
+    "icon": "coin"
+  },
+  {
+    "slug": "faith-worship-practice",
+    "prefix": "FAITH",
+    "name": "Faith & Worship practice",
+    "color": "#682D5C",
+    "icon": "faith"
+  },
+  {
+    "slug": "roles-responsibilities",
+    "prefix": "ROLE",
+    "name": "Roles & Responsibilities",
+    "color": "#6E7A8A",
+    "icon": "compass"
+  },
+  {
+    "slug": "theology-beliefs",
+    "prefix": "THEO",
+    "name": "Theology & Beliefs",
+    "color": "#7C4B72",
+    "icon": "book"
+  },
+  {
+    "slug": "dreams-future",
+    "prefix": "DREAM",
+    "name": "Dreams & Future",
+    "color": "#9C4A6E",
+    "icon": "star"
+  },
+  {
+    "slug": "family-children",
+    "prefix": "FAM",
+    "name": "Family & Children",
+    "color": "#88A06A",
+    "icon": "family"
+  },
+  {
+    "slug": "parenting-style",
+    "prefix": "PAR",
+    "name": "Parenting style",
+    "color": "#88A06A",
+    "icon": "family"
+  },
+  {
+    "slug": "intimacy-physical",
+    "prefix": "INT",
+    "name": "Intimacy & Physical",
+    "color": "#A8554E",
+    "icon": "heart"
+  },
+  {
+    "slug": "conflict-communication",
+    "prefix": "CONF",
+    "name": "Conflict & Communication",
+    "color": "#B06A5E",
+    "icon": "chat"
+  },
+  {
+    "slug": "in-laws-extended-family",
+    "prefix": "INLAW",
+    "name": "In-Laws & Extended Family",
+    "color": "#9C7A4A",
+    "icon": "family"
+  },
+  {
+    "slug": "fun-icebreakers",
+    "prefix": "FUN",
+    "name": "Fun & Icebreakers",
+    "color": "#E0A93C",
+    "icon": "star"
+  },
+  {
+    "slug": "deal-breakers",
+    "prefix": "DEAL",
+    "name": "Deal-breakers",
+    "color": "#B0504E",
+    "icon": "shield"
+  },
+  {
+    "slug": "health-lifestyle",
+    "prefix": "HEALTH",
+    "name": "Health & Lifestyle",
+    "color": "#7E9A5E",
+    "icon": "leaf"
+  },
+  {
+    "slug": "past-baggage",
+    "prefix": "PAST",
+    "name": "Past & Baggage",
+    "color": "#7E6A78",
+    "icon": "leaf"
+  },
+  {
+    "slug": "career-ambition",
+    "prefix": "CAREER",
+    "name": "Career & Ambition",
+    "color": "#C28A3A",
+    "icon": "star"
+  },
+  {
+    "slug": "character-self-awareness",
+    "prefix": "SELF",
+    "name": "Character & Self-Awareness",
+    "color": "#5E8074",
+    "icon": "star"
+  },
+  {
+    "slug": "us-compatibility",
+    "prefix": "US",
+    "name": "Us & Compatibility",
+    "color": "#9C4A6E",
+    "icon": "heart"
+  },
+  {
+    "slug": "values-convictions",
+    "prefix": "VAL",
+    "name": "Values & Convictions",
+    "color": "#C2843A",
+    "icon": "compass"
+  }
+]

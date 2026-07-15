@@ -23,7 +23,7 @@
           "$uid": { ".validate": "auth.uid === $uid" }
         },
 
-        "meatAt": {
+        "meetAt": {
           ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()"
         },
 

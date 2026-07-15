@@ -2,7 +2,7 @@
 // Home stat tiles / recent-reveals rows so the numbers can never disagree.
 import { ORDER } from "./questions";
 import { completedLevels, revealedQs } from "./progress";
-import { overall, jointQuestions, type DeckData, type Role } from "./scoring";
+import { overall, weightedStats, type DeckData, type Role } from "./scoring";
 import { nLevels } from "./leveling";
 import type { Session } from "../types";
 
@@ -11,29 +11,34 @@ export type DeckRow = {
   pct: number;
   lvls: number; // mutually-revealed levels
   of: number; // total levels in the deck
-  weight: number; // scoreable joint answers backing pct
+  weight: number; // total question weight backing pct
 };
 
 // One row per deck with at least one mutually-revealed, scoreable level, plus
-// the overall alignment (average weighted by each deck's joint answer count).
+// the overall agreement. overallPct is a weighted mean over every scoreable
+// joint question across all decks (brief §2/§3b) — the weighted sums add up, so
+// it's a true question-level mean, not an average of per-conversation averages.
 export function revealedRows(
   decks: Session["decks"],
   role: Role,
 ): { rows: DeckRow[]; overallPct: number | null } {
-  let sum = 0;
-  let n = 0;
+  let weightedSum = 0;
+  let weightSum = 0;
   const rows: DeckRow[] = [];
   for (const slug of ORDER) {
     const deck: DeckData | undefined = decks?.[slug];
     const lvls = completedLevels(slug, deck, role);
     if (!lvls.length) continue;
     const qs = revealedQs(slug, deck, role);
-    const joint = jointQuestions(qs, deck ?? {}).filter((q) => q.type !== "open");
-    if (!joint.length) continue;
+    const { weighted, weight } = weightedStats(qs, deck ?? {}, role);
+    if (!weight) continue;
     const pct = overall(qs, deck ?? {}, role);
-    rows.push({ slug, pct, lvls: lvls.length, of: nLevels(slug), weight: joint.length });
-    sum += pct * joint.length;
-    n += joint.length;
+    rows.push({ slug, pct, lvls: lvls.length, of: nLevels(slug), weight });
+    weightedSum += weighted;
+    weightSum += weight;
   }
-  return { rows, overallPct: n ? Math.round(sum / n) : null };
+  return {
+    rows,
+    overallPct: weightSum ? Math.round((weightedSum / weightSum) * 100) : null,
+  };
 }

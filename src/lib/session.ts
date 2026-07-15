@@ -68,6 +68,20 @@ export function writeGuess(
   });
 }
 
+// Importance rating (1..5) for the weighting layer. Asked only on tier-3 and
+// DEAL-* questions (brief §2b); mirrors the answers/guesses write shape.
+export function writeImportance(
+  code: string,
+  slug: string,
+  qid: string,
+  role: Role,
+  value: number,
+): Promise<void> {
+  return update(ref(db, `sessions/${code}/decks/${slug}/importance/${qid}`), {
+    [role]: value,
+  });
+}
+
 export function markLevelDone(
   code: string,
   slug: string,

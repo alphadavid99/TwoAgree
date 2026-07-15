@@ -5,6 +5,8 @@ import {
   knowScore,
   isComplement,
   jointQuestions,
+  weightOf,
+  combinedImportance,
   type DeckData,
 } from "./scoring";
 import type { Question } from "./questions";
@@ -136,5 +138,58 @@ describe("aggregate scores", () => {
     const guessable = [{ ...mc("C"), guessable: true }];
     const r = knowScore(guessable, deck({ C: { host: 0, guest: 1 } }, { C: { host: 1, guest: 0 } }), "host");
     expect(r).toEqual({ pct: 100, made: 2, right: 2 });
+  });
+});
+
+describe("weighting (brief §2)", () => {
+  const at = (id: string, tier: "1" | "2" | "3"): Question => ({
+    id,
+    q: "",
+    type: "scale",
+    tier,
+  });
+
+  it("weightOf uses tier as the default weight", () => {
+    expect(weightOf(at("A", "1"))).toBe(0.5);
+    expect(weightOf(at("B", "2"))).toBe(1);
+    expect(weightOf(at("C", "3"))).toBe(2);
+  });
+
+  it("an importance rating (1..5) overrides the tier weight", () => {
+    expect(weightOf(at("C", "3"), 5)).toBeCloseTo(5 / 3);
+    expect(weightOf(at("C", "3"), 1)).toBeCloseTo(1 / 3); // tier-3, yet barely counts
+    expect(weightOf(at("A", "1"), 3)).toBe(1);
+  });
+
+  // Same three scores; only the weights differ. Flat-mean = 58, so any change
+  // proves the weighting is live.
+  const qs = [at("A", "1"), at("B", "2"), at("C", "3")];
+  const answers = {
+    A: { host: 3, guest: 3 }, // score 1
+    B: { host: 3, guest: 4 }, // score 0.75
+    C: { host: 1, guest: 5 }, // score 0
+  };
+
+  it("a flat-weight (single-tier) fixture matches the old flat mean", () => {
+    const flat = [at("A", "2"), at("B", "2"), at("C", "2")];
+    expect(overall(flat, deck(answers), "host")).toBe(58);
+  });
+
+  it("tier weights move the number (58 → 36)", () => {
+    // (1·0.5 + 0.75·1 + 0·2) / (0.5+1+2) = 1.25/3.5 = 0.357 → 36
+    expect(overall(qs, deck(answers), "host")).toBe(36);
+  });
+
+  it("combinedImportance takes the higher of the two partners' ratings", () => {
+    const d: DeckData = { ...deck(answers), importance: { C: { host: 1, guest: 5 } } };
+    expect(combinedImportance(at("C", "3"), d)).toBe(5);
+    // C now weighs 5/3 instead of tier-3's 2:
+    // (0.5 + 0.75 + 0) / (0.5 + 1 + 5/3) = 1.25/3.167 = 0.3947 → 39
+    expect(overall(qs, d, "host")).toBe(39);
+  });
+
+  it("stays symmetric — host and guest see the same number", () => {
+    const d: DeckData = { ...deck(answers), importance: { C: { host: 5, guest: 1 } } };
+    expect(overall(qs, d, "host")).toBe(overall(qs, d, "guest"));
   });
 });

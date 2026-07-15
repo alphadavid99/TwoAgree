@@ -12,6 +12,7 @@ export interface DeckData {
   answers?: Record<string, RoleMap<AnswerValue>>;
   guesses?: Record<string, RoleMap<AnswerValue>>;
   done?: Record<string, RoleMap<boolean>>;
+  importance?: Record<string, RoleMap<number>>; // 1..5, asked on tier-3 + DEAL-*
 }
 
 export type Verdict = "Shared" | "Agreed" | "Close" | "Worth a chat" | "Complementary";
@@ -34,6 +35,50 @@ export interface ScoreResult {
 }
 
 export const other = (r: Role): Role => (r === "host" ? "guest" : "host");
+
+// ---- Weighting (brief §2) ------------------------------------------------
+// Every question carries a `tier` (1/2/3) — the default importance weight.
+// A partner-supplied importance rating (1..5), when present, overrides it.
+const TIER_WEIGHT: Record<number, number> = { 1: 0.5, 2: 1, 3: 2 };
+
+export function weightOf(q: Question, importance?: number | null): number {
+  if (importance != null) return importance / 3; // 1..5 → 0.33..1.67
+  return TIER_WEIGHT[Number(q.tier)] ?? TIER_WEIGHT[2];
+}
+
+// The shared score must read the SAME for both partners, so a question's weight
+// can't depend on the viewing role. When either partner has rated importance we
+// weight by the HIGHER of the two ratings — if it's a deal-breaker for one of
+// them, it should carry that weight in the headline number. No ratings → the
+// tier default (handled by weightOf's null branch).
+export function combinedImportance(q: Question, deck: DeckData): number | null {
+  const imp = deck.importance?.[q.id];
+  if (!imp) return null;
+  const vals = [imp.host, imp.guest].filter(
+    (v): v is number => typeof v === "number",
+  );
+  return vals.length ? Math.max(...vals) : null;
+}
+
+// Weighted score/weight sums across the scoreable joint questions. Kept
+// separate from overall() so cross-conversation aggregation (overallAll /
+// knownAll) can add the sums up and stay a true weighted mean over questions,
+// not an average of per-conversation averages.
+export function weightedStats(
+  qs: Question[],
+  deck: DeckData,
+  role: Role,
+): { weighted: number; weight: number } {
+  const js = jointQuestions(qs, deck).filter((q) => q.type !== "open");
+  let weighted = 0;
+  let weight = 0;
+  for (const q of js) {
+    const w = weightOf(q, combinedImportance(q, deck));
+    weighted += (scoreQ(q, deck, role).score ?? 0) * w;
+    weight += w;
+  }
+  return { weighted, weight };
+}
 
 // Some flagged questions score as fully aligned even when answers differ.
 const COMPLEMENT = new Set(["PAR-004"]);
@@ -110,15 +155,11 @@ export function jointQuestions(qs: Question[], deck: DeckData): Question[] {
   });
 }
 
-// Overall alignment % across the given (scoreable) joint questions.
+// Overall agreement % across the given (scoreable) joint questions — a weighted
+// mean, sum(score·weight) / sum(weight) (brief §2). Open questions stay excluded.
 export function overall(qs: Question[], deck: DeckData, role: Role): number {
-  const js = jointQuestions(qs, deck).filter((q) => q.type !== "open");
-  if (!js.length) return 0;
-  let s = 0;
-  js.forEach((q) => {
-    s += scoreQ(q, deck, role).score ?? 0;
-  });
-  return Math.round((s / js.length) * 100);
+  const { weighted, weight } = weightedStats(qs, deck, role);
+  return weight ? Math.round((weighted / weight) * 100) : 0;
 }
 
 // "How well you know each other" — guess accuracy across guessable questions.

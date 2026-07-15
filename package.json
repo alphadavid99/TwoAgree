@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:questions": "node scripts/build-questions.mjs",
+    "prebuild": "node scripts/build-questions.mjs --check",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "pretest": "node scripts/build-questions.mjs --check",
     "test": "vitest run",
     "preview": "vite preview"
   },

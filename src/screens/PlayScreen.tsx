@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { lvlQs, nLevels } from "../lib/leveling";
-import { writeAnswer, writeGuess, markLevelDone } from "../lib/session";
+import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import type { DeckData, Role, AnswerValue } from "../lib/scoring";
+import { NOT_YET, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang } from "../lib/i18n";
 
@@ -24,6 +24,13 @@ const SCALE_WORDS_FR = [
   "Plutôt",
   "Fortement",
 ];
+
+// Importance is asked only where a gap would actually cost the couple: the
+// tier-3 questions and the deal-breaker set. Everything else silently rides the
+// tier default so the user isn't taxed on every question (brief §2b). Open
+// questions never score, so they're never asked.
+const asksImportance = (q: Question): boolean =>
+  q.type !== "open" && (Number(q.tier) === 3 || q.id.startsWith("DEAL-"));
 
 // The answering flow for one level: answer each question, and for guessable
 // (non-open) questions, predict your partner. Ported from the legacy question
@@ -60,15 +67,19 @@ export default function PlayScreen({
   }, [slug, level]);
 
   const [idx, setIdx] = useState(firstUnanswered);
+  const [impPhase, setImpPhase] = useState(false);
   const [guessPhase, setGuessPhase] = useState(false);
   const [pendAns, setPendAns] = useState<AnswerValue | null>(null);
+  const [pendImp, setPendImp] = useState<number | null>(null);
   const [pendGuess, setPendGuess] = useState<AnswerValue | null>(null);
   const [rankOrder, setRankOrder] = useState<number[]>([]);
   const [busy, setBusy] = useState(false);
 
   const advance = async (fromIdx: number) => {
+    setImpPhase(false);
     setGuessPhase(false);
     setPendAns(null);
+    setPendImp(null);
     setPendGuess(null);
     setRankOrder([]);
     let n = fromIdx + 1;
@@ -85,17 +96,51 @@ export default function PlayScreen({
   if (idx >= qs.length) return null;
   const q = localizeQuestion(qs[idx], lang);
 
-  const submitAnswer = async () => {
-    if (pendAns == null || busy) return;
-    setBusy(true);
-    await writeAnswer(code, slug, q.id, role, pendAns);
-    setBusy(false);
+  // After the answer is banked: qualifying questions get the importance ask
+  // first, then (if guessable) the guess step, then advance. Non-qualifying
+  // questions skip straight to the guess step or the next question.
+  const afterAnswer = () => {
     if (q.guessable && q.type !== "open") {
       setGuessPhase(true);
       setPendGuess(null);
     } else {
       advance(idx);
     }
+  };
+
+  const submitAnswer = async () => {
+    if (pendAns == null || busy) return;
+    setBusy(true);
+    await writeAnswer(code, slug, q.id, role, pendAns);
+    setBusy(false);
+    if (asksImportance(q)) {
+      setImpPhase(true);
+      setPendImp(null);
+    } else {
+      afterAnswer();
+    }
+  };
+
+  // "Not yet" — a deliberate, unscored answer (only on flagged questions). It
+  // banks a sentinel and moves on, skipping the importance and guess steps
+  // entirely: there's nothing to weight and nothing to predict.
+  const answerNotYet = async () => {
+    if (busy) return;
+    setBusy(true);
+    await writeAnswer(code, slug, q.id, role, NOT_YET);
+    setBusy(false);
+    advance(idx);
+  };
+
+  const submitImportance = async () => {
+    if (busy) return;
+    if (pendImp != null) {
+      setBusy(true);
+      await writeImportance(code, slug, q.id, role, pendImp);
+      setBusy(false);
+    }
+    setImpPhase(false);
+    afterAnswer();
   };
 
   const lockGuess = async () => {
@@ -111,10 +156,69 @@ export default function PlayScreen({
     deckName(slug, lang).toUpperCase() +
     (multi
       ? t(
-          ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
-          ` · NIVEAU ${level + 1} SUR ${nLevels(slug)}`,
+          ` · PART ${level + 1} OF ${nLevels(slug)}`,
+          ` · PARTIE ${level + 1} SUR ${nLevels(slug)}`,
         )
       : "");
+
+  if (impPhase) {
+    return (
+      <section>
+        <TopBar onExit={onExit} />
+        <div
+          key={`${q.id}-imp`}
+          className="qcard glide-in"
+          style={{ marginTop: 20 }}
+        >
+          <div className="qrow">
+            <div className="eyebrow">{deckName(slug, lang).toUpperCase()}</div>
+            <span className="badge">{t("HOW MUCH", "IMPORTANCE")}</span>
+          </div>
+          <div className="qtext">
+            {t(
+              "How much does this matter to you?",
+              "À quel point est-ce important pour vous ?",
+            )}
+          </div>
+          <div className="slabels">
+            <span>{t("Not much", "Peu")}</span>
+            <span style={{ textAlign: "right" }}>
+              {t("A great deal", "Énormément")}
+            </span>
+          </div>
+          <div className="scale">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className={`orb ${pendImp === i ? "sel" : ""}`}
+                onClick={() => setPendImp(i)}
+              >
+                {i}
+              </div>
+            ))}
+          </div>
+        </div>
+        <button
+          className="btn"
+          type="button"
+          disabled={pendImp == null || busy}
+          onClick={submitImportance}
+        >
+          {t("Next →", "Suivant →")}
+        </button>
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={() => {
+            setImpPhase(false);
+            afterAnswer();
+          }}
+        >
+          {t("Skip", "Passer")}
+        </button>
+      </section>
+    );
+  }
 
   if (guessPhase) {
     const yourText = q.type === "scale" ? `${pendAns} / 5` : q.opts?.[pendAns as number];
@@ -200,9 +304,19 @@ export default function PlayScreen({
         onClick={submitAnswer}
       >
         {idx + 1 === qs.length
-          ? t("Finish level →", "Terminer le niveau →")
+          ? t("Finish part →", "Terminer la partie →")
           : t("Next →", "Suivant →")}
       </button>
+      {q.notYet && (
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={answerNotYet}
+          disabled={busy}
+        >
+          {t("Not yet", "Pas encore")}
+        </button>
+      )}
       <div className="hint">
         {t(`${idx + 1} OF ${qs.length}`, `${idx + 1} SUR ${qs.length}`)}
         {q.type === "open"

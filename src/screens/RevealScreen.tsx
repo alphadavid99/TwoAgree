@@ -12,27 +12,29 @@ import {
   type ScoreResult,
 } from "../lib/scoring";
 import { type Question } from "../lib/questions";
+import { collectFlagRows } from "../lib/flags";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import { PctRing } from "../components/Ring";
+import { ScorePair } from "../components/ScorePair";
+import FlagsReview, { FlagBox } from "./FlagsReview";
 import { TopBar } from "../components/TopBar";
 import { Avatar } from "../components/Avatar";
 import { useT, useLang } from "../lib/i18n";
 
 // Display labels for each verdict when the language is French.
 const VERDICT_FR: Record<Verdict, string> = {
-  Matched: "Identique",
+  Agreed: "D’accord",
   Close: "Proche",
-  Differed: "Différent",
+  "Worth a chat": "À discuter",
   Complementary: "Complémentaire",
   Shared: "Partagé",
 };
 
-// "Differed" is deliberately a calm, neutral ink — not alarm-red. Difference
+// "Worth a chat" is deliberately a calm, neutral ink — not alarm-red. Difference
 // here is an invitation to talk, never a failure state (see the subline below).
 const VERDICT_COLOR: Record<Verdict, string> = {
-  Matched: "#2fa96b",
+  Agreed: "#2fa96b",
   Close: "var(--honeyD)",
-  Differed: "#6a5a66",
+  "Worth a chat": "#6a5a66",
   Complementary: "#8250b8",
   Shared: "var(--sub)",
 };
@@ -89,6 +91,9 @@ export default function RevealScreen({
   const multi = nLevels(slug) > 1;
   // Reflection-only decks have nothing to score — show the answers, not a 0% ring.
   const hasScore = joint.some((q) => q.type !== "open");
+  // "Before you walk on" — the flagged questions worth a closer look (§4/§5).
+  const flagRows = collectFlagRows(qs, data, role);
+  const [showFlags, setShowFlags] = useState(false);
 
   // ---- The Level-Up moment (fresh reveals only) ----
   // The reveal and the review are now distinct screens. A fresh reveal is a
@@ -134,12 +139,23 @@ export default function RevealScreen({
         ? t(" · REVIEW", " · RÉCAP")
         : multi
           ? t(
-              ` · LEVEL ${level + 1} OF ${nLevels(slug)}`,
-              ` · NIVEAU ${level + 1} SUR ${nLevels(slug)}`,
+              ` · PART ${level + 1} OF ${nLevels(slug)}`,
+              ` · PARTIE ${level + 1} SUR ${nLevels(slug)}`,
             )
           : ""}
     </div>
   );
+
+  if (showFlags) {
+    return (
+      <FlagsReview
+        rows={flagRows}
+        myName={myName}
+        partnerName={partnerName}
+        onClose={() => setShowFlags(false)}
+      />
+    );
+  }
 
   if (phase === "ceremony") {
     return (
@@ -162,59 +178,17 @@ export default function RevealScreen({
 
         {stage >= 2 && (
           <div className="levelup">
-            <div className="center">
-              {/* Bloom fires after the ring finishes drawing — the milestone
-                  moment. Over 90% the ring grows, a gold halo pulses and a
-                  ring of sparks bursts outward behind the confetti. */}
-              <span className={`bloomwrap${pct > 90 ? " grand" : ""}`}>
-                {pct > 90 && !reduced && (
-                  <>
-                    <span className="goldwash" />
-                    {Array.from({ length: 12 }, (_, i) => {
-                      const a = (i / 12) * Math.PI * 2;
-                      return (
-                        <span
-                          key={i}
-                          className="spark"
-                          style={
-                            {
-                              "--dx": `${Math.cos(a) * 150}px`,
-                              "--dy": `${Math.sin(a) * 150}px`,
-                              animationDelay: `${1 + (i % 4) * 0.07}s`,
-                            } as React.CSSProperties
-                          }
-                        />
-                      );
-                    })}
-                  </>
-                )}
-                <span className="glint g1" />
-                <span className="glint g2" />
-                <PctRing
-                  pct={pct}
-                  size={pct > 90 ? 234 : 210}
-                  label={t("aligned", "alignés")}
-                />
-              </span>
+            {/* The two axes at equal weight — agreement and Known — are the
+                whole point of the reveal (brief §3a). */}
+            <div className="lvlup-rise r1">
+              <ScorePair agreed={pct} known={know.pct} t={t} size={140} />
             </div>
             {know.pct != null && (
-              <div className="knowcaps lvlup-rise r1">
-                <span className="knowpill">
-                  <b>{know.pct}%</b>
-                  <span>
-                    {knowLine(know.pct, t)}
-                    {" · "}
-                    {t(
-                      `${know.right} of ${know.made} right`,
-                      `${know.right} sur ${know.made}`,
-                    )}
-                  </span>
-                </span>
-              </div>
+              <p className="knowline lvlup-rise r1">{knowLine(know.pct, t)}</p>
             )}
             <p
               className="sub serif center lvlup-rise r2"
-              style={{ fontStyle: "italic", margin: "4px 24px 0" }}
+              style={{ fontStyle: "italic", margin: "10px 24px 0" }}
             >
               {t(
                 "Not a verdict — a place to start talking.",
@@ -245,13 +219,16 @@ export default function RevealScreen({
       {eyebrow}
 
       {hasScore ? (
-        <div className="center" style={{ margin: "16px 0 6px" }}>
-          <PctRing pct={pct} size={132} label={t("aligned", "alignés")} />
-        </div>
+        <ScorePair agreed={pct} known={know.pct} t={t} size={120} />
       ) : (
         <h1 className="h1 center" style={{ margin: "16px 0 6px" }}>
           {t("What you each said", "Ce que chacun a dit")}
         </h1>
+      )}
+
+      {/* The berry box — renders only when there are flags (no empty state). */}
+      {flagRows.length > 0 && (
+        <FlagBox count={flagRows.length} onOpen={() => setShowFlags(true)} t={t} />
       )}
 
       {/* Called as a plain function (not <RevealBody/>) so re-renders don't
@@ -265,16 +242,11 @@ export default function RevealScreen({
     return (
       <>
       {know.pct != null && (
-        <div className="knowcaps reveal-rise">
-          <span className="knowpill">
-            <b>{know.pct}%</b>
-            <span>
-              {knowLine(know.pct, t)}
-              {" · "}
-              {t(`${know.right} of ${know.made} right`, `${know.right} sur ${know.made}`)}
-            </span>
-          </span>
-        </div>
+        <p className="knowline reveal-rise">
+          {knowLine(know.pct, t)}
+          {" · "}
+          {t(`${know.right} of ${know.made} right`, `${know.right} sur ${know.made}`)}
+        </p>
       )}
       <p className="sub serif center reveal-rise" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
         {t(
@@ -408,7 +380,7 @@ function QCard({
           )}
         </div>
       )}
-      {r.verdict === "Differed" && (
+      {r.verdict === "Worth a chat" && (
         <div className="qc-note">
           {t("Worth a conversation.", "Un sujet à aborder ensemble.")}
         </div>

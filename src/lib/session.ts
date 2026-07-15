@@ -6,6 +6,7 @@
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
+import type { Stage } from "../types";
 
 const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
@@ -23,12 +24,15 @@ function randCode(): string {
 export async function createSession(
   uid: string,
   name: string,
+  stage?: Stage,
 ): Promise<string> {
   for (let tries = 0; tries < 6; tries++) {
     const code = randCode();
     try {
       await update(ref(db, `sessions/${code}`), {
         created: Date.now(),
+        // Only write stage when chosen — never a nullish leaf (RTDB gotcha §6).
+        ...(stage ? { stage } : {}),
         "members/host/name": name,
         "members/host/uid": uid,
         [`uids/${uid}`]: true,
@@ -64,6 +68,20 @@ export function writeGuess(
   value: AnswerValue,
 ): Promise<void> {
   return update(ref(db, `sessions/${code}/decks/${slug}/guesses/${qid}`), {
+    [role]: value,
+  });
+}
+
+// Importance rating (1..5) for the weighting layer. Asked only on tier-3 and
+// DEAL-* questions (brief §2b); mirrors the answers/guesses write shape.
+export function writeImportance(
+  code: string,
+  slug: string,
+  qid: string,
+  role: Role,
+  value: number,
+): Promise<void> {
+  return update(ref(db, `sessions/${code}/decks/${slug}/importance/${qid}`), {
     [role]: value,
   });
 }

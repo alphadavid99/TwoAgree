@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ORDER } from "../lib/questions";
 import { nLevels, lvlQs } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete } from "../lib/progress";
-import { revealedRows } from "../lib/results";
+import { revealedRows, answersWaiting } from "../lib/results";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
@@ -68,11 +68,11 @@ export default function HomeScreen({
   const allDone = catComplete(slug, deck, role);
 
   const cta = allDone
-    ? t("See your alignment →", "Voir votre alignement →")
+    ? t("See where you agree →", "Voir où vous êtes d’accord →")
     : L > 1
       ? mine > 0
-        ? t(`Continue Level ${lvl + 1} →`, `Continuer le niveau ${lvl + 1} →`)
-        : t(`Start Level ${lvl + 1} →`, `Commencer le niveau ${lvl + 1} →`)
+        ? t(`Continue Part ${lvl + 1} →`, `Continuer la partie ${lvl + 1} →`)
+        : t(`Start Part ${lvl + 1} →`, `Commencer la partie ${lvl + 1} →`)
       : mine > 0
         ? t("Continue →", "Continuer →")
         : t("Start answering →", "Commencer à répondre →");
@@ -82,6 +82,8 @@ export default function HomeScreen({
     catComplete(s, session.decks?.[s], role),
   ).length;
   const { rows, overallPct } = revealedRows(session.decks, role);
+  // Solo-first: answers you've banked that your partner hasn't matched yet.
+  const waiting = answersWaiting(session.decks, role);
   const ranked = [...rows].sort((a, b) => a.pct - b.pct);
   const lowest = ranked[0];
   const closest = ranked[ranked.length - 1];
@@ -172,7 +174,7 @@ export default function HomeScreen({
         <small>
           {joined
             ? t("Where you left off, together.", "Là où vous en étiez, ensemble.")
-            : t("It starts when your partner joins.", "Tout commence quand votre partenaire arrive.")}
+            : t("Start whenever you like — your partner can join anytime.", "Commencez quand vous voulez — votre partenaire peut vous rejoindre à tout moment.")}
         </small>
       </h1>
       {justJoined && (
@@ -208,6 +210,16 @@ export default function HomeScreen({
           {inviteMsg && (
             <div style={{ marginTop: 8, fontSize: 13 }}>{inviteMsg}</div>
           )}
+          {waiting > 0 && (
+            <div className="waitline">
+              {/* Always pre-join here, so the full "your partner" reads right
+                  (the header's first-name form would clip it to "your"). */}
+              {t(
+                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved — waiting for your partner`,
+                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"} — en attente de votre partenaire`,
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -217,9 +229,9 @@ export default function HomeScreen({
             <IconDecks size={15} />
           </span>
           <span className="tile-lb">
-            {t("Decks", "Thèmes")}
+            {t("Conversations", "Conversations")}
             <br />
-            {t("complete", "terminés")}
+            {t("complete", "terminées")}
           </span>
           <div>
             <b className="serif">{decksComplete}</b>
@@ -235,7 +247,7 @@ export default function HomeScreen({
             </svg>
           </span>
           <span className="tile-lb">
-            {t("Aligned", "Alignés")}
+            {t("Agreed", "D’accord")}
             <br />
             {t("so far", "jusqu’ici")}
           </span>
@@ -257,9 +269,9 @@ export default function HomeScreen({
               <span className="featnm">{deckName(slug, lang)} &#9662;</span>
               <span className="featmt">
                 {allDone
-                  ? t("All levels revealed", "Tous les niveaux révélés")
+                  ? t("All parts revealed", "Toutes les parties révélées")
                   : L > 1
-                    ? t(`Level ${lvl + 1} of ${L}`, `Niveau ${lvl + 1} sur ${L}`) +
+                    ? t(`Part ${lvl + 1} of ${L}`, `Partie ${lvl + 1} sur ${L}`) +
                       (joined ? t(` · with ${partnerName}`, ` · avec ${partnerName}`) : "")
                     : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
               </span>
@@ -304,7 +316,7 @@ export default function HomeScreen({
               <HomeRow
                 slug={closest.slug}
                 pct={closest.pct}
-                sub={t("Closest alignment", "Alignement le plus fort")}
+                sub={t("Closest agreement", "Accord le plus fort")}
                 onOpen={onReview}
                 lang={lang}
               />
@@ -329,7 +341,7 @@ export default function HomeScreen({
       )}
 
       <div className="link center" style={{ display: "block", marginTop: 18, fontSize: 14 }} onClick={onBrowse}>
-        {t("Browse all decks", "Parcourir tous les thèmes")}
+        {t("Browse all conversations", "Parcourir toutes les conversations")}
       </div>
     </section>
   );

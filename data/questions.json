@@ -2516,20 +2516,20 @@
     "id": "FUN-004",
     "deck": "fun-icebreakers",
     "type": "mc",
-    "q": "What are we actually watching tonight?",
+    "q": "A perfect evening in together looks like…",
     "guessable": true,
-    "note": "A playful window into taste and values.",
+    "note": "A warm opener about how each likes to spend time together — reframed from a TV-pick question that set a slightly disengaged tone for a couples app.",
     "status": "Draft",
     "source": "Self",
     "dateAdded": "2026-06-23",
     "depth": 1,
     "ref": "",
     "opts": [
-      "Something we've both seen a hundred times",
-      "A film neither of us picked",
-      "Your show, I'll be on my phone",
-      "A documentary",
-      "Nothing — let's talk instead"
+      "A film under a blanket",
+      "Cooking something together",
+      "Same room, both doing our own thing",
+      "Talking for hours",
+      "Friends round"
     ]
   },
   {
@@ -4550,18 +4550,18 @@
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "q": "If we could only eat one cuisine for the rest of our lives, what are we picking?",
+    "q": "When it comes to food, what are you?",
     "guessable": true,
     "ref": "",
-    "note": "Format is GUESS with no options, so it has never rendered — the live app silently ships 270 of 271 questions. This fixes that bug.",
+    "note": "Reframed from a pick-a-cuisine question (too limiting — the options excluded whole tastes). Now captures the underlying value: your disposition toward food, which is what actually aligns.",
     "status": "Draft",
     "source": "Self",
     "opts": [
-      "Italian",
-      "Asian",
-      "Mexican",
-      "Indian",
-      "Good old home cooking"
+      "Adventurous — I'll try anything",
+      "Give me my comfort favourites",
+      "Health comes first",
+      "Quick and easy — food's just fuel",
+      "A proper foodie — I live for it"
     ]
   },
   {

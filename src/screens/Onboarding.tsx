@@ -10,6 +10,7 @@ import { auth, db, googleProvider } from "../firebase";
 import {
   createSession,
   writeAnswer,
+  writeGuess,
   markLevelDone,
   recordConsent,
   writeProfile,
@@ -28,8 +29,10 @@ import StartMenu from "./StartMenu";
 import AuthScreen from "./AuthScreen";
 import { useT } from "../lib/i18n";
 
-// The onboarding starter: the first Part of a warm deck, answer-only (no guess —
-// spec v2 §7.1). Both partners answer the SAME questions so the reveal overlaps.
+// The onboarding starter: the first Part of a warm deck. Each guessable question
+// is answered, then you predict your partner's answer (the "predict your partner"
+// layer, same as the main play flow). Both partners answer the SAME questions so
+// the reveal overlaps.
 const STARTER_SLUG = "fun-icebreakers";
 const STARTER_QS: Question[] = lvlQs(STARTER_SLUG, 0).filter(
   (q) => q.type === "mc" || q.type === "scale",
@@ -239,6 +242,7 @@ export default function Onboarding({
         code={code}
         role={role}
         t={t}
+        partnerName={initiatorName || partner}
         heading={
           bankedCount > 0
             ? t(
@@ -331,6 +335,7 @@ export default function Onboarding({
         code={code}
         role={role}
         t={t}
+        partnerName={partner}
         heading={t("A few to start with.", "Quelques-unes pour commencer.")}
         onDone={() => setStepA("profile")}
       />
@@ -435,35 +440,66 @@ function ConsentBody({
   );
 }
 
-// ---- Answer-only question sequence (no guess — spec v2 §7.1) ---------------
+// ---- Answer + predict-your-partner sequence --------------------------------
 function OnbQuestions({
   code,
   role,
   heading,
+  partnerName,
   onDone,
   t,
 }: {
   code: string;
   role: "host" | "guest";
   heading: string;
+  partnerName: string;
   onDone: () => void;
   t: T;
 }) {
   const [idx, setIdx] = useState(0);
   const [pend, setPend] = useState<number | null>(null);
+  const [pendGuess, setPendGuess] = useState<number | null>(null);
+  const [guessing, setGuessing] = useState(false);
   const [busy, setBusy] = useState(false);
   const q = STARTER_QS[idx];
   const last = idx + 1 >= STARTER_QS.length;
+  const guessable = !!q && q.guessable && q.type !== "open";
 
-  const submit = async () => {
+  // Move to the next question, or finish the level. Called from the answer step
+  // (non-guessable questions) and from the guess step (lock or skip).
+  const advance = async () => {
+    if (last) {
+      setBusy(true);
+      await markLevelDone(code, STARTER_SLUG, 0, role);
+      onDone();
+      return;
+    }
+    setPend(null);
+    setPendGuess(null);
+    setGuessing(false);
+    setIdx((i) => i + 1);
+  };
+
+  const submitAnswer = async () => {
     if (pend == null || busy || !q) return;
     setBusy(true);
     await writeAnswer(code, STARTER_SLUG, q.id, role, pend);
-    if (last) await markLevelDone(code, STARTER_SLUG, 0, role);
     setBusy(false);
-    setPend(null);
-    if (last) onDone();
-    else setIdx((i) => i + 1);
+    // Guessable → predict the partner before advancing; otherwise move on.
+    if (guessable) {
+      setPendGuess(null);
+      setGuessing(true);
+    } else {
+      await advance();
+    }
+  };
+
+  const lockGuess = async () => {
+    if (pendGuess == null || busy || !q) return;
+    setBusy(true);
+    await writeGuess(code, STARTER_SLUG, q.id, role, pendGuess);
+    setBusy(false);
+    await advance();
   };
 
   if (!q) {
@@ -471,44 +507,110 @@ function OnbQuestions({
     return null;
   }
 
+  // Shared input — the scale orbs / MC options, reused by answer and guess steps.
+  const input = (value: number | null, onPick: (i: number) => void, guess?: boolean) =>
+    q.type === "scale" ? (
+      <>
+        <div className="slabels">
+          <span>{q.lo}</span>
+          <span style={{ textAlign: "right" }}>{q.hi}</span>
+        </div>
+        <div className="scale">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className={`orb ${value === i ? "sel" : ""}`} onClick={() => onPick(i)}>
+              {i}
+            </div>
+          ))}
+        </div>
+      </>
+    ) : (
+      <div style={{ marginTop: 4 }}>
+        {q.opts?.map((o, i) => (
+          <div
+            key={i}
+            className={`opt ${guess ? "guess" : ""} ${value === i ? "sel" : ""}`}
+            onClick={() => onPick(i)}
+          >
+            {o}
+            <span className="dot" />
+          </div>
+        ))}
+      </div>
+    );
+
+  const progress = (
+    <div className="qprog">
+      <i style={{ width: `${Math.round(((idx + 1) / STARTER_QS.length) * 100)}%` }} />
+    </div>
+  );
+
+  // ---- Guess step: predict the partner's answer ----
+  if (guessing) {
+    const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
+    return (
+      <section className="screen-enter">
+        <div className="brandhead brand-enter">
+          <Logo size={30} word={false} />
+        </div>
+        {progress}
+        <div
+          key={`${q.id}-guess`}
+          className="qcard glide-in"
+          style={{ marginTop: 12, borderColor: "#F3E6CF" }}
+        >
+          <div className="qrow">
+            <div className="eyebrow">{t("YOUR GUESS", "VOTRE INTUITION")}</div>
+            <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+          </div>
+          <div className="qtext">{q.q}</div>
+          <div className="yousaid">
+            <div>
+              <div className="eyebrow" style={{ fontSize: 10 }}>
+                {t("YOU SAID", "VOUS AVEZ DIT")}
+              </div>
+              <div className="yousaid-val">{yourText}</div>
+            </div>
+          </div>
+          <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
+            {t("Now — what will ", "Maintenant — que va répondre ")}
+            <span style={{ color: "var(--amber)" }}>{partnerName}</span>
+            {t(" say?", " ?")}
+          </p>
+          {input(pendGuess, setPendGuess, true)}
+        </div>
+        <button
+          className="btn honey"
+          type="button"
+          disabled={pendGuess == null || busy}
+          onClick={lockGuess}
+        >
+          {t("Lock it in →", "Je valide →")}
+        </button>
+        <button className="btn ghost" type="button" onClick={() => void advance()} disabled={busy}>
+          {t("Skip", "Passer")}
+        </button>
+      </section>
+    );
+  }
+
+  // ---- Answer step ----
   return (
     <section className="screen-enter">
       <div className="brandhead brand-enter">
         <Logo size={30} word={false} />
       </div>
-      <div className="qprog">
-        <i style={{ width: `${Math.round(((idx + 1) / STARTER_QS.length) * 100)}%` }} />
-      </div>
+      {progress}
       <p className="muted center" style={{ fontSize: 13, marginTop: 12 }}>{heading}</p>
       <div key={q.id} className="qcard glide-in" style={{ marginTop: 12 }}>
         <div className="qtext">{q.q}</div>
-        {q.type === "scale" ? (
-          <>
-            <div className="slabels">
-              <span>{q.lo}</span>
-              <span style={{ textAlign: "right" }}>{q.hi}</span>
-            </div>
-            <div className="scale">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className={`orb ${pend === i ? "sel" : ""}`} onClick={() => setPend(i)}>
-                  {i}
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div style={{ marginTop: 4 }}>
-            {q.opts?.map((o, i) => (
-              <div key={i} className={`opt ${pend === i ? "sel" : ""}`} onClick={() => setPend(i)}>
-                {o}
-                <span className="dot" />
-              </div>
-            ))}
-          </div>
-        )}
+        {input(pend, setPend)}
       </div>
-      <button className="btn" type="button" disabled={pend == null || busy} onClick={submit}>
-        {last ? t("Done →", "Terminé →") : t("Next →", "Suivant →")}
+      <button className="btn" type="button" disabled={pend == null || busy} onClick={submitAnswer}>
+        {guessable
+          ? t("Next →", "Suivant →")
+          : last
+            ? t("Done →", "Terminé →")
+            : t("Next →", "Suivant →")}
       </button>
       <div className="hint">{t(`${idx + 1} OF ${STARTER_QS.length}`, `${idx + 1} SUR ${STARTER_QS.length}`)}</div>
     </section>

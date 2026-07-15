@@ -2576,17 +2576,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-004",
-        "q": "What are we actually watching tonight?",
+        "q": "A perfect evening in together looks like…",
         "type": "mc",
         "depth": 1,
-        "note": "A playful window into taste and values.",
+        "note": "A warm opener about how each likes to spend time together — reframed from a TV-pick question that set a slightly disengaged tone for a couples app.",
         "guessable": true,
         "opts": [
-          "Something we've both seen a hundred times",
-          "A film neither of us picked",
-          "Your show, I'll be on my phone",
-          "A documentary",
-          "Nothing — let's talk instead"
+          "A film under a blanket",
+          "Cooking something together",
+          "Same room, both doing our own thing",
+          "Talking for hours",
+          "Friends round"
         ]
       },
       {
@@ -2616,17 +2616,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-001",
-        "q": "If we could only eat one cuisine for the rest of our lives, what are we picking?",
+        "q": "When it comes to food, what are you?",
         "type": "mc",
         "depth": 1,
-        "note": "Format is GUESS with no options, so it has never rendered — the live app silently ships 270 of 271 questions. This fixes that bug.",
+        "note": "Reframed from a pick-a-cuisine question (too limiting — the options excluded whole tastes). Now captures the underlying value: your disposition toward food, which is what actually aligns.",
         "guessable": true,
         "opts": [
-          "Italian",
-          "Asian",
-          "Mexican",
-          "Indian",
-          "Good old home cooking"
+          "Adventurous — I'll try anything",
+          "Give me my comfort favourites",
+          "Health comes first",
+          "Quick and easy — food's just fuel",
+          "A proper foodie — I live for it"
         ]
       },
       {

@@ -2,7 +2,9 @@
 
 Project brief and working agreement for Claude Code. Read this fully before touching code.
 
-> **Rebrand (Jul 2026):** the product is now **TwoAgree**. The mark, icons and wordmark are governed by `TWOAGREE-MARK.md` (v5.1) — measured, locked, do not redesign; `BRAND-REPORT.md` records its application. User-facing copy says TwoAgree; internal identifiers (Firebase project `aligned-9f843`, localStorage keys, repo name) still say aligned and that is deliberate — the hosting URL swap is pending Dave. "Aligned" below refers to this same product pre-rename.
+> **Rebrand (Jul 2026):** the product is now **TwoAgree**, named from **Amos 3:3** — *"Can two walk together, unless they are agreed?"* Two partners, walking together, only if they're agreed: that's the whole product in one line. The mark, icons and wordmark are governed by `TWOAGREE-MARK.md` (v5.1) — measured, locked, do not redesign; `BRAND-REPORT.md` records its application. "Aligned" below refers to this same product pre-rename.
+>
+> **The migration is DONE:** the repo is `TwoAgree`, the Firebase project is **`twoagreeapp`**, and the site is live at **twoagree.app**. Some *internal* identifiers (localStorage keys, the `aligned` word in scoring vocabulary) still read `aligned` and that is deliberate. The old Firebase project `aligned-9f843` is **DEAD** — see §4.
 
 ---
 
@@ -46,8 +48,10 @@ Dave's standing instruction: recommend **what's best**, not the most minimal opt
 
 ## 4. Firebase project
 
-- Project: **`aligned-9f843`**, region **europe-west1**. Plan: **Blaze** (Functions/Hosting available).
-- RTDB URL: `https://aligned-9f843-default-rtdb.europe-west1.firebasedatabase.app`
+- Project: **`twoagreeapp`**, region **europe-west1**. Plan: **Blaze** (Functions/Hosting available). Domain: **twoagree.app** (live).
+- **The old project `aligned-9f843` is DEAD — do not use it for anything.** Every config value, RTDB URL, deploy target, and Hosting URL now points at `twoagreeapp`. If you see `aligned-9f843` anywhere, it's a leftover to fix, never a live target.
+- **`.env.production` is committed and Vite ranks it ABOVE `.env.local` for production builds.** It decides what every deployed bundle talks to — if it drifts back to the dead project, the live site breaks silently (auth appears to work, nothing saves). Check it before any deploy.
+- RTDB URL: `https://twoagreeapp-default-rtdb.europe-west1.firebasedatabase.app`
 - Web config (apiKey / messagingSenderId / appId) comes from **console → Project settings → Your apps → Web app**. It is not secret (public by design) but store it via Vite env (`VITE_FIREBASE_*`) with `.env.local` gitignored and a committed `.env.example`.
 
 ---
@@ -239,10 +243,10 @@ database.rules.json        # in git, emulator-tested
 ### `.env.example` (commit this; real values go in gitignored `.env.local`)
 ```
 VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=aligned-9f843.firebaseapp.com
-VITE_FIREBASE_DATABASE_URL=https://aligned-9f843-default-rtdb.europe-west1.firebasedatabase.app
-VITE_FIREBASE_PROJECT_ID=aligned-9f843
-VITE_FIREBASE_STORAGE_BUCKET=aligned-9f843.appspot.com
+VITE_FIREBASE_AUTH_DOMAIN=twoagreeapp.firebaseapp.com
+VITE_FIREBASE_DATABASE_URL=https://twoagreeapp-default-rtdb.europe-west1.firebasedatabase.app
+VITE_FIREBASE_PROJECT_ID=twoagreeapp
+VITE_FIREBASE_STORAGE_BUCKET=twoagreeapp.firebasestorage.app
 VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```

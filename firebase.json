@@ -33,6 +33,13 @@
     ],
     "headers": [
       {
+        "comment": "Catch-all no-cache FIRST so the app shell is never stale. A visit to '/' is rewritten to index.html but matches this rule, not '/index.html' — without it, the root URL cached for an hour and users kept seeing the previous deploy. Later, more specific rules override this.",
+        "source": "**",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0" }
+        ]
+      },
+      {
         "source": "**/*.@(png|ico|svg|woff2|woff)",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
@@ -48,6 +55,12 @@
         "source": "/index.html",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      },
+      {
+        "source": "/assets/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
         ]
       }
     ]

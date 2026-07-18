@@ -13,7 +13,7 @@ firebase deploy --only functions               # Cloud Functions
 firebase deploy
 ```
 
-Live site: https://aligned-9f843.web.app
+Live site: https://twoagree.app (also https://twoagreeapp.web.app)
 
 ## Automated deploy (GitHub Actions)
 
@@ -52,7 +52,7 @@ These need your accounts/decisions — none are code I can finish blind:
 - **Error monitoring.** Recommend **Sentry** (generous free tier). Needs a
   project DSN; then a small `initSentry()` behind an env var.
 - **Staging project.** Optional: a second Firebase project (e.g.
-  `aligned-staging`) as a `.firebaserc` alias for preview before prod.
+  `twoagree-staging`) as a `.firebaserc` alias for preview before prod.
 
 ## Deferred: Phase 5 (native)
 

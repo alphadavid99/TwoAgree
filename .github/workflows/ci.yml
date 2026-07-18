@@ -24,3 +24,10 @@ jobs:
         run: |
           npm --prefix functions ci
           npm --prefix functions run build
+      # Security rules are verified against a real emulator. The RTDB emulator
+      # needs a JVM; ubuntu-latest ships one. Rules that are never tested are
+      # rules nobody can trust (CLAUDE.md §7).
+      - name: Test security rules
+        run: |
+          npm i -g firebase-tools
+          npm run test:rules

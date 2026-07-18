@@ -1,8 +1,10 @@
 # TwoAgree
 
-> Formerly **Aligned**. User-facing copy is now TwoAgree; internal identifiers
-> (Firebase project `aligned-9f843`, localStorage keys) still read `aligned` by
-> design — see CLAUDE.md.
+> Formerly **Aligned**, renamed after **Amos 3:3** — *"Can two walk together,
+> unless they are agreed?"* Live at **[twoagree.app](https://twoagree.app)** on
+> the Firebase project `twoagreeapp`. The old project `aligned-9f843` is dead.
+> Some internal identifiers (localStorage keys, the `aligned` word in scoring
+> vocabulary) still read `aligned` by design — see CLAUDE.md.
 
 A faith-based (non-denominational, Christian) couples compatibility app.
 Two partners answer the same questions independently; their answers are scored
@@ -15,7 +17,7 @@ testers), then iOS + Android via Capacitor wrapping the same codebase.
 ## Stack
 
 - **React + TypeScript + Vite** — the web app (this repo root).
-- **Firebase** (`aligned-9f843`, europe-west1, Blaze):
+- **Firebase** (`twoagreeapp`, europe-west1, Blaze):
   - Realtime Database — session/answer data.
   - Auth — email/password + Google.
   - Cloud Functions (`functions/`) — invites, GDPR export/delete (Phase 3).

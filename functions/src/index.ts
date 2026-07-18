@@ -18,7 +18,7 @@ setGlobalOptions({ region: "europe-west1" });
 initializeApp();
 
 export const healthcheck = onRequest((_req, res) => {
-  res.json({ ok: true, service: "aligned-functions", region: "europe-west1" });
+  res.json({ ok: true, service: "twoagree-functions", region: "europe-west1" });
 });
 
 interface SessionMember {

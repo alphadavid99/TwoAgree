@@ -12,7 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Env — real secrets live in .env.local (never committed); .env.example is the template
+# Env — local overrides are never committed; .env.example is the template.
+# .env.production IS committed on purpose: it holds the public Firebase web
+# config that CI needs to build a deployable bundle (see the notes in it).
+.env
 .env.local
 .env.*.local
 

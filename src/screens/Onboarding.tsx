@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   signInAnonymously,
   linkWithCredential,
@@ -26,7 +26,9 @@ import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { TopBar } from "../components/TopBar";
 import StartMenu from "./StartMenu";
+import RevealScreen from "./RevealScreen";
 import AuthScreen from "./AuthScreen";
+import type { DeckData } from "../lib/scoring";
 import { useT } from "../lib/i18n";
 
 // The onboarding starter: a hand-picked set of warm "Who's more likely to…?"
@@ -54,7 +56,14 @@ type AStep =
   | "invite"
   | "intention"
   | "menu";
-type BStep = "arrive" | "name" | "consent" | "questions";
+type BStep =
+  | "arrive"
+  | "name"
+  | "consent"
+  | "questions"
+  | "reveal"
+  | "account"
+  | "path";
 
 // Onboarding = recruitment (spec v2). Flow A: the person who arrives first —
 // answers, then creates their profile at the invite gate, then invites. Flow B:
@@ -140,6 +149,9 @@ export default function Onboarding({
         const snap = await get(ref(db, `sessions/${c}`));
         const val = snap.val() ?? {};
         setInitiatorName(val?.members?.host?.name ?? "");
+        // The path screen after the reveal is stage-keyed — inherit the stage
+        // the initiator set so the invitee sees the same tailored conversations.
+        if (val?.stage) setStage(val.stage as OnbStage);
         const decks = (val.decks ?? {}) as Record<string, { answers?: Record<string, { host?: unknown }> }>;
         let n = 0;
         for (const s in decks)
@@ -241,22 +253,67 @@ export default function Onboarding({
         () => setStepB("name"),
       );
     }
-    // questions → reveal
+    // questions → reveal → account → path (§ invitee, journey together)
+    if (stepB === "questions") {
+      return (
+        <OnbQuestions
+          code={code}
+          role={role}
+          t={t}
+          partnerName={initiatorName || partner}
+          heading={
+            bankedCount > 0
+              ? t(
+                  `${initiatorName || partner} answered ${bankedCount}. Your turn.`,
+                  `${initiatorName || partner} a répondu à ${bankedCount}. À vous.`,
+                )
+              : t("Your turn.", "À vous.")
+          }
+          onDone={() => setStepB("reveal")}
+        />
+      );
+    }
+    if (stepB === "reveal") {
+      return (
+        <RevealStep
+          code={code}
+          role={role}
+          myName={myName.trim() || t("You", "Vous")}
+          partnerName={initiatorName || partner}
+          onDone={() => setStepB("account")}
+          t={t}
+        />
+      );
+    }
+    if (stepB === "account") {
+      // The account earns its keep here: they've seen the reveal, now they make
+      // it theirs so the two of them can carry on together. NOT framed as
+      // notifications — this is a shared journey, not solo pings (§collaborative).
+      return (
+        <ProfileStep
+          partner={initiatorName || partner}
+          name={myName.trim()}
+          code={code}
+          t={t}
+          heading={t(
+            "You're on this journey together now.",
+            "Vous avancez ensemble désormais.",
+          )}
+          sub={t(
+            "Set up your account so the two of you can carry on — choose where to go next and pick it back up any time.",
+            "Créez votre compte pour continuer tous les deux — choisissez la suite et reprenez quand vous voulez.",
+          )}
+          onDone={() => setStepB("path")}
+          onFallback={() => setFallback(true)}
+        />
+      );
+    }
+    // path — the same "Where would you like to start?" chooser the initiator gets
     return (
-      <OnbQuestions
-        code={code}
-        role={role}
-        t={t}
-        partnerName={initiatorName || partner}
-        heading={
-          bankedCount > 0
-            ? t(
-                `${initiatorName || partner} answered ${bankedCount}. Your turn.`,
-                `${initiatorName || partner} a répondu à ${bankedCount}. À vous.`,
-              )
-            : t("Your turn.", "À vous.")
-        }
-        onDone={() => onDone(code)}
+      <StartMenu
+        stage={stage ?? "dating"}
+        onPick={() => onDone(code)}
+        onSeeAll={() => onDone(code)}
       />
     );
   }
@@ -622,6 +679,66 @@ function OnbQuestions({
   );
 }
 
+// ---- Flow B reveal: the invitee sees where the two of them landed on the
+// warm-ups (the payoff), before being asked to make it theirs with an account.
+// Both partners have answered by now, so the level-0 ceremony is ready; we read
+// the warm-up deck once and hand it to the shared RevealScreen.
+function RevealStep({
+  code,
+  role,
+  myName,
+  partnerName,
+  onDone,
+  t,
+}: {
+  code: string;
+  role: "host" | "guest";
+  myName: string;
+  partnerName: string;
+  onDone: () => void;
+  t: T;
+}) {
+  const [deck, setDeck] = useState<DeckData | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    let live = true;
+    get(ref(db, `sessions/${code}/decks/${STARTER_SLUG}`))
+      .then((snap) => {
+        if (!live) return;
+        setDeck((snap.val() ?? {}) as DeckData);
+        setLoaded(true);
+      })
+      .catch(() => {
+        if (live) setLoaded(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, [code]);
+
+  if (!loaded) {
+    return (
+      <section className="screen-enter">
+        <div className="spin" />
+        <p className="muted center" style={{ fontSize: 14 }}>
+          {t("Bringing it together…", "On rassemble tout…")}
+        </p>
+      </section>
+    );
+  }
+  return (
+    <RevealScreen
+      slug={STARTER_SLUG}
+      level={0}
+      role={role}
+      deck={deck ?? {}}
+      myName={myName}
+      partnerName={partnerName}
+      onDone={onDone}
+    />
+  );
+}
+
 // ---- Create your profile at the invite gate (email/pw or Google + photo) --
 function ProfileStep({
   partner,
@@ -630,6 +747,8 @@ function ProfileStep({
   onDone,
   onFallback,
   t,
+  heading,
+  sub,
 }: {
   partner: string;
   name: string;
@@ -637,6 +756,8 @@ function ProfileStep({
   onDone: () => void;
   onFallback: () => void;
   t: T;
+  heading?: string;
+  sub?: string;
 }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -698,10 +819,12 @@ function ProfileStep({
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       <h1 className="h1 center" style={{ marginTop: 16 }}>
-        {t(`Set up your profile to invite ${partner}.`, `Créez votre profil pour inviter ${partner}.`)}
+        {heading ??
+          t(`Set up your profile to invite ${partner}.`, `Créez votre profil pour inviter ${partner}.`)}
       </h1>
       <p className="sub center" style={{ margin: "8px 24px 10px" }}>
-        {t("This is how we let you know when they answer.", "C'est ainsi que nous vous prévenons quand ils répondent.")}
+        {sub ??
+          t("This is how we let you know when they answer.", "C'est ainsi que nous vous prévenons quand ils répondent.")}
       </p>
 
       <div className="avatarwrap" style={{ marginTop: 6 }}>

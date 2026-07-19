@@ -58,13 +58,18 @@ async function sessionsForUser(uid: string) {
  */
 export const exportMyData = onCall(async (request) => {
   const uid = requireUid(request.auth);
-  const profileSnap = await getDatabase().ref(`users/${uid}`).once("value");
+  const db = getDatabase();
+  const profileSnap = await db.ref(`users/${uid}`).once("value");
+  // The Path intake is special-category data held privately per author — it must
+  // travel with the GDPR export (brief §2.5).
+  const intakeSnap = await db.ref(`intake/${uid}`).once("value");
   const sessions = await sessionsForUser(uid);
 
   return {
     exportedAt: new Date().toISOString(),
     uid,
     profile: profileSnap.val() ?? null,
+    intake: intakeSnap.val() ?? null,
     sessions: Object.fromEntries(sessions),
   };
 });
@@ -121,6 +126,8 @@ export const deleteMyAccount = onCall(async (request) => {
   }
 
   await db.ref(`users/${uid}`).remove();
+  // The Path intake is author-only private data; erasure must purge it too.
+  await db.ref(`intake/${uid}`).remove();
   await getAuth().deleteUser(uid);
 
   logger.info("account deleted", { uid, sessionsUpdated, sessionsDeleted });

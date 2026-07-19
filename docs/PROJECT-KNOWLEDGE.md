@@ -79,6 +79,11 @@ The old knowledge said "single static `index.html`, Aligned, project `aligned-9f
 watching retention, and eventually native (Capacitor wrapping the same build) — but only
 *after* web retention proves out. Native is a packaging step, not a rewrite.
 
+**Because it's live:** the app is already in front of real users, so treat it as a
+production system. Ideas should account for existing users' data, backwards
+compatibility, security, and privacy — not "greenfield, do whatever." Best practices over
+shortcuts (see §6).
+
 ---
 
 ## 3. Question bank (where ideation pays off most)
@@ -152,9 +157,17 @@ people in the UK. Any feature idea should respect:
   reasoned out.
 - **Honest pushback and expert disagreement are wanted, not agreement.** If an idea is
   weak, say so and say why.
-- Recommend **what's best**, but "best" for a solo dev is **lean and shippable**, not
-  maximal. The thing that kills solo apps is over-architecting before anyone proves
-  retention.
+- **This app is LIVE and launched on the web with real users — hold it to production
+  best practices, not shortcuts.** Being a solo developer is a reason to work *lean*
+  (don't build things nobody asked for; don't over-engineer speculative scale), but it is
+  **never** an excuse to cut corners on security, data protection, reliability, accessibility,
+  or correctness. "Lean" means *fewer things, done properly* — not *the same things done
+  cheaply*. When those two pull against each other, **do it right.**
+- Recommend **what's genuinely best**. If the best-practice option costs a bit more effort,
+  say so and recommend it anyway — then note the lean version as the fallback, don't lead
+  with it.
+- Special-category data (religion, sex life, health) on real people in the UK raises the
+  bar further: privacy, consent, and secure handling are not optional polish.
 - When exploring options, make **distinct** choices — minor look-alike variations
   frustrate him.
 

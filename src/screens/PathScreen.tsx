@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { User } from "firebase/auth";
 import { get, ref } from "firebase/database";
 import { db } from "../firebase";
@@ -132,6 +132,119 @@ export function PathFlow({
   return <Lookout onBack={onExit} t={t} />;
 }
 
+// ---- The Path intro: claret hero → a journey that ends at the payoff -------
+// Three waypoints on a lit trail: what it is, what makes it theirs, and — the
+// destination — the alignment they walk away with. Collaborative by design
+// (a shared alignment, never "you beat your partner"; brief §1 "no winner").
+const NodeStart = () => (
+  <svg viewBox="0 0 40 40" width={38} height={38} aria-hidden="true">
+    <circle cx={20} cy={20} r={19} fill="var(--honey)" opacity={0.14} />
+    <circle cx={20} cy={20} r={14} fill="var(--honey)" stroke="var(--honey)" strokeWidth={2} />
+    <path d="M20 12.5a4.6 4.6 0 0 0-2.4 8.5v2h4.8v-2A4.6 4.6 0 0 0 20 12.5Z" fill="none" stroke="var(--berry)" strokeWidth={1.6} />
+    <path d="M17.9 25.4h4.2" stroke="var(--berry)" strokeWidth={1.6} strokeLinecap="round" />
+  </svg>
+);
+const NodeStep = () => (
+  <svg viewBox="0 0 40 40" width={38} height={38} aria-hidden="true">
+    <circle cx={20} cy={20} r={13.5} fill="#fff" stroke="var(--app-orb-line)" strokeWidth={2} />
+    <circle cx={20} cy={20} r={3.4} fill="var(--app-orb-line)" />
+  </svg>
+);
+const NodeEnd = () => (
+  <svg viewBox="0 0 40 40" width={38} height={38} aria-hidden="true">
+    <circle cx={20} cy={20} r={19} fill="var(--ta-honey)" opacity={0.18} />
+    <circle cx={20} cy={20} r={14} fill="var(--berry)" stroke="var(--ta-honey)" strokeWidth={2} />
+    <path d="M20 13v14" stroke="var(--ta-honey)" strokeWidth={1.7} strokeLinecap="round" />
+    <path d="M20 13.5c2.6 0 3.2 1.8 5.4 1.8v4.2c-2.2 0-2.8-1.8-5.4-1.8Z" fill="var(--ta-honey)" />
+  </svg>
+);
+
+export function PathIntro({
+  onBegin,
+  onBrowseDecks,
+  t,
+}: {
+  onBegin: () => void;
+  onBrowseDecks: () => void;
+  t: T;
+}) {
+  const steps: { node: ReactNode; end?: boolean; h: string; s: string }[] = [
+    {
+      node: <NodeStart />,
+      h: t("A journey together", "Un chemin à deux"),
+      s: t(
+        "Ten steps, side by side — from light ground to the deepest questions.",
+        "Dix étapes, côte à côte — du terrain léger aux questions les plus profondes.",
+      ),
+    },
+    {
+      node: <NodeStep />,
+      h: t("Shaped by the two of you", "Façonné par vous deux"),
+      s: t(
+        "Each step is drawn from what you both say matters — tailored to where you are now.",
+        "Chaque étape naît de ce qui compte pour vous deux — adaptée à là où vous en êtes.",
+      ),
+    },
+    {
+      node: <NodeEnd />,
+      end: true,
+      h: t("Where the two of you land", "Où vous vous retrouvez"),
+      s: t(
+        "You arrive at your alignment — how much you agree, how well you know each other, and what's worth talking about.",
+        "Vous arrivez à votre accord — à quel point vous vous rejoignez, vous vous connaissez, et ce qui mérite d'être discuté.",
+      ),
+    },
+  ];
+
+  return (
+    <section className="screen-enter path-intro">
+      <div className="pi-hero">
+        <Wordmark size={22} tone="onClaret" />
+        <p className="pi-eyebrow">{t("A new way to begin", "Une nouvelle façon de commencer")}</p>
+        <h1 className="pi-title">{t("The Path", "Le Chemin")}</h1>
+        <p className="pi-verse">
+          {t("“Can two walk together, unless they are agreed?”", "« Deux marchent-ils ensemble sans s'être accordés ? »")}
+        </p>
+        <p className="pi-vref">Amos 3:3</p>
+      </div>
+
+      <div className="pi-body">
+        <ol className="pi-trail">
+          {steps.map((st, i) => (
+            <li key={i} className={`pi-step${st.end ? " pi-end" : ""}`}>
+              <span className="pi-node">{st.node}</span>
+              <span className="pi-txt">
+                <b>{st.h}</b>
+                <i>{st.s}</i>
+              </span>
+            </li>
+          ))}
+        </ol>
+
+        <p className="pi-privacy">
+          <svg viewBox="0 0 24 24" width={13} height={13} aria-hidden="true">
+            <rect x={5} y={10.5} width={14} height={9} rx={2} fill="none" stroke="currentColor" strokeWidth={1.7} />
+            <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" strokeWidth={1.7} />
+          </svg>
+          {t(
+            `You each answer on your own — neither of you sees the other's until you land.`,
+            `Vous répondez chacun de votre côté — aucun ne voit les réponses de l'autre avant l'arrivée.`,
+          )}
+        </p>
+
+        <div className="pi-cta">
+          <button className="btn pill" type="button" onClick={onBegin}>
+            {t("Begin — just me", "Commencer — juste moi")}
+          </button>
+          <button className="btn ghost" type="button" onClick={onBrowseDecks}>
+            {t("Browse the decks instead", "Parcourir les jeux plutôt")}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ---- Private intake (8 questions) ------------------------------------------
 function PathIntake({
   uid,
@@ -156,41 +269,7 @@ function PathIntake({
   const [busy, setBusy] = useState(false);
 
   if (!started) {
-    return (
-      <section className="screen-enter">
-        <div className="brandhead brand-enter">
-          <Wordmark size={30} />
-        </div>
-        <div className="center" style={{ minHeight: "56dvh" }}>
-          <p className="eyebrow center" style={{ marginTop: 8 }}>{t("A new way to begin", "Une nouvelle façon de commencer")}</p>
-          <h1 className="h1 center" style={{ marginTop: 8 }}>{t("The Path", "Le Chemin")}</h1>
-          <p className="verse serif center" style={{ color: "var(--berry)", fontStyle: "italic", margin: "16px 24px 4px" }}>
-            {t("“Can two walk together, unless they are agreed?”", "« Deux marchent-ils ensemble sans s'être accordés ? »")}
-          </p>
-          <p className="vref center" style={{ color: "var(--sub)" }}>Amos 3:3</p>
-          <div className="card" style={{ margin: "22px 20px 0", background: "var(--blush)", border: "none" }}>
-            <p style={{ lineHeight: 1.55 }}>
-              {t(
-                "Ten steps, laid out for the two of you — from easy ground to the deepest questions, drawn from what each of you says matters most.",
-                "Dix étapes, tracées pour vous deux — du terrain facile aux questions les plus profondes, selon ce qui compte le plus pour chacun.",
-              )}
-            </p>
-            <p style={{ lineHeight: 1.55, marginTop: 10 }}>
-              {t(
-                `First, eight questions just for you. ${partnerName} answers their own. Neither of you ever sees the other's.`,
-                `D'abord, huit questions rien que pour vous. ${partnerName} répond aux siennes. Aucun de vous ne voit celles de l'autre.`,
-              )}
-            </p>
-          </div>
-        </div>
-        <button className="btn pill" type="button" onClick={() => setStarted(true)}>
-          {t("Begin — just me", "Commencer — juste moi")}
-        </button>
-        <button className="btn ghost" type="button" onClick={onBrowseDecks}>
-          {t("Browse the decks instead", "Parcourir les jeux plutôt")}
-        </button>
-      </section>
-    );
+    return <PathIntro onBegin={() => setStarted(true)} onBrowseDecks={onBrowseDecks} t={t} />;
   }
 
   const q: IntakeQuestion = INTAKE[idx];
@@ -287,7 +366,7 @@ function PathWaiting({
   return (
     <section className="screen-enter">
       <div className="brandhead brand-enter">
-        <Wordmark size={30} />
+        <Wordmark size={24} />
       </div>
       <div className="center" style={{ minHeight: "60dvh" }}>
         <h1 className="h1 center">{t("Your part is done.", "Votre part est terminée.")}</h1>

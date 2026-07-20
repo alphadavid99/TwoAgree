@@ -17,7 +17,7 @@ import PartPicker from "./screens/PartPicker";
 import Onboarding from "./screens/Onboarding";
 import StartMenu from "./screens/StartMenu";
 import PathStep from "./screens/PathStep";
-import { PathMap } from "./screens/PathScreen";
+import { PathMap, PathIntro } from "./screens/PathScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -231,6 +231,13 @@ function Preview() {
   }
   if (view === "onboard") return <Onboarding inviteToken={null} onDone={noop} />;
   if (view === "joinb") return <Onboarding inviteToken="demo" onDone={noop} />;
+  if (view === "pathintro")
+    return (
+      <div className="tabwrap">
+        <PathIntro onBegin={noop} onBrowseDecks={noop} t={(en: string) => en} />
+        <FakeNav on="path" />
+      </div>
+    );
   if (view === "pathmap") {
     const pathSession = {
       members: { host: { name: "Sarah", uid: "u1" }, guest: { name: "Judah", uid: "u2" } },

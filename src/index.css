@@ -2917,3 +2917,147 @@ textarea.input {
     animation: none;
   }
 }
+
+/* ---- The Path — intro screen -------------------------------------------------
+   A claret hero (this is the app's centrepiece) over a quiet, ascending trail
+   whose three waypoints answer: what it is, what makes it theirs, and — at the
+   marked destination — the alignment they walk away with. */
+.path-intro {
+  display: flex;
+  flex-direction: column;
+}
+/* Full-bleed the hero: cancel the .phone frame's 22px sides + top padding so
+   the claret panel reaches the screen edges, then re-pad inside. */
+.pi-hero {
+  margin-inline: -22px;
+  margin-top: calc(-1 * (env(safe-area-inset-top, 0px) + 28px));
+  padding: calc(env(safe-area-inset-top, 0px) + 34px) 26px 30px;
+  background: radial-gradient(
+    135% 105% at 50% -10%,
+    var(--berry2) 0%,
+    var(--berry) 60%,
+    var(--ta-claret-deep) 100%
+  );
+  border-radius: 0 0 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 9px;
+}
+.pi-eyebrow {
+  margin: 6px 0 0;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ta-honey-raised);
+}
+.pi-title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.02;
+  color: #fff;
+}
+.pi-verse {
+  margin: 4px 0 0;
+  max-width: 15rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.42;
+  color: var(--ta-honey-raised);
+}
+.pi-vref {
+  margin: 2px 0 0;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: rgba(220, 178, 101, 0.66);
+}
+
+.pi-body {
+  padding: 26px 4px 0;
+  display: flex;
+  flex-direction: column;
+}
+.pi-trail {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* the ascending dotted trail behind the nodes */
+.pi-trail::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 24px;
+  bottom: 24px;
+  border-left: 2px dotted var(--app-orb-line);
+}
+.pi-step {
+  position: relative;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+.pi-node {
+  width: 38px;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  padding-top: 1px;
+}
+.pi-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 3px;
+}
+.pi-txt b {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14.5px;
+  line-height: 1.22;
+  color: var(--ink);
+}
+.pi-txt i {
+  font-style: normal;
+  font-size: 12.5px;
+  line-height: 1.46;
+  color: var(--sub);
+}
+.pi-end .pi-txt b {
+  color: var(--berry);
+}
+
+.pi-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 22px 8px 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--app-mut);
+}
+.pi-privacy svg {
+  flex: none;
+  color: var(--app-amber);
+}
+
+.pi-cta {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

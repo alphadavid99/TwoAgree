@@ -159,7 +159,7 @@ function PathIntake({
     return (
       <section className="screen-enter">
         <div className="brandhead brand-enter">
-          <Wordmark size={30} />
+          <Wordmark size={24} />
         </div>
         <div className="center" style={{ minHeight: "56dvh" }}>
           <p className="eyebrow center" style={{ marginTop: 8 }}>{t("A new way to begin", "Une nouvelle façon de commencer")}</p>
@@ -287,7 +287,7 @@ function PathWaiting({
   return (
     <section className="screen-enter">
       <div className="brandhead brand-enter">
-        <Wordmark size={30} />
+        <Wordmark size={24} />
       </div>
       <div className="center" style={{ minHeight: "60dvh" }}>
         <h1 className="h1 center">{t("Your part is done.", "Votre part est terminée.")}</h1>

@@ -1,5 +1,39 @@
 # iOS native app (Capacitor wrap)
 
+> ## ⏩ RESUME HERE (live status — 2026-07-20)
+>
+> A local Claude Code session is taking over from a cloud session to finish the
+> iOS wrap hands-on. **Current state:**
+>
+> - The app **builds and installs** in the iOS 27 simulator. Console setup is
+>   done: Firebase iOS app added, `GoogleService-Info.plist` in the target,
+>   Apple provider + Services ID (`app.twoagree.web`) configured, signing team
+>   set, capabilities added.
+> - Fixed so far (already committed on this branch): `FirebaseApp.configure()`
+>   in `AppDelegate.swift`; a `SceneDelegate` (also in `AppDelegate.swift`) for
+>   the iOS 26/27 **UIScene lifecycle requirement**.
+> - **The blocker:** the app launches to a **black screen** because `Info.plist`
+>   still points its scene config at a storyboard, which the new SDK rejects
+>   ("no scene delegate set"). Dave has **local, uncommitted** edits to
+>   `ios/App/App/Info.plist` (a pasted `UIApplicationSceneManifest` + a Google
+>   `CFBundleURLTypes` URL scheme) and to `project.pbxproj` (team, plist target
+>   membership, capabilities). Don't clobber those.
+>
+> **Next steps to finish:**
+> 1. In `ios/App/App/Info.plist`, inside the scene config, replace
+>    `UISceneStoryboardFile`/`Main` with
+>    `UISceneDelegateClassName` / `$(PRODUCT_MODULE_NAME).SceneDelegate`.
+> 2. Remove the now-unused top-level `UIMainStoryboardFile` / `Main` key pair.
+> 3. Keep Dave's `CFBundleURLTypes` Google scheme (the `REVERSED_CLIENT_ID` from
+>    `GoogleService-Info.plist`) — it's needed for native Google sign-in callback.
+> 4. `npm run cap:copy` is NOT needed for these native edits — just rebuild in
+>    Xcode (⌘R) or `xcodebuild -scheme App -destination 'generic/platform=iOS Simulator'`.
+> 5. Verify against the §7 checklist below (email, Google, Apple sign-in;
+>    `consents/{uid}` write; invite deep link; in-app account deletion).
+>
+> Then commit the working `ios/` config so the repo matches the machine, and
+> remove this RESUME block.
+
 TwoAgree ships to the App Store as a **Capacitor** wrap of the exact same Vite
 web build — packaging only, no forked app logic. This doc is the handoff: what
 was wired in code, and the Mac/console steps only you (Dave) can do.

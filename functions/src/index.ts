@@ -65,6 +65,11 @@ export const exportMyData = onCall(async (request) => {
   // The Path intake is special-category data held privately per author — it must
   // travel with the GDPR export (brief §2.5).
   const intakeSnap = await db.ref(`intake/${uid}`).once("value");
+  // The Article 9 consent record is deliberately RETAINED past account deletion
+  // (it is our evidence we were permitted to hold the data). Because it outlives
+  // erasure, the subject must at least be able to see it — so it travels with
+  // the export.
+  const consentSnap = await db.ref(`consents/${uid}`).once("value");
   const sessions = await sessionsForUser(uid);
 
   return {
@@ -72,6 +77,7 @@ export const exportMyData = onCall(async (request) => {
     uid,
     profile: profileSnap.val() ?? null,
     intake: intakeSnap.val() ?? null,
+    consent: consentSnap.val() ?? null,
     sessions: Object.fromEntries(sessions),
   };
 });

@@ -54,3 +54,6 @@ functions/lib/
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code worktrees (local isolation, never shared)
+.claude/worktrees/

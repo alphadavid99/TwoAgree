@@ -2,8 +2,15 @@
 // Config comes from Vite env (VITE_FIREBASE_*), loaded from .env.local locally
 // and from the build environment in CI. These values are public by design.
 import { initializeApp } from "firebase/app";
-import { getAuth, connectAuthEmulator, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  initializeAuth,
+  indexedDBLocalPersistence,
+  connectAuthEmulator,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { getDatabase, connectDatabaseEmulator } from "firebase/database";
+import { isNativePlatform } from "./lib/device/platform";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,7 +23,16 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+// Auth storage differs by platform. getAuth() picks browser defaults that
+// assume an http(s) origin; inside the native shell the page is served from
+// capacitor://localhost, where that probe never settles and
+// onAuthStateChanged's first callback never fires — the app sits on
+// "Checking your account…" forever. IndexedDB persistence works under the
+// custom scheme and keeps the session across launches. Web is unchanged.
+export const auth = isNativePlatform()
+  ? initializeAuth(app, { persistence: indexedDBLocalPersistence })
+  : getAuth(app);
 export const db = getDatabase(app);
 export const googleProvider = new GoogleAuthProvider();
 

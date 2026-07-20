@@ -1,38 +1,52 @@
 # iOS native app (Capacitor wrap)
 
-> ## ⏩ RESUME HERE (live status — 2026-07-20)
+> ## ✅ RESOLVED (2026-07-21) — read this before touching the scene setup
 >
-> A local Claude Code session is taking over from a cloud session to finish the
-> iOS wrap hands-on. **Current state:**
+> The black-screen blocker is **fixed**. The app launches and boots through to
+> onboarding on the **iOS 26.5** simulator. The previous RESUME block's plan
+> (name a `UISceneDelegateClassName`, drop `UIMainStoryboardFile`) was carried
+> out in full and **did not work** — kept here so nobody spends another evening
+> re-deriving it.
 >
-> - The app **builds and installs** in the iOS 27 simulator. Console setup is
->   done: Firebase iOS app added, `GoogleService-Info.plist` in the target,
->   Apple provider + Services ID (`app.twoagree.web`) configured, signing team
->   set, capabilities added.
-> - Fixed so far (already committed on this branch): `FirebaseApp.configure()`
->   in `AppDelegate.swift`; a `SceneDelegate` (also in `AppDelegate.swift`) for
->   the iOS 26/27 **UIScene lifecycle requirement**.
-> - **The blocker:** the app launches to a **black screen** because `Info.plist`
->   still points its scene config at a storyboard, which the new SDK rejects
->   ("no scene delegate set"). Dave has **local, uncommitted** edits to
->   `ios/App/App/Info.plist` (a pasted `UIApplicationSceneManifest` + a Google
->   `CFBundleURLTypes` URL scheme) and to `project.pbxproj` (team, plist target
->   membership, capabilities). Don't clobber those.
+> **What was actually wrong, in order:**
 >
-> **Next steps to finish:**
-> 1. In `ios/App/App/Info.plist`, inside the scene config, replace
->    `UISceneStoryboardFile`/`Main` with
->    `UISceneDelegateClassName` / `$(PRODUCT_MODULE_NAME).SceneDelegate`.
-> 2. Remove the now-unused top-level `UIMainStoryboardFile` / `Main` key pair.
-> 3. Keep Dave's `CFBundleURLTypes` Google scheme (the `REVERSED_CLIENT_ID` from
->    `GoogleService-Info.plist`) — it's needed for native Google sign-in callback.
-> 4. `npm run cap:copy` is NOT needed for these native edits — just rebuild in
->    Xcode (⌘R) or `xcodebuild -scheme App -destination 'generic/platform=iOS Simulator'`.
-> 5. Verify against the §7 checklist below (email, Google, Apple sign-in;
->    `consents/{uid}` write; invite deep link; in-app account deletion).
+> 1. `Info.plist` declared a `UIApplicationSceneManifest` naming a storyboard
+>    but no delegate class, so UIKit built no window — "There is no scene
+>    delegate set." Completing that (delegate class named, storyboard key
+>    removed, window built explicitly in code) cleared the error and produced a
+>    window, but the **webview then rendered nothing at all** — verified with
+>    plain static HTML, so not a JS or bundle fault. Safari's inspector showed a
+>    live page with an empty document.
+> 2. Removing the scene manifest to return to Capacitor's stock arrangement made
+>    **iOS 27 hard-crash on launch**, inside
+>    `__UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`. Apple
+>    enforces scene adoption on iOS 27; it is not optional.
+> 3. So: iOS 27 *requires* the scene lifecycle, and **Capacitor 8.4.2's bridge
+>    doesn't render under it**. Those two facts are incompatible, and no
+>    Info.plist edit resolves them.
 >
-> Then commit the working `ios/` config so the repo matches the machine, and
-> remove this RESUME block.
+> **Resolution:** reverted to Capacitor's stock arrangement (no scene manifest,
+> `UIMainStoryboardFile` retained) and build against **iOS 26.5**, where it
+> works. Dave's `CFBundleURLTypes` Google scheme, signing team, entitlements and
+> `GoogleService-Info.plist` are all committed and intact.
+>
+> A second, separate bug surfaced once it launched: the app hung on "Checking
+> your account…" because `getAuth()` assumes an http(s) origin and its storage
+> probe never settles under `capacitor://localhost`, so `onAuthStateChanged`
+> never fired. `src/firebase.ts` now uses `indexedDBLocalPersistence` on native.
+>
+> **Still open — this returns when iOS 27 ships publicly.** Every app will need
+> scene adoption. The fix belongs in Capacitor, not in hand-written Swift here:
+> check for a `@capacitor/ios` release with scene-lifecycle support and upgrade.
+> An unused `SceneDelegate` remains in `AppDelegate.swift` (harmless without a
+> scene manifest), and a fuller attempt is on branch
+> `worktree-ios-scene-delegate`.
+>
+> **Do not build against the iOS 27 simulator** until Capacitor catches up —
+> it will look broken, and it isn't your code.
+>
+> Unticked and needing a real device: the §7 checklist (Google + Apple sign-in,
+> `consents/{uid}` write, invite deep link, in-app deletion).
 
 TwoAgree ships to the App Store as a **Capacitor** wrap of the exact same Vite
 web build — packaging only, no forked app logic. This doc is the handoff: what

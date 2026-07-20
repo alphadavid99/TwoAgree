@@ -52,3 +52,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+
+// The iOS 26/27 SDK requires the UIScene lifecycle. Capacitor's classic template
+// used the app-based window, which the new SDK refuses to launch (black screen /
+// "UIScene life cycle is required"). This scene delegate builds the Capacitor
+// web view's window the modern way and forwards deep links (Google sign-in
+// callback + universal invite links) to Capacitor so those keep working.
+// Declared in Info.plist via UISceneDelegateClassName = $(PRODUCT_MODULE_NAME).SceneDelegate.
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = CAPBridgeViewController()
+        self.window = window
+        window.makeKeyAndVisible()
+
+        if let urlContext = connectionOptions.urlContexts.first {
+            ApplicationDelegateProxy.shared.application(
+                UIApplication.shared, open: urlContext.url, options: [:])
+        }
+        if let activity = connectionOptions.userActivities.first {
+            ApplicationDelegateProxy.shared.application(
+                UIApplication.shared, continue: activity, restorationHandler: { _ in })
+        }
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let urlContext = URLContexts.first else { return }
+        ApplicationDelegateProxy.shared.application(
+            UIApplication.shared, open: urlContext.url, options: [:])
+    }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        ApplicationDelegateProxy.shared.application(
+            UIApplication.shared, continue: userActivity, restorationHandler: { _ in })
+    }
+}

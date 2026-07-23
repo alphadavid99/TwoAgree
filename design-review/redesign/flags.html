@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Before you walk on</title><link rel="stylesheet" href="shared.css">
+<style>
+  .phone { display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .crumb { font: 600 11.5px/1 var(--ui); letter-spacing: .22em; color: var(--app-amber); }
+  .x { width: 38px; height: 38px; border-radius: 50%; background: var(--white); border: 0; color: var(--grey);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px -16px rgba(62,26,46,.4); }
+  .steps { display: flex; gap: 5px; margin-bottom: 26px; }
+  .steps i { flex: 1; height: 4px; border-radius: 2px; background: var(--track); }
+  .steps i.done { background: var(--claret); }
+
+  .walk { background: var(--white); border-radius: 26px; overflow: hidden;
+    box-shadow: 0 26px 54px -30px rgba(62,26,46,.5); }
+  .walk .why { background: linear-gradient(160deg, #4A2038, var(--claret)); color: #F6E7DA; padding: 20px 22px; }
+  .walk .why .k { display: flex; align-items: center; gap: 9px; font: 600 11px/1 var(--ui); letter-spacing: .2em; color: var(--honey-raised); }
+  .walk .why .k svg { width: 15px; height: 15px; }
+  .walk .why p { margin-top: 10px; font: 400 14.5px/1.5 var(--ui); color: #E4C9BC; }
+  .walk .why p b { color: #F6E7DA; font-weight: 600; }
+  .walk .body { padding: 22px; }
+  .walk h2 { font-family: var(--disp); font-weight: 500; font-size: 22px; line-height: 1.25; text-wrap: balance; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
+  .pill { border-radius: 14px; padding: 11px 13px; }
+  .pill .who { display: flex; align-items: center; gap: 6px; font: 600 10.5px/1 var(--ui); letter-spacing: .12em; }
+  .pill .who .av { width: 16px; height: 16px; font-size: 8px; }
+  .pill .what { margin-top: 5px; font: 600 14.5px var(--ui); }
+  .pill.s { background: var(--opt-bg); } .pill.s .who { color: #7B3A5A; }
+  .pill.j { background: #FBEBD3; } .pill.j .who { color: #8F5A12; }
+  .miss { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; font: 400 13.5px var(--ui); color: var(--grey); }
+  .miss .g { display: flex; gap: 8px; align-items: baseline; }
+  .miss .g b { color: var(--ink); }
+  .miss .g .ic { color: var(--danger); font-weight: 700; }
+  .talk { margin-top: 18px; background: #FBF3EC; border: 1px solid #F3E6CF; border-radius: 16px; padding: 15px 17px; }
+  .talk .k { font: 600 10.5px/1 var(--ui); letter-spacing: .18em; color: var(--app-amber); }
+  .talk p { margin-top: 8px; font-family: var(--disp-it); font-style: italic; font-size: 15.5px; line-height: 1.45; color: var(--ink); }
+  .actions { margin-top: auto; padding-top: 26px; }
+  .actions .later { margin-top: 12px; text-align: center; font: 500 14px var(--ui); color: var(--sub); }
+</style></head>
+<body><div class="phone">
+  <div class="top">
+    <span class="crumb">BEFORE YOU WALK ON · 1 OF 3</span>
+    <button class="x" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <div class="steps"><i class="done"></i><i></i><i></i></div>
+
+  <div class="walk">
+    <div class="why on-claret">
+      <span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16.5" r=".5" fill="currentColor"/></svg>NEITHER OF YOU SAW IT COMING</span>
+      <p>A real difference — and <b>you both guessed the other would agree with you.</b> That’s exactly the kind of thing worth a conversation.</p>
+    </div>
+    <div class="body">
+      <h2>Who would own most of the household chores?</h2>
+      <div class="two">
+        <div class="pill s"><span class="who"><span class="av s">S</span>SARAH</span><div class="what">Mostly him</div></div>
+        <div class="pill j"><span class="who"><span class="av j">J</span>JUDAH</span><div class="what">Mostly her</div></div>
+      </div>
+      <div class="miss">
+        <span class="g"><span class="ic">✗</span><span>You thought Judah would say <b>Mostly him</b></span></span>
+        <span class="g"><span class="ic">✗</span><span>Judah thought you’d say <b>Mostly her</b></span></span>
+      </div>
+      <div class="talk">
+        <span class="k">TO GET YOU TALKING</span>
+        <p>What did “owning the chores” look like in each of your homes growing up?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn honey">Next →</button>
+    <p class="later">Save the rest for later</p>
+  </div>
+</div></body></html>

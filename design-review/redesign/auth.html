@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Sign in</title><link rel="stylesheet" href="shared.css">
+<style>
+  .phone { display: flex; flex-direction: column; }
+  .wm { display: flex; justify-content: center; align-items: baseline; margin-top: 34px;
+    font: 400 26px/1 var(--wm); color: var(--claret); }
+  .wm svg { margin: 0 2px; transform: translateY(1px); }
+  .head { text-align: center; margin-top: 40px; }
+  .head h1 { font-family: var(--disp); font-weight: 500; font-size: 30px; }
+  .head p { margin-top: 10px; font: 400 14.5px/1.5 var(--ui); color: var(--grey); }
+  .seg { display: flex; background: var(--opt-bg); border-radius: 999px; padding: 5px; margin: 30px 0 24px; }
+  .seg span { flex: 1; text-align: center; padding: 11px; border-radius: 999px; font: 600 14.5px var(--ui); color: var(--sub); }
+  .seg span.on { background: var(--white); color: var(--ink); box-shadow: 0 6px 16px -8px rgba(62,26,46,.35); }
+  .field { background: var(--white); border: 1.5px solid var(--card-line); border-radius: 16px; padding: 10px 16px 11px; }
+  .field + .field { margin-top: 12px; }
+  .field label { display: block; font: 600 10.5px/1 var(--ui); letter-spacing: .14em; color: var(--sub); text-transform: uppercase; }
+  .field input { width: 100%; border: 0; outline: 0; background: transparent; margin-top: 5px;
+    font: 500 16px var(--ui); color: var(--ink); }
+  .field.focus { border-color: var(--claret); box-shadow: 0 0 0 3px rgba(62,26,46,.08); }
+  .forgot { margin-top: 12px; text-align: right; font: 500 13px var(--ui); color: var(--app-amber); }
+  .go { margin-top: 22px; }
+  .or { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: var(--sub); font: 500 12px var(--ui); letter-spacing: .1em; }
+  .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+    background: var(--white); border: 1.5px solid var(--card-line); border-radius: 999px; padding: 15px;
+    font: 600 15.5px var(--ui); color: var(--ink); }
+  .legal { margin-top: auto; padding-top: 28px; text-align: center; font: 400 12.5px/1.6 var(--ui); color: var(--sub); }
+  .legal b { color: var(--app-amber); font-weight: 600; }
+</style></head>
+<body><div class="phone">
+  <div class="wm">Two<svg class="mark" viewBox="824 921 220 220" width="18" height="23" fill="#3E1A2E"><path d="M 899.862 924.822 L 931.116 924.873 C 924.792 948.339 914.369 977.735 906.723 1001.42 L 862.728 1137.09 L 831.598 1137.05 C 837.714 1114.43 847.64 1086.35 854.954 1063.72 L 899.862 924.822 z"/><path d="M 936.886 924.882 L 968.149 924.866 C 989.722 995.197 1015.72 1066.75 1036.41 1137.01 L 1005.08 1137.08 C 982.589 1067.65 957.822 994.521 936.886 924.882 z"/></svg>gree</div>
+
+  <div class="head">
+    <h1>Welcome back</h1>
+    <p>Pick up where the two of you left off.</p>
+  </div>
+
+  <div class="seg"><span class="on">Sign in</span><span>Create account</span></div>
+
+  <div class="field focus">
+    <label for="em">Email</label>
+    <input id="em" type="email" value="sarah@example.com">
+  </div>
+  <div class="field">
+    <label for="pw">Password</label>
+    <input id="pw" type="password" value="password">
+  </div>
+  <p class="forgot">Forgotten password?</p>
+
+  <div class="go"><button class="btn claret">Sign in</button></div>
+
+  <div class="or">OR</div>
+  <button class="google">
+    <svg width="19" height="19" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.1 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6C12.3 13.4 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.4 5.8c4.4-4.1 7.2-10.1 7.2-17.5z"/><path fill="#FBBC05" d="M10.4 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 15-5.5l-7.4-5.8c-2 1.4-4.6 2.2-7.6 2.2-6.3 0-11.7-3.9-13.6-9.4l-7.8 6C6.5 42.6 14.6 48 24 48z"/></svg>
+    Continue with Google
+  </button>
+
+  <p class="legal">By continuing you agree to how we handle your answers —<br>read our <b>privacy promise</b>. Sensitive things, held carefully.</p>
+</div></body></html>

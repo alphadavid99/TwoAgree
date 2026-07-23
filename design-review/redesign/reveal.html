@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Reveal moment</title><link rel="stylesheet" href="shared.css">
+<style>
+  body { background: radial-gradient(130% 80% at 50% 30%, #542540 0%, var(--claret) 52%, var(--claret-deep) 100%) fixed; }
+  .phone { display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .top .crumb { font: 600 11.5px/1 var(--ui); letter-spacing: .22em; color: var(--honey); }
+  .top .x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(220,178,101,.28);
+    display: flex; align-items: center; justify-content: center; color: #E4C9BC; background: transparent; }
+  .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; }
+  .glow { position: absolute; width: 460px; height: 460px; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(220,178,101,.28), rgba(220,178,101,.06) 55%, transparent 72%); }
+  .ring { position: relative; width: 218px; height: 218px; display: flex; align-items: center; justify-content: center; }
+  .ring svg.arc { position: absolute; inset: 0; }
+  .pair { display: flex; }
+  .pair .av { width: 76px; height: 76px; font-size: 30px; border: 3px solid rgba(246,231,218,.9); }
+  .pair .av.j { margin-left: -14px; }
+  .word { margin-top: 44px; position: relative; }
+  .word .small { font: 600 12px/1 var(--ui); letter-spacing: .3em; color: var(--honey); }
+  .word h1 { margin-top: 14px; font-family: var(--disp); font-weight: 500; font-size: 38px; line-height: 1.15; color: #F6E7DA; }
+  .word h1 em { font-family: var(--disp-it); color: var(--honey-raised); }
+  .word .sub { margin-top: 16px; font: 400 15px/1.55 var(--ui); color: #C7A3B0; max-width: 30ch; margin-left: auto; margin-right: auto; }
+  .foot { padding-top: 30px; }
+  .foot .hint { text-align: center; margin-top: 14px; font: 500 12.5px/1 var(--ui); letter-spacing: .14em; color: #A87F92; }
+  .spark { position: absolute; border-radius: 50%; background: var(--glint); opacity: .8; }
+</style></head>
+<body><div class="phone on-claret">
+  <div class="top">
+    <span class="crumb">HOME · PART 1 OF 2</span>
+    <button class="x" aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+
+  <div class="scene">
+    <div class="glow"></div>
+    <span class="spark" style="width:5px;height:5px;top:16%;left:22%"></span>
+    <span class="spark" style="width:3px;height:3px;top:24%;right:18%"></span>
+    <span class="spark" style="width:4px;height:4px;top:38%;left:12%"></span>
+    <span class="spark" style="width:3px;height:3px;top:34%;right:10%"></span>
+
+    <div class="ring">
+      <svg class="arc" viewBox="0 0 218 218" fill="none">
+        <circle cx="109" cy="109" r="102" stroke="rgba(220,178,101,.22)" stroke-width="2"/>
+        <path d="M 109 7 A 102 102 0 1 1 32 43" stroke="#C6913C" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="pair">
+        <span class="av s">S</span><span class="av j">J</span>
+      </div>
+    </div>
+
+    <div class="word">
+      <span class="small">SEALED UNTIL NOW</span>
+      <h1>You’ve <em>both</em> answered.</h1>
+      <p class="sub">Six questions, answered apart. Here’s where the two of you landed together.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <button class="btn gold-on-claret">See where you landed</button>
+    <p class="hint">TAKES YOU BOTH TO THE SAME NUMBERS</p>
+  </div>
+</div></body></html>

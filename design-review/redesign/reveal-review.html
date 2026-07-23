@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Agreement breakdown</title><link rel="stylesheet" href="shared.css">
+<style>
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .crumb { font: 600 11.5px/1 var(--ui); letter-spacing: .22em; color: var(--app-amber); }
+  .x { width: 38px; height: 38px; border-radius: 50%; background: var(--white); border: 0; color: var(--grey);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px -16px rgba(62,26,46,.4); }
+
+  /* Claret score band — gold where it belongs */
+  .band { background: linear-gradient(165deg, #4A2038, var(--claret) 60%, #331526); border-radius: 26px;
+    padding: 26px 22px 22px; color: #F6E7DA; box-shadow: 0 26px 54px -28px rgba(42,17,32,.6); }
+  .scores { display: flex; justify-content: center; gap: 34px; }
+  .score { text-align: center; }
+  .ringbox { position: relative; width: 118px; height: 118px; margin: 0 auto; }
+  .ringbox svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .ringbox .v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ringbox .v b { font-family: var(--disp); font-weight: 600; font-size: 30px; }
+  .ringbox .v b small { font: 500 14px var(--ui); }
+  .score .lab { margin-top: 10px; font: 600 11px/1 var(--ui); letter-spacing: .2em; }
+  .score .den { margin-top: 5px; font: 400 12px var(--ui); color: #C7A3B0; }
+  .score.known .v b, .score.known .lab { color: var(--honey-raised); }
+  .score.agreed .v b, .score.agreed .lab { color: #F6E7DA; }
+  .bandfoot { margin-top: 18px; padding-top: 15px; border-top: 1px solid rgba(220,178,101,.22);
+    text-align: center; }
+  .bandfoot .verse { font-size: 15px; color: #E4C9BC; }
+  .knowpill { margin: 14px auto 0; display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(220,178,101,.14); border: 1px solid rgba(220,178,101,.32); color: var(--honey-raised);
+    border-radius: 999px; padding: 8px 15px; font: 600 12.5px var(--ui); }
+
+  /* flags strip */
+  .walkon { margin-top: 14px; display: flex; align-items: center; gap: 14px; background: var(--white);
+    border-radius: 20px; padding: 15px 18px; box-shadow: 0 16px 36px -26px rgba(62,26,46,.4); }
+  .walkon .n { flex: none; width: 40px; height: 40px; border-radius: 13px; background: var(--claret);
+    color: var(--honey-raised); display: flex; align-items: center; justify-content: center;
+    font-family: var(--disp); font-weight: 600; font-size: 19px; }
+  .walkon .t b { display: block; font: 600 15px var(--ui); }
+  .walkon .t span { font: 400 13px var(--ui); color: var(--grey); }
+  .walkon .go { margin-left: auto; color: var(--app-amber); }
+
+  .qs { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
+  .qcard { background: var(--white); border-radius: 22px; padding: 18px 18px 16px;
+    box-shadow: 0 16px 36px -28px rgba(62,26,46,.35); }
+  .qcard .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .qcard h3 { font-family: var(--disp); font-weight: 500; font-size: 17.5px; line-height: 1.3; text-wrap: balance; }
+  .ans { margin-top: 14px; }
+  .both { display: flex; align-items: center; gap: 9px; font: 500 14.5px var(--ui); color: var(--sage); }
+  .both b { color: var(--ink); font-weight: 600; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .pill { border-radius: 14px; padding: 10px 13px; }
+  .pill .who { display: flex; align-items: center; gap: 6px; font: 600 10.5px/1 var(--ui); letter-spacing: .12em; }
+  .pill .what { margin-top: 5px; font: 600 14px var(--ui); color: var(--ink); }
+  .pill.s { background: var(--opt-bg); } .pill.s .who { color: #7B3A5A; }
+  .pill.j { background: #FBEBD3; } .pill.j .who { color: #8F5A12; }
+  .pill .who .av { width: 16px; height: 16px; font-size: 8px; }
+  /* scale */
+  .sbar { margin: 20px 4px 4px; }
+  .sbar .track { position: relative; height: 5px; border-radius: 3px; background: var(--track); }
+  .sbar .fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: linear-gradient(90deg, var(--claret-hover), var(--app-honey-deep)); }
+  .sbar .stop { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 26px; height: 26px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font: 600 11px var(--disp); border: 2.5px solid #fff; box-shadow: 0 4px 10px rgba(42,17,32,.25); }
+  .sbar .stop.s { background: var(--claret); color: #F6E7DA; }
+  .sbar .stop.j { background: var(--app-honey-deep); color: #FFF6E8; }
+  .sbar .ends { display: flex; justify-content: space-between; margin-top: 13px; font: 400 12px var(--ui); color: var(--sub); }
+  /* guesses */
+  .guess { margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--card-line);
+    display: flex; flex-direction: column; gap: 5px; font: 400 13px var(--ui); color: var(--grey); }
+  .guess .g { display: flex; align-items: center; gap: 7px; }
+  .guess .ok { color: var(--guess-ok); } .guess .no { color: var(--danger); }
+  .guess b { color: var(--ink); font-weight: 600; }
+  .done { margin: 26px 0 0; }
+</style></head>
+<body><div class="phone">
+  <div class="top">
+    <span class="crumb">HOME · REVIEW</span>
+    <button class="x" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+
+  <div class="band on-claret">
+    <div class="scores">
+      <div class="score known">
+        <div class="ringbox">
+          <svg viewBox="0 0 118 118" fill="none">
+            <circle cx="59" cy="59" r="52" stroke="rgba(220,178,101,.2)" stroke-width="7"/>
+            <circle cx="59" cy="59" r="52" stroke="#C6913C" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="326.7" stroke-dashoffset="58.8"/>
+          </svg>
+          <span class="v"><b>82<small>%</small></b></span>
+        </div>
+        <div class="lab">KNOWN</div><div class="den">18 of 22 guesses right</div>
+      </div>
+      <div class="score agreed">
+        <div class="ringbox">
+          <svg viewBox="0 0 118 118" fill="none">
+            <circle cx="59" cy="59" r="52" stroke="rgba(246,231,218,.18)" stroke-width="7"/>
+            <circle cx="59" cy="59" r="52" stroke="#F3DED6" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="326.7" stroke-dashoffset="205.8"/>
+          </svg>
+          <span class="v"><b>37<small>%</small></b></span>
+        </div>
+        <div class="lab">AGREED</div><div class="den">across 11 questions</div>
+      </div>
+    </div>
+    <div class="bandfoot">
+      <p class="verse">Not a verdict — a place to start talking.</p>
+      <span class="knowpill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>You know each other well</span>
+    </div>
+  </div>
+
+  <div class="walkon">
+    <span class="n">3</span>
+    <span class="t"><b>Before you walk on</b><span>worth a closer look together</span></span>
+    <svg class="go" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+  </div>
+
+  <div class="qs">
+    <div class="qcard">
+      <div class="head"><h3>Who does most of the cooking in your home?</h3><span class="chip agreed"><span class="dot"></span>Agreed</span></div>
+      <div class="ans"><p class="both"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>You both said <b>Mostly him</b></p></div>
+      <div class="guess">
+        <span class="g ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>You called it — and so did Judah.</span>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <div class="head"><h3>Who would own most of the household chores?</h3><span class="chip chat"><span class="dot"></span>Worth a chat</span></div>
+      <div class="ans two">
+        <div class="pill s"><span class="who"><span class="av s">S</span>SARAH</span><div class="what">Mostly him</div></div>
+        <div class="pill j"><span class="who"><span class="av j">J</span>JUDAH</span><div class="what">Mostly her</div></div>
+      </div>
+      <div class="guess">
+        <span class="g ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg><span>You each guessed the other right — a difference you <b>both saw coming</b>.</span></span>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <div class="head"><h3>How tidy do you need our home to be?</h3><span class="chip close"><span class="dot"></span>Close</span></div>
+      <div class="sbar">
+        <div class="track"><span class="fill" style="left:52%;width:23%"></span>
+          <span class="stop s" style="left:52%">S</span><span class="stop j" style="left:75%">J</span>
+        </div>
+        <div class="ends"><span>Relaxed about mess</span><span>Everything in its place</span></div>
+      </div>
+      <div class="guess">
+        <span class="g no"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg><span>Judah thought you’d say <b>5 / 5</b> — you said <b>3</b>.</span></span>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <div class="head"><h3>Should we go to bed at the same time?</h3><span class="chip comp"><span class="dot"></span>Complementary</span></div>
+      <div class="ans two">
+        <div class="pill s"><span class="who"><span class="av s">S</span>SARAH</span><div class="what">Always, if we can</div></div>
+        <div class="pill j"><span class="who"><span class="av j">J</span>JUDAH</span><div class="what">Usually</div></div>
+      </div>
+      <div class="guess"><span class="g">Different answers that fit together — this one scores as aligned.</span></div>
+    </div>
+  </div>
+
+  <div class="done"><button class="btn honey">Done</button></div>
+</div></body></html>

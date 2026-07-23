@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Play</title><link rel="stylesheet" href="shared.css">
+<style>
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .deckchip { display: inline-flex; align-items: center; gap: 9px; background: var(--white); border-radius: 999px;
+    padding: 8px 14px 8px 9px; box-shadow: 0 10px 24px -16px rgba(62,26,46,.4); }
+  .deckchip .di { width: 26px; height: 26px; border-radius: 9px; background: #F4E7DC; color: #8A6040;
+    display: flex; align-items: center; justify-content: center; }
+  .deckchip b { font: 600 13.5px var(--ui); }
+  .deckchip span { font: 500 12px var(--ui); color: var(--sub); }
+  .x { width: 38px; height: 38px; border-radius: 50%; background: var(--white); border: 0; color: var(--grey);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px -16px rgba(62,26,46,.4); }
+  /* Segmented progress — one tick per question in the part (identity purple, Dave's pick) */
+  .segs { display: flex; gap: 5px; margin: 4px 2px 26px; }
+  .segs i { flex: 1; height: 5px; border-radius: 3px; background: var(--track); }
+  .segs i.done { background: var(--claret); }
+  .segs i.cur { background: linear-gradient(90deg, var(--claret) 55%, var(--track) 55%); }
+  .qcount { font: 600 11.5px/1 var(--ui); letter-spacing: .22em; color: var(--app-amber); margin: 0 2px 12px; }
+  .q { font-family: var(--disp); font-weight: 500; font-size: 27px; line-height: 1.22; margin: 0 2px 26px; text-wrap: balance; }
+  .opts { display: flex; flex-direction: column; gap: 12px; }
+  .opt { display: flex; align-items: center; gap: 14px; background: var(--white); border: 1.5px solid var(--card-line);
+    border-radius: 18px; padding: 17px 18px; font: 500 16px var(--ui); color: var(--ink); }
+  .opt .tick { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--orb-line); }
+  .opt.sel { background: var(--opt-bg); border-color: var(--claret); box-shadow: 0 12px 26px -18px rgba(62,26,46,.45); }
+  .opt.sel .tick { border-color: var(--claret); background: var(--claret); position: relative; }
+  .opt.sel .tick::after { content: ""; position: absolute; inset: 0; margin: auto; width: 10px; height: 6px;
+    border-left: 2.5px solid #F6E7DA; border-bottom: 2.5px solid #F6E7DA; transform: rotate(-45deg) translateY(-1px); }
+  .next { margin-top: 28px; }
+  .next .btn { background: var(--claret); color: #F6E7DA; box-shadow: 0 14px 30px -14px rgba(42,17,32,.55); }
+  .skip { margin-top: 14px; text-align: center; font: 500 13.5px var(--ui); color: var(--sub); }
+  .whisper { margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    font: 500 12.5px var(--ui); color: var(--sub); }
+  .whisper .av { width: 20px; height: 20px; font-size: 9px; }
+</style></head>
+<body><div class="phone">
+  <div class="top">
+    <span class="deckchip"><span class="di"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg></span><b>Home</b><span>· Part 1 of 2</span></span>
+    <button class="x" aria-label="Exit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+
+  <div class="segs"><i class="done"></i><i class="done"></i><i class="cur"></i><i></i><i></i><i></i></div>
+  <p class="qcount">QUESTION 3 OF 6</p>
+
+  <h1 class="q">Who does most of the cooking in your home?</h1>
+
+  <div class="opts">
+    <div class="opt"><span class="tick"></span>Mostly him</div>
+    <div class="opt"><span class="tick"></span>Mostly her</div>
+    <div class="opt sel"><span class="tick"></span>Both equally</div>
+    <div class="opt"><span class="tick"></span>We share by meal or day</div>
+  </div>
+
+  <div class="next"><button class="btn">Next →</button></div>
+  <p class="skip">Answer privately — Judah never sees this until you both finish.</p>
+
+  <div class="whisper"><span class="av j">J</span>Judah is on question 5</div>
+</div></body></html>

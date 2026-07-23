@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Talk</title><link rel="stylesheet" href="shared.css">
+<style>
+  .phone { padding-bottom: 90px; }
+  .head { text-align: center; margin: 6px 0 8px; }
+  .head h1 { font-family: var(--disp); font-weight: 500; font-size: 32px; margin-top: 10px; }
+  .head .sub { margin-top: 10px; font: 400 14.5px var(--ui); color: var(--grey); }
+
+  /* Continue hero */
+  .cont { margin-top: 18px; background: var(--white); border-radius: 24px; padding: 18px;
+    box-shadow: 0 22px 48px -28px rgba(62,26,46,.45); display: flex; align-items: center; gap: 14px; }
+  .cont .di { flex: none; width: 46px; height: 46px; border-radius: 15px; background: #EAF1E4; color: #46603A;
+    display: flex; align-items: center; justify-content: center; }
+  .cont .t { min-width: 0; }
+  .cont .t .k { font: 600 10px/1 var(--ui); letter-spacing: .18em; color: var(--app-amber); }
+  .cont .t b { display: block; margin-top: 4px; font: 600 16.5px var(--ui); }
+  .cont .t span { font: 400 13px var(--ui); color: var(--grey); }
+  .cont .go { margin-left: auto; flex: none; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--app-honey); color: var(--app-honey-ink); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 22px -10px rgba(217,150,58,.75); }
+
+  .grouphead { display: flex; align-items: baseline; justify-content: space-between; margin: 28px 2px 10px; }
+  .grouphead b { font-family: var(--disp); font-weight: 600; font-size: 18px; }
+  .grouphead span { font: 400 12.5px var(--ui); color: var(--sub); }
+  .drow .di { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .drow .dl b { display: block; font: 600 15.5px var(--ui); }
+  .drow .dl span { font: 400 12.5px var(--ui); color: var(--grey); }
+  .state { margin-left: auto; text-align: right; }
+  /* progress ticks: one per part */
+  .ticks { display: flex; gap: 4px; justify-content: flex-end; }
+  .ticks i { width: 14px; height: 5px; border-radius: 3px; background: var(--track); }
+  .ticks i.done { background: var(--app-honey-deep); }
+  .ticks i.half { background: linear-gradient(90deg, var(--app-honey-deep) 50%, var(--track) 50%); }
+  .state .word { margin-top: 6px; font: 500 11.5px var(--ui); color: var(--sub); }
+  .state .word.ok { color: var(--sage); font-weight: 600; }
+  .state .word.wait { color: var(--app-amber); font-weight: 600; }
+</style></head>
+<body><div class="phone">
+  <div class="head">
+    <span class="eyebrow">CONVERSATIONS</span>
+    <h1>Where to go next</h1>
+    <p class="sub">1 of 21 complete · 40% agreed so far</p>
+  </div>
+
+  <div class="cont">
+    <span class="di"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></span>
+    <span class="t"><span class="k">CONTINUE WHERE YOU LEFT OFF</span><b>Money · Part 2</b><span>Judah has finished — your turn</span></span>
+    <span class="go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </div>
+
+  <div class="grouphead"><b>Warm-up</b><span>light, easy openers</span></div>
+  <div class="rows">
+    <div class="row drow">
+      <span class="di" style="background:#F4E7DC;color:#8A6040"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg></span>
+      <span class="dl"><b>Home</b><span>2 parts</span></span>
+      <span class="state"><span class="ticks"><i class="done"></i><i class="done"></i></span><span class="word ok">Complete · 37%</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#FBEBD3;color:#8F5A12"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></span>
+      <span class="dl"><b>Fun</b><span>3 parts</span></span>
+      <span class="state"><span class="ticks"><i class="done"></i><i class="half"></i><i></i></span><span class="word wait">Waiting for Judah</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#E9EFE3;color:#5E7A4E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20c6-3 8-8 8-13-5 0-11 2-13 8-1 3 1 5 5 5z"/><path d="M4 20c2-5 5-8 9-10"/></svg></span>
+      <span class="dl"><b>Health</b><span>2 parts</span></span>
+      <span class="state"><span class="ticks"><i></i><i></i></span><span class="word">Not started</span></span>
+    </div>
+  </div>
+
+  <div class="grouphead"><b>Core</b><span>the everyday substance</span></div>
+  <div class="rows">
+    <div class="row drow">
+      <span class="di" style="background:#EAF1E4;color:#46603A"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></span>
+      <span class="dl"><b>Money</b><span>2 parts</span></span>
+      <span class="state"><span class="ticks"><i class="done"></i><i class="half"></i></span><span class="word wait">Your turn · Part 2</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#EFE3F0;color:#682D5C"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v16M7 8h10"/></svg></span>
+      <span class="dl"><b>Faith</b><span>5 parts</span></span>
+      <span class="state"><span class="ticks"><i class="done"></i><i></i><i></i><i></i><i></i></span><span class="word">1 of 5 revealed</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#E9ECF0;color:#6E7A8A"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M14.5 9.5l-1.5 5-3.5 1.5 1.5-5z"/></svg></span>
+      <span class="dl"><b>Roles</b><span>3 parts</span></span>
+      <span class="state"><span class="ticks"><i></i><i></i><i></i></span><span class="word">Not started</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#F0E4EE;color:#7C4B72"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16v13H9l-5 3z"/><path d="M12 5v13"/></svg></span>
+      <span class="dl"><b>Theology</b><span>3 parts</span></span>
+      <span class="state"><span class="ticks"><i></i><i></i><i></i></span><span class="word">Not started</span></span>
+    </div>
+  </div>
+
+  <div class="grouphead"><b>Vulnerable</b><span>when you’re ready</span></div>
+  <div class="rows">
+    <div class="row drow">
+      <span class="di" style="background:#F5E0DC;color:#A8554E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21c-4.5-2.6-8-6-8-10a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 11c0 4-3.5 7.4-8 10z"/></svg></span>
+      <span class="dl"><b>Intimacy</b><span>4 parts</span></span>
+      <span class="state"><span class="ticks"><i></i><i></i><i></i><i></i></span><span class="word">Not started</span></span>
+    </div>
+    <div class="row drow">
+      <span class="di" style="background:#F3E3E0;color:#8A4A3E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg></span>
+      <span class="dl"><b>Conflict</b><span>5 parts</span></span>
+      <span class="state"><span class="ticks"><i class="done"></i><i></i><i></i><i></i><i></i></span><span class="word">1 of 5 revealed</span></span>
+    </div>
+  </div>
+
+  <nav class="bnav">
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg></span>
+    <span class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg>Talk</span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20c4-2 2-7 6-9s7 1 8-7"/><circle cx="5" cy="20" r="1.6"/><circle cx="19" cy="4" r="1.6"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg></span>
+  </nav>
+</div></body></html>

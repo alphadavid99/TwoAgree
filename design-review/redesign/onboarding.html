@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Onboarding</title><link rel="stylesheet" href="shared.css">
+<style>
+  body { background: radial-gradient(120% 90% at 50% -10%, #56243F 0%, var(--claret) 46%, var(--claret-deep) 100%) fixed; }
+  .phone { display: flex; flex-direction: column; padding-top: 0; }
+  .halo { position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 560px; height: 560px;
+    background: radial-gradient(closest-side, rgba(220,178,101,.22), transparent 70%); pointer-events: none; }
+  .wm { display: flex; justify-content: center; align-items: baseline; gap: 1px; margin-top: 84px;
+    font: 400 30px/1 var(--wm); color: #F6E7DA; letter-spacing: .01em; }
+  .wm svg { margin: 0 2px; transform: translateY(1px); }
+  .verse-block { margin-top: 64px; text-align: center; }
+  .verse-block .q { font-family: var(--disp); font-weight: 500; font-size: 34px; line-height: 1.22;
+    color: #F6E7DA; text-wrap: balance; }
+  .verse-block .q em { font-family: var(--disp-it); font-style: italic; color: var(--honey-raised); }
+  .verse-block .ref { margin-top: 22px; display: inline-flex; align-items: center; gap: 12px;
+    font: 600 12px/1 var(--ui); letter-spacing: .26em; color: var(--honey); }
+  .verse-block .ref::before, .verse-block .ref::after { content: ""; width: 34px; height: 1px; background: rgba(198,145,60,.5); }
+  .vows { margin: 58px 8px 0; display: flex; flex-direction: column; gap: 0; }
+  .vow { display: flex; gap: 16px; padding: 17px 4px; align-items: flex-start; }
+  .vow + .vow { border-top: 1px solid rgba(220,178,101,.16); }
+  .vow .g { flex: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: rgba(220,178,101,.13); color: var(--honey-raised); }
+  .vow .g svg { width: 15px; height: 15px; }
+  .vow p { font: 400 15.5px/1.5 var(--ui); color: #E4C9BC; padding-top: 4px; }
+  .vow p b { color: #F6E7DA; font-weight: 600; }
+  .cta { margin-top: auto; padding-top: 48px; }
+  .cta .sub { text-align: center; margin-top: 16px; font: 400 13.5px var(--ui); color: #B08D9C; }
+</style></head>
+<body><div class="phone on-claret">
+  <div class="halo"></div>
+
+  <div class="wm">Two<svg class="mark" viewBox="824 921 220 220" width="21" height="27" fill="#C6913C"><path d="M 899.862 924.822 L 931.116 924.873 C 924.792 948.339 914.369 977.735 906.723 1001.42 L 862.728 1137.09 L 831.598 1137.05 C 837.714 1114.43 847.64 1086.35 854.954 1063.72 L 899.862 924.822 z"/><path d="M 936.886 924.882 L 968.149 924.866 C 989.722 995.197 1015.72 1066.75 1036.41 1137.01 L 1005.08 1137.08 C 982.589 1067.65 957.822 994.521 936.886 924.882 z"/></svg>gree</div>
+
+  <div class="verse-block">
+    <p class="q">“Can two walk together,<br>unless they are <em>agreed?</em>”</p>
+    <span class="ref">AMOS 3 : 3</span>
+  </div>
+
+  <div class="vows">
+    <div class="vow">
+      <span class="g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 21V9l4-5 4 5v12"/><path d="M4 21h16"/></svg></span>
+      <p><b>It takes two.</b> Nothing happens until you’re both in.</p>
+    </div>
+    <div class="vow">
+      <span class="g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+      <p><b>Sealed until you’ve both answered.</b> Neither of you sees the other’s answers early.</p>
+    </div>
+    <div class="vow">
+      <span class="g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21c-4.5-2.6-8-6-8-10a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 11c0 4-3.5 7.4-8 10z"/></svg></span>
+      <p><b>No winner, no verdict.</b> It opens a conversation — it doesn’t judge it.</p>
+    </div>
+  </div>
+
+  <div class="cta">
+    <button class="btn gold-on-claret">Walk together</button>
+    <p class="sub">Two minutes to set up · free while we grow</p>
+  </div>
+</div></body></html>

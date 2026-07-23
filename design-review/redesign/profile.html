@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Profile</title><link rel="stylesheet" href="shared.css">
+<style>
+  .phone { padding-bottom: 90px; }
+  .idcard { background: linear-gradient(165deg, #4A2038, var(--claret) 62%, #331526); border-radius: 26px;
+    padding: 26px 22px; color: #F6E7DA; text-align: center; box-shadow: 0 26px 54px -28px rgba(42,17,32,.6); }
+  .idcard .av { width: 86px; height: 86px; font-size: 34px; margin: 0 auto; border: 3px solid rgba(220,178,101,.65);
+    box-shadow: 0 0 0 6px rgba(220,178,101,.12); }
+  .idcard h1 { margin-top: 14px; font-family: var(--disp); font-weight: 500; font-size: 26px; }
+  .idcard .bio { margin-top: 8px; font: 400 13.5px/1.5 var(--ui); color: #D9B9C6; max-width: 30ch; margin-left: auto; margin-right: auto; }
+  .idcard .pairline { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(220,178,101,.22);
+    font: 500 13px var(--ui); color: var(--honey-raised); text-align: center; }
+  .idcard .pairline > * { vertical-align: middle; }
+  .idcard .pairline .av { margin: 0 6px; }
+  .idcard .pairline .av { width: 22px; height: 22px; font-size: 10px; border-width: 1.5px; box-shadow: none; }
+  .edit { margin-top: 14px; display: flex; gap: 10px; }
+  .edit .btn { padding: 13px; font-size: 14.5px; }
+
+  .setrow .ic { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .setrow .sl { min-width: 0; }
+  .setrow .sl b { display: block; font: 600 15px var(--ui); }
+  .setrow .sl span { font: 400 12.5px var(--ui); color: var(--grey); }
+  .setrow .val { margin-left: auto; font: 500 13.5px var(--ui); color: var(--sub); display: flex; align-items: center; gap: 6px; }
+  .setrow .go { color: var(--orb-line); }
+  .langseg { margin-left: auto; display: flex; background: var(--opt-bg); border-radius: 999px; padding: 3px; }
+  .langseg span { padding: 6px 13px; border-radius: 999px; font: 600 12.5px var(--ui); color: var(--sub); }
+  .langseg span.on { background: var(--white); color: var(--ink); box-shadow: 0 4px 10px -5px rgba(62,26,46,.4); }
+  .danger { color: var(--danger) !important; }
+  .foot { margin-top: 22px; text-align: center; font: 400 12px/1.7 var(--ui); color: var(--sub); }
+</style></head>
+<body><div class="phone">
+  <div class="idcard on-claret">
+    <span class="av s">S</span>
+    <h1>Sarah</h1>
+    <p class="bio">Trainee midwife, hopeless with houseplants, always up for a late-night theology debate.</p>
+    <div class="pairline"><span>Walking with</span><span class="av j">J</span><span>Judah · since March</span></div>
+  </div>
+  <div class="edit">
+    <button class="btn outline">Edit profile</button>
+    <button class="btn outline">Change photo</button>
+  </div>
+
+  <div class="slab"><b>Preferences</b></div>
+  <div class="rows">
+    <div class="row setrow">
+      <span class="ic" style="background:var(--opt-bg);color:#7B3A5A"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg></span>
+      <span class="sl"><b>Language</b></span>
+      <span class="langseg"><span class="on">EN</span><span>FR</span></span>
+    </div>
+    <div class="row setrow">
+      <span class="ic" style="background:#FBEBD3;color:#8F5A12"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 2 8 2 8H4s2-1 2-8"/><path d="M10 21h4"/></svg></span>
+      <span class="sl"><b>Nudges</b><span>a gentle one, only when it’s your turn</span></span>
+      <span class="val">On<svg class="go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span>
+    </div>
+  </div>
+
+  <div class="slab"><b>Your session</b></div>
+  <div class="rows">
+    <div class="row setrow">
+      <span class="ic" style="background:#EFE3F0;color:#7C4B72"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span>
+      <span class="sl"><b>Session code</b><span>share to reconnect a device</span></span>
+      <span class="val">DEMO42<svg class="go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span>
+    </div>
+    <div class="row setrow">
+      <span class="ic" style="background:#F3E3E0;color:#8A4A3E"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></span>
+      <span class="sl"><b>Leave this session</b><span>your answers stay with the session</span></span>
+      <svg class="go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="slab"><b>Your data</b><span>held carefully</span></div>
+  <div class="rows">
+    <div class="row setrow">
+      <span class="ic" style="background:#EAF1E4;color:#46603A"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg></span>
+      <span class="sl"><b>Export my data</b><span>everything, as a file you keep</span></span>
+      <svg class="go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div class="row setrow">
+      <span class="ic" style="background:#F7E3E5;color:#B23A48"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></span>
+      <span class="sl"><b class="danger">Delete my account</b><span>erases everything, both sides confirmed</span></span>
+      <svg class="go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <p class="foot">Signed in as sarah@example.com · <b style="color:var(--app-amber)">Privacy policy</b><br>Sign out</p>
+
+  <nav class="bnav">
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20c4-2 2-7 6-9s7 1 8-7"/><circle cx="5" cy="20" r="1.6"/><circle cx="19" cy="4" r="1.6"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span>
+    <span class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>You</span>
+  </nav>
+</div></body></html>

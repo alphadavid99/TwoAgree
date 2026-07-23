@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign — Home</title><link rel="stylesheet" href="shared.css">
+<style>
+  .phone.flush { padding-bottom: 90px; }
+  /* Claret morning panel that hands over to the blush ground */
+  .morn { background: linear-gradient(168deg, #4A2038 0%, var(--claret) 55%, #331526 100%);
+    border-radius: 0 0 34px 34px; padding: 54px 22px 26px; color: #F6E7DA; position: relative; overflow: hidden; }
+  .morn .haze { position: absolute; top: -120px; right: -80px; width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(220,178,101,.2), transparent 70%); }
+  .mhead { display: flex; align-items: center; justify-content: space-between; position: relative; }
+  .couple { display: flex; align-items: center; gap: 10px; }
+  .couple .av { width: 34px; height: 34px; font-size: 14px; border: 2px solid rgba(246,231,218,.85); }
+  .couple .av.j { margin-left: -12px; }
+  .couple b { font: 600 14.5px var(--ui); color: #F6E7DA; }
+  .gear { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(220,178,101,.3);
+    display: flex; align-items: center; justify-content: center; color: #DCB265; background: transparent; }
+  .greet { position: relative; margin-top: 30px; }
+  .greet .eyebrow { color: var(--honey-raised); }
+  .greet h1 { font-family: var(--disp); font-weight: 500; font-size: 36px; line-height: 1.08; margin-top: 10px; }
+  .greet h1 em { font-family: var(--disp-it); color: var(--honey-raised); }
+  .stats { position: relative; display: flex; gap: 0; margin-top: 26px; padding-top: 20px;
+    border-top: 1px solid rgba(220,178,101,.22); }
+  .stat { flex: 1; }
+  .stat + .stat { border-left: 1px solid rgba(220,178,101,.22); padding-left: 20px; }
+  .stat .n { font-family: var(--disp); font-weight: 600; font-size: 30px; color: var(--honey-raised); }
+  .stat .n small { font: 500 13px var(--ui); color: #C7A3B0; margin-left: 4px; }
+  .stat .l { margin-top: 3px; font: 500 12.5px var(--ui); color: #C7A3B0; }
+
+  /* Continue hero */
+  .hero { margin: -0px 22px 0; transform: translateY(26px); background: var(--white); border-radius: 26px;
+    padding: 20px 20px 18px; box-shadow: 0 26px 54px -26px rgba(42,17,32,.5); }
+  .hero .top { display: flex; align-items: center; gap: 13px; }
+  .hero .dicon { width: 46px; height: 46px; border-radius: 15px; background: #F4E7DC; color: #8A6040;
+    display: flex; align-items: center; justify-content: center; }
+  .hero .dicon svg { width: 22px; height: 22px; }
+  .hero .t b { display: block; font: 600 17px var(--ui); }
+  .hero .t span { font: 400 13.5px var(--ui); color: var(--grey); }
+  .hero .pct { margin-left: auto; font-family: var(--disp); font-weight: 600; font-size: 21px; color: var(--app-amber); }
+  .hero .bar { margin-top: 16px; height: 7px; border-radius: 4px; background: var(--track); overflow: hidden; }
+  .hero .bar i { display: block; height: 100%; width: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--app-honey-deep), var(--app-honey)); }
+  .hero .btn { margin-top: 16px; padding: 15px 22px; font-size: 16px; }
+
+  .below { padding: 54px 22px 0; }
+  .rrow .rl b { display: block; font: 600 15.5px var(--ui); }
+  .rrow .rl span { font: 400 13px var(--ui); color: var(--grey); }
+  .rrow .pcts { margin-left: auto; display: flex; align-items: baseline; gap: 3px;
+    font: 600 15px var(--ui); color: var(--app-amber); }
+  .rrow .pcts small { font: 500 11px var(--ui); color: var(--sub); letter-spacing: .06em; }
+  .rrow .go { color: var(--orb-line); }
+  .dot { width: 34px; height: 34px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
+  .browse { margin: 20px 0 0; text-align: center; font: 600 14.5px var(--ui); color: var(--app-amber); }
+</style></head>
+<body><div class="phone flush">
+  <div class="morn on-claret">
+    <div class="haze"></div>
+    <div class="mhead">
+      <span class="couple"><span class="av s">S</span><span class="av j">J</span><b>Sarah &amp; Judah</b></span>
+      <button class="gear" aria-label="Settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.7h4l.4-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.06-.4.1-.8.1-1.2z"/></svg></button>
+    </div>
+    <div class="greet">
+      <span class="eyebrow">WEDNESDAY · 23 JULY</span>
+      <h1>Good morning,<br><em>Sarah</em></h1>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">1<small>of 21</small></div><div class="l">conversations complete</div></div>
+      <div class="stat"><div class="n">40<small>%</small></div><div class="l">agreed so far</div></div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="top">
+      <span class="dicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg></span>
+      <span class="t"><b>Home</b><span>All parts revealed · finished together</span></span>
+      <span class="pct">37%</span>
+    </div>
+    <div class="bar"><i></i></div>
+    <button class="btn honey">See where you agree →</button>
+  </div>
+
+  <div class="below">
+    <div class="slab"><b>Recent reveals</b><span>latest first</span></div>
+    <div class="rows">
+      <div class="row rrow">
+        <span class="dot" style="background:#F3E3E0;color:#8A4A3E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12a8 8 0 1 1-3-6.2"/><path d="M21 5v5h-5"/></svg></span>
+        <span class="rl"><b>Conflict</b><span>Closest agreement</span></span>
+        <span class="pcts">53<small>%</small></span>
+        <svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="row rrow">
+        <span class="dot" style="background:#FBEBD3;color:#8F5A12"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></span>
+        <span class="rl"><b>Fun</b><span>Most worth a conversation</span></span>
+        <span class="pcts">19<small>%</small></span>
+        <svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <p class="browse">Browse all conversations</p>
+  </div>
+
+  <nav class="bnav">
+    <span class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg>Home</span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20c4-2 2-7 6-9s7 1 8-7"/><circle cx="5" cy="20" r="1.6"/><circle cx="19" cy="4" r="1.6"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span>
+    <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg></span>
+  </nav>
+</div></body></html>

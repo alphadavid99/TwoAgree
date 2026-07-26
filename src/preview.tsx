@@ -4,7 +4,8 @@
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { signInAnonymously } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
+import { ref, update } from "firebase/database";
 import "./brand/tokens.css"; // brand tokens first — the app loads these via main.tsx
 import "./index.css";
 import { ORDER, DECKS, type Question } from "./lib/questions";
@@ -30,12 +31,37 @@ import { IconHome, IconDecks, IconResults, IconProfile } from "./components/icon
 
 const noop = () => {};
 
-// The harness drives real screens, so the ones that write (PlayScreen, PathStep)
-// need a signed-in user or every answer is rejected by the rules and the flow
-// stalls. Emulator only — never mint anonymous users against live Firebase just
-// to take a screenshot.
-if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS !== "false") {
-  void signInAnonymously(auth).catch(() => {});
+// The harness drives REAL screens, and the ones that write (PlayScreen,
+// PathStep) are governed by the security rules: an answer is only accepted from
+// a signed-in member writing their own role. Without a seat every write is
+// denied and the flow stalls mid-question, so the harness signs in anonymously
+// and creates its own session, keyed to the uid so re-runs never collide with a
+// session another anonymous user owns.
+// Emulator only — never mint anonymous users or sessions against live Firebase
+// just to take a screenshot.
+const EMU =
+  import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS !== "false";
+
+async function seatHarness(): Promise<string> {
+  const cred = await signInAnonymously(auth);
+  const uid = cred.user.uid;
+  const code = ("P" + uid.replace(/[^a-z0-9]/gi, "").slice(0, 3)).toUpperCase();
+  await update(ref(db, `sessions/${code}`), {
+    created: Date.now(),
+    "members/host/name": "Sarah Elizabeth",
+    "members/host/uid": uid,
+    [`uids/${uid}`]: true,
+  });
+  return code;
+}
+
+let HARNESS_CODE = "ABCD";
+if (EMU) {
+  try {
+    HARNESS_CODE = await seatHarness();
+  } catch (e) {
+    console.warn("[preview] no seat — write flows will be denied", e);
+  }
 }
 
 function answerFor(qType: string, opts: string[] | undefined, who: "host" | "guest", i: number): AnswerValue {
@@ -298,7 +324,7 @@ function Preview() {
     } as unknown as Session;
     return (
       <PathStep
-        code="ABCD"
+        code={HARNESS_CODE}
         role="host"
         session={s}
         index={1}
@@ -319,7 +345,7 @@ function Preview() {
     const q = new URLSearchParams(window.location.search);
     return (
       <PlayScreen
-        code="ABCD"
+        code={HARNESS_CODE}
         slug={q.get("slug") ?? slugC}
         level={Number(q.get("level") ?? 0)}
         role="host"

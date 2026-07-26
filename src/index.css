@@ -3860,3 +3860,121 @@ textarea.input {
   margin-top: 6px;
   font-style: italic;
 }
+
+/* ============================================================
+   The stones — one per question in the part, alive in every phase.
+   Answering fills the current stone; the guess completes it. Replaces a bar
+   that unmounted during the guess step and filled on arrival rather than on
+   anything the couple had actually done.
+   ============================================================ */
+.qstones {
+  display: flex;
+  gap: 4px;
+  margin-top: 14px;
+}
+.qstones i {
+  flex: 1;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--track);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.qstones i.full {
+  background: var(--app-honey);
+}
+/* answered, guess still to come */
+.qstones i.half::after {
+  content: "";
+  position: absolute;
+  inset: 0 50% 0 0;
+  background: var(--app-honey);
+  border-radius: 99px;
+  animation: stoneFill 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes stoneFill {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+.qstones i.cur {
+  outline: 1.5px solid var(--app-honey-deep);
+  outline-offset: 1.5px;
+}
+
+/* Importance, folded onto the answer card. */
+.impinline {
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px dashed var(--app-card-line);
+  animation: paneIn 0.28s ease both;
+}
+.impinline-q {
+  font-size: 12.5px;
+  color: var(--sub);
+  margin-bottom: 9px;
+}
+.impinline-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.impdot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--app-orb-line);
+  background: var(--ta-white);
+  color: var(--sub);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.impdot:active {
+  transform: scale(0.92);
+}
+.impdot.on {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+  /* dark ink on gold — white here measures 2.08:1 */
+  color: var(--app-honey-ink);
+}
+.impinline-ends {
+  font-size: 11px;
+  color: var(--mut);
+  margin-left: 2px;
+}
+
+/* "YOU SAID …" is the way back to a mis-tapped answer. */
+.yousaid-edit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.yousaid-change {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--berry);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  flex: 0 0 auto;
+}

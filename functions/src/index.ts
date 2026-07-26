@@ -14,6 +14,7 @@ import { getDatabase } from "firebase-admin/database";
 import { getAuth } from "firebase-admin/auth";
 import { randomUUID } from "node:crypto";
 import { composePath, type Intake } from "./composePath.js";
+import { redactSessionForSubject, type RawSession } from "./redact.js";
 
 setGlobalOptions({ region: "europe-west1" });
 initializeApp();
@@ -78,7 +79,16 @@ export const exportMyData = onCall(async (request) => {
     profile: profileSnap.val() ?? null,
     intake: intakeSnap.val() ?? null,
     consent: consentSnap.val() ?? null,
-    sessions: Object.fromEntries(sessions),
+    // Narrowed to the caller's own answers. A session node holds BOTH partners
+    // under host/guest, so returning it whole handed the other person's
+    // Article 9 answers to someone who never should have received them — see
+    // redact.ts for the reasoning.
+    sessions: Object.fromEntries(
+      sessions.map(([code, s]) => [
+        code,
+        redactSessionForSubject(s as RawSession, uid),
+      ]),
+    ),
   };
 });
 

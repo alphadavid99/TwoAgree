@@ -325,8 +325,8 @@ export default function ProfileScreen({
           </button>
           <p className="datahint">
             {t(
-              "The machine-readable record, for moving your data to another service.",
-              "L’enregistrement lisible par machine, pour transférer vos données ailleurs.",
+              "The same information, machine-readable, for moving your data to another service.",
+              "Les mêmes informations, lisibles par machine, pour transférer vos données ailleurs.",
             )}
           </p>
         </div>

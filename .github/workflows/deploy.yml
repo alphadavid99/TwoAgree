@@ -7,9 +7,22 @@ name: Deploy to Firebase Hosting
 #
 # The public Firebase web config lives in the committed .env.production, so no
 # repo Variables are needed. Until the secret exists this job runs but no-ops,
-# keeping main green. Database rules (database.rules.json) deploy here too, so a
-# rules change (e.g. the consents node) reaches production without a manual step.
-# Cloud Functions are still deployed manually (`firebase deploy --only functions`).
+# keeping main green. Cloud Functions and the database rules deploy here too, so
+# a rules change (e.g. the consents node) reaches production without a manual
+# step.
+#
+# ORDERING, and why the later steps use `!cancelled()`:
+# Functions go first so that in the normal case the front-end never goes live
+# pointing at a function that isn't there. But a *failed* Functions deploy used
+# to skip Hosting entirely — and a Functions deploy can fail for reasons that
+# have nothing to do with the app (a missing Secret Manager entry, an Eventarc
+# IAM binding CI isn't allowed to grant). That turned infrastructure hiccups
+# into "the site silently stayed on the previous build while the PR check sat
+# green", which cost three release attempts on 26 Jul.
+# So Hosting and the rules now deploy even if Functions failed. The job still
+# goes RED, and the summary says plainly what shipped and what didn't. A
+# front-end that genuinely needs a brand-new function ships behind a flag —
+# that's the existing pattern (VITE_PATH_ENABLED), and it's the right one.
 on:
   push:
     branches: [main]
@@ -50,26 +63,28 @@ jobs:
       # unset one simply leaves the feature off.
       #   Secret   SENTRY_DSN         (Settings → Secrets → Actions)
       #   Variable PLAUSIBLE_DOMAIN   (Settings → Variables → Actions)
-      - if: steps.gate.outputs.ready == 'true'
+      - id: build
+        if: steps.gate.outputs.ready == 'true'
         run: npm run build
         env:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
           VITE_BUILD_SHA: ${{ github.sha }}
 
-      # Deploy the Cloud Functions (generatePath, invites, GDPR) BEFORE Hosting,
-      # so the front-end never goes live pointing at a function that isn't there.
-      # Was a manual step; automated here now that the Path depends on it.
+      # Cloud Functions (generatePath, invites, GDPR, and — once enabled — the
+      # reveal-ready email). First, so the happy path publishes them before the
+      # front-end that calls them. See the ordering note at the top of the file
+      # for why a failure here no longer stops the release.
       - name: Deploy Cloud Functions (live)
+        id: functions
         if: steps.gate.outputs.ready == 'true'
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          # Binds the RESEND_API_KEY secret to the reveal-ready email trigger.
-          # Leave unset until the secret actually exists: deploying a function
-          # that references a missing Secret Manager entry fails outright, and
-          # Functions deploy BEFORE Hosting — so it would stop the site from
-          # updating at all. Set the repo Variable NOTIFY_EMAIL_ENABLED=true in
-          # the same sitting as `firebase functions:secrets:set RESEND_API_KEY`.
+          # Binds the RESEND_API_KEY secret to the reveal-ready email trigger and
+          # exports the trigger at all. Leave unset until BOTH the secret exists
+          # and the Eventarc IAM roles have been granted by a project owner —
+          # docs/DEPLOY.md has the three gcloud commands. Turning it on without
+          # them fails this step (though no longer the whole release).
           NOTIFY_EMAIL_ENABLED: ${{ vars.NOTIFY_EMAIL_ENABLED }}
         run: |
           npm --prefix functions ci
@@ -81,8 +96,16 @@ jobs:
             --non-interactive
           rm -f "$RUNNER_TEMP/sa.json"
 
+      # `!cancelled()` rather than `success()`: the site must still ship when the
+      # Functions step failed for an infrastructure reason. A failed Functions
+      # deploy leaves the PREVIOUS generation of functions running, so the app
+      # lands on a working backend, just not a newer one.
       - name: Deploy to Firebase Hosting (live)
-        if: steps.gate.outputs.ready == 'true'
+        id: hosting
+        # Requires the BUILD to have succeeded — `!cancelled()` alone would
+        # happily publish a stale or half-written dist. It deliberately does not
+        # require the Functions step.
+        if: ${{ !cancelled() && steps.gate.outputs.ready == 'true' && steps.build.outcome == 'success' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -94,8 +117,13 @@ jobs:
       # The Hosting action above never touches rules, so without this the
       # committed rules (e.g. the consents/{uid} node onboarding writes to)
       # never reach production and those writes get PERMISSION_DENIED.
+      # These are SECURITY rules — the last thing that should be held hostage by
+      # an unrelated Functions failure, hence `!cancelled()` here too.
       - name: Deploy Realtime Database rules (live)
-        if: steps.gate.outputs.ready == 'true'
+        id: rules
+        # database.rules.json is a committed file — this needs neither the build
+        # nor the functions, only credentials.
+        if: ${{ !cancelled() && steps.gate.outputs.ready == 'true' }}
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
@@ -106,3 +134,36 @@ jobs:
             --project twoagreeapp \
             --non-interactive
           rm -f "$RUNNER_TEMP/sa.json"
+
+      # Say what actually shipped. A red job with no explanation is how "the
+      # deploy failed" gets misread as "nothing went out" — or worse, how a
+      # green-looking PR check gets misread as "it's live".
+      - name: Report what shipped
+        if: ${{ !cancelled() && steps.gate.outputs.ready == 'true' }}
+        env:
+          FUNCTIONS: ${{ steps.functions.outcome }}
+          HOSTING: ${{ steps.hosting.outcome }}
+          RULES: ${{ steps.rules.outcome }}
+        run: |
+          mark() {
+            case "$1" in
+              success) echo "✅ shipped" ;;
+              skipped) echo "⏭️ skipped" ;;
+              *)       echo "❌ failed" ;;
+            esac
+          }
+          {
+            echo "### Deploy result"
+            echo ""
+            echo "| Target | Result |"
+            echo "| --- | --- |"
+            echo "| Cloud Functions | $(mark "$FUNCTIONS") |"
+            echo "| Hosting (the site) | $(mark "$HOSTING") |"
+            echo "| Database rules | $(mark "$RULES") |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$HOSTING" != "success" ]; then
+            echo "::error title=The site did NOT update::Hosting did not ship, so twoagree.app is still on the previous build."
+          elif [ "$FUNCTIONS" != "success" ]; then
+            echo "::error title=Site shipped, Cloud Functions did not::twoagree.app IS updated and running against the PREVIOUS generation of functions. Common causes: a Secret Manager entry that does not exist, or Eventarc IAM roles CI cannot grant — see docs/DEPLOY.md."
+          fi

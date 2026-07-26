@@ -474,7 +474,12 @@ export default function SessionApp({
             />
           )}
           {tab === "profile" && (
-            <ProfileScreen user={user} onLeave={onLeave} code={code} />
+            <ProfileScreen
+              user={user}
+              onLeave={onLeave}
+              code={code}
+              partnerName={partnerName}
+            />
           )}
         </div>
       </div>

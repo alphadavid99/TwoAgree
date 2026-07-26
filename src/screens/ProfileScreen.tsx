@@ -14,9 +14,12 @@ export default function ProfileScreen({
   user,
   onLeave,
   code,
+  partnerName,
 }: {
   user: User;
   onLeave?: () => void;
+  /** Named in the notification opt-in, so it reads as a person not a feature. */
+  partnerName?: string;
   // The session's code, shown before leaving and kept visible here — once a
   // partner has joined, Home stops showing it, so this is the only place it
   // exists in the UI.
@@ -45,6 +48,30 @@ export default function ProfileScreen({
       setHydrated(true);
     }
   }, [loading, hydrated, profile, user.displayName]);
+
+  // The notification opt-in. Mirrored locally so the toggle responds instantly
+  // rather than waiting for the round trip through the profile listener.
+  const [notify, setNotify] = useState(false);
+  const [notifyBusy, setNotifyBusy] = useState(false);
+  useEffect(() => {
+    if (!loading) setNotify(profile?.notify === true);
+  }, [loading, profile?.notify]);
+
+  const partnerFirst = (partnerName ?? "").trim().split(/\s+/)[0] || "your partner";
+
+  const toggleNotify = async () => {
+    const next = !notify;
+    setNotify(next);
+    setNotifyBusy(true);
+    try {
+      await saveProfile({ notify: next, email: user.email ?? "" });
+    } catch (e) {
+      setNotify(!next); // put the switch back if the write didn't land
+      setErr(prettyError(e));
+    } finally {
+      setNotifyBusy(false);
+    }
+  };
 
   const [dataBusy, setDataBusy] = useState(false);
   const [dataMsg, setDataMsg] = useState("");
@@ -241,6 +268,39 @@ export default function ProfileScreen({
           {busy ? t("Saving…", "Enregistrement…") : t("Save profile", "Enregistrer le profil")}
         </button>
       </div>
+
+      {/* The app's only notification, and the only one planned. Off unless
+          asked for: emailing someone about special-category activity because a
+          checkbox defaulted to on is not consent. Needs an email address, so
+          anonymous accounts don't see it. */}
+      {user.email && (
+        <div className="card" style={{ marginTop: 20 }}>
+          <div className="eyebrow">
+            {t(`When ${partnerFirst} answers`, `Quand ${partnerFirst} répond`)}
+          </div>
+          <p className="muted" style={{ fontSize: 13, margin: "8px 0 12px" }}>
+            {t(
+              "One email, only when they finish a conversation you were waiting on — so you know the reveal is open. Never a reminder, never a nudge.",
+              "Un e-mail, uniquement quand votre partenaire termine une conversation que vous attendiez — pour savoir que la révélation est ouverte. Jamais un rappel, jamais une relance.",
+            )}
+          </p>
+          <button
+            type="button"
+            className={`notifyopt${notify ? " on" : ""}`}
+            aria-pressed={notify}
+            disabled={notifyBusy}
+            onClick={toggleNotify}
+          >
+            <span className="notifyopt-box" aria-hidden="true">
+              {notify ? "✓" : ""}
+            </span>
+            {t("Email me when they answer", "M’envoyer un e-mail quand il répond")}
+          </button>
+          <p className="datahint">
+            {t(`We'd send it to ${user.email}.`, `Nous l’enverrions à ${user.email}.`)}
+          </p>
+        </div>
+      )}
 
       <div className="card" style={{ marginTop: 20 }}>
         <div className="eyebrow">{t("Language", "Langue")}</div>

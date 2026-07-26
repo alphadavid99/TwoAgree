@@ -57,6 +57,29 @@ describe("users/{uid} — the account-creation path", () => {
     await assertFails(get(ref(db, `users/${HOST}`)));
     await assertFails(set(ref(db, `users/${HOST}`), { name: "Hacked" }));
   });
+
+  it("lets you set your own email opt-in, but only as a boolean", async () => {
+    const db = env.authenticatedContext(HOST).database();
+    await assertSucceeds(update(ref(db, `users/${HOST}`), { notify: true }));
+    await assertFails(update(ref(db, `users/${HOST}`), { notify: "yes" }));
+  });
+
+  it("won't let anyone write notifiedAt — including the owner", async () => {
+    // It throttles the reveal-ready email. A client that could set it could
+    // silence its own notifications by faking a recent send, or clear it to
+    // have the app mail them on every deck. Admin SDK only.
+    //
+    // Guarded with `.validate: false`, NOT `.write: false`: in RTDB a `.write`
+    // granted at an ancestor cascades and a descendant cannot revoke it, so
+    // `users/$uid/.write` already allows the owner to write every leaf beneath
+    // it. `.validate` is the one that still runs. This test exists because the
+    // obvious spelling silently did nothing.
+    const db = env.authenticatedContext(HOST).database();
+    await assertFails(update(ref(db, `users/${HOST}`), { notifiedAt: 0 }));
+    await assertFails(set(ref(db, `users/${HOST}/notifiedAt`), Date.now()));
+    // The rest of the profile still writes normally alongside it.
+    await assertSucceeds(update(ref(db, `users/${HOST}`), { name: "Sarah" }));
+  });
 });
 
 describe("sessions/{code} — membership gating", () => {

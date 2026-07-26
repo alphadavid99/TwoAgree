@@ -8,6 +8,10 @@ export interface Profile {
   photo?: string; // base64 JPEG data URL (~256px square)
   created?: number;
   updated?: number;
+  /** Opt-in for the one email the app sends (see functions/src/notify.ts). */
+  notify?: boolean;
+  /** Epoch ms of the last one, written server-side to throttle. */
+  notifiedAt?: number;
 }
 
 export interface Member {

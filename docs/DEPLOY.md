@@ -40,6 +40,53 @@ Admin** role in Google Cloud Console → IAM.)
 Functions + rules stay manual (they change rarely and deploying them from CI
 needs broader IAM). Deploy them with `firebase deploy --only functions,database`.
 
+## Turning on the partner-finished email
+
+The reveal-ready email (`onLevelDone`) is the app's only notification. It ships
+**not deployed** and needs three things, in this order:
+
+**1. IAM — one-time, and you have to do it, not CI.** It's an Eventarc-backed
+RTDB trigger, and deploying the first Eventarc function in a project grants
+roles to Google's own service agents. The deploy service account isn't a
+project owner, so it can't do that itself — the deploy fails, and because
+Functions deploy before Hosting, the site doesn't update either. Run once, as
+an owner:
+
+```sh
+gcloud projects add-iam-policy-binding twoagreeapp \
+  --member=serviceAccount:service-220230233383@gcp-sa-pubsub.iam.gserviceaccount.com \
+  --role=roles/iam.serviceAccountTokenCreator
+gcloud projects add-iam-policy-binding twoagreeapp \
+  --member=serviceAccount:220230233383-compute@developer.gserviceaccount.com \
+  --role=roles/run.invoker
+gcloud projects add-iam-policy-binding twoagreeapp \
+  --member=serviceAccount:220230233383-compute@developer.gserviceaccount.com \
+  --role=roles/eventarc.eventReceiver
+```
+
+**2. The Resend key.** Sign up at resend.com, verify the `twoagree.app` domain,
+then `firebase functions:secrets:set RESEND_API_KEY`.
+
+**3. The flag.** Set the repo Variable `NOTIFY_EMAIL_ENABLED=true` (Settings →
+Secrets and variables → Actions → Variables). Optionally set `MAIL_FROM` as a
+Functions env var, e.g. `TwoAgree <hello@twoagree.app>`; it defaults to
+Resend's sandbox sender.
+
+Do all three before pushing, then push anything to `main`. Skipping step 1 is
+what breaks the deploy — the flag is what keeps it safe until then.
+
+Send yourself one before pointing it at a real couple: the decision rules and
+the copy are tested, but nobody has watched an actual email land in an inbox.
+
+## Other observability switches
+
+Neither needs code changes; both are off until set.
+
+| Where | Name | For |
+|---|---|---|
+| Secret | `SENTRY_DSN` | sentry.io project — pick the EU region so data stays in the EU |
+| Variable | `PLAUSIBLE_DOMAIN` | `twoagree.app` |
+
 ## Still Dave's calls (Phase 4 launch polish)
 
 These need your accounts/decisions — none are code I can finish blind:

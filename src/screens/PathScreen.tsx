@@ -10,13 +10,20 @@ import {
   currentIndex,
   lampLit,
   stepMeta,
+  stepDoneBy,
+  journeyStats,
+  type Waypoint as JourneyWaypoint,
 } from "../lib/path";
+import { other } from "../lib/scoring";
 import { INTAKE, PATH_STEPS, VERSES, type IntakeQuestion } from "../data/path.generated";
 import { writeIntake } from "../lib/session";
+import { readIntakeDraft, writeIntakeDraft, clearIntakeDraft } from "../lib/local";
 import { generatePath } from "../lib/functions";
 import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { PathGlyph } from "../components/PathGlyph";
+import { PctRing } from "../components/Ring";
+import { ShareCard } from "./CoreScore";
 import { useT } from "../lib/i18n";
 import PathStep from "./PathStep";
 
@@ -28,6 +35,7 @@ type T = (en: string, fr: string) => string;
 export default function PathScreen({
   code,
   session,
+  role,
   user,
   partnerName,
   onBrowseDecks,
@@ -35,6 +43,7 @@ export default function PathScreen({
 }: {
   code: string;
   session: Session;
+  role: Role;
   user: User;
   partnerName: string;
   onBrowseDecks: () => void;
@@ -91,7 +100,15 @@ export default function PathScreen({
     return <PathWaiting partnerName={partnerName} onBrowseDecks={onBrowseDecks} t={t} />;
   }
 
-  return <PathMap session={session} onOpen={onOpenStep} t={t} />;
+  return (
+    <PathMap
+      session={session}
+      role={role}
+      partnerName={partnerName}
+      onOpen={onOpenStep}
+      t={t}
+    />
+  );
 }
 
 // The full-screen step flow, rendered by SessionApp (no bottom nav). Resolves a
@@ -129,7 +146,16 @@ export function PathFlow({
       />
     );
   }
-  return <Lookout onBack={onExit} t={t} />;
+  return (
+    <Lookout
+      session={session}
+      role={role}
+      myName={myName}
+      partnerName={partnerName}
+      onBack={onExit}
+      t={t}
+    />
+  );
 }
 
 // ---- The Path intro: claret hero → a journey that ends at the payoff -------
@@ -264,12 +290,21 @@ function PathIntake({
   onDone: () => void;
   t: T;
 }) {
-  const [started, setStarted] = useState(false);
-  const [idx, setIdx] = useState(0);
+  // The intake lives below a `key={tab}` remount, so switching to Decks and
+  // back silently threw away every answer — eight private questions, gone,
+  // with no warning. Draft state is mirrored into sessionStorage so a tab
+  // switch (or a reload mid-intake) resumes exactly where they were.
+  const draft = useMemo(() => readIntakeDraft(uid), [uid]);
+  const [started, setStarted] = useState(draft != null);
+  const [idx, setIdx] = useState(draft?.idx ?? 0);
   const [ans, setAns] = useState<(number | number[] | null)[]>(
-    INTAKE.map((q) => (q.type === "multi" ? [] : null)),
+    draft?.ans ?? INTAKE.map((q) => (q.type === "multi" ? [] : null)),
   );
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (started) writeIntakeDraft(uid, { idx, ans });
+  }, [uid, started, idx, ans]);
 
   if (!started) {
     return <PathIntro onBegin={() => setStarted(true)} onBrowseDecks={onBrowseDecks} t={t} />;
@@ -309,6 +344,7 @@ function PathIntake({
       if (v != null) answers[iq.id] = v;
     });
     await writeIntake(uid, answers);
+    clearIntakeDraft(uid);
     // Kick generation now that my part is in (it waits for both intakes).
     void generatePath({ code }).catch(() => {});
     setBusy(false);
@@ -322,8 +358,10 @@ function PathIntake({
           🔒 {t(`Just you — ${partnerName} won't see this`, `Rien que vous — ${partnerName} ne verra pas ceci`)}
         </span>
       </div>
+      {/* (idx+1)/, not idx/ — the bar sat at 0% while the label already said
+          "1 of 8", so the first question looked like nothing had started. */}
       <div className="qprog" style={{ marginTop: 14 }}>
-        <i style={{ width: `${Math.round((idx / INTAKE.length) * 100)}%` }} />
+        <i style={{ width: `${Math.round(((idx + 1) / INTAKE.length) * 100)}%` }} />
       </div>
       <p className="hint">{t(`${idx + 1} of ${INTAKE.length}`, `${idx + 1} sur ${INTAKE.length}`)}</p>
       <h1 className="h1" style={{ marginTop: 14, fontSize: 24 }}>{q.q}</h1>
@@ -396,10 +434,14 @@ function PathWaiting({
 // ---- The trail map ---------------------------------------------------------
 export function PathMap({
   session,
+  role,
+  partnerName,
   onOpen,
   t,
 }: {
   session: Session;
+  role: Role;
+  partnerName: string;
   onOpen: (index: number) => void;
   t: T;
 }) {
@@ -424,6 +466,27 @@ export function PathMap({
     setToast(t("The path opens one step at a time.", "Le chemin s'ouvre une étape à la fois."));
     setTimeout(() => setToast(""), 2400);
   };
+
+  // Who has finished a given waypoint. Only computed for the current node —
+  // behind it both have walked by definition, ahead of it neither has.
+  const steps = orderedSteps(session);
+  const walked = (i: number): { me: boolean; them: boolean } | null => {
+    const s = steps.find((x) => x.index === i);
+    if (!s) return null;
+    return {
+      me: stepDoneBy(session, s.data, role),
+      them: stepDoneBy(session, s.data, other(role)),
+    };
+  };
+  const walkLabel = (w: { me: boolean; them: boolean }) =>
+    w.me && w.them
+      ? t("You've both walked it", "Vous l'avez tous deux parcourue")
+      : w.me
+        ? t(`You've walked it — waiting on ${partnerName}`, `Vous l'avez parcourue — en attente de ${partnerName}`)
+        : w.them
+          ? t(`${partnerName} has walked it`, `${partnerName} l'a parcourue`)
+          : t("Neither of you has walked it yet", "Aucun de vous ne l'a encore parcourue");
+  const curWalk = walked(cur);
 
   const fullPath = () => {
     let d = `M ${px(0)} ${py(0)}`;
@@ -458,6 +521,15 @@ export function PathMap({
             ? t("1 lamp lit along the way.", "1 lampe allumée en chemin.")
             : t(`${completed} lamps lit along the way.`, `${completed} lampes allumées en chemin.`)}
       </p>
+      {/* The legend for the two dots on the current node — otherwise they're
+          decoration only a screen-reader user gets told about. */}
+      {curWalk && (
+        <p className="pathstate">
+          <span className={`ps-dot me${curWalk.me ? " on" : ""}`} aria-hidden="true" />
+          <span className={`ps-dot them${curWalk.them ? " on" : ""}`} aria-hidden="true" />
+          {walkLabel(curWalk)}
+        </p>
+      )}
 
       <div style={{ marginTop: 8 }}>
         <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }} role="group" aria-label={t("Trail map", "Carte du sentier")}>
@@ -476,6 +548,7 @@ export function PathMap({
             const gcol = done ? "var(--honey)" : isCur ? "#fff" : "var(--sub)";
             const lx = i % 2 === 0 ? x + 46 : x - 46;
             const anchor = i % 2 === 0 ? "start" : "end";
+            const walk = isCur ? walked(i) : null;
             return (
               <g
                 key={meta.key}
@@ -491,21 +564,45 @@ export function PathMap({
                 }}
                 style={{ cursor: "pointer" }}
                 role="button"
-                aria-label={`${meta.name} — ${meta.theme}${done ? t(", walked", ", parcouru") : isCur ? t(", you are here", ", vous êtes ici") : t(", not yet open", ", pas encore ouvert")}`}
+                aria-label={`${meta.name} — ${meta.theme}${done ? t(", walked", ", parcouru") : isCur ? t(", you are here", ", vous êtes ici") : t(", not yet open", ", pas encore ouvert")}${
+                  walk ? `. ${walkLabel(walk)}` : ""
+                }`}
               >
-                {done && (
-                  <circle cx={x} cy={y} r={r + 15} opacity={0.16} className="path-halo" style={{ fill: "var(--honey)" }} />
+                {/* The halo belongs on where you ARE, not on what's behind you.
+                    Done nodes wore it and the current node sat static, so the
+                    map read as "finished" exactly where it should have pulled. */}
+                {isCur && (
+                  <circle cx={x} cy={y} r={r + 16} opacity={0.16} className="path-halo" style={{ fill: "var(--honey)" }} />
                 )}
                 <circle cx={x} cy={y} r={r} strokeWidth={2.2} style={{ fill, stroke }} />
-                <g transform={`translate(${x - 14},${y - 14})`}>
+                {/* Lifted when the walked dots share the disc with it. */}
+                <g transform={`translate(${x - 14},${y - (walk ? 19 : 14)})`}>
                   <PathGlyph id={meta.glyph} size={28} color={gcol} />
                 </g>
+                {/* Who has walked this stretch — the map was silent on it, so
+                    "why hasn't the lamp lit?" had no answer on screen. Inside
+                    the disc, below the glyph: outside it they fell in the halo
+                    and under the trail line. */}
+                {walk && (
+                  <g>
+                    <circle cx={x - 7} cy={y + 19} r={3.5} style={{ fill: walk.me ? "var(--ce-blush)" : "var(--berry2)" }} />
+                    <circle cx={x + 7} cy={y + 19} r={3.5} style={{ fill: walk.them ? "var(--honey)" : "var(--berry2)" }} />
+                  </g>
+                )}
                 <text x={lx} y={y - 2} textAnchor={anchor} fontSize={14.5} fontWeight={700} style={{ fill: done || isCur ? "var(--ink)" : "var(--sub)" }}>
                   {meta.name}
                 </text>
                 <text x={lx} y={y + 15} textAnchor={anchor} fontSize={11.5} style={{ fill: "var(--sub)" }}>
                   {meta.theme}
                 </text>
+                {isCur && (
+                  <g transform={`translate(${lx - (anchor === "end" ? 96 : 0)},${y + 29})`}>
+                    <rect width={96} height={26} rx={13} style={{ fill: "var(--app-honey)" }} />
+                    <text x={48} y={17.5} textAnchor="middle" fontSize={12} fontWeight={700} style={{ fill: "var(--app-honey-ink)" }}>
+                      {done ? t("Revisit", "Revoir") : t("Continue →", "Continuer →")}
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
@@ -522,31 +619,164 @@ export function PathMap({
 }
 
 // ---- The Lookout — journey's end -------------------------------------------
-function Lookout({ onBack, t }: { onBack: () => void; t: T }) {
+// The intro promises "You arrive at your alignment"; this used to be three
+// verses and a Back button. Now it pays the promise off: the whole road's two
+// numbers, the waypoint where they walk closest, the one most worth a
+// conversation, a keepsake — and only then the verses, as benediction.
+function Lookout({
+  session,
+  role,
+  myName,
+  partnerName,
+  onBack,
+  t,
+}: {
+  session: Session;
+  role: Role;
+  myName: string;
+  partnerName: string;
+  onBack: () => void;
+  t: T;
+}) {
   const meta = stepMeta("lookout");
   const verses = VERSES["lookout"] ?? [];
+  const j = useMemo(() => journeyStats(session, role), [session, role]);
+  const [keepsake, setKeepsake] = useState(false);
+
   return (
-    <section className="path-claret screen-enter" style={{ justifyContent: "flex-start", paddingTop: 56 }}>
-      <div style={{ color: "var(--honey)", marginBottom: 18 }}>
-        <Mark height={40} title="TwoAgree" colour="var(--honey)" />
+    <section className="path-claret lookout screen-enter" style={{ justifyContent: "flex-start", paddingTop: 48 }}>
+      <div style={{ color: "var(--honey)", marginBottom: 14 }}>
+        <Mark height={36} title="TwoAgree" colour="var(--honey)" />
       </div>
-      <h1 className="h1 center" style={{ color: "#fff", fontSize: 32 }}>{meta?.name ?? "The Lookout"}</h1>
-      <p className="center" style={{ color: "rgba(255,255,255,.88)", maxWidth: 320, marginTop: 12, lineHeight: 1.55 }}>
-        {meta?.frame ?? t("Turn around. The whole road behind you is lit.", "Retournez-vous. Toute la route derrière vous est éclairée.")}
+      {/* Not "9 of 9 lamps" — the Path is ten steps everywhere else (the
+          Lookout is the tenth and carries no lamp), so a count here reads as a
+          contradiction. Name the state instead. */}
+      <div className="eyebrow center" style={{ color: "var(--honey)" }}>
+        {j.walked >= j.total
+          ? t("Every lamp lit", "Toutes les lampes allumées")
+          : t(
+              `${j.walked} of ${j.total} lamps lit`,
+              `${j.walked} lampes sur ${j.total} allumées`,
+            )}
+      </div>
+      <h1 className="h1 center" style={{ color: "#fff", fontSize: 32, marginTop: 8 }}>
+        {meta?.name ?? "The Lookout"}
+      </h1>
+      <p className="center" style={{ color: "rgba(255,255,255,.88)", maxWidth: 320, marginTop: 10, lineHeight: 1.55 }}>
+        {meta?.frame ??
+          t("Turn around. The whole road behind you is lit.", "Retournez-vous. Toute la route derrière vous est éclairée.")}
       </p>
-      <div style={{ marginTop: 18, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+      {/* The whole road's two numbers. Known leads (Agreed has a ceiling
+          problem — 100% means two identical people; knowing each other doesn't). */}
+      <div className="lk-rings">
+        <div className="lk-ring">
+          <PctRing
+            pct={j.known ?? 0}
+            size={128}
+            color="var(--ce-blush)"
+            label={t("known", "connus")}
+            drawMs={1500}
+          />
+          <span className="lk-denom">
+            {j.guesses
+              ? t(`${j.right} of ${j.guesses} guesses`, `${j.right} intuitions sur ${j.guesses}`)
+              : t("no guesses yet", "aucune intuition")}
+          </span>
+        </div>
+        <div className="lk-ring">
+          <PctRing
+            pct={j.agreed ?? 0}
+            size={128}
+            color="var(--ce-gold)"
+            label={t("agreed", "d’accord")}
+            drawMs={1500}
+            delayMs={320}
+          />
+          <span className="lk-denom">
+            {t(
+              `over ${j.scored} question${j.scored === 1 ? "" : "s"}`,
+              `sur ${j.scored} question${j.scored === 1 ? "" : "s"}`,
+            )}
+          </span>
+        </div>
+      </div>
+
+      {/* Two waypoints, named. The whole point of the app is the conversation
+          after the number, so the harder one is stated as plainly as the bright
+          one — never buried, never framed as a failure. */}
+      {j.brightest && j.hardest && (
+        <div className="lk-marks">
+          <Waypoint
+            wp={j.brightest}
+            lb={t("Where you walk closest", "Là où vous marchez au plus près")}
+            tone="bright"
+          />
+          <Waypoint
+            wp={j.hardest}
+            lb={t("Most worth a conversation", "À aborder en priorité")}
+            tone="talk"
+          />
+        </div>
+      )}
+
+      <div className="lk-verses">
         {verses.map((v, i) => (
-          <div key={i} className="path-verse-card">
+          <div key={i} className="path-verse-card path-fadein" style={{ animationDelay: `${0.5 + i * 0.28}s` }}>
             <p className="verse serif" style={{ color: "#fff", fontStyle: "italic" }}>&ldquo;{v.v}&rdquo;</p>
             <p className="vref" style={{ color: "var(--honey)" }}>{v.ref}</p>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 28, width: "100%", maxWidth: 340 }}>
-        <button className="btn honey" type="button" onClick={onBack}>
+
+      <div style={{ marginTop: 26, width: "100%", maxWidth: 340 }}>
+        <button className="btn honey" type="button" onClick={() => setKeepsake(true)}>
+          {t("Take a keepsake", "Emporter un souvenir")}
+        </button>
+        <button className="btn ghost" type="button" onClick={onBack} style={{ color: "rgba(255,255,255,.75)" }}>
           {t("Back to the path", "Retour au chemin")}
         </button>
       </div>
+
+      {keepsake && (
+        <ShareCard
+          agreed={{ pct: j.agreed, done: j.scored, total: j.scoredTotal }}
+          known={{ pct: j.known, done: j.right, total: j.guesses }}
+          myName={myName}
+          partnerName={partnerName}
+          conversations={{ done: j.walked, total: j.total }}
+          story={t(
+            "have walked the whole Path together, side by side",
+            "ont parcouru tout le Chemin ensemble, côte à côte",
+          )}
+          closest={j.brightest?.name}
+          t={t}
+          onClose={() => setKeepsake(false)}
+        />
+      )}
     </section>
+  );
+}
+
+function Waypoint({
+  wp,
+  lb,
+  tone,
+}: {
+  wp: JourneyWaypoint;
+  lb: string;
+  tone: "bright" | "talk";
+}) {
+  return (
+    <div className={`lk-mark ${tone}`}>
+      <span className="lk-glyph">
+        <PathGlyph id={wp.glyph} size={26} />
+      </span>
+      <span className="lk-txt">
+        <b>{wp.name}</b>
+        <i>{lb}</i>
+      </span>
+      <span className="lk-pct">{wp.pct}%</span>
+    </div>
   );
 }

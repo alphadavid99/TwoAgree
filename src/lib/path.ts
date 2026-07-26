@@ -7,7 +7,7 @@
 // deck slug so it flows through the existing OPEN mechanics.
 import { DECKS, type Question } from "./questions";
 import type { DeckData, Role } from "./scoring";
-import { jointQuestions } from "./scoring";
+import { jointQuestions, overall, knowScore, weightedStats } from "./scoring";
 import type { Session, PathStepData } from "../types";
 import { PATH_STEPS, type PathStepMeta } from "../data/path.generated";
 
@@ -107,3 +107,85 @@ export function currentIndex(session: Session): number {
 
 export const pathReady = (session: Session | null): boolean =>
   !!session?.path?.steps && Object.keys(session.path.steps).length > 0;
+
+// ---- Journey-wide scoring (The Lookout) ------------------------------------
+// The intro promises "You arrive at your alignment"; the finale has to pay that
+// off with the whole road, not one waypoint. These aggregate the SAME scoring
+// the per-step reveals use, over every step the couple has actually walked —
+// so the Lookout number can never disagree with the lamps behind it.
+
+export type Waypoint = {
+  index: number;
+  key: string;
+  name: string;
+  glyph: string;
+  pct: number;
+};
+
+export type JourneyStats = {
+  agreed: number | null;
+  known: number | null;
+  /** Joint scoreable questions behind `agreed`, over the trail's scoreable total. */
+  scored: number;
+  scoredTotal: number;
+  /** Guesses right, over guesses made — the honest denominator for `known`. */
+  right: number;
+  guesses: number;
+  walked: number;
+  total: number;
+  /** Strongest and most-worth-a-conversation waypoints (null under 2 walked). */
+  brightest: Waypoint | null;
+  hardest: Waypoint | null;
+};
+
+// One waypoint's agreement, or null when it holds nothing joint and scoreable.
+function waypointPct(session: Session, step: PathStepData, role: Role): number | null {
+  const deck = stepDeckData(session, step);
+  const qs = jointQuestions(stepQuestions(step), deck);
+  const { weight } = weightedStats(qs, deck, role);
+  return weight ? overall(qs, deck, role) : null;
+}
+
+export function journeyStats(session: Session, role: Role): JourneyStats {
+  const steps = orderedSteps(session);
+  // Merge every walked step into one DeckData and one question list, then score
+  // once — a true question-level mean, not an average of per-step averages.
+  const all: DeckData = { answers: {}, guesses: {}, importance: {} };
+  const allQs: Question[] = [];
+  const points: Waypoint[] = [];
+
+  for (const { index, data } of steps) {
+    if (!lampLit(session, index)) continue;
+    const deck = stepDeckData(session, data);
+    Object.assign(all.answers!, deck.answers);
+    Object.assign(all.guesses!, deck.guesses);
+    Object.assign(all.importance!, deck.importance);
+    allQs.push(...stepQuestions(data));
+    const pct = waypointPct(session, data, role);
+    const meta = stepMeta(data.key);
+    if (pct != null && meta) {
+      points.push({ index, key: data.key, name: meta.name, glyph: meta.glyph, pct });
+    }
+  }
+
+  const joint = jointQuestions(allQs, all);
+  const { weight } = weightedStats(joint, all, role);
+  const know = knowScore(allQs, all, role);
+  // Ranked low→high; ties keep trail order, so the pair is stable between visits.
+  const ranked = [...points].sort((a, b) => a.pct - b.pct || a.index - b.index);
+
+  return {
+    agreed: weight ? overall(joint, all, role) : null,
+    known: know.pct,
+    scored: joint.filter((q) => q.type !== "open").length,
+    scoredTotal: allQs.filter((q) => q.type !== "open").length,
+    right: know.right,
+    guesses: know.made,
+    walked: steps.filter((s) => lampLit(session, s.index)).length,
+    total: steps.length,
+    // With one waypoint there's no "brightest vs hardest" to draw — naming the
+    // same step both would read as a bug.
+    brightest: ranked.length >= 2 ? ranked[ranked.length - 1] : null,
+    hardest: ranked.length >= 2 ? ranked[0] : null,
+  };
+}

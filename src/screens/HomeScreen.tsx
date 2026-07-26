@@ -7,7 +7,10 @@ import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
+import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
+import { PATH_STEPS } from "../data/path.generated";
 import { Avatar } from "../components/Avatar";
+import { PathGlyph } from "../components/PathGlyph";
 import { IconDecks, IconSettings } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
 import { useT, useLang, type Lang } from "../lib/i18n";
@@ -23,6 +26,7 @@ export default function HomeScreen({
   onProfile,
   pending = [],
   onOpenReveal,
+  onPath,
 }: {
   code: string;
   session: Session;
@@ -35,6 +39,8 @@ export default function HomeScreen({
   // Reveals that are ready and this person hasn't opened yet, newest last.
   pending?: { slug: string; level: number }[];
   onOpenReveal?: (slug: string, level: number) => void;
+  // Undefined when the Path is behind its flag — Home simply omits the card.
+  onPath?: () => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -92,6 +98,12 @@ export default function HomeScreen({
   const ranked = [...rows].sort((a, b) => a.pct - b.pct);
   const lowest = ranked[0];
   const closest = ranked[ranked.length - 1];
+
+  // Where the couple stands on the Path, for the hero card below.
+  const pathCur = currentIndex(session);
+  const pathStep = PATH_STEPS[pathCur];
+  const atLookout = pathCur >= PATH_STEPS.length - 1;
+  const lamps = orderedSteps(session).filter((s) => lampLit(session, s.index)).length;
 
   const [inviteMsg, setInviteMsg] = useState("");
   const [inviteBusy, setInviteBusy] = useState(false);
@@ -321,6 +333,43 @@ export default function HomeScreen({
           <span className="readycard-cta">
             {t("Open your reveal →", "Ouvrir votre révélation →")}
           </span>
+        </button>
+      )}
+
+      {/* The Path, if they've laid one. Home and Results were Path-blind: the
+          flagship's "next lamp" pull only existed if you happened to open the
+          tab. Where you are, never what you owe — no streak, no debt. */}
+      {onPath && pathReady(session) && (
+        <button className="pathcard" type="button" onClick={onPath}>
+          <span className="pathcard-glyph">
+            <PathGlyph id={pathStep?.glyph ?? "g-lamp"} size={30} />
+          </span>
+          <span className="pathcard-txt">
+            <span className="pathcard-eyebrow">
+              {atLookout
+                ? t("THE PATH · JOURNEY'S END", "LE CHEMIN · FIN DU VOYAGE")
+                : t("CONTINUE THE PATH", "CONTINUER LE CHEMIN")}
+            </span>
+            <span className="pathcard-nm">
+              {atLookout
+                ? t("The Lookout", "Le Belvédère")
+                : t(
+                    `Step ${pathCur + 1} · ${pathStep?.name ?? ""}`,
+                    `Étape ${pathCur + 1} · ${pathStep?.name ?? ""}`,
+                  )}
+            </span>
+            <span className="pathcard-sub">
+              {atLookout
+                ? t("Your whole road is lit.", "Toute votre route est éclairée.")
+                : lamps === 0
+                  ? t("The trail starts here.", "Le sentier commence ici.")
+                  : t(
+                      `${lamps} lamp${lamps === 1 ? "" : "s"} lit behind you`,
+                      `${lamps} lampe${lamps === 1 ? "" : "s"} allumée${lamps === 1 ? "" : "s"} derrière vous`,
+                    )}
+            </span>
+          </span>
+          <span className="pathcard-go" aria-hidden="true">&rarr;</span>
         </button>
       )}
 

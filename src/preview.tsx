@@ -20,7 +20,7 @@ import PartPicker from "./screens/PartPicker";
 import Onboarding from "./screens/Onboarding";
 import StartMenu from "./screens/StartMenu";
 import PathStep from "./screens/PathStep";
-import { PathMap, PathIntro } from "./screens/PathScreen";
+import { PathMap, PathIntro, PathFlow } from "./screens/PathScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -226,12 +226,31 @@ function Preview() {
         <AuthScreen />
       </>
     );
-  if (view === "home" || view === "home-ready")
+  if (view === "home" || view === "home-ready" || view === "home-path")
     return (
       <div className="tabwrap">
         <HomeScreen
           code="ABCD"
-          session={session}
+          session={
+            // home-path: a couple mid-journey, so Home's Path card has a
+            // waypoint to point at.
+            view === "home-path"
+              ? ({
+                  ...session,
+                  path: {
+                    generatedAt: 1,
+                    version: 1,
+                    questionCount: 63,
+                    steps: Object.fromEntries(
+                      ["trailhead", "fork", "storehouse", "table", "garden", "valley", "hilltop", "horizon", "summit"].map(
+                        (key, i) => [i, { key, mechanic: "guess", qids: [] }],
+                      ),
+                    ),
+                  },
+                  pathLamps: { 0: true, 1: true, 2: true },
+                } as unknown as Session)
+              : session
+          }
           role="host"
           slug={slugA}
           onPlay={noop}
@@ -241,6 +260,7 @@ function Preview() {
           // home-ready: the herald card, for a reveal that has just unlocked.
           pending={view === "home-ready" ? [{ slug: slugB, level: 0 }] : []}
           onOpenReveal={noop}
+          onPath={noop}
         />
         <FakeNav on="home" />
       </div>
@@ -307,13 +327,65 @@ function Preview() {
           ),
         ),
       },
+      // The current waypoint with one partner through it — so the two-dot
+      // walked indicator has something to say.
+      decks: { "at-table": { answers: { table: { host: "…" } } } },
       pathLamps: { 0: true, 1: true, 2: true },
     } as unknown as Session;
     return (
       <div className="tabwrap">
-        <PathMap session={pathSession} onOpen={noop} t={(en: string) => en} />
+        <PathMap
+          session={pathSession}
+          role="host"
+          partnerName="Judah"
+          onOpen={noop}
+          t={(en: string) => en}
+        />
         <FakeNav on="path" />
       </div>
+    );
+  }
+  if (view === "pathlookout") {
+    // A finished journey: every lamp lit, real answers behind every waypoint so
+    // the finale's numbers are the real scoring, not a mock.
+    const KEYS = ["trailhead", "fork", "storehouse", "table", "garden", "valley", "hilltop", "horizon", "summit"];
+    const SRC = ["fun-icebreakers", "conflict-communication", "finances-money", "in-the-home", "intimacy-physical", "past-baggage", "faith-worship-practice", "dreams-future", "values-convictions"];
+    const decks: Record<string, { answers: Record<string, unknown>; guesses: Record<string, unknown> }> = {
+      "at-table": { answers: {}, guesses: {} },
+    };
+    const steps: Record<string, unknown> = {};
+    KEYS.forEach((key, i) => {
+      const slug = SRC[i];
+      const qs = (DECKS[slug]?.questions ?? []).filter((q) => q.type !== "open").slice(0, 5);
+      decks[slug] ??= { answers: {}, guesses: {} };
+      qs.forEach((q, n) => {
+        // Agreement walks down the trail (early steps close, later ones apart),
+        // so brightest/hardest are visibly different waypoints.
+        const apart = i >= 5 && n % 2 === 0;
+        const hi = q.type === "scale" ? 5 : (q.opts?.length ?? 2) - 1;
+        decks[slug].answers[q.id] = { host: q.type === "scale" ? 3 : 0, guest: apart ? hi : q.type === "scale" ? 3 : 0 };
+        if (q.guessable) decks[slug].guesses[q.id] = { host: q.type === "scale" ? 3 : 0, guest: q.type === "scale" ? 3 : 0 };
+      });
+      decks["at-table"].answers[key] = { host: "Something honest.", guest: "Mine too." };
+      steps[i] = { key, mechanic: i === 8 ? "noguess" : "guess", qids: qs.map((q) => q.id) };
+    });
+    const s = {
+      members: { host: { name: "Sarah", uid: "u1" }, guest: { name: "Judah", uid: "u2" } },
+      uids: { u1: true, u2: true },
+      decks,
+      path: { generatedAt: 1, version: 1, questionCount: 45, steps },
+      pathLamps: Object.fromEntries(KEYS.map((_, i) => [i, true])),
+    } as unknown as Session;
+    return (
+      <PathFlow
+        code="ABCD"
+        role="host"
+        session={s}
+        index={9}
+        myName="Sarah"
+        partnerName="Judah"
+        onExit={noop}
+      />
     );
   }
   if (view === "patharrival") {

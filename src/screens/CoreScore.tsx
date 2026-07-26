@@ -89,15 +89,17 @@ export function CoreScore({
   );
 }
 
-// The share card (brief 2 §C9). Core only — a number earned over anything else
-// is a lie the moment two couples compare. Leads with Known; denominator shown;
-// no leaderboard, ever (the no-competition constant). A couple screenshots this.
-function ShareCard({
+// The share card (brief 2 §C9). Leads with Known; denominator shown; no
+// leaderboard, ever (the no-competition constant). A couple screenshots this.
+// Exported because the Path's Lookout hands the couple the same keepsake — one
+// card renderer, so the two milestones can't drift into two different objects.
+export function ShareCard({
   agreed,
   known,
   myName,
   partnerName,
   conversations,
+  story,
   closest,
   t,
   onClose,
@@ -107,6 +109,8 @@ function ShareCard({
   myName: string;
   partnerName: string;
   conversations: { done: number; total: number };
+  /** Overrides the card's story line (the Lookout writes its own). */
+  story?: string;
   closest?: string;
   t: T;
   onClose: () => void;
@@ -126,6 +130,7 @@ function ShareCard({
     partnerName,
     conversationsDone: conversations.done,
     conversationsTotal: conversations.total,
+    story,
     known: withKnown && known.pct != null ? { pct: known.pct, done: known.done, total: known.total } : undefined,
     agreed: withAgreed && agreed.pct != null ? { pct: agreed.pct, done: agreed.done, total: agreed.total } : undefined,
     closest: withClosest ? closest : undefined,

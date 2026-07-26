@@ -83,6 +83,31 @@ describe("composePath — intake weighting", () => {
   });
 });
 
+describe("composePath — sitting length", () => {
+  // The worst realistic case: both partners flag the same single topic as
+  // avoided, so the whole weighted pool piles onto that one step.
+  const worst = composePath(
+    flag({ avoided: ["intimacy"], talk: ["intimacy"] }),
+    flag({ avoided: ["intimacy"], talk: ["intimacy"] }),
+  );
+
+  it("never lands more than eight questions on one waypoint", () => {
+    for (const s of Object.values(worst.steps)) expect(s.qids.length).toBeLessThanOrEqual(8);
+  });
+
+  it("redistributes the overflow rather than dropping it", () => {
+    // Capping must not shorten the journey — the surplus walks further down the
+    // trail, so a skewed couple still gets roughly the same ~70 questions.
+    const neutral = composePath(empty, empty);
+    expect(worst.questionCount).toBeGreaterThanOrEqual(neutral.questionCount - 2);
+  });
+
+  it("still skews toward the flagged topic within the cap", () => {
+    const neutral = composePath(empty, empty);
+    expect(worst.steps[4].qids.length).toBeGreaterThan(neutral.steps[4].qids.length);
+  });
+});
+
 describe("composePath — tier ramp", () => {
   it("starts gentler for an 'ease us in' couple than a 'straight to the deep' couple", () => {
     // depth 0 = ease, 2 = deep. The deep couple's early steps should skip the

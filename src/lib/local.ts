@@ -96,6 +96,72 @@ export function clearOnbCheckpoint(uid: string): void {
   localStorage.removeItem(onbKey(uid));
 }
 
+// ---- Path lamps already witnessed ------------------------------------------
+// The lamp is shared couple state, so the second partner to finish a waypoint
+// arrived at a screen that was already lit and static — they never got the
+// ceremony at all. The lighting moment is therefore gated per-person on this
+// flag rather than on the shared lamp. Keyed by code + role (one device can
+// hold both sides of a session during testing); losing it only costs a repeat
+// of a moment the person liked.
+const lampKey = (code: string, role: string) => `aligned_lamps_${code}_${role}`;
+
+export function seenLamp(code: string, role: string, index: number): boolean {
+  try {
+    const raw = localStorage.getItem(lampKey(code, role));
+    return raw ? (JSON.parse(raw) as number[]).includes(index) : false;
+  } catch {
+    return false;
+  }
+}
+
+export function markLampSeen(code: string, role: string, index: number): void {
+  try {
+    const raw = localStorage.getItem(lampKey(code, role));
+    const seen = raw ? (JSON.parse(raw) as number[]) : [];
+    if (seen.includes(index)) return;
+    localStorage.setItem(lampKey(code, role), JSON.stringify([...seen, index]));
+  } catch {
+    /* storage blocked — the ceremony simply replays, which is harmless */
+  }
+}
+
+// ---- Path intake draft -----------------------------------------------------
+// The intake renders below a `key={tab}` remount, so tapping Decks mid-way and
+// coming back wiped all eight answers with no warning — private questions the
+// person had already thought about, gone. sessionStorage (not local): the draft
+// is a within-visit convenience, and intake answers are the most sensitive
+// thing the app holds, so they should not outlive the tab.
+export type IntakeDraft = { idx: number; ans: (number | number[] | null)[] };
+
+const intakeKey = (uid: string) => `aligned_intake_${uid}`;
+
+export function readIntakeDraft(uid: string): IntakeDraft | null {
+  try {
+    const raw = sessionStorage.getItem(intakeKey(uid));
+    if (!raw) return null;
+    const d = JSON.parse(raw) as IntakeDraft;
+    return Array.isArray(d?.ans) && typeof d.idx === "number" ? d : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeIntakeDraft(uid: string, d: IntakeDraft): void {
+  try {
+    sessionStorage.setItem(intakeKey(uid), JSON.stringify(d));
+  } catch {
+    /* storage blocked — resuming is a nicety, never a blocker */
+  }
+}
+
+export function clearIntakeDraft(uid: string): void {
+  try {
+    sessionStorage.removeItem(intakeKey(uid));
+  } catch {
+    /* nothing to do — the draft is superseded by the submitted intake */
+  }
+}
+
 // Device-level flag: has anyone ever signed in on this browser? Lets the auth
 // screen default returning users to "Sign in" instead of "Create account".
 const RETURNING_KEY = "aligned_returning";

@@ -9,10 +9,10 @@ import {
   stepRevealable,
   deckOf,
   AT_TABLE_SLUG,
-  lampLit,
 } from "../lib/path";
 import { VERSES } from "../data/path.generated";
 import { writeAnswer, writeGuess, lightLamp } from "../lib/session";
+import { seenLamp, markLampSeen } from "../lib/local";
 import { PathGlyph } from "../components/PathGlyph";
 import { TopBar } from "../components/TopBar";
 import RevealScreen from "./RevealScreen";
@@ -130,8 +130,15 @@ export default function PathStep({
       index={index}
       stepKey={step.key}
       name={meta.name}
-      alreadyLit={lampLit(session, index)}
-      onLight={() => void lightLamp(code, index)}
+      // The lamp is SHARED state — whoever finishes second used to arrive at a
+      // pre-lit, static screen and never got the moment at all. The shared bit
+      // still drives the map; the lighting ceremony is now per-person, gated on
+      // a local seen-flag, so both partners get to light it.
+      alreadySeen={seenLamp(code, role, index)}
+      onLight={() => {
+        markLampSeen(code, role, index);
+        void lightLamp(code, index);
+      }}
       onDone={onExit}
       t={t}
     />
@@ -435,10 +442,13 @@ function WaitingForPartner({
         <h1 className="h1 center" style={{ marginTop: 18 }}>
           {t("You've walked this stretch.", "Vous avez parcouru cette étape.")}
         </h1>
+        {/* This used to promise "we'll let you know when Judah has walked it
+            too". There is no notification mechanism — no push, no email — so
+            that was a promise the app cannot keep. Say what's true instead. */}
         <p className="sub center" style={{ margin: "10px 24px 0", maxWidth: 320 }}>
           {t(
-            `The lamp lights once you've both been honest here. We'll let you know when ${partnerName} has walked it too.`,
-            `La lampe s'allume quand vous avez tous deux été sincères ici. Nous vous préviendrons quand ${partnerName} l'aura parcourue aussi.`,
+            `The lamp lights the moment ${partnerName} has walked it too. Your answers are already saved.`,
+            `La lampe s'allume dès que ${partnerName} l'aura parcourue aussi. Vos réponses sont déjà enregistrées.`,
           )}
         </p>
         <button className="btn pill" type="button" onClick={onBack} style={{ marginTop: 26 }}>
@@ -454,7 +464,7 @@ function LampScreen({
   index,
   stepKey,
   name,
-  alreadyLit,
+  alreadySeen,
   onLight,
   onDone,
   t,
@@ -462,16 +472,17 @@ function LampScreen({
   index: number;
   stepKey: string;
   name: string;
-  alreadyLit: boolean;
+  /** Has THIS person lit it before? Gates the ceremony (the lamp itself is shared). */
+  alreadySeen: boolean;
   onLight: () => void;
   onDone: () => void;
   t: T;
 }) {
-  const [lit, setLit] = useState(alreadyLit);
+  const [lit, setLit] = useState(alreadySeen);
   const verses = VERSES[stepKey] ?? [];
   const light = () => {
     setLit(true);
-    if (!alreadyLit) onLight();
+    onLight(); // idempotent: marks it seen for me, writes the shared lamp once
   };
   return (
     <section className="path-claret screen-enter" style={{ justifyContent: "flex-start", paddingTop: 60 }}>

@@ -16,6 +16,9 @@ export type CardFields = {
   /** "walked through 8 of 21 conversations" — always present, never a score. */
   conversationsDone: number;
   conversationsTotal: number;
+  /** Replaces that line outright, for a milestone with its own sentence
+   *  (the Path's finale earned "have walked the whole Path together"). */
+  story?: string;
   /** Opt-in lines. Agreement is never included unless explicitly chosen. */
   known?: { pct: number; done: number; total: number };
   agreed?: { pct: number; done: number; total: number };
@@ -136,7 +139,8 @@ export async function renderShareCard(f: CardFields): Promise<Blob | null> {
   c.font = '400 40px "Hanken Grotesk", system-ui, sans-serif';
   const storyLines = wrap(
     c,
-    `have walked through ${f.conversationsDone} of ${f.conversationsTotal} conversations together`,
+    f.story ??
+      `have walked through ${f.conversationsDone} of ${f.conversationsTotal} conversations together`,
     W - 240,
   );
   const chips: string[] = [];

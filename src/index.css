@@ -3027,7 +3027,9 @@ textarea.input {
 .sharewrap {
   position: fixed;
   inset: 0;
-  background: rgba(28, 12, 22, 0.82);
+  /* Opaque enough to actually hide the screen behind it — at .82 the Lookout's
+     own claret type ghosted through and read as overlapping the sheet. */
+  background: rgba(28, 12, 22, 0.94);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3279,6 +3281,124 @@ textarea.input {
     opacity: 0.22;
   }
 }
+/* Who has walked the current stretch — the legend for the two node dots. */
+.pathstate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  color: var(--sub);
+}
+.ps-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--app-track);
+  flex: none;
+}
+.ps-dot.me.on {
+  background: var(--berry);
+}
+.ps-dot.them.on {
+  background: var(--app-honey);
+}
+.ps-dot + .ps-dot {
+  margin-left: -2px;
+  margin-right: 3px;
+}
+
+/* ---- The Lookout ---------------------------------------------------------
+   Journey's end, on the claret ground. The app's own tokens re-point here the
+   same way they do inside the lit reveal room, so PctRing draws claret-native
+   (gold agreed arc, blush known arc, paper type) with no claret-aware props. */
+.lookout {
+  /* Restated because .path-claret paints `background: var(--berry)` and the
+     re-point below would otherwise turn the claret room blush. */
+  background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
+  --berry: var(--ce-blush);
+  --sub: var(--ce-sub);
+  --track: var(--ce-track);
+}
+.lk-rings {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+  width: 100%;
+}
+.lk-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.lk-denom {
+  margin-top: 2px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ce-sub);
+}
+.lk-marks {
+  width: 100%;
+  max-width: 340px;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lk-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--berry2, #5c2e45);
+  background: rgba(248, 233, 236, 0.05);
+}
+.lk-glyph {
+  flex: none;
+  display: flex;
+  color: var(--ce-gold);
+}
+.lk-mark.talk .lk-glyph {
+  color: var(--ce-sub);
+}
+.lk-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lk-txt b {
+  font-size: 0.9375rem;
+  color: var(--ce-ink);
+}
+.lk-txt i {
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--ce-sub);
+}
+.lk-pct {
+  flex: none;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--ce-gold);
+}
+.lk-mark.talk .lk-pct {
+  color: var(--ce-blush);
+}
+.lk-verses {
+  margin-top: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .path-toast {
   position: fixed;
   left: 50%;
@@ -3556,6 +3676,76 @@ textarea.input {
   font-weight: 700;
   color: var(--ce-gold);
   margin-top: 10px;
+}
+
+/* The Path's presence on Home. Deliberately LIGHT: the ready-to-open reveal is
+   the only dark card Home shows and that darkness is what makes it read as an
+   event — a second claret card would spend the signal. This one is a standing
+   invitation, so it sits calm on white with a claret glyph well. */
+.pathcard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  background: var(--ta-white);
+  color: var(--ink);
+  border: 0;
+  /* Matches the featured-deck card's elevation (--e2) so the Path reads as an
+     invitation of the same weight, not a list row above it. */
+  border-radius: 22px;
+  padding: 13px 14px;
+  margin: 12px 0 0;
+  box-shadow: var(--e2);
+  transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pathcard:active {
+  transform: scale(0.985);
+}
+.pathcard-glyph {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ta-honey);
+  background: radial-gradient(circle at 34% 30%, #5c2e45, #3e1a2e);
+  box-shadow: 0 3px 10px rgba(62, 26, 46, 0.26);
+}
+.pathcard-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pathcard-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--app-amber);
+}
+.pathcard-nm {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pathcard-sub {
+  font-size: 0.75rem;
+  color: var(--sub);
+  margin-top: 2px;
+}
+.pathcard-go {
+  flex: none;
+  font-size: 1.125rem;
+  color: var(--berry);
+  opacity: 0.55;
 }
 
 /* The threshold moment: the reveal unlocked while you were watching. */

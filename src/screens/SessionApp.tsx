@@ -446,6 +446,7 @@ export default function SessionApp({
               onProfile={() => setTab("profile")}
               pending={pending}
               onOpenReveal={openPendingReveal}
+              onPath={PATH_ENABLED ? () => setTab("path") : undefined}
             />
           )}
           {tab === "decks" && (
@@ -455,6 +456,7 @@ export default function SessionApp({
             <PathScreen
               code={code}
               session={session}
+              role={role}
               user={user}
               partnerName={partnerName}
               onBrowseDecks={() => setTab("decks")}

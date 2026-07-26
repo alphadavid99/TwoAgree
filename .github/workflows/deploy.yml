@@ -42,8 +42,20 @@ jobs:
       - if: steps.gate.outputs.ready == 'true'
         run: npm ci
 
+      # Observability is opt-in and supplied here rather than committed, so the
+      # repo carries no vendor identifiers. Both are safe in a client bundle (a
+      # Sentry DSN is public by design; the Plausible domain is just a domain) —
+      # they live in repo settings only so Dave can turn them on without a code
+      # change. Vite lets a process env var override .env.production, so an
+      # unset one simply leaves the feature off.
+      #   Secret   SENTRY_DSN         (Settings → Secrets → Actions)
+      #   Variable PLAUSIBLE_DOMAIN   (Settings → Variables → Actions)
       - if: steps.gate.outputs.ready == 'true'
         run: npm run build
+        env:
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
+          VITE_BUILD_SHA: ${{ github.sha }}
 
       # Deploy the Cloud Functions (generatePath, invites, GDPR) BEFORE Hosting,
       # so the front-end never goes live pointing at a function that isn't there.

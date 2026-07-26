@@ -27,7 +27,7 @@ export function CoreScore({
   return (
     <div className="core">
       <div className="core-stats">
-        <div className="corestat hero">
+        <div className="corestat hero known">
           <div className="corenum">
             {known.pct ?? "—"}
             <span>%</span>
@@ -37,7 +37,7 @@ export function CoreScore({
             {known.done} / {known.total}
           </div>
         </div>
-        <div className="corestat">
+        <div className="corestat agreed">
           <div className="corenum">
             {agreed.pct ?? "—"}
             <span>%</span>
@@ -49,13 +49,16 @@ export function CoreScore({
         </div>
       </div>
 
-      {/* Coverage is the flex, not a hedge — the score pulls you to finish it. */}
+      {/* Coverage is the flex, not a hedge. It used to read "it isn't yours
+          until you finish it" — telling a couple that something they've partly
+          earned is being withheld is loss-aversion, which CLAUDE.md §1 rules
+          out. Same pull, phrased as an invitation. */}
       <p className="core-pull">
         {complete
           ? t("You’ve finished the Core together.", "Vous avez terminé le Cœur ensemble.")
           : t(
-              `${agreed.done} of ${agreed.total} — it isn’t yours until you finish it.`,
-              `${agreed.done} sur ${agreed.total} — il n’est vraiment à vous qu’une fois terminé.`,
+              `${agreed.done} of ${agreed.total} — the picture fills in as you answer.`,
+              `${agreed.done} sur ${agreed.total} — le tableau se complète à mesure que vous répondez.`,
             )}
       </p>
 
@@ -98,8 +101,9 @@ function ShareCard({
   onClose: () => void;
 }) {
   const share = () => {
+    if (known.pct == null) return; // nothing to say yet — never share "null%"
     const txt = t(
-      `${myName} & ${partnerName} — we knew each other ${known.pct}% (${known.done} of ${known.total}) on TwoAgree.`,
+      `${myName} & ${partnerName} — we know each other ${known.pct}% (${known.done} of ${known.total}) on TwoAgree.`,
       `${myName} & ${partnerName} — on se connaît à ${known.pct}% (${known.done} sur ${known.total}) sur TwoAgree.`,
     );
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});

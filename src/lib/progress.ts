@@ -67,6 +67,26 @@ export function revealedQs(
   return completedLevels(slug, deck, role).flatMap((l) => lvlQs(slug, l));
 }
 
+// Every level the two of them have both finished, across the whole bank —
+// the reveals that are ready to open. The app knew when a reveal unlocked but
+// never said so: the waiting screen hard-swapped into the ceremony mid-read,
+// and a couple who'd wandered off got no signal at all.
+export function readyReveals(
+  decks: Record<string, DeckData> | undefined,
+  role: Role,
+): { slug: string; level: number }[] {
+  const out: { slug: string; level: number }[] = [];
+  for (const slug in decks ?? {}) {
+    for (const level of completedLevels(slug, decks![slug], role)) {
+      out.push({ slug, level });
+    }
+  }
+  return out;
+}
+
+// A stable key for "this couple has opened that reveal" (stored per device).
+export const revealKey = (slug: string, level: number) => `${slug}#${level}`;
+
 // Count of a level's questions answered by `who`.
 export function doneInLevel(
   slug: string,

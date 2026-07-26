@@ -200,7 +200,7 @@ function Preview() {
         <AuthScreen />
       </>
     );
-  if (view === "home")
+  if (view === "home" || view === "home-ready")
     return (
       <div className="tabwrap">
         <HomeScreen
@@ -212,6 +212,9 @@ function Preview() {
           onBrowse={noop}
           onReview={noop}
           onProfile={noop}
+          // home-ready: the herald card, for a reveal that has just unlocked.
+          pending={view === "home-ready" ? [{ slug: slugB, level: 0 }] : []}
+          onOpenReveal={noop}
         />
         <FakeNav on="home" />
       </div>
@@ -341,6 +344,7 @@ function Preview() {
   // Targets are approximate — scoring is importance-weighted, so the rendered
   // percentage lands a little under the share of matching answers.
   const LADDER: Record<string, number> = {
+    "reveal-first": 84,
     "reveal-t0": 34, // ~27% — no celebration
     "reveal-t1": 72, // ~65% — the room turns, no petals
     "reveal-t2": 84, // ~78% — petals join
@@ -363,6 +367,7 @@ function Preview() {
       partnerName="Judah"
       questions={isReview ? lvlQs(slugB, 0) : tuned?.qs}
       review={isReview}
+      firstEver={view === "reveal-first"}
       onDone={noop}
     />
   );

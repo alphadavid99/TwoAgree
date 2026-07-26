@@ -29,6 +29,31 @@ export function setLastDeck(uid: string, code: string, slug: string): void {
   localStorage.setItem(lastDeckKey(uid, code), slug);
 }
 
+// Which reveals this person has already opened, so Home can herald the ones
+// they haven't. Per device: it's a "have you seen this yet" nicety, not shared
+// couple state, and getting it wrong only costs a card that shouldn't show.
+const seenKey = (uid: string, code: string) => `aligned_seen_${uid}_${code}`;
+
+export function getSeenReveals(uid: string, code: string): string[] {
+  try {
+    const raw = localStorage.getItem(seenKey(uid, code));
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function markRevealSeen(uid: string, code: string, key: string): void {
+  try {
+    const seen = getSeenReveals(uid, code);
+    if (seen.includes(key)) return;
+    // Keep the list bounded — the bank has 21 decks, so 60 is generous.
+    localStorage.setItem(seenKey(uid, code), JSON.stringify([...seen, key].slice(-60)));
+  } catch {
+    /* storage blocked — the herald just reappears, which is harmless */
+  }
+}
+
 // ---- Onboarding checkpoint -------------------------------------------------
 // Onboarding held its whole flow in component state, so any reload restarted it
 // from zero. For the initiator that meant re-consenting and creating a DUPLICATE

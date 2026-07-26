@@ -89,6 +89,7 @@ export default function RevealScreen({
   partnerName,
   questions,
   review = false,
+  firstEver = false,
   title,
 }: {
   slug: string;
@@ -102,6 +103,9 @@ export default function RevealScreen({
   // reopened to see the full per-question breakdown (what each of you answered).
   questions?: Question[];
   review?: boolean;
+  // The couple's very first reveal. It's the moment they decide the core loop
+  // is worth it, so it earns one line the hundredth reveal doesn't get.
+  firstEver?: boolean;
   // The Path reuses this screen with a custom question list that spans decks, so
   // it passes an explicit eyebrow title instead of a single deck name.
   title?: string;
@@ -242,6 +246,14 @@ export default function RevealScreen({
             <div className="lvlup-rise r1">
               <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony />
             </div>
+            {firstEver && (
+              <p className="firstline lvlup-rise r2">
+                {t(
+                  "Your first reveal — this is where the two of you meet.",
+                  "Votre première révélation — c’est ici que vous vous retrouvez.",
+                )}
+              </p>
+            )}
             <p className="agreedline lvlup-rise r2">{agreedLine(pct, t)}</p>
             {know.pct != null && (
               <p className="knowline lvlup-rise r2">{knowLine(know.pct, t)}</p>

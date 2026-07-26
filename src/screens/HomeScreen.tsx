@@ -21,6 +21,8 @@ export default function HomeScreen({
   onBrowse,
   onReview,
   onProfile,
+  pending = [],
+  onOpenReveal,
 }: {
   code: string;
   session: Session;
@@ -30,6 +32,9 @@ export default function HomeScreen({
   onBrowse: () => void;
   onReview: (slug: string) => void;
   onProfile: () => void;
+  // Reveals that are ready and this person hasn't opened yet, newest last.
+  pending?: { slug: string; level: number }[];
+  onOpenReveal?: (slug: string, level: number) => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -81,7 +86,7 @@ export default function HomeScreen({
   const decksComplete = ORDER.filter((s) =>
     catComplete(s, session.decks?.[s], role),
   ).length;
-  const { rows, overallPct } = revealedRows(session.decks, role);
+  const { rows, overallPct, knownPct } = revealedRows(session.decks, role);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
   const ranked = [...rows].sort((a, b) => a.pct - b.pct);
@@ -263,16 +268,61 @@ export default function HomeScreen({
             </svg>
           </span>
           <span className="tile-lb">
-            {t("Agreed", "D’accord")}
+            {t("Between", "Entre")}
             <br />
-            {t("so far", "jusqu’ici")}
+            {t("the two of you", "vous deux")}
           </span>
-          <div>
-            <b className="serif">{overallPct ?? "—"}</b>
-            {overallPct != null && <span className="tile-u">%</span>}
+          <div className="tilepair">
+            <span className="tp">
+              <b className="serif agreed">{overallPct ?? "—"}</b>
+              {overallPct != null && <span className="tile-u">%</span>}
+              <i>{t("agreed", "d’accord")}</i>
+            </span>
+            <span className="tp">
+              <b className="serif known">{knownPct ?? "—"}</b>
+              {knownPct != null && <span className="tile-u">%</span>}
+              <i>{t("known", "connus")}</i>
+            </span>
           </div>
         </div>
       </div>
+
+      {/* The reveal that's waiting. Claret on a light screen — the only dark
+          card Home ever shows, so it reads as an event, not another row.
+          Nothing announced this before: a couple who'd wandered off had no way
+          to learn their reveal had unlocked. */}
+      {pending.length > 0 && onOpenReveal && (
+        <button
+          className="readycard"
+          type="button"
+          onClick={() => onOpenReveal(pending[0].slug, pending[0].level)}
+        >
+          <span className="readycard-top">
+            <span className="readyseal" aria-hidden="true">&#10022;</span>
+            <span>
+              <span className="readycard-eyebrow">
+                {t("READY TO OPEN", "PRÊT À OUVRIR")}
+              </span>
+              <span className="readycard-nm">
+                {deckName(pending[0].slug, lang)}
+                {nLevels(pending[0].slug) > 1 &&
+                  t(` · Part ${pending[0].level + 1}`, ` · Partie ${pending[0].level + 1}`)}
+              </span>
+            </span>
+          </span>
+          <span className="readycard-sub">
+            {joined
+              ? t(
+                  `You and ${partnerName} have both answered. Best opened side by side.`,
+                  `${partnerName} et vous avez tous deux répondu. Mieux vaut l’ouvrir côte à côte.`,
+                )
+              : t("You've both answered.", "Vous avez tous les deux répondu.")}
+          </span>
+          <span className="readycard-cta">
+            {t("Open your reveal →", "Ouvrir votre révélation →")}
+          </span>
+        </button>
+      )}
 
       {/* Featured deck: the orb meter — one orb per question this level. */}
       <div className="feat">
@@ -313,7 +363,12 @@ export default function HomeScreen({
               {joined && (
                 <>
                   {" · "}
-                  {partnerName} {t(`is at ${theirs}`, `en est à ${theirs}`)}
+                  {theirs === 0
+                    ? t(
+                        `${partnerName} hasn’t started this part yet`,
+                        `${partnerName} n’a pas encore commencé cette partie`,
+                      )
+                    : t(`${partnerName} is ${theirs} in`, `${partnerName} en a fait ${theirs}`)}
                 </>
               )}
             </>

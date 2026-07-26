@@ -272,6 +272,7 @@ function Preview() {
         <ProfileScreen
           user={{ uid: "u1", email: "sarah@example.com", displayName: "Sarah" } as never}
           code="ABCD"
+          partnerName="Judah Michael"
           onLeave={noop}
         />
         <FakeNav on="profile" />

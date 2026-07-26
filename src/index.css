@@ -3784,6 +3784,53 @@ textarea.input {
   margin-top: 0;
 }
 
+/* The notification opt-in. A real checkbox row rather than a switch: the state
+   has to be unmistakable, because getting it wrong means either silence when
+   they wanted to know, or email they never asked for. */
+.notifyopt {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--app-opt-bg);
+  border: 1.5px solid var(--app-opt-line);
+  border-radius: var(--r-sm);
+  padding: 13px 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.notifyopt.on {
+  background: var(--app-honey-bg);
+  border-color: var(--app-honey);
+}
+.notifyopt[disabled] {
+  cursor: default;
+  opacity: 0.7;
+}
+.notifyopt-box {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 2px solid var(--app-opt-line);
+  background: var(--ta-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--app-honey-ink);
+}
+.notifyopt.on .notifyopt-box {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+}
+
 /* Day zero on the Together tab — the promise, not an empty instrument panel. */
 .daycard {
   background: var(--ta-white);

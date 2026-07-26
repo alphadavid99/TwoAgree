@@ -195,13 +195,13 @@ export default function PlayScreen({
           }`.replace(/ — $/, "")
         : q.opts?.[pendAns as number];
     return (
-      <section>
+      <section className="screenfill">
         <TopBar onExit={onExit} />
         {stones}
         <div
           key={`${q.id}-guess`}
           className="qcard pane-in"
-          style={{ marginTop: 18, borderColor: "var(--app-honey-line)" }}
+          style={{ borderColor: "var(--app-honey-line)" }}
         >
           <div className="qrow">
             <div className="eyebrow">{deckName(slug, lang).toUpperCase()}</div>
@@ -257,10 +257,10 @@ export default function PlayScreen({
   }
 
   return (
-    <section>
+    <section className="screenfill">
       <TopBar onExit={onExit} />
       {stones}
-      <div key={q.id} className="qcard glide-in" style={{ marginTop: 18 }}>
+      <div key={q.id} className="qcard glide-in">
         <div className="qrow">
           <div className="eyebrow">{eyebrow}</div>
           {/* The numeric TIER badge is gone (brief 2 §A7c) — depth is never a

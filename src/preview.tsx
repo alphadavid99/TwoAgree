@@ -220,7 +220,7 @@ function Preview() {
   if (view === "auth")
     return (
       <>
-        <div className="brandhead brand-enter">
+        <div className="brandhead">
           <Wordmark size={32} />
         </div>
         <AuthScreen />

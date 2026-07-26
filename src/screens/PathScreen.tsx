@@ -412,7 +412,7 @@ function PathWaiting({
 }) {
   return (
     <section className="screen-enter">
-      <div className="brandhead brand-enter">
+      <div className="brandhead">
         <Wordmark size={24} />
       </div>
       <div className="center" style={{ minHeight: "60dvh" }}>

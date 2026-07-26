@@ -349,9 +349,13 @@ function StepPlay({
   if (guessing) {
     const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
     return (
-      <section className="screen-enter">
+      <section className="screen-enter screenfill">
         {header}
-        <div className="qcard glide-in" style={{ marginTop: 12, borderColor: "var(--app-honey-line)" }}>
+        <div
+          key={`${q.id}-guess`}
+          className="qcard pane-in"
+          style={{ borderColor: "var(--app-honey-line)" }}
+        >
           <div className="qrow">
             <div className="eyebrow">{t("YOUR GUESS", "VOTRE INTUITION")}</div>
             <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
@@ -382,10 +386,10 @@ function StepPlay({
 
   // Answer step
   return (
-    <section className="screen-enter">
+    <section className="screen-enter screenfill">
       {header}
       {isOpen ? (
-        <div className="qcard glide-in" style={{ marginTop: 12, background: "var(--blush)", border: "none" }}>
+        <div key={q.id} className="qcard glide-in" style={{ background: "var(--blush)", border: "none" }}>
           <div className="eyebrow" style={{ color: "var(--berry)" }}>{t("At the table", "À table")}</div>
           <div className="qtext" style={{ marginTop: 8 }}>{q.q}</div>
           <p className="sub" style={{ marginTop: 10 }}>
@@ -403,7 +407,7 @@ function StepPlay({
           />
         </div>
       ) : (
-        <div className="qcard glide-in" style={{ marginTop: 12 }}>
+        <div key={q.id} className="qcard glide-in">
           <div className="qtext">{q.q}</div>
           {input(pend, setPend)}
         </div>

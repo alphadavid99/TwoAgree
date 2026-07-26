@@ -1,45 +1,9 @@
 // Progress rings — ported from ringSVG / pctRing in legacy/index.html.
 // The arc draws in and the number counts up on mount (a small, calm delight),
-// unless the viewer prefers reduced motion.
-import { useEffect, useRef, useState } from "react";
-
-function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const on = () => setReduced(mq.matches);
-    mq.addEventListener?.("change", on);
-    return () => mq.removeEventListener?.("change", on);
-  }, []);
-  return reduced;
-}
-
-// Drives a 0→1 value over `dur` ms with an ease-out curve, once on mount.
-// `delay` holds the value at 0 first, so a caller can stagger two rings into
-// two separate beats instead of one simultaneous blur.
-function useDraw(dur = 900, delay = 0): number {
-  const reduced = useReducedMotion();
-  const [p, setP] = useState(reduced ? 1 : 0);
-  const raf = useRef(0);
-  useEffect(() => {
-    if (reduced) {
-      setP(1);
-      return;
-    }
-    let start = 0;
-    const tick = (now: number) => {
-      if (!start) start = now;
-      const t = Math.min(1, Math.max(0, now - start - delay) / dur);
-      setP(1 - Math.pow(1 - t, 3)); // easeOutCubic
-      if (t < 1) raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [reduced, dur, delay]);
-  return p;
-}
+// unless the viewer prefers reduced motion. The two hooks that drive that live
+// in lib/motion so screens can reuse them without importing this module.
+import { useEffect, useState } from "react";
+import { useDraw, useReducedMotion } from "../lib/motion";
 
 export function ProgressRing({
   done,
@@ -50,11 +14,20 @@ export function ProgressRing({
   total: number;
   size?: number;
 }) {
-  const p = useDraw();
   const r = size / 2 - 6;
   const circ = 2 * Math.PI * r;
   const frac = total ? done / total : 0;
-  const dash = (circ * frac * p).toFixed(1);
+  // The Decks list mounts one of these per deck — 21 rings, each previously
+  // running its own RAF loop with a setState per frame, underneath the pane
+  // animation. Draw the arc with a one-shot CSS transition instead: the browser
+  // animates strokeDasharray off the main thread and React renders once.
+  const [drawn, setDrawn] = useState(false);
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setDrawn(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  const shown = drawn || reduced ? frac : 0;
   return (
     <svg
       width={size}
@@ -64,17 +37,27 @@ export function ProgressRing({
       aria-label={`${done} of ${total} answered`}
     >
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth="9" />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke="var(--honey)"
-        strokeWidth="9"
-        strokeLinecap="round"
-        strokeDasharray={`${dash} ${circ.toFixed(0)}`}
-        transform={`rotate(-90 ${size / 2} ${size / 2})`}
-      />
+      {/* A round cap on a zero-length dash still paints a dot — so every
+          untouched deck wore a phantom honey pip at 12 o'clock, 16 of them
+          down the list, reading as "you've started this". */}
+      {done > 0 && (
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke="var(--honey)"
+          strokeWidth="9"
+          strokeLinecap="round"
+          strokeDasharray={`${(circ * shown).toFixed(1)} ${circ.toFixed(0)}`}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          style={
+            reduced
+              ? undefined
+              : { transition: "stroke-dasharray var(--dur-ceremony) var(--ease-glide)" }
+          }
+        />
+      )}
       <text
         x={size / 2}
         y={size / 2}
@@ -127,17 +110,20 @@ export function PctRing({
       aria-label={`${pct}% ${label}`}
     >
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth={sw} />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke={color}
-        strokeWidth={sw}
-        strokeLinecap="round"
-        strokeDasharray={`${dash.toFixed(1)} ${circ.toFixed(0)}`}
-        transform={`rotate(-90 ${size / 2} ${size / 2})`}
-      />
+      {/* Same round-cap guard as ProgressRing: at 0% the cap alone paints a dot. */}
+      {pct > 0 && (
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth={sw}
+          strokeLinecap="round"
+          strokeDasharray={`${dash.toFixed(1)} ${circ.toFixed(0)}`}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
+      )}
       <text
         x={size / 2}
         y={label ? size / 2 - size * 0.04 : size / 2}

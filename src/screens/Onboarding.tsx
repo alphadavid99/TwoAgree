@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   signInAnonymously,
   linkWithCredential,
@@ -54,6 +54,21 @@ const STARTER_BY_ID = new Map(
 const STARTER_QS: Question[] = STARTER_QIDS.map((id) => STARTER_BY_ID.get(id)).filter(
   (q): q is Question => !!q && (q.type === "mc" || q.type === "scale"),
 );
+
+// The eight-child stagger is an ARRIVAL gesture — it takes ~0.9s to settle.
+// Onboarding replayed it on every one of its ~15 steps, so each tap was
+// followed by the whole screen re-assembling itself. The first screen a flow
+// shows is a genuine arrival; each step after it gets the quick pane rise.
+// Cached per step, so a re-render (typing in a field) can't swap the class
+// mid-screen and restart the motion.
+function useStepEnter(stepKey: string): string {
+  const seen = useRef<Record<string, string>>({});
+  if (!seen.current[stepKey]) {
+    seen.current[stepKey] =
+      Object.keys(seen.current).length === 0 ? "screen-enter" : "pane-in";
+  }
+  return seen.current[stepKey];
+}
 
 type T = (en: string, fr: string) => string;
 type AStep =
@@ -127,6 +142,8 @@ export default function Onboarding({
   const [bankedCount, setBankedCount] = useState(0);
 
   const partner = partnerName.trim() || t("your partner", "votre partenaire");
+
+  const enter = useStepEnter(`${stage}|${stepA}|${stepB}|${signIn}|${fallback}`);
 
   // Save where we are, so a reload picks the flow back up instead of starting
   // a second session (initiator) or hitting a burnt token (invitee).
@@ -245,11 +262,11 @@ export default function Onboarding({
   };
 
   const shell = (children: React.ReactNode, onExit?: () => void) => (
-    <section className="screen-enter">
+    <section className={enter}>
       {onExit ? (
         <TopBar onExit={onExit} />
       ) : (
-        <div className="brandhead brand-enter">
+        <div className="brandhead">
           <Wordmark size={32} />
         </div>
       )}
@@ -260,11 +277,11 @@ export default function Onboarding({
 
   if (fallback || signIn) {
     return (
-      <section className="screen-enter">
+      <section className={enter}>
         {signIn ? (
           <TopBar onExit={() => setSignIn(false)} />
         ) : (
-          <div className="brandhead brand-enter">
+          <div className="brandhead">
             <Wordmark size={32} />
           </div>
         )}
@@ -617,6 +634,9 @@ function OnbQuestions({
   const q = STARTER_QS[idx];
   const last = idx + 1 >= STARTER_QS.length;
   const guessable = !!q && q.guessable && q.type !== "open";
+  // Arrival on the first question only; the other ~9 answer/guess screens are
+  // steps, and the question card carries its own glide.
+  const enter = useStepEnter(`${idx}|${guessing}`);
 
   // Move to the next question, or finish the level. Called from the answer step
   // (non-guessable questions) and from the guess step (lock or skip).
@@ -709,14 +729,14 @@ function OnbQuestions({
   if (guessing) {
     const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
     return (
-      <section className="screen-enter">
-        <div className="brandhead brand-enter">
+      <section className={enter}>
+        <div className="brandhead">
           <Mark height={30} title="TwoAgree" colour="var(--berry)" />
         </div>
         {progress}
         <div
           key={`${q.id}-guess`}
-          className="qcard glide-in"
+          className="qcard pane-in"
           style={{ marginTop: 12, borderColor: "var(--app-honey-line)" }}
         >
           <div className="qrow">
@@ -756,8 +776,8 @@ function OnbQuestions({
 
   // ---- Answer step ----
   return (
-    <section className="screen-enter">
-      <div className="brandhead brand-enter">
+    <section className={enter}>
+      <div className="brandhead">
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       {progress}
@@ -817,7 +837,7 @@ function RevealStep({
 
   if (!loaded) {
     return (
-      <section className="screen-enter">
+      <section className="pane-in">
         <div className="spin" />
         <p className="muted center" style={{ fontSize: 14 }}>
           {t("Bringing it together…", "On rassemble tout…")}
@@ -919,8 +939,8 @@ function ProfileStep({
   const initial = (name || "?").trim().charAt(0).toUpperCase() || "?";
   void code;
   return (
-    <section className="screen-enter">
-      <div className="brandhead brand-enter">
+    <section className="pane-in">
+      <div className="brandhead">
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       <h1 className="h1 center" style={{ marginTop: 16 }}>
@@ -1024,8 +1044,8 @@ function InviteStep({
 
   void myName;
   return (
-    <section className="screen-enter">
-      <div className="brandhead brand-enter">
+    <section className="pane-in">
+      <div className="brandhead">
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       <h1 className="h1 center" style={{ marginTop: 16 }}>

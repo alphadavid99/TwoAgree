@@ -98,6 +98,27 @@
   --ce-gold:          #DCB265;  /* the agreed arc + accents (mark-gold family) */
   --ce-blush:         #F3DED6;  /* the known arc — claret's light counterpart */
   --ce-track:         #57293F;  /* ring track on claret */
+
+  /* ==========================================================================
+     Motion. The language was already right but unnamed, so riseIn ran at five
+     different durations and three near-identical rise keyframes drifted apart.
+     Three rules govern this block:
+       1. Nothing loops except the waiting breath and the spinner.
+       2. Nothing outside the reveal ceremony runs 600–900ms.
+       3. One overshoot on screen at a time — springs are for the thing the
+          finger just touched, never for scenery.
+     Every animation here is decorative and is disabled wholesale under
+     prefers-reduced-motion (see the block at the foot of index.css).
+     ========================================================================== */
+  --dur-press:        120ms;    /* tap feedback: the thing under the finger */
+  --dur-enter:        280ms;    /* a screen or card arriving */
+  --dur-select:       400ms;    /* a choice registering */
+  --dur-ceremony:     900ms;    /* reveal only — the arc draw, the count-up */
+  --dur-breathe:      3200ms;   /* the one permitted loop */
+
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);  /* one overshoot */
+  --ease-glide:       cubic-bezier(0.22, 1, 0.36, 1);     /* decelerate hard */
+  --ease-settle:      cubic-bezier(0.25, 0.6, 0.3, 1);    /* calm arrival */
 }
 
 /* Focus ring — honey reads clearly on both claret and white grounds. */

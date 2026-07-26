@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDraw } from "../lib/motion";
 import { renderShareCard, shareCardImage } from "../lib/sharecard";
 
 type T = (en: string, fr: string) => string;
@@ -29,13 +30,23 @@ export function CoreScore({
 }) {
   const [sharing, setSharing] = useState(false);
   const complete = agreed.done >= agreed.total;
+  // The reveal rings were the only numbers in the app that were alive; the
+  // Core headline — the thing a couple comes back to — sat inert. Same curve,
+  // shorter (this is a return visit, not a ceremony), Agreed a beat behind so
+  // the two numbers land as two events rather than one blur.
+  const dK = useDraw(700);
+  const dA = useDraw(700, 160);
+  const climb = (pct: number | null, p: number) =>
+    pct == null ? "—" : Math.round(pct * p);
   return (
     <div className="core">
       <div className="core-stats">
         <div className="corestat hero known">
-          <div className="corenum">
-            {known.pct ?? "—"}
-            <span>%</span>
+          {/* The animating value is invisible to assistive tech; the settled
+              one is announced here. */}
+          <div className="corenum" aria-label={`${known.pct ?? 0}%`}>
+            <span aria-hidden="true">{climb(known.pct, dK)}</span>
+            <span className="pc">%</span>
           </div>
           <div className="corelb">{t("Known", "Connus")}</div>
           <div className="coredenom">
@@ -43,9 +54,9 @@ export function CoreScore({
           </div>
         </div>
         <div className="corestat agreed">
-          <div className="corenum">
-            {agreed.pct ?? "—"}
-            <span>%</span>
+          <div className="corenum" aria-label={`${agreed.pct ?? 0}%`}>
+            <span aria-hidden="true">{climb(agreed.pct, dA)}</span>
+            <span className="pc">%</span>
           </div>
           <div className="corelb">{t("Agreed", "D’accord")}</div>
           <div className="coredenom">

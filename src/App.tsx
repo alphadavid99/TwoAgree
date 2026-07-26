@@ -17,7 +17,7 @@ import { IconSettings, IconBack } from "./components/icons";
 import { useT } from "./lib/i18n";
 
 const BrandHead = () => (
-  <div className="brandhead brand-enter">
+  <div className="brandhead">
     <Wordmark size={32} />
   </div>
 );
@@ -50,7 +50,7 @@ function NoSession({
   const showProfile = view === "profile";
   return (
     <>
-      <div className="landinghead brand-enter">
+      <div className="landinghead">
         <Wordmark size={24} />
         <button
           className="iconbtn landinghead-action"

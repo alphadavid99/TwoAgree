@@ -13,6 +13,7 @@ import { Avatar } from "../components/Avatar";
 import { PathGlyph } from "../components/PathGlyph";
 import { IconDecks, IconSettings } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
+import { track } from "../lib/observability";
 import { useT, useLang, type Lang } from "../lib/i18n";
 
 export default function HomeScreen({
@@ -59,7 +60,10 @@ export default function HomeScreen({
   const prevJoined = useRef(joined);
   const [justJoined, setJustJoined] = useState(false);
   useEffect(() => {
-    if (joined && !prevJoined.current) setJustJoined(true);
+    if (joined && !prevJoined.current) {
+      setJustJoined(true);
+      track("partner joined");
+    }
     prevJoined.current = joined;
   }, [joined]);
 

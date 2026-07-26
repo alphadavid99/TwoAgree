@@ -3164,6 +3164,21 @@ textarea.input {
 .obwelcome {
   margin-top: 10px;
 }
+/* The welcome step is the only content on its screen and the first thing
+   anyone sees, so it fills the viewport and the verse + three lines centre as
+   one block with the buttons at the foot. Cut to three short lines the copy
+   otherwise stacked in the top third and left the bottom half of the phone
+   blank. Same fill arithmetic as .path-intro, minus the bottom-nav reserve
+   (there is no nav during onboarding): 100svh less the phone frame's 28 + 36
+   of vertical padding, plus a little slack. */
+.obwel {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - env(safe-area-inset-top, 0px) - 72px);
+}
+.obwel .obwelcome {
+  margin: auto 0;
+}
 .verse {
   font-size: 21px;
   line-height: 1.45;
@@ -3634,11 +3649,6 @@ textarea.input {
   line-height: 1.4;
   color: var(--app-mut);
 }
-.pi-privacy svg {
-  flex: none;
-  color: var(--app-amber);
-}
-
 /* Pin the CTA to the bottom of the filled section so it's always in view;
    extra vertical space collects above it (keeping the top calm and airy). */
 .pi-cta {

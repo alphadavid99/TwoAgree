@@ -88,7 +88,6 @@ export default function PathScreen({
       <PathIntake
         uid={user.uid}
         code={code}
-        partnerName={partnerName}
         onBrowseDecks={onBrowseDecks}
         onDone={() => setIntakeDone(true)}
         t={t}
@@ -251,20 +250,20 @@ export function PathIntro({
         ))}
       </ol>
 
+      {/* This was a padlock and "neither of you sees the other's until you
+          land". It sold separateness as the feature on the screen that sells
+          the Path. The line still has to explain why the CTA says "my part",
+          so it says the collaborative version of the same thing. */}
       <p className="pi-privacy">
-        <svg viewBox="0 0 24 24" width={13} height={13} aria-hidden="true">
-          <rect x={5} y={10.5} width={14} height={9} rx={2} fill="none" stroke="currentColor" strokeWidth={1.7} />
-          <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" strokeWidth={1.7} />
-        </svg>
         {t(
-          `You each answer on your own, neither of you sees the other's until you land.`,
-          `Vous répondez chacun de votre côté, aucun ne voit les réponses de l'autre avant l'arrivée.`,
+          `You each shape it from your side, then walk it together.`,
+          `Vous le façonnez chacun de votre côté, puis vous le parcourez ensemble.`,
         )}
       </p>
 
       <div className="pi-cta">
         <button className="btn pill" type="button" onClick={onBegin}>
-          {t("Begin: just me", "Commencer: juste moi")}
+          {t("Begin my part", "Commencer ma part")}
         </button>
         <button className="btn ghost" type="button" onClick={onBrowseDecks}>
           {t("Browse the conversations instead", "Parcourir les conversations plutôt")}
@@ -278,14 +277,12 @@ export function PathIntro({
 function PathIntake({
   uid,
   code,
-  partnerName,
   onBrowseDecks,
   onDone,
   t,
 }: {
   uid: string;
   code: string;
-  partnerName: string;
   onBrowseDecks: () => void;
   onDone: () => void;
   t: T;
@@ -354,8 +351,27 @@ function PathIntake({
   return (
     <section className="screen-enter">
       <div style={{ display: "flex", justifyContent: "center", marginTop: 6 }}>
-        <span className="badge" style={{ background: "var(--blush)", color: "var(--berry)", fontWeight: 700 }}>
-          🔒 {t(`Just you: ${partnerName} won't see this`, `Rien que vous, ${partnerName} ne verra pas ceci`)}
+        {/* .badge is nowrap by design (so "TIER 2" can't blob), but this one
+            carries a sentence and the French runs longer than a 375px phone.
+            Wrap it, and drop the pill tracking so two lines read as prose. */}
+        <span
+          className="badge"
+          style={{
+            background: "var(--blush)",
+            color: "var(--berry)",
+            fontWeight: 700,
+            whiteSpace: "normal",
+            letterSpacing: 0.2,
+            lineHeight: 1.35,
+            maxWidth: 300,
+            textAlign: "center",
+          }}
+        >
+          {/* Was a padlock and "{partner} won't see this". The intake really is
+              author-only, but leading with a lock made a shared journey look
+              like a secret kept from the person you're walking it with. Same
+              fact, told as its purpose: it's what the Path is built from. */}
+          {t("Just for you: this shapes the path you walk together", "Rien que pour vous : cela façonne le chemin que vous parcourez ensemble")}
         </span>
       </div>
       {/* (idx+1)/, not idx/ — the bar sat at 0% while the label already said
@@ -419,8 +435,8 @@ function PathWaiting({
         <h1 className="h1 center">{t("Your part is done.", "Votre part est terminée.")}</h1>
         <p className="sub center" style={{ margin: "12px 24px 0", maxWidth: 340 }}>
           {t(
-            `The path is drawn from both of you, so it lays out the moment ${partnerName} finishes their own questions. Your answers stay yours alone.`,
-            `Le chemin se trace à partir de vous deux : il apparaît dès que ${partnerName} termine ses propres questions. Vos réponses restent les vôtres.`,
+            `The path is drawn from both of you, so it lays out the moment ${partnerName} finishes their own questions.`,
+            `Le chemin se trace à partir de vous deux : il apparaît dès que ${partnerName} termine ses propres questions.`,
           )}
         </p>
         <button className="btn ghost" type="button" onClick={onBrowseDecks} style={{ marginTop: 24 }}>

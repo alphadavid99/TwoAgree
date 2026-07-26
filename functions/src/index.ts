@@ -7,7 +7,7 @@
  * the admin SDK.
  */
 import { setGlobalOptions } from "firebase-functions/v2";
-import { defineSecret, defineString } from "firebase-functions/params";
+import { defineSecret } from "firebase-functions/params";
 import { onValueWritten } from "firebase-functions/v2/database";
 import { onRequest, onCall, HttpsError } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
@@ -298,9 +298,13 @@ export const generatePath = onCall(async (request) => {
 // happily in its "decide, log, send nothing" state.
 const EMAIL_ENABLED = process.env.NOTIFY_EMAIL_ENABLED === "true";
 const RESEND_API_KEY = EMAIL_ENABLED ? defineSecret("RESEND_API_KEY") : null;
-// Verified sender for the Resend domain, e.g. "TwoAgree <hello@twoagree.app>".
-const MAIL_FROM = defineString("MAIL_FROM", { default: "TwoAgree <onboarding@resend.dev>" });
-const APP_URL = defineString("APP_URL", { default: "https://twoagree.app" });
+// Plain constants with an env override, NOT defineString: a declared param
+// makes `firebase deploy --non-interactive` demand a value even when the
+// declaration carries a default, which failed the deploy and skipped Hosting
+// entirely. Neither of these is a secret, so a constant is the honest shape.
+// Verified sender for the Resend domain, once that domain is verified.
+const MAIL_FROM = process.env.MAIL_FROM || "TwoAgree <onboarding@resend.dev>";
+const APP_URL = process.env.APP_URL || "https://twoagree.app";
 
 async function sendViaResend(
   key: string,
@@ -310,7 +314,7 @@ async function sendViaResend(
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: MAIL_FROM.value(), to, ...copy }),
+    body: JSON.stringify({ from: MAIL_FROM, to, ...copy }),
   });
   if (!res.ok) {
     throw new Error(`resend ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -373,7 +377,7 @@ export const onLevelDone = onValueWritten(
 
     const copy = revealReadyEmail({
       partnerName: (finisherNameSnap.val() as string) || "Your partner",
-      appUrl: APP_URL.value(),
+      appUrl: APP_URL,
     });
     try {
       await sendViaResend(key, decision.to, copy);

@@ -118,6 +118,34 @@ export function writeImportance(
   });
 }
 
+// The talk loop (UX review §6). Pinning is per-partner but the LIST is shared:
+// either of them flagging a question puts it on the couple's agenda. Closure
+// needs both — one person deciding a conversation happened isn't the same as
+// having had it. Scalar leaves only, per the RTDB gotcha in §6.
+export function writeTalkPin(
+  code: string,
+  slug: string,
+  qid: string,
+  role: Role,
+  on: boolean,
+): Promise<void> {
+  return update(ref(db, `sessions/${code}/decks/${slug}/talks/${qid}/pinned`), {
+    [role]: on,
+  });
+}
+
+export function writeTalked(
+  code: string,
+  slug: string,
+  qid: string,
+  role: Role,
+  on: boolean,
+): Promise<void> {
+  return update(ref(db, `sessions/${code}/decks/${slug}/talks/${qid}/talked`), {
+    [role]: on,
+  });
+}
+
 export function markLevelDone(
   code: string,
   slug: string,

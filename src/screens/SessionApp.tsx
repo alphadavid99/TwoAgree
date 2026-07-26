@@ -303,6 +303,8 @@ export default function SessionApp({
         partnerName={partnerName}
         questions={revealedQs(slug, deck, role)}
         review
+        code={code}
+        talkFirst={flowReturn === "results"}
         onDone={exitFlow}
       />
     );
@@ -359,6 +361,7 @@ export default function SessionApp({
           myName={myName}
           partnerName={partnerName}
           firstEver={seen.length === 0}
+          code={code}
           onDone={exitFlow}
         />
       );
@@ -459,7 +462,12 @@ export default function SessionApp({
             />
           )}
           {tab === "results" && (
-            <ResultsScreen session={session} role={role} onOpen={openReview} />
+            <ResultsScreen
+              session={session}
+              role={role}
+              code={code}
+              onOpen={openReview}
+            />
           )}
           {tab === "profile" && (
             <ProfileScreen user={user} onLeave={onLeave} code={code} />

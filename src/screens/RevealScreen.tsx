@@ -14,6 +14,9 @@ import {
 import { type Question } from "../lib/questions";
 import { collectFlagRows } from "../lib/flags";
 import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
+import { talkStateOf, type TalkState } from "../lib/talks";
+import { deckOf } from "../lib/path";
+import { writeTalkPin } from "../lib/session";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { ScorePair } from "../components/ScorePair";
 import FlagsReview, { FlagBox } from "./FlagsReview";
@@ -90,6 +93,8 @@ export default function RevealScreen({
   questions,
   review = false,
   firstEver = false,
+  code,
+  talkFirst = false,
   title,
 }: {
   slug: string;
@@ -106,6 +111,12 @@ export default function RevealScreen({
   // The couple's very first reveal. It's the moment they decide the core loop
   // is worth it, so it earns one line the hundredth reveal doesn't get.
   firstEver?: boolean;
+  // The session code enables the talk loop on each card. Omitted where there's
+  // no session to write to (the onboarding preview reveal).
+  code?: string;
+  // Opened from Together to see where you differ — lead with the differences
+  // instead of making the couple hunt through the agreed cards for them.
+  talkFirst?: boolean;
   // The Path reuses this screen with a custom question list that spans decks, so
   // it passes an explicit eyebrow title instead of a single deck name.
   title?: string;
@@ -116,7 +127,21 @@ export default function RevealScreen({
   const data = deck ?? {};
   const pct = overall(qs, data, role);
   const know = knowScore(qs, data, role);
-  const joint = jointQuestions(qs, data);
+  const jointRaw = jointQuestions(qs, data);
+  const VERDICT_ORDER: Record<Verdict, number> = {
+    "Worth a chat": 0,
+    Close: 1,
+    Complementary: 2,
+    Agreed: 3,
+    Shared: 4,
+  };
+  const joint = talkFirst
+    ? [...jointRaw].sort(
+        (a, b) =>
+          VERDICT_ORDER[scoreQ(a, data, role).verdict] -
+          VERDICT_ORDER[scoreQ(b, data, role).verdict],
+      )
+    : jointRaw;
   // A custom question list (review or Path) is single-part, so never touch the
   // deck-leveling helpers with a slug that may not be a real deck.
   const multi = questions ? false : nLevels(slug) > 1;
@@ -340,6 +365,9 @@ export default function RevealScreen({
         {joint.map((q, i) => {
           const r = scoreQ(q, data, role);
           const lq = localizeQuestion(q, lang);
+          // Talks live on the question's real deck — for the Path, that isn't
+          // the slug this screen was opened with.
+          const talkSlug = deckOf(q.id) ?? slug;
           return (
             <QCard
               key={q.id}
@@ -349,6 +377,12 @@ export default function RevealScreen({
               myName={myName}
               partnerName={partnerName}
               delay={Math.min(i * 50, 500)}
+              talk={code ? talkStateOf(talkSlug, q, data, role) : undefined}
+              onPin={
+                code
+                  ? (on) => void writeTalkPin(code, talkSlug, q.id, role, on)
+                  : undefined
+              }
             />
           );
         })}
@@ -501,6 +535,8 @@ function QCard({
   myName,
   partnerName,
   delay,
+  talk,
+  onPin,
 }: {
   q: Question;
   r: ScoreResult;
@@ -508,8 +544,13 @@ function QCard({
   myName: string;
   partnerName: string;
   delay: number;
+  // The talk loop. Absent in contexts with no session to write to (the
+  // onboarding preview reveal), where the card is read-only.
+  talk?: TalkState;
+  onPin?: (on: boolean) => void;
 }) {
   const vcol = VERDICT_COLOR[r.verdict];
+  const pinned = talk ? talk.pinnedByMe || talk.pinnedByThem : false;
   return (
     <div
       className="qc row-rise"
@@ -553,6 +594,13 @@ function QCard({
         </div>
       )}
 
+      {/* 110 questions carry a verse anchor and it only ever appeared inside
+          the flags walkthrough — on a difference, a shared anchor is neutral
+          ground to start from. */}
+      {q.ref && r.verdict === "Worth a chat" && (
+        <div className="qc-ref">{q.ref}</div>
+      )}
+
       {(r.guessed || r.theyGuessed) && (
         <div className="guessrow">
           {r.guessed && (
@@ -570,6 +618,24 @@ function QCard({
             </span>
           )}
         </div>
+      )}
+
+      {/* "Worth a conversation." used to be a dead note. Now it can become an
+          actual conversation: either partner pins it to the couple's agenda. */}
+      {talk && onPin && (
+        <button
+          type="button"
+          className={`pinbtn${pinned ? " on" : ""}`}
+          onClick={() => onPin(!talk.pinnedByMe)}
+          aria-pressed={pinned}
+        >
+          <span aria-hidden="true">{pinned ? "♥" : "♡"}</span>
+          {pinned
+            ? talk.pinnedByMe
+              ? t("On your talk list", "Sur votre liste")
+              : t("They want to talk about this", "Il/elle veut en parler")
+            : t("Talk about this", "En parler")}
+        </button>
       )}
     </div>
   );

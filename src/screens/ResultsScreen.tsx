@@ -1,8 +1,11 @@
 import { revealedRows, overallAll, knownAll, isCore } from "../lib/results";
-import { other, type Role } from "../lib/scoring";
+import { other, scoreQ, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { CoreScore } from "./CoreScore";
-import { deckName } from "../lib/questions.fr";
+import { TalkList } from "./TalkList";
+import { revealedQs } from "../lib/progress";
+import { collectFlagRows } from "../lib/flags";
+import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
 
 // Overall alignment across every mutually-revealed level — a deck counts as
@@ -11,11 +14,15 @@ import { useT, useLang } from "../lib/i18n";
 export default function ResultsScreen({
   session,
   role,
+  code,
   onOpen,
+  onOpenFlags,
 }: {
   session: Session;
   role: Role;
+  code?: string;
   onOpen?: (slug: string) => void;
+  onOpenFlags?: () => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -37,6 +44,31 @@ export default function ResultsScreen({
   const closest = ranked[ranked.length - 1];
   const showSynth = ranked.length >= 2 && lowest.slug !== closest.slug;
 
+  // The two or three questions behind "most worth a conversation".
+  const gaps = showSynth
+    ? revealedQs(lowest.slug, session.decks?.[lowest.slug], role)
+        .map((q) => ({ q: localizeQuestion(q, lang), r: scoreQ(q, session.decks?.[lowest.slug] ?? {}, role) }))
+        .filter(({ q, r }) => r.verdict === "Worth a chat" && q.type === "mc")
+        .slice(0, 2)
+        .map(({ q, r }) => ({
+          q,
+          a: q.opts?.[Number(r.me)] ?? "—",
+          b: q.opts?.[Number(r.th)] ?? "—",
+        }))
+    : [];
+
+  // Flags across every revealed question, not just one deck's reveal.
+  const allFlags = rows.reduce(
+    (n, r) =>
+      n +
+      collectFlagRows(
+        revealedQs(r.slug, session.decks?.[r.slug], role),
+        session.decks?.[r.slug] ?? {},
+        role,
+      ).length,
+    0,
+  );
+
   return (
     <section>
       <div className="eyebrow center" style={{ marginTop: 24 }}>
@@ -54,6 +86,36 @@ export default function ResultsScreen({
         t={t}
       />
 
+      {/* The couple's agenda — what they said they'd talk about, and what they
+          have. Nothing carried a couple from "worth a chat" to an actual chat
+          before this, and nothing marked the talking as having happened. */}
+      {code && (
+        <TalkList
+          session={session}
+          role={role}
+          code={code}
+          partnerName={partnerName}
+          t={t}
+        />
+      )}
+
+      {/* Flags only ever existed inside one deck's reveal — the couple could
+          never see "the things we didn't know about each other" in one place. */}
+      {allFlags > 0 && onOpenFlags && (
+        <button className="flagbox" type="button" onClick={onOpenFlags}>
+          <span className="flagbox-n">{allFlags}</span>
+          <span>
+            <b>{t("Worth a closer look", "À regarder de plus près")}</b>
+            <span className="flagbox-sub">
+              {t(
+                "Across everything you've revealed together.",
+                "Sur tout ce que vous avez révélé ensemble.",
+              )}
+            </span>
+          </span>
+        </button>
+      )}
+
       {rows.length > 0 && (
         <>
           <div className="shead" style={{ marginTop: 24 }}>
@@ -69,7 +131,11 @@ export default function ResultsScreen({
                 </div>
                 <div className="pc">{closest.pct}%</div>
               </div>
-              <div className="scall warm">
+              <button
+                className="scall warm"
+                type="button"
+                onClick={() => onOpen?.(lowest.slug)}
+              >
                 <div>
                   <div className="lb">
                     {t("Most worth a conversation", "À aborder en priorité")}
@@ -77,7 +143,28 @@ export default function ResultsScreen({
                   <div className="nm">{deckName(lowest.slug, lang)}</div>
                 </div>
                 <div className="pc">{lowest.pct}%</div>
-              </div>
+              </button>
+              {/* Naming a topic gave the couple nothing to SAY. The screen was
+                  eight percentages and not one question — a scoreboard, on the
+                  tab that exists to start conversations. Show the actual gaps. */}
+              {gaps.length > 0 && (
+                <div className="gaps">
+                  {gaps.map(({ q, a, b }) => (
+                    <button
+                      key={q.id}
+                      className="gap"
+                      type="button"
+                      onClick={() => onOpen?.(lowest.slug)}
+                    >
+                      <div className="gap-q">{q.q}</div>
+                      <div className="gap-chips">
+                        <span className="mcchip s">{a}</span>
+                        <span className="mcchip j">{b}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

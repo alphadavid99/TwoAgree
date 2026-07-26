@@ -118,6 +118,7 @@ export default function PathStep({
         title={meta.name}
         myName={myName}
         partnerName={partnerName}
+        code={code}
         onDone={() => setPhase("lamp")}
       />
     );

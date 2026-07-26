@@ -74,6 +74,22 @@
                   ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))"
                 }
               }
+            },
+            "talks": {
+              "$qid": {
+                "pinned": {
+                  "$role": {
+                    ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                    ".validate": "newData.isBoolean()"
+                  }
+                },
+                "talked": {
+                  "$role": {
+                    ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                    ".validate": "newData.isBoolean()"
+                  }
+                }
+              }
             }
           }
         }

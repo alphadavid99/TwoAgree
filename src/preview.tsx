@@ -330,7 +330,44 @@ function Preview() {
       />
     );
   }
-  if (view === "results")
+  if (view === "results" || view === "results-talk") {
+    // results-talk: the couple's agenda — one open topic, one they've closed,
+    // plus a "your partner already confirmed" row.
+    const talkSession = view === "results-talk"
+      ? ({
+          ...session,
+          decks: Object.fromEntries(
+            Object.entries(session.decks!).map(([sl, d]) => {
+              if (sl !== slugB) return [sl, d];
+              const mcs = DECKS[sl].questions.filter((q) => q.type === "mc").slice(0, 3);
+              return [
+                sl,
+                {
+                  ...d,
+                  talks: {
+                    [mcs[0].id]: { pinned: { host: true } },
+                    [mcs[1].id]: { pinned: { guest: true }, talked: { guest: true } },
+                    [mcs[2].id]: { pinned: { host: true }, talked: { host: true, guest: true } },
+                  },
+                },
+              ];
+            }),
+          ),
+        } as Session)
+      : session;
+    return (
+      <div className="tabwrap">
+        <ResultsScreen
+          session={talkSession}
+          role="host"
+          code={view === "results-talk" ? "ABCD" : undefined}
+          onOpen={noop}
+        />
+        <FakeNav on="results" />
+      </div>
+    );
+  }
+  if (view === "results-old")
     return (
       <div className="tabwrap">
         <ResultsScreen session={session} role="host" onOpen={noop} />
@@ -368,6 +405,7 @@ function Preview() {
       questions={isReview ? lvlQs(slugB, 0) : tuned?.qs}
       review={isReview}
       firstEver={view === "reveal-first"}
+      code={isReview ? "ABCD" : undefined}
       onDone={noop}
     />
   );

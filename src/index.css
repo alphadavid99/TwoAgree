@@ -985,6 +985,11 @@ textarea.input {
   padding: 14px 16px;
   background: var(--ta-white);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
+  /* the warm callout is a real button now (it opens the conversation) */
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
 .scall.warm {
   background: var(--honbg);
@@ -3581,4 +3586,184 @@ textarea.input {
 }
 .ceremony.lit .firstline {
   color: var(--ce-gold);
+}
+
+/* The talk loop: pin a question onto the couple's shared agenda. */
+.pinbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--app-card-line);
+  border-radius: 999px;
+  background: var(--ta-white);
+  color: var(--sub);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.pinbtn:active {
+  transform: scale(0.96);
+}
+.pinbtn.on {
+  background: var(--app-opt-bg);
+  border-color: var(--berry);
+  color: var(--berry);
+}
+.pinbtn span {
+  font-size: 14px;
+  line-height: 1;
+}
+/* The verse anchor on a difference — neutral ground to start from. */
+.qc-ref {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 8px;
+}
+
+/* ============================================================
+   The talk list — the couple's agenda on the Together tab.
+   ============================================================ */
+.talkwrap {
+  margin-top: 2px;
+}
+.talkrow {
+  background: var(--ta-white);
+  border-radius: var(--r-sm);
+  padding: 13px 14px 11px;
+  margin-bottom: 8px;
+  box-shadow: var(--e1);
+}
+.talkrow-q {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.talkbtn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--berry);
+  border-radius: 999px;
+  background: var(--ta-white);
+  color: var(--berry);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.talkbtn:active {
+  transform: scale(0.96);
+}
+/* Your partner has already confirmed — one tap from closing it together. */
+.talkbtn.go {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+  color: var(--app-honey-ink);
+}
+.talkrow-wait {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--sub);
+  font-style: italic;
+}
+.talkdrop {
+  margin: 10px 0 0 10px;
+  border: 0;
+  background: none;
+  color: var(--mut);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.talkdone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--sub);
+  margin: 12px 0 2px;
+}
+.talkdone-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--app-opt-bg);
+  color: var(--berry);
+  font-weight: 800;
+  font-size: 12px;
+}
+/* Closure is the celebration most worth having: it lands on the talking, not
+   on the score. Quiet on purpose — a settle, not a firework. */
+.talkcheer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
+  color: var(--ce-ink);
+  font-size: 13.5px;
+  animation: riseIn 0.5s ease both;
+}
+.talkcheer-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ce-gold);
+  color: var(--ce-ground-bot);
+  font-weight: 800;
+}
+
+/* The questions behind "most worth a conversation". */
+.gaps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.gap {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--app-card-line);
+  border-radius: var(--r-sm);
+  background: var(--ta-white);
+  padding: 12px 13px;
+  font: inherit;
+  cursor: pointer;
+}
+.gap-q {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.gap-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
 }

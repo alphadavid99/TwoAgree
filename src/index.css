@@ -3008,7 +3008,7 @@ textarea.input {
 .sharewrap {
   position: fixed;
   inset: 0;
-  background: rgba(46, 34, 48, 0.55);
+  background: rgba(28, 12, 22, 0.82);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3766,4 +3766,97 @@ textarea.input {
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 9px;
+}
+
+
+/* ============================================================
+   The keepsake card — a real 9:16 PNG, previewed exactly as it will be shared.
+   The old sheet drew a DOM card that never left the app (the share sent plain
+   text), so what the couple admired and what they could actually post were two
+   different things.
+   ============================================================ */
+.sharesheet {
+  width: min(92vw, 380px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.sharepreview {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 58vh;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  align-self: center;
+}
+.sharepreview.loading {
+  background: linear-gradient(168deg, #4a2138, #2a1120);
+}
+.cardopts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+/* What goes on the card is opt-in. Agreement starts OFF — it's the most
+   private number the app holds. */
+.cardopt {
+  border: 1px solid rgba(248, 233, 236, 0.28);
+  background: transparent;
+  color: rgba(248, 233, 236, 0.72);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.cardopt.on {
+  background: var(--ce-gold);
+  border-color: var(--ce-gold);
+  color: var(--app-honey-ink);
+}
+
+/* "What you've learned about Judah" — wrong guesses, read as discoveries. */
+.discwrap {
+  margin-top: 2px;
+}
+.disc {
+  background: var(--ta-white);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--e1);
+}
+.disc-q {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.4;
+}
+.disc-learn {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 6px;
+  line-height: 1.35;
+}
+.disc-tag {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-right: 7px;
+  vertical-align: 2px;
+}
+.disc-thought {
+  font-size: 12px;
+  color: var(--mut);
+  margin-top: 6px;
+  font-style: italic;
 }

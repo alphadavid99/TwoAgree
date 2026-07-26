@@ -3,7 +3,9 @@ import { other, scoreQ, type Role } from "../lib/scoring";
 import type { Session } from "../types";
 import { CoreScore } from "./CoreScore";
 import { TalkList } from "./TalkList";
-import { revealedQs } from "../lib/progress";
+import { Discoveries } from "./Discoveries";
+import { revealedQs, catComplete } from "../lib/progress";
+import { ORDER } from "../lib/questions";
 import { collectFlagRows } from "../lib/flags";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
@@ -43,6 +45,9 @@ export default function ResultsScreen({
   const lowest = ranked[0];
   const closest = ranked[ranked.length - 1];
   const showSynth = ranked.length >= 2 && lowest.slug !== closest.slug;
+  const completeCount = ORDER.filter((s) =>
+    catComplete(s, session.decks?.[s], role),
+  ).length;
 
   // The two or three questions behind "most worth a conversation".
   const gaps = showSynth
@@ -83,6 +88,8 @@ export default function ResultsScreen({
         known={coreKnown}
         myName={myName}
         partnerName={partnerName}
+        conversations={{ done: completeCount, total: ORDER.length }}
+        closest={closest ? deckName(closest.slug, lang) : undefined}
         t={t}
       />
 
@@ -98,6 +105,8 @@ export default function ResultsScreen({
           t={t}
         />
       )}
+
+      <Discoveries session={session} role={role} partnerName={partnerName} t={t} />
 
       {/* Flags only ever existed inside one deck's reveal — the couple could
           never see "the things we didn't know about each other" in one place. */}

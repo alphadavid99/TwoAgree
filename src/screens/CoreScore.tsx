@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Wordmark } from "../brand/Wordmark";
+import { useEffect, useState } from "react";
+import { renderShareCard, shareCardImage } from "../lib/sharecard";
 
 type T = (en: string, fr: string) => string;
 type Stat = { pct: number | null; done: number; total: number };
@@ -14,12 +14,17 @@ export function CoreScore({
   known,
   myName,
   partnerName,
+  conversations,
+  closest,
   t,
 }: {
   agreed: Stat;
   known: Stat;
   myName: string;
   partnerName: string;
+  /** Conversations finished / total — the card's headline, never a score. */
+  conversations?: { done: number; total: number };
+  closest?: string;
   t: T;
 }) {
   const [sharing, setSharing] = useState(false);
@@ -74,6 +79,8 @@ export function CoreScore({
           known={known}
           myName={myName}
           partnerName={partnerName}
+          conversations={conversations ?? { done: 0, total: 21 }}
+          closest={closest}
           t={t}
           onClose={() => setSharing(false)}
         />
@@ -90,6 +97,8 @@ function ShareCard({
   known,
   myName,
   partnerName,
+  conversations,
+  closest,
   t,
   onClose,
 }: {
@@ -97,47 +106,144 @@ function ShareCard({
   known: Stat;
   myName: string;
   partnerName: string;
+  conversations: { done: number; total: number };
+  closest?: string;
   t: T;
   onClose: () => void;
 }) {
-  const share = () => {
-    if (known.pct == null) return; // nothing to say yet — never share "null%"
-    const txt = t(
-      `${myName} & ${partnerName} — we know each other ${known.pct}% (${known.done} of ${known.total}) on TwoAgree.`,
-      `${myName} & ${partnerName} — on se connaît à ${known.pct}% (${known.done} sur ${known.total}) sur TwoAgree.`,
-    );
-    if (navigator.share) navigator.share({ text: txt }).catch(() => {});
-    else if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
+  // What goes on the card is the couple's choice. Agreement is OFF by default:
+  // a percentage about how much two people agree is the most private number
+  // here, and it should never leave the app because a button was easy to tap.
+  const [withKnown, setWithKnown] = useState(known.pct != null);
+  const [withAgreed, setWithAgreed] = useState(false);
+  const [withClosest, setWithClosest] = useState(!!closest);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState("");
+
+  const fields = {
+    myName,
+    partnerName,
+    conversationsDone: conversations.done,
+    conversationsTotal: conversations.total,
+    known: withKnown && known.pct != null ? { pct: known.pct, done: known.done, total: known.total } : undefined,
+    agreed: withAgreed && agreed.pct != null ? { pct: agreed.pct, done: agreed.done, total: agreed.total } : undefined,
+    closest: withClosest ? closest : undefined,
   };
+  const key = JSON.stringify(fields);
+
+  // Re-render the card whenever a choice changes, so the preview IS the artifact
+  // — what they see is exactly the PNG that leaves the app.
+  useEffect(() => {
+    let dead = false;
+    let url = "";
+    void renderShareCard(fields).then((blob) => {
+      if (dead || !blob) return;
+      url = URL.createObjectURL(blob);
+      setPreview(url);
+    });
+    return () => {
+      dead = true;
+      if (url) URL.revokeObjectURL(url);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
+  const share = async () => {
+    if (busy) return;
+    setBusy(true);
+    setNote("");
+    const blob = await renderShareCard(fields);
+    if (!blob) {
+      setBusy(false);
+      setNote(t("Couldn’t make the card — try again.", "Impossible de créer la carte — réessayez."));
+      return;
+    }
+    const outcome = await shareCardImage(
+      blob,
+      `twoagree-${myName.trim().split(/\s+/)[0].toLowerCase()}-and-${partnerName.trim().split(/\s+/)[0].toLowerCase()}.png`,
+      t(
+        `${myName} & ${partnerName} on TwoAgree`,
+        `${myName} & ${partnerName} sur TwoAgree`,
+      ),
+    );
+    setBusy(false);
+    // Only ever claim what actually happened — a dismissed sheet says nothing.
+    if (outcome === "downloaded") setNote(t("Saved to your device.", "Enregistré sur votre appareil."));
+    if (outcome === "failed") setNote(t("Couldn’t share that — try again.", "Partage impossible — réessayez."));
+  };
+
+  const Toggle = ({
+    on,
+    set,
+    label,
+  }: {
+    on: boolean;
+    set: (v: boolean) => void;
+    label: string;
+  }) => (
+    <button
+      type="button"
+      className={`cardopt${on ? " on" : ""}`}
+      onClick={() => set(!on)}
+      aria-pressed={on}
+    >
+      {label}
+    </button>
+  );
+
   return (
-    <div className="sharewrap" onClick={onClose}>
-      <div className="sharecard" onClick={(e) => e.stopPropagation()}>
-        <div className="sharecard-names">
-          {myName} &amp; {partnerName}
+    <div
+      className="sharewrap"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t("Share your card", "Partager votre carte")}
+    >
+      <div className="sharesheet" onClick={(e) => e.stopPropagation()}>
+        {preview ? (
+          <img className="sharepreview" src={preview} alt="" />
+        ) : (
+          <div className="sharepreview loading" />
+        )}
+
+        <div className="cardopts">
+          {known.pct != null && (
+            <Toggle
+              on={withKnown}
+              set={setWithKnown}
+              label={t("How well you know each other", "Ce que vous savez l’un de l’autre")}
+            />
+          )}
+          {closest && (
+            <Toggle
+              on={withClosest}
+              set={setWithClosest}
+              label={t(`Closest on ${closest}`, `Plus proches sur ${closest}`)}
+            />
+          )}
+          {agreed.pct != null && (
+            <Toggle
+              on={withAgreed}
+              set={setWithAgreed}
+              label={t("How much you agree", "Votre niveau d’accord")}
+            />
+          )}
         </div>
-        <div className="sharecard-hero">
-          <div className="sharecard-num">
-            {known.pct ?? "—"}
-            <span>%</span>
-          </div>
-          <div className="sharecard-lb">{t("known each other", "se connaissent")}</div>
-          <div className="sharecard-denom">
-            {known.done} / {known.total}
-          </div>
-        </div>
-        <div className="sharecard-agree">
-          {agreed.pct ?? "—"}% {t("agreed", "d’accord")} · {agreed.done}/{agreed.total}
-        </div>
-        <div className="sharecard-mark">
-          <Wordmark size={18} />
-        </div>
+
+        <button
+          className={busy ? "btn pill busy" : "btn pill"}
+          type="button"
+          onClick={share}
+          disabled={busy}
+        >
+          {busy ? t("One moment…", "Un instant…") : t("Share this card", "Partager cette carte")}
+        </button>
+        {note && <div className="ok center">{note}</div>}
+        <button className="btn ghost" type="button" onClick={onClose}>
+          {t("Close", "Fermer")}
+        </button>
       </div>
-      <button className="btn pill" type="button" onClick={share} style={{ maxWidth: 360 }}>
-        {t("Share", "Partager")}
-      </button>
-      <button className="btn ghost" type="button" onClick={onClose}>
-        {t("Close", "Fermer")}
-      </button>
     </div>
   );
 }

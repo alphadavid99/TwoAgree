@@ -340,10 +340,18 @@ function Preview() {
             Object.entries(session.decks!).map(([sl, d]) => {
               if (sl !== slugB) return [sl, d];
               const mcs = DECKS[sl].questions.filter((q) => q.type === "mc").slice(0, 3);
+              // A few host guesses made wrong, so the discoveries section has
+              // something to show (fakeDeck's host always guesses right).
+              const wrongGuesses = { ...(d.guesses ?? {}) };
+              mcs.forEach((q) => {
+                const a = d.answers?.[q.id];
+                if (a?.guest != null) wrongGuesses[q.id] = { ...wrongGuesses[q.id], host: 99 };
+              });
               return [
                 sl,
                 {
                   ...d,
+                  guesses: wrongGuesses,
                   talks: {
                     [mcs[0].id]: { pinned: { host: true } },
                     [mcs[1].id]: { pinned: { guest: true }, talked: { guest: true } },

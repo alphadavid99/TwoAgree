@@ -9,23 +9,47 @@ export function ScorePair({
   known,
   size = 132,
   t,
+  ceremony = false,
 }: {
   agreed: number;
   known: number | null;
   size?: number;
   t: (en: string, fr: string) => string;
+  // In the ceremony the rings are the show: they draw slower and Known follows
+  // Agreed as a second beat. Elsewhere (the answers screen, reviews) they settle
+  // at the quicker default so reopening a reveal isn't a performance.
+  ceremony?: boolean;
 }) {
+  const drawMs = ceremony ? 1400 : undefined;
   if (known == null) {
     return (
       <div className="center" style={{ margin: "16px 0 6px" }}>
-        <PctRing pct={agreed} size={size + 28} label={t("agreed", "d’accord")} />
+        <PctRing
+          pct={agreed}
+          size={size + 28}
+          label={t("agreed", "d’accord")}
+          drawMs={drawMs}
+        />
       </div>
     );
   }
   return (
     <div className="scorepair">
-      <PctRing pct={agreed} size={size} color="var(--honey)" label={t("agreed", "d’accord")} />
-      <PctRing pct={known} size={size} color="var(--berry)" label={t("known", "connus")} />
+      <PctRing
+        pct={agreed}
+        size={size}
+        color="var(--honey)"
+        label={t("agreed", "d’accord")}
+        drawMs={drawMs}
+      />
+      <PctRing
+        pct={known}
+        size={size}
+        color="var(--berry)"
+        label={t("known", "connus")}
+        drawMs={drawMs}
+        delayMs={ceremony ? 620 : 0}
+      />
     </div>
   );
 }

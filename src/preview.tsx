@@ -5,7 +5,7 @@ import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./brand/tokens.css"; // brand tokens first — the app loads these via main.tsx
 import "./index.css";
-import { ORDER } from "./lib/questions";
+import { ORDER, DECKS, type Question } from "./lib/questions";
 import { lvlQs, nLevels } from "./lib/leveling";
 import type { DeckData, AnswerValue } from "./lib/scoring";
 import type { Session } from "./types";
@@ -104,6 +104,21 @@ function flagDeck(): DeckData {
     answers[q.id] = { host: v, guest: v };
   });
   return { answers, guesses, importance, done: { 0: { host: true, guest: true } } };
+}
+
+// A question set pinned to a target agreement, for eyeballing each rung of the
+// celebration ladder (src/lib/celebrate.ts). Uses every mc question in the deck
+// so the percentage is finely tunable: `hit`% of them match exactly and the
+// rest differ, giving agreed ≈ hit.
+function tunedReveal(slug: string, hit: number): { deck: DeckData; qs: Question[] } {
+  const qs = DECKS[slug].questions.filter((q) => q.type === "mc");
+  const answers: DeckData["answers"] = {};
+  qs.forEach((q, i) => {
+    const last = (q.opts?.length ?? 2) - 1;
+    const match = i < Math.round((hit / 100) * qs.length);
+    answers[q.id] = { host: 0, guest: match ? 0 : Math.min(1, last) };
+  });
+  return { deck: { answers, done: { 0: { host: true, guest: true } } }, qs };
 }
 
 const session: Session = {
@@ -304,14 +319,25 @@ function Preview() {
         <FakeNav on="results" />
       </div>
     );
-  // reveal ceremony (fresh, normal or >90% grand), answers (review), flags
+  // reveal ceremony (fresh, normal or >90% grand), answers (review), flags.
+  // reveal-t0/t1/t3 walk the celebration ladder: no celebration, the claret
+  // room alone, and the grand bloom.
   const isReview = view === "answers" || view === "flags";
+  // Targets are approximate — scoring is importance-weighted, so the rendered
+  // percentage lands a little under the share of matching answers.
+  const LADDER: Record<string, number> = {
+    "reveal-t0": 34, // ~27% — no celebration
+    "reveal-t1": 72, // ~65% — the room turns, no petals
+    "reveal-t2": 84, // ~78% — petals join
+    "reveal-t3": 98, // ~94% — the grand bloom
+  };
+  const tuned = view in LADDER ? tunedReveal("fun-icebreakers", LADDER[view]) : null;
   const deck =
     view === "reveal90"
       ? fakeDeck(slugB, 1, 0, true)
       : view === "flags"
         ? flagDeck()
-        : session.decks![slugB];
+        : (tuned?.deck ?? session.decks![slugB]);
   return (
     <RevealScreen
       slug={slugB}
@@ -320,7 +346,7 @@ function Preview() {
       deck={deck}
       myName="Sarah"
       partnerName="Judah"
-      questions={isReview ? lvlQs(slugB, 0) : undefined}
+      questions={isReview ? lvlQs(slugB, 0) : tuned?.qs}
       review={isReview}
       onDone={noop}
     />

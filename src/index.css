@@ -1773,14 +1773,40 @@ textarea.input {
 .lvlup-rise {
   animation: riseIn 0.55s ease both;
 }
+/* r1 (the rings) must be visible the instant they mount: the count-up IS the
+   entrance. The old 1.15s hold meant the draw and the climbing number both
+   completed behind opacity:0 and the couple only ever met a settled score.
+   Everything after is timed off the draw (1.4s, Known trailing by 0.62s). */
 .lvlup-rise.r1 {
-  animation-delay: 1.15s;
+  animation-delay: 0.08s;
 }
 .lvlup-rise.r2 {
-  animation-delay: 1.4s;
+  animation-delay: 1.55s;
 }
 .lvlup-rise.r3 {
-  animation-delay: 1.85s;
+  animation-delay: 2.25s;
+}
+.lvlup-rise.r4 {
+  animation-delay: 2.6s;
+}
+/* Rising content is invisible until its delay elapses — so it must not be
+   tappable either, or a blind tap lands on a button nobody can see yet.
+   pointer-events animates discretely, so the `both` fill holds it at `none`
+   for exactly the delay and releases it as the CTA becomes visible. */
+.lvlup-cta.lvlup-rise {
+  animation-name: riseInTappable;
+}
+@keyframes riseInTappable {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
 }
 .lvlup-cta {
   display: flex;
@@ -1846,6 +1872,281 @@ textarea.input {
   }
 }
 
+/* ============================================================
+   THE CELEBRATION LADDER — "Gold on Claret" (Dave-approved, Jul 2026)
+   A celebrated score pulls the whole screen into the Path's claret world, and
+   the higher the score the more of the room the celebration takes:
+     60+   the room turns: gold ripples, rising motes, one shimmer pass
+     75+   + a thick fall of petals
+     90+   + wheeling gold rays, a pulsing wash, a burst of sparks
+     100   + the two of them settle together above the ring, under the verse
+   Everything is transform/opacity only, so the whole ladder composites on the
+   GPU. Nothing loops forever — the overlay unmounts after ~8.5s.
+   ============================================================ */
+
+/* The room. Fixed and full-bleed so the claret runs behind the notch and the
+   home indicator — grounds bleed, content stays inside the safe area.
+   `.ceremony` must own a stacking context (position + z-index) or the ground's
+   negative layer paints behind the BODY's blush gradient instead of over it —
+   which leaves paper type stranded on a light ground. */
+.ceremony {
+  position: relative;
+  z-index: 0;
+}
+.ceremony-ground {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(175deg, var(--ce-ground-top) 0%, var(--ce-ground-bot) 78%);
+  animation: roomTurn 1.1s ease both;
+  pointer-events: none;
+}
+@keyframes roomTurn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Inside the lit room the app's own tokens re-point, so the rings, type and
+   TopBar become claret-native without a single claret-aware prop:
+   the agreed arc turns gold (RULE 1 — gold lives on claret), the known arc
+   turns blush (claret's light counterpart), and all type turns paper. */
+.ceremony.lit {
+  --berry: var(--ce-blush);
+  --berry2: var(--ce-blush);
+  --honey: var(--ce-gold);
+  --honeyD: var(--ce-gold);
+  --amber: var(--ce-gold);
+  --ink: var(--ce-ink);
+  --sub: var(--ce-sub);
+  --mut: var(--ce-sub);
+  --track: var(--ce-track);
+  color: var(--ce-ink);
+}
+.ceremony.lit .btn.pill {
+  background: var(--ce-gold);
+  color: var(--app-honey-ink);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
+}
+.ceremony.lit .btn.ghost {
+  color: var(--ce-sub);
+}
+/* Both discs turn light in the claret room (blush + gold), so the initial has
+   to flip to deep claret — white on either would be unreadable. */
+.ceremony.lit .avatar-disc {
+  color: var(--ce-ground-bot);
+  border-color: rgba(248, 233, 236, 0.5);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+}
+
+/* stage 1 dressing — the meet moment now names them (it was two initials and
+   one line in an empty 60vh). */
+.meetnames {
+  display: flex;
+  justify-content: center;
+  gap: 34px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+  margin-top: -6px;
+}
+/* 100% only — the pair settle back together above the full ring. */
+.meetpair.oneheart {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+.meetpair.oneheart > * + * {
+  margin-left: -10px;
+}
+
+/* the tiered agreement line — the axis couples actually worry about finally
+   gets the comfort ladder Known always had. */
+.agreedline {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--ink);
+  margin: 12px 20px 0;
+  text-wrap: balance;
+}
+.ceremony.lit .agreedline {
+  color: var(--ce-gold);
+}
+
+/* --- tier 1: the room breathes ------------------------------------------- */
+.ce-ripple {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 190px;
+  height: 190px;
+  margin: -95px 0 0 -95px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(220, 178, 101, 0.42);
+  animation: ceRipple 3.6s ease-out infinite;
+}
+.ce-ripple.d2 {
+  animation-delay: 1.8s;
+}
+@keyframes ceRipple {
+  from {
+    transform: scale(0.72);
+    opacity: 0.85;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.ce-mote {
+  position: absolute;
+  bottom: -10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--app-spark);
+  box-shadow: 0 0 7px 2px rgba(229, 169, 60, 0.4);
+  opacity: 0;
+  animation: ceMote linear infinite;
+}
+@keyframes ceMote {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.9;
+  }
+  to {
+    transform: translate3d(-16px, -108vh, 0);
+    opacity: 0;
+  }
+}
+/* One slow pass of light across the room. The gradient runs across the band's
+   WIDTH (not at an angle to it) and the whole thing is blurred, so the band has
+   no edge to catch — an angled gradient on a tall element leaves a visible
+   diagonal seam. */
+.ce-sweep {
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  width: 58%;
+  left: -80%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 233, 189, 0.1) 38%,
+    rgba(255, 233, 189, 0.16) 52%,
+    rgba(246, 196, 107, 0.07) 66%,
+    transparent 100%
+  );
+  filter: blur(16px);
+  transform: rotate(14deg);
+  animation: ceSweep 5.2s ease-in-out 0.4s 2 both;
+}
+@keyframes ceSweep {
+  0% {
+    left: -70%;
+  }
+  55%,
+  100% {
+    left: 130%;
+  }
+}
+
+/* --- tier 3: the grand bloom --------------------------------------------- */
+.ce-rays {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 460px;
+  height: 460px;
+  margin: -230px 0 0 -230px;
+  border-radius: 50%;
+  opacity: 0.5;
+  background: conic-gradient(
+    rgba(220, 178, 101, 0.16) 0 13deg,
+    transparent 13deg 42deg,
+    rgba(220, 178, 101, 0.1) 42deg 56deg,
+    transparent 56deg 96deg,
+    rgba(220, 178, 101, 0.16) 96deg 110deg,
+    transparent 110deg 152deg,
+    rgba(220, 178, 101, 0.1) 152deg 166deg,
+    transparent 166deg 212deg,
+    rgba(220, 178, 101, 0.16) 212deg 226deg,
+    transparent 226deg 268deg,
+    rgba(220, 178, 101, 0.1) 268deg 282deg,
+    transparent 282deg 328deg,
+    rgba(220, 178, 101, 0.14) 328deg 342deg,
+    transparent 342deg
+  );
+  /* Blurred and masked to a soft disc: a raw conic gradient reads as hard
+     geometric wedges with a visible circular edge — mechanical, not light.
+     Blur is computed once; only the transform animates, so this stays cheap. */
+  filter: blur(9px);
+  -webkit-mask-image: radial-gradient(circle, #000 14%, rgba(0, 0, 0, 0.5) 44%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 14%, rgba(0, 0, 0, 0.5) 44%, transparent 68%);
+  animation: ceRays 34s linear infinite, ceFadeIn 1.4s ease both;
+}
+@keyframes ceRays {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ceFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+.ce-goldwash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 44%, rgba(229, 169, 60, 0.3), transparent 58%);
+  animation: ceWash 3.6s ease-in-out infinite;
+}
+@keyframes ceWash {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+.ce-spark {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--app-spark);
+  box-shadow: 0 0 10px 3px rgba(246, 196, 107, 0.7);
+  opacity: 0;
+  animation: ceSpark 1.1s cubic-bezier(0.16, 0.84, 0.44, 1) both;
+}
+@keyframes ceSpark {
+  0% {
+    transform: translate(0, 0) scale(0.3);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(1);
+    opacity: 0;
+  }
+}
+
 /* celebration overlay — constrained to the app column, taps pass through */
 .celebrate {
   position: fixed;
@@ -1880,10 +2181,12 @@ textarea.input {
   }
 }
 
-/* petals (>75%) — soft brand-coloured petals drifting down */
+/* petals (75%+) — soft brand-coloured petals drifting down. Each carries its
+   own --sway, --spin and --o from the component: the old shared path plus
+   modular-arithmetic positions made them fall in visible diagonal chains. */
 .petal {
   position: absolute;
-  top: -6vh;
+  top: -8vh;
   border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
   opacity: 0;
   animation: petalFall linear both;
@@ -1893,20 +2196,19 @@ textarea.input {
     transform: translate3d(0, 0, 0) rotate(0deg);
     opacity: 0;
   }
-  8% {
-    opacity: 0.9;
+  7% {
+    opacity: var(--o, 0.9);
   }
-  30% {
-    transform: translate3d(14px, 30vh, 0) rotate(120deg);
+  50% {
+    transform: translate3d(var(--sway, 12px), 56vh, 0)
+      rotate(calc(var(--spin, 240deg) * 0.5));
   }
-  60% {
-    transform: translate3d(-12px, 62vh, 0) rotate(230deg);
-  }
-  90% {
-    opacity: 0.8;
+  92% {
+    opacity: var(--o, 0.9);
   }
   100% {
-    transform: translate3d(10px, 108vh, 0) rotate(340deg);
+    transform: translate3d(calc(var(--sway, 12px) * -0.6), 116vh, 0)
+      rotate(var(--spin, 240deg));
     opacity: 0;
   }
 }
@@ -1915,12 +2217,29 @@ textarea.input {
   .meetpair > *,
   .meetline,
   .lvlup-rise,
+  .lvlup-cta.lvlup-rise,
+  .ceremony-ground,
   .bloomwrap.grand .goldwash,
   .bloomwrap .spark,
   .celebrate .wash,
   .petal {
     animation: none !important;
     transition: none !important;
+  }
+  /* The room and the settled score still arrive — only the movement goes. The
+     ceremony flag is already off for these users (RevealScreen), so this is the
+     belt-and-braces pass for anything that still mounts. */
+  .lvlup-cta.lvlup-rise {
+    pointer-events: auto;
+  }
+  /* Nothing drifts, wheels, pulses or falls. */
+  .ce-ripple,
+  .ce-mote,
+  .ce-sweep,
+  .ce-rays,
+  .ce-goldwash,
+  .ce-spark {
+    display: none !important;
   }
 }
 

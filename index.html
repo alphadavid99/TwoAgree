@@ -2,7 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover is REQUIRED for env(safe-area-inset-*) to return
+         anything but 0. Without it the app's safe-area CSS is dead code inside
+         the iOS shell: the TopBar slides under the Dynamic Island and the pill
+         nav collides with the home indicator. Grounds bleed to the physical
+         edges; content starts below the safe line (docs/UX-REVIEW-2026-07.md §11). -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
     <!-- TwoAgree — icons & PWA (02-web assets live at the /public root) -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

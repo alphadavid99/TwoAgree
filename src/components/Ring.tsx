@@ -17,7 +17,9 @@ function useReducedMotion(): boolean {
 }
 
 // Drives a 0→1 value over `dur` ms with an ease-out curve, once on mount.
-function useDraw(dur = 900): number {
+// `delay` holds the value at 0 first, so a caller can stagger two rings into
+// two separate beats instead of one simultaneous blur.
+function useDraw(dur = 900, delay = 0): number {
   const reduced = useReducedMotion();
   const [p, setP] = useState(reduced ? 1 : 0);
   const raf = useRef(0);
@@ -29,13 +31,13 @@ function useDraw(dur = 900): number {
     let start = 0;
     const tick = (now: number) => {
       if (!start) start = now;
-      const t = Math.min(1, (now - start) / dur);
+      const t = Math.min(1, Math.max(0, now - start - delay) / dur);
       setP(1 - Math.pow(1 - t, 3)); // easeOutCubic
       if (t < 1) raf.current = requestAnimationFrame(tick);
     };
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, [reduced, dur]);
+  }, [reduced, dur, delay]);
   return p;
 }
 
@@ -88,13 +90,19 @@ export function PctRing({
   size = 160,
   color = "var(--honey)",
   label = "agreed",
+  drawMs,
+  delayMs = 0,
 }: {
   pct: number;
   size?: number;
   color?: string;
   label?: string;
+  // The ceremony draws slower and staggers its second ring, so the couple
+  // watches the number climb rather than meeting it already settled.
+  drawMs?: number;
+  delayMs?: number;
 }) {
-  const p = useDraw();
+  const p = useDraw(drawMs ?? 900, delayMs);
   const sw = 12;
   const r = size / 2 - sw;
   const circ = 2 * Math.PI * r;

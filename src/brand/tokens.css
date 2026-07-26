@@ -73,6 +73,22 @@
   --app-glint:        #FFE9BD;
   --app-spark:        #F6C46B;
   --app-petal-pink:   #F1C8D2;
+
+  /* ==========================================================================
+     The celebration room (Dave-approved "Gold on Claret" ladder, Jul 2026).
+     A celebrated reveal pulls the whole screen into the Path's claret world,
+     so gold sits on a claret ground exactly as brand RULE 1 requires. Inside
+     `.ceremony.lit` these re-point the app tokens the rings and type already
+     read (--berry/--sub/--track/--honey), so components need no claret-aware
+     props — see the scoped block in index.css.
+     ========================================================================== */
+  --ce-ground-top:    #4A2138;  /* claret room, lit at the top */
+  --ce-ground-bot:    #2A1120;  /* deep claret at the foot */
+  --ce-ink:           #F8E9EC;  /* paper type on claret */
+  --ce-sub:           #C9A0B4;  /* muted rose captions on claret */
+  --ce-gold:          #DCB265;  /* the agreed arc + accents (mark-gold family) */
+  --ce-blush:         #F3DED6;  /* the known arc — claret's light counterpart */
+  --ce-track:         #57293F;  /* ring track on claret */
 }
 
 /* Focus ring — honey reads clearly on both claret and white grounds. */

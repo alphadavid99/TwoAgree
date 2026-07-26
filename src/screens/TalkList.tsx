@@ -60,15 +60,15 @@ export function TalkList({
             {s.talkedByMe ? (
               <div className="talkrow-wait">
                 {t(
-                  `You've marked this talked about — waiting for ${them}.`,
-                  `Vous avez marqué en avoir parlé — en attente de ${them}.`,
+                  `You've marked this talked about, waiting for ${them}.`,
+                  `Vous avez marqué en avoir parlé, en attente de ${them}.`,
                 )}
               </div>
             ) : s.talkedByThem ? (
               <button className="talkbtn go" type="button" onClick={() => confirm(s)}>
                 {t(
-                  `${them} says you've talked — agree?`,
-                  `${them} dit que vous en avez parlé — d'accord ?`,
+                  `${them} says you've talked: agree?`,
+                  `${them} dit que vous en avez parlé, d'accord ?`,
                 )}
               </button>
             ) : (

@@ -368,7 +368,7 @@ function StepPlay({
             </div>
           </div>
           <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
-            {t("Now — what will ", "Maintenant — que va répondre ")}
+            {t("Now: what will ", "Maintenant : que va répondre ")}
             <span style={{ color: "var(--amber)" }}>{partnerName}</span>
             {t(" say?", " ?")}
           </p>
@@ -394,8 +394,8 @@ function StepPlay({
           <div className="qtext" style={{ marginTop: 8 }}>{q.q}</div>
           <p className="sub" style={{ marginTop: 10 }}>
             {t(
-              `Share something you want the two of you to address. ${partnerName} shares theirs — you'll see both sides together.`,
-              `Partagez ce que vous voulez aborder à deux. ${partnerName} partage de son côté — vous verrez les deux ensemble.`,
+              `Share something you want the two of you to address. ${partnerName} shares theirs, you'll see both sides together.`,
+              `Partagez ce que vous voulez aborder à deux. ${partnerName} partage de son côté, vous verrez les deux ensemble.`,
             )}
           </p>
           <textarea
@@ -535,8 +535,8 @@ function LampScreen({
       )}
       <p className="path-inscription">
         {t(
-          "“Your word is a lamp to my feet, and a light to my path.” — Psalm 119:105",
-          "“Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.” — Psaume 119:105",
+          "“Your word is a lamp to my feet, and a light to my path.” (Psalm 119:105)",
+          "“Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.” (Psaume 119:105)",
         )}
       </p>
     </section>

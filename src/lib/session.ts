@@ -44,7 +44,7 @@ export async function createSession(
       // code already taken by someone else's session — try another
     }
   }
-  throw new Error("Couldn’t start a session — please try again.");
+  throw new Error("Couldn’t start a session: please try again.");
 }
 
 // Guest join is server-side now (joinByCode / redeemInvite callables) so the

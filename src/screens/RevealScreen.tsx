@@ -70,12 +70,12 @@ function agreedLine(pct: number, t: (en: string, fr: string) => string): string 
   if (pct >= 60) return t("Walking well together", "Vous avancez bien ensemble");
   if (pct >= 40)
     return t(
-      "Plenty shared — and real differences",
-      "Beaucoup en commun — et de vraies différences",
+      "Plenty shared, and real differences",
+      "Beaucoup en commun, et de vraies différences",
     );
   return t(
-    "You differ on real things — that’s what this is for",
-    "Vous différez sur de vraies choses — c’est à cela que ça sert",
+    "You differ on real things, that’s what this is for",
+    "Vous différez sur de vraies choses, c’est à cela que ça sert",
   );
 }
 
@@ -290,8 +290,8 @@ export default function RevealScreen({
             {firstEver && (
               <p className="firstline lvlup-rise r2">
                 {t(
-                  "Your first reveal — this is where the two of you meet.",
-                  "Votre première révélation — c’est ici que vous vous retrouvez.",
+                  "Your first reveal: this is where the two of you meet.",
+                  "Votre première révélation, c’est ici que vous vous retrouvez.",
                 )}
               </p>
             )}
@@ -309,8 +309,8 @@ export default function RevealScreen({
                     "« Deux hommes marchent-ils ensemble, sans en être convenus ? »",
                   )
                 : t(
-                    "Not a verdict — a place to start talking.",
-                    "Pas un verdict — un point de départ pour discuter.",
+                    "Not a verdict: a place to start talking.",
+                    "Pas un verdict, un point de départ pour discuter.",
                   )}
             </p>
             <div className="lvlup-cta lvlup-rise r4">
@@ -379,8 +379,8 @@ export default function RevealScreen({
       )}
       <p className="sub serif center reveal-rise" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
         {t(
-          "Not a verdict — a place to start talking.",
-          "Pas un verdict — un point de départ pour discuter.",
+          "Not a verdict: a place to start talking.",
+          "Pas un verdict, un point de départ pour discuter.",
         )}
       </p>
 
@@ -413,8 +413,8 @@ export default function RevealScreen({
           <div className="qc" style={{ borderLeftColor: "var(--sub)" }}>
             <div className="muted" style={{ fontSize: 13 }}>
               {t(
-                "Open reflections here — compare them together.",
-                "Des réflexions libres ici — comparez-les ensemble.",
+                "Open reflections here: compare them together.",
+                "Des réflexions libres ici, comparez-les ensemble.",
               )}
             </div>
           </div>
@@ -606,8 +606,8 @@ function QCard({
       {r.verdict === "Complementary" && (
         <div className="qc-note comp">
           {t(
-            "Different — and that works well together.",
-            "Différent — et cela se complète bien.",
+            "Different, and that works well together.",
+            "Différent, et cela se complète bien.",
           )}
         </div>
       )}

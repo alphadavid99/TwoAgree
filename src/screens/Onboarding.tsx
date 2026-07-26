@@ -287,7 +287,7 @@ export default function Onboarding({
         )}
         <p className="sub center" style={{ margin: "14px 24px 0" }}>
           {signIn
-            ? t("Welcome back — sign in to pick up where you left off.", "Bon retour — connectez-vous pour reprendre où vous en étiez.")
+            ? t("Welcome back: sign in to pick up where you left off.", "Bon retour, connectez-vous pour reprendre où vous en étiez.")
             : t(
                 "Let's set up a quick account to save your answers.",
                 "Créons un compte rapide pour enregistrer vos réponses.",
@@ -398,8 +398,8 @@ export default function Onboarding({
             "Vous avancez ensemble désormais.",
           )}
           sub={t(
-            "Set up your account so the two of you can carry on — choose where to go next and pick it back up any time.",
-            "Créez votre compte pour continuer tous les deux — choisissez la suite et reprenez quand vous voulez.",
+            "Set up your account so the two of you can carry on, choose where to go next and pick it back up any time.",
+            "Créez votre compte pour continuer tous les deux, choisissez la suite et reprenez quand vous voulez.",
           )}
           onDone={() => (setStepB("path"), checkpoint("b", "path"))}
           onFallback={() => setFallback(true)}
@@ -430,13 +430,14 @@ export default function Onboarding({
             )}
             <span className="verse-ref">Amos 3:3</span>
           </p>
+          {/* Three short lines about what the couple GETS. The old version was
+              three long ones about how the app works: turn-taking, answer
+              privacy, and a paragraph promising nobody wins. All true, none of
+              it a reason to start, and it read as a terms page. */}
           <ul className="obfacts">
-            <li>{t("It takes two — nothing happens until you're both in.", "Il en faut deux — rien ne se passe tant que vous n'êtes pas là tous les deux.")}</li>
-            <li>{t("Neither of you sees the other's answers until you've both answered.", "Aucun de vous ne voit les réponses de l'autre avant que vous ayez tous deux répondu.")}</li>
-            {/* Was "There's no winner and no score" — an app full of percentages
-                disproves that within five minutes. Keep the promise the app
-                actually keeps: nobody is graded, and nobody beats anybody. */}
-            <li>{t("There's no winner and nothing to pass — every number is about the two of you together, never one of you against the other.", "Il n'y a ni gagnant ni note à obtenir — chaque chiffre parle de vous deux ensemble, jamais de l'un contre l'autre.")}</li>
+            <li>{t("Talk about things you'd never think to bring up.", "Parlez de choses que vous n'auriez jamais pensé aborder.")}</li>
+            <li>{t("Find out how well you really know each other.", "Découvrez à quel point vous vous connaissez vraiment.")}</li>
+            <li>{t("You answer on your own. Nothing opens until you both have.", "Vous répondez chacun de votre côté. Rien ne s'ouvre avant que vous ayez répondu tous les deux.")}</li>
           </ul>
         </div>
         <button className="btn pill" type="button" onClick={() => setStepA("names")}>
@@ -753,7 +754,7 @@ function OnbQuestions({
             </div>
           </div>
           <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
-            {t("Now — what will ", "Maintenant — que va répondre ")}
+            {t("Now: what will ", "Maintenant : que va répondre ")}
             <span style={{ color: "var(--amber)" }}>{partnerName}</span>
             {t(" say?", " ?")}
           </p>
@@ -1013,8 +1014,8 @@ function InviteStep({
 }) {
   const [msg, setMsg] = useState(
     t(
-      `${partner}, I've started something for the two of us on TwoAgree. We each answer the same questions honestly and on our own, then see where we land together. It only works with you in it — about five minutes: `,
-      `${partner}, j'ai commencé quelque chose pour nous deux sur TwoAgree. On répond chacun aux mêmes questions, honnêtement et de notre côté, puis on voit où on se retrouve. Ça ne marche qu'avec toi — environ cinq minutes : `,
+      `${partner}, I've started something for the two of us on TwoAgree. We each answer the same questions honestly and on our own, then see where we land together. It only works with you in it, about five minutes: `,
+      `${partner}, j'ai commencé quelque chose pour nous deux sur TwoAgree. On répond chacun aux mêmes questions, honnêtement et de notre côté, puis on voit où on se retrouve. Ça ne marche qu'avec toi, environ cinq minutes : `,
     ),
   );
   const [busy, setBusy] = useState(false);
@@ -1040,7 +1041,7 @@ function InviteStep({
         setStatus(t("Invitation sent.", "Invitation envoyée."));
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(text);
-        setStatus(t("Copied — paste it to ", "Copié — collez-le à ") + partner);
+        setStatus(t("Copied: paste it to ", "Copié : collez-le à ") + partner);
       }
     } catch {
       // The share sheet was dismissed — say nothing rather than claim it sent.
@@ -1058,7 +1059,7 @@ function InviteStep({
         {t(`Now bring ${partner} in.`, `Faites venir ${partner}.`)}
       </h1>
       <p className="sub center" style={{ margin: "8px 24px 6px" }}>
-        {t("You've answered — now they can see where you two land. Send them this:", "Vous avez répondu — ils peuvent maintenant voir où vous en êtes. Envoyez-leur ceci :")}
+        {t("You've answered: now they can see where you two land. Send them this:", "Vous avez répondu, ils peuvent maintenant voir où vous en êtes. Envoyez-leur ceci :")}
       </p>
       <textarea className="input" style={{ minHeight: 96 }} value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={220} />
       <button className={busy ? "btn pill busy" : "btn pill"} type="button" onClick={send} disabled={busy}>

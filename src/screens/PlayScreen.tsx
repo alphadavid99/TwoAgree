@@ -225,7 +225,7 @@ export default function PlayScreen({
             <span className="yousaid-change">{t("change", "modifier")}</span>
           </button>
           <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
-            {t("Now — what will ", "Maintenant — que va répondre ")}
+            {t("Now: what will ", "Maintenant : que va répondre ")}
             <span style={{ color: "var(--amber)" }}>{partnerName}</span>
             {t(" say?", " ?")}
           </p>
@@ -398,7 +398,7 @@ function QuestionInput({
               className={`orb ${value === i ? "sel" : ""}`}
               onClick={() => onPick(i)}
               aria-pressed={value === i}
-              aria-label={`${i} — ${i >= 4 ? q.hi : i <= 2 ? q.lo : t("in the middle", "au milieu")}`}
+              aria-label={`${i}: ${i >= 4 ? q.hi : i <= 2 ? q.lo : t("in the middle", "au milieu")}`}
             >
               {i}
             </button>
@@ -442,8 +442,8 @@ function QuestionInput({
       <>
         <div className="muted" style={{ fontSize: 13, marginBottom: 12 }}>
           {t(
-            "Tap in order of priority — 1 = most important. Tap a number again to remove it.",
-            "Appuyez par ordre de priorité — 1 = le plus important. Appuyez à nouveau pour retirer.",
+            "Tap in order of priority, 1 = most important. Tap a number again to remove it.",
+            "Appuyez par ordre de priorité, 1 = le plus important. Appuyez à nouveau pour retirer.",
           )}
         </div>
         {q.opts?.map((o, i) => {

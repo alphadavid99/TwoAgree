@@ -117,8 +117,8 @@ export default function HomeScreen({
 
   const share = () => {
     const txt = t(
-      `Come do this with me on TwoAgree — we each answer the same questions, then see where the two of us land. Our code is ${code}`,
-      `Fais-le avec moi sur TwoAgree — on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux. Notre code est ${code}`,
+      `Come do this with me on TwoAgree, we each answer the same questions, then see where the two of us land. Our code is ${code}`,
+      `Fais-le avec moi sur TwoAgree, on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux. Notre code est ${code}`,
     );
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});
     else if (navigator.clipboard) {
@@ -139,8 +139,8 @@ export default function HomeScreen({
       const res = await createInvite({ code });
       const link = `${window.location.origin}/?t=${res.data.token}`;
       const txt = t(
-        `Come do this with me on TwoAgree — we each answer the same questions, then see where the two of us land: ${link}`,
-        `Fais-le avec moi sur TwoAgree — on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
+        `Come do this with me on TwoAgree, we each answer the same questions, then see where the two of us land: ${link}`,
+        `Fais-le avec moi sur TwoAgree, on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
       );
       // Only claim it went if it actually went. navigator.share rejects when
       // the user cancels the sheet, and that rejection was swallowed while the
@@ -160,7 +160,7 @@ export default function HomeScreen({
         setInviteMsg(
           viaSheet
             ? t("Invitation sent.", "Invitation envoyée.")
-            : t("Invitation copied — paste it to them.", "Invitation copiée — collez-la-leur."),
+            : t("Invitation copied: paste it to them.", "Invitation copiée, collez-la-leur."),
         );
       }
     } catch (e) {
@@ -211,7 +211,7 @@ export default function HomeScreen({
         <small>
           {joined
             ? t("Where you left off, together.", "Là où vous en étiez, ensemble.")
-            : t("Start whenever you like — your partner can join anytime.", "Commencez quand vous voulez — votre partenaire peut vous rejoindre à tout moment.")}
+            : t("Start whenever you like: your partner can join anytime.", "Commencez quand vous voulez, votre partenaire peut vous rejoindre à tout moment.")}
         </small>
       </h1>
       {justJoined && (
@@ -252,8 +252,8 @@ export default function HomeScreen({
               {/* Always pre-join here, so the full "your partner" reads right
                   (the header's first-name form would clip it to "your"). */}
               {t(
-                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved — waiting for your partner`,
-                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"} — en attente de votre partenaire`,
+                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved, waiting for your partner`,
+                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"}, en attente de votre partenaire`,
               )}
             </div>
           )}

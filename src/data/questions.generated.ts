@@ -868,12 +868,12 @@ export const DECKS: Record<string, Deck> = {
     "icon": "compass",
     "hook": {
       "id": "ROLE-011",
-      "q": "Bins, spiders and the car — whose job?"
+      "q": "Bins, spiders and the car, whose job?"
     },
     "questions": [
       {
         "id": "ROLE-011",
-        "q": "Bins, spiders and the car — whose job?",
+        "q": "Bins, spiders and the car, whose job?",
         "type": "mc",
         "depth": 1,
         "note": "Roles opens with headship theology. This opens it with spiders. Same deck, and the answers to both are more related than anyone admits.",
@@ -897,7 +897,7 @@ export const DECKS: Record<string, Deck> = {
           "Him",
           "Her",
           "About the same",
-          "Neither of us — it's painful"
+          "Neither of us: it's painful"
         ]
       },
       {
@@ -1038,7 +1038,7 @@ export const DECKS: Record<string, Deck> = {
           "You",
           "Whoever's earning less at the time",
           "We'd both go part-time",
-          "Neither — we'd find another way"
+          "Neither: we'd find another way"
         ]
       }
     ]
@@ -1362,7 +1362,7 @@ export const DECKS: Record<string, Deck> = {
     "questions": [
       {
         "id": "FAM-011",
-        "q": "Be honest — how much do you actually like other people's kids?",
+        "q": "Be honest: how much do you actually like other people's kids?",
         "type": "scale",
         "depth": 1,
         "note": "A warm, low-stakes entry to a deck that currently opens with 'how many children would you hope for'. Also quietly predictive.",
@@ -1374,7 +1374,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAM-012",
-        "q": "Baby names — are you the one with a list already?",
+        "q": "Baby names: are you the one with a list already?",
         "type": "mc",
         "depth": 1,
         "note": "Playful, and it surfaces how concretely each person has actually imagined this.",
@@ -1526,7 +1526,7 @@ export const DECKS: Record<string, Deck> = {
     "questions": [
       {
         "id": "PAR-008",
-        "q": "Be honest — would you be the fun parent or the strict one?",
+        "q": "Be honest: would you be the fun parent or the strict one?",
         "type": "mc",
         "depth": 1,
         "note": "PAR-004 is the serious version of this on a scale. This is the version people answer honestly, and it opens a deck that currently starts with a six-item ranking.",
@@ -1814,9 +1814,9 @@ export const DECKS: Record<string, Deck> = {
         "note": "The secular premise this whole app is built against, named out loud. A couple who waits is marrying on incomplete information and usually isn't allowed to say so. Surfacing it is the point.",
         "guessable": true,
         "opts": [
-          "Yes — sex tells you nothing you couldn't learn another way",
+          "Yes: sex tells you nothing you couldn't learn another way",
           "Mostly, but there'd be a gap",
-          "No — it's a real unknown until then",
+          "No: it's a real unknown until then",
           "I'd rather not think about it that way"
         ]
       },
@@ -1827,7 +1827,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "note": "The honest anxiety underneath the conviction. Someone can hold the conviction firmly and still rate this high — that combination is worth a conversation, not a score.",
         "guessable": true,
-        "lo": "No risk — it works itself out",
+        "lo": "No risk: it works itself out",
         "hi": "A real risk I think about"
       },
       {
@@ -1854,8 +1854,8 @@ export const DECKS: Record<string, Deck> = {
         "note": "Sex-and-conflict interaction. The bank covers pre-marriage boundaries exhaustively but nothing about how intimacy behaves inside a marriage. A real and common split.",
         "guessable": true,
         "opts": [
-          "Yes — it would help us reconnect",
-          "No — I'd need it resolved first",
+          "Yes: it would help us reconnect",
+          "No: I'd need it resolved first",
           "Depends how big the issue is",
           "I'm not sure"
         ]
@@ -2226,7 +2226,7 @@ export const DECKS: Record<string, Deck> = {
         "note": "Transparency of feelings, distinct from CONF-015 which is privacy of facts and life. Someone can want total factual openness and still think unfiltered feelings are corrosive.",
         "guessable": true,
         "opts": [
-          "Yes — everything",
+          "Yes: everything",
           "Most things, once I've made sense of them",
           "Only what affects us",
           "Some feelings are better kept to myself"
@@ -2256,7 +2256,7 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "opts": [
-          "Fine — I'd give you space",
+          "Fine: I'd give you space",
           "I'd worry something was wrong",
           "I'd feel shut out",
           "I'd keep asking until you talked"
@@ -2312,7 +2312,7 @@ export const DECKS: Record<string, Deck> = {
         "opts": [
           "Yes, always",
           "Usually, unless there's a reason",
-          "No — separate friendships are healthy",
+          "No: separate friendships are healthy",
           "Depends on the friends"
         ]
       },
@@ -2335,7 +2335,7 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "opts": [
-          "Nothing — full openness",
+          "Nothing: full openness",
           "My private thoughts and prayers",
           "My past",
           "My friendships and conversations",
@@ -2528,7 +2528,7 @@ export const DECKS: Record<string, Deck> = {
         "note": "Completely missing from a bank with 17 finance questions. Family money carries family expectations, and couples discover the exchange rate afterwards.",
         "guessable": true,
         "opts": [
-          "None — we stand on our own",
+          "None: we stand on our own",
           "Gifts are fine",
           "Help in a genuine crisis",
           "Whatever they're willing to offer"
@@ -2641,7 +2641,7 @@ export const DECKS: Record<string, Deck> = {
           "Big group things",
           "Church events",
           "Family visits",
-          "Nothing — I'm in for all of it"
+          "Nothing: I'm in for all of it"
         ]
       },
       {
@@ -2692,11 +2692,11 @@ export const DECKS: Record<string, Deck> = {
         "note": "Reframed from a pick-a-cuisine question (too limiting — the options excluded whole tastes). Now captures the underlying value: your disposition toward food, which is what actually aligns.",
         "guessable": true,
         "opts": [
-          "Adventurous — I'll try anything",
+          "Adventurous: I'll try anything",
           "Give me my comfort favourites",
           "Health comes first",
-          "Quick and easy — food's just fuel",
-          "A proper foodie — I live for it"
+          "Quick and easy: food's just fuel",
+          "A proper foodie: I live for it"
         ]
       },
       {
@@ -2744,7 +2744,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-020",
-        "q": "Be honest — how good a cook are you?",
+        "q": "Be honest: how good a cook are you?",
         "type": "mc",
         "depth": 1,
         "note": "Pairs with HOME-001. Someone can say 'we'd share the cooking' and also admit they can't cook, and the collision of those two answers is the joke and the point.",
@@ -2898,7 +2898,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DEAL-023",
-        "q": "Be honest — how picky are you?",
+        "q": "Be honest: how picky are you?",
         "type": "scale",
         "depth": 1,
         "note": "Self-rated fussiness as the on-ramp. Light, and it usefully frames every heavier question in the deck that follows.",
@@ -2932,7 +2932,7 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "opts": [
-          "A deal-breaker — it's the hiding, not the money",
+          "A deal-breaker: it's the hiding, not the money",
           "A serious problem, but we'd work through it",
           "Frustrating, but survivable",
           "Not really a big deal"
@@ -3122,7 +3122,7 @@ export const DECKS: Record<string, Deck> = {
           "That you told me yourself, even years late",
           "What it actually was",
           "Why you kept it from me",
-          "Nothing — the hiding would be the end of it"
+          "Nothing: the hiding would be the end of it"
         ]
       },
       {
@@ -3201,7 +3201,7 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "opts": [
-          "No — I've always held the line",
+          "No: I've always held the line",
           "Yes, once",
           "Yes, more than once",
           "I've never had my lines tested"
@@ -4370,7 +4370,7 @@ export const DECKS: Record<string, Deck> = {
           "Time with friends",
           "Ministry or serving",
           "Hobbies and downtime",
-          "Nothing — I'd find the time somewhere"
+          "Nothing: I'd find the time somewhere"
         ]
       },
       {
@@ -4383,13 +4383,13 @@ export const DECKS: Record<string, Deck> = {
         "opts": [
           "Time",
           "Emotional energy",
-          "Neither — I have both",
+          "Neither: I have both",
           "Both are stretched"
         ]
       },
       {
         "id": "US-046",
-        "q": "Wanting to invest in us, and being able to right now — which is truer for you?",
+        "q": "Wanting to invest in us, and being able to right now, which is truer for you?",
         "type": "mc",
         "depth": 4,
         "note": "The desire-versus-capacity gap named directly. Option three is the one that surfaces a conversation nothing else in the bank reaches.",
@@ -4411,7 +4411,7 @@ export const DECKS: Record<string, Deck> = {
         "opts": [
           "Not at all",
           "A little",
-          "A lot — you changed it",
+          "A lot: you changed it",
           "I've let go of things that didn't matter"
         ]
       },
@@ -4761,7 +4761,7 @@ export const DECKS: Record<string, Deck> = {
         "opts": [
           "Always",
           "Only if it was becoming a problem",
-          "No — it would only hurt you",
+          "No: it would only hurt you",
           "There'd be nothing to tell"
         ]
       },
@@ -4776,7 +4776,7 @@ export const DECKS: Record<string, Deck> = {
           "No, none",
           "One or two, just following",
           "We still talk occasionally",
-          "Yes — we're genuinely close"
+          "Yes: we're genuinely close"
         ]
       },
       {
@@ -4936,7 +4936,7 @@ export const DECKS: Record<string, Deck> = {
           "We've been through something genuinely hard together",
           "We've had real arguments and come through them",
           "Some friction, nothing serious",
-          "It's been smooth — we haven't been tested yet"
+          "It's been smooth: we haven't been tested yet"
         ]
       },
       {
@@ -4947,9 +4947,9 @@ export const DECKS: Record<string, Deck> = {
         "note": "A present-tense read on the thing itself. US-033 asks intent for the season; this asks what the relationship actually is at this moment, which is a different and often uncomfortable answer.",
         "guessable": true,
         "opts": [
-          "Solid — it knows what it is",
+          "Solid: it knows what it is",
           "Something real that's still finding its shape",
-          "In transition — changing in ways neither of us controls",
+          "In transition: changing in ways neither of us controls",
           "Still deciding what we want it to be"
         ]
       },
@@ -4996,7 +4996,7 @@ export const DECKS: Record<string, Deck> = {
           "Minutes",
           "A few hours",
           "A day or two",
-          "We don't really close things — they fade"
+          "We don't really close things, they fade"
         ]
       },
       {
@@ -5050,10 +5050,10 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "opts": [
-          "Natural — I don't keep score",
-          "Intentional — I want you to feel it",
-          "Measured — I think about how much I put in",
-          "Costly — part of me notices what it takes from me"
+          "Natural: I don't keep score",
+          "Intentional: I want you to feel it",
+          "Measured: I think about how much I put in",
+          "Costly: part of me notices what it takes from me"
         ]
       },
       {
@@ -5078,7 +5078,7 @@ export const DECKS: Record<string, Deck> = {
         "notYet": true,
         "opts": [
           "Expectations neither of us has said out loud",
-          "Timing — we want different things at different moments",
+          "Timing: we want different things at different moments",
           "Things get lost between what's meant and what's heard",
           "It hasn't been genuinely hard yet"
         ]
@@ -5094,7 +5094,7 @@ export const DECKS: Record<string, Deck> = {
           "A breach of trust",
           "Slowly growing in different directions",
           "One of us needing more than the other can give",
-          "Outside pressure — money, family, work",
+          "Outside pressure: money, family, work",
           "Drifting apart in our faith"
         ]
       },
@@ -5107,10 +5107,10 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "opts": [
-          "High — I show up fully when you need me",
-          "Conditional — it depends where I am mentally",
-          "Restrained — I keep some distance by habit",
-          "Variable — it shifts more than I'd like"
+          "High: I show up fully when you need me",
+          "Conditional: it depends where I am mentally",
+          "Restrained: I keep some distance by habit",
+          "Variable: it shifts more than I'd like"
         ]
       },
       {
@@ -5122,9 +5122,9 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "opts": [
-          "Say something — I'd rather name it",
+          "Say something: I'd rather name it",
           "Give you space, you might need it",
-          "Feel it but stay quiet — I don't want to be demanding",
+          "Feel it but stay quiet, I don't want to be demanding",
           "Pull back too"
         ]
       },
@@ -5154,7 +5154,7 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "opts": [
-          "Track record — you've proven it",
+          "Track record: you've proven it",
           "What I believe about your character",
           "Hope and faith more than evidence",
           "It isn't fully there yet"
@@ -5201,8 +5201,8 @@ export const DECKS: Record<string, Deck> = {
         "note": "The heaviest question in the category and correctly placed last. A low answer from either side is the whole point of an app called Aligned.",
         "guessable": true,
         "notYet": true,
-        "lo": "Less — I'm somehow smaller in it",
-        "hi": "More — I'm most myself in it"
+        "lo": "Less: I'm somehow smaller in it",
+        "hi": "More: I'm most myself in it"
       },
       {
         "id": "NOW-016",
@@ -5212,7 +5212,7 @@ export const DECKS: Record<string, Deck> = {
         "note": "The bluntest expression of surface, don't settle. Both answer it, both see it. Even 'something small' opens a door that nothing else in the bank reaches.",
         "guessable": true,
         "opts": [
-          "No — you know everything",
+          "No: you know everything",
           "Yes, something small",
           "Yes, something significant",
           "Yes, and I'm not sure I ever will"

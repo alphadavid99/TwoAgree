@@ -3,6 +3,9 @@
 // via preview.html, which is not linked and excluded from the build inputs).
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { signInAnonymously } from "firebase/auth";
+import { auth, db } from "./firebase";
+import { ref, update } from "firebase/database";
 import "./brand/tokens.css"; // brand tokens first — the app loads these via main.tsx
 import "./index.css";
 import { ORDER, DECKS, type Question } from "./lib/questions";
@@ -17,8 +20,9 @@ import PartPicker from "./screens/PartPicker";
 import Onboarding from "./screens/Onboarding";
 import StartMenu from "./screens/StartMenu";
 import PathStep from "./screens/PathStep";
-import { PathMap, PathIntro } from "./screens/PathScreen";
+import { PathMap, PathIntro, PathFlow } from "./screens/PathScreen";
 import ResultsScreen from "./screens/ResultsScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
 import { Mark } from "./brand/Mark";
@@ -27,6 +31,39 @@ import { PillNav } from "./components/PillNav";
 import { IconHome, IconDecks, IconResults, IconProfile } from "./components/icons";
 
 const noop = () => {};
+
+// The harness drives REAL screens, and the ones that write (PlayScreen,
+// PathStep) are governed by the security rules: an answer is only accepted from
+// a signed-in member writing their own role. Without a seat every write is
+// denied and the flow stalls mid-question, so the harness signs in anonymously
+// and creates its own session, keyed to the uid so re-runs never collide with a
+// session another anonymous user owns.
+// Emulator only — never mint anonymous users or sessions against live Firebase
+// just to take a screenshot.
+const EMU =
+  import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS !== "false";
+
+async function seatHarness(): Promise<string> {
+  const cred = await signInAnonymously(auth);
+  const uid = cred.user.uid;
+  const code = ("P" + uid.replace(/[^a-z0-9]/gi, "").slice(0, 3)).toUpperCase();
+  await update(ref(db, `sessions/${code}`), {
+    created: Date.now(),
+    "members/host/name": "Sarah Elizabeth",
+    "members/host/uid": uid,
+    [`uids/${uid}`]: true,
+  });
+  return code;
+}
+
+let HARNESS_CODE = "ABCD";
+if (EMU) {
+  try {
+    HARNESS_CODE = await seatHarness();
+  } catch (e) {
+    console.warn("[preview] no seat — write flows will be denied", e);
+  }
+}
 
 function answerFor(qType: string, opts: string[] | undefined, who: "host" | "guest", i: number): AnswerValue {
   if (qType === "scale") return who === "host" ? 4 : i % 3 === 0 ? 4 : 5;
@@ -184,26 +221,72 @@ function Preview() {
   if (view === "auth")
     return (
       <>
-        <div className="brandhead brand-enter">
+        <div className="brandhead">
           <Wordmark size={32} />
         </div>
         <AuthScreen />
       </>
     );
-  if (view === "home")
+  if (view === "home" || view === "home-ready" || view === "home-path")
     return (
       <div className="tabwrap">
         <HomeScreen
           code="ABCD"
-          session={session}
+          session={
+            // home-path: a couple mid-journey, so Home's Path card has a
+            // waypoint to point at.
+            view === "home-path"
+              ? ({
+                  ...session,
+                  path: {
+                    generatedAt: 1,
+                    version: 1,
+                    questionCount: 63,
+                    steps: Object.fromEntries(
+                      ["trailhead", "fork", "storehouse", "table", "garden", "valley", "hilltop", "horizon", "summit"].map(
+                        (key, i) => [i, { key, mechanic: "guess", qids: [] }],
+                      ),
+                    ),
+                  },
+                  pathLamps: { 0: true, 1: true, 2: true },
+                } as unknown as Session)
+              : session
+          }
           role="host"
           slug={slugA}
           onPlay={noop}
           onBrowse={noop}
           onReview={noop}
           onProfile={noop}
+          // home-ready: the herald card, for a reveal that has just unlocked.
+          pending={view === "home-ready" ? [{ slug: slugB, level: 0 }] : []}
+          onOpenReveal={noop}
+          onPath={noop}
         />
         <FakeNav on="home" />
+      </div>
+    );
+  if (view === "profile")
+    return (
+      <div className="tabwrap">
+        <ProfileScreen
+          user={{ uid: "u1", email: "sarah@example.com", displayName: "Sarah" } as never}
+          code="ABCD"
+          onLeave={noop}
+        />
+        <FakeNav on="profile" />
+      </div>
+    );
+  if (view === "results-day0")
+    return (
+      <div className="tabwrap">
+        <ResultsScreen
+          session={{ ...session, decks: {} } as Session}
+          role="host"
+          code="ABCD"
+          onOpen={noop}
+        />
+        <FakeNav on="results" />
       </div>
     );
   if (view === "decks")
@@ -244,8 +327,9 @@ function Preview() {
       />
     );
   }
-  if (view === "onboard") return <Onboarding inviteToken={null} onDone={noop} />;
-  if (view === "joinb") return <Onboarding inviteToken="demo" onDone={noop} />;
+  if (view === "onboard") return <Onboarding invite={null} onDone={noop} />;
+  if (view === "joinb")
+    return <Onboarding invite={{ kind: "token", value: "demo" }} onDone={noop} />;
   if (view === "pathintro")
     return (
       <div className="tabwrap">
@@ -267,13 +351,65 @@ function Preview() {
           ),
         ),
       },
+      // The current waypoint with one partner through it — so the two-dot
+      // walked indicator has something to say.
+      decks: { "at-table": { answers: { table: { host: "…" } } } },
       pathLamps: { 0: true, 1: true, 2: true },
     } as unknown as Session;
     return (
       <div className="tabwrap">
-        <PathMap session={pathSession} onOpen={noop} t={(en: string) => en} />
+        <PathMap
+          session={pathSession}
+          role="host"
+          partnerName="Judah"
+          onOpen={noop}
+          t={(en: string) => en}
+        />
         <FakeNav on="path" />
       </div>
+    );
+  }
+  if (view === "pathlookout") {
+    // A finished journey: every lamp lit, real answers behind every waypoint so
+    // the finale's numbers are the real scoring, not a mock.
+    const KEYS = ["trailhead", "fork", "storehouse", "table", "garden", "valley", "hilltop", "horizon", "summit"];
+    const SRC = ["fun-icebreakers", "conflict-communication", "finances-money", "in-the-home", "intimacy-physical", "past-baggage", "faith-worship-practice", "dreams-future", "values-convictions"];
+    const decks: Record<string, { answers: Record<string, unknown>; guesses: Record<string, unknown> }> = {
+      "at-table": { answers: {}, guesses: {} },
+    };
+    const steps: Record<string, unknown> = {};
+    KEYS.forEach((key, i) => {
+      const slug = SRC[i];
+      const qs = (DECKS[slug]?.questions ?? []).filter((q) => q.type !== "open").slice(0, 5);
+      decks[slug] ??= { answers: {}, guesses: {} };
+      qs.forEach((q, n) => {
+        // Agreement walks down the trail (early steps close, later ones apart),
+        // so brightest/hardest are visibly different waypoints.
+        const apart = i >= 5 && n % 2 === 0;
+        const hi = q.type === "scale" ? 5 : (q.opts?.length ?? 2) - 1;
+        decks[slug].answers[q.id] = { host: q.type === "scale" ? 3 : 0, guest: apart ? hi : q.type === "scale" ? 3 : 0 };
+        if (q.guessable) decks[slug].guesses[q.id] = { host: q.type === "scale" ? 3 : 0, guest: q.type === "scale" ? 3 : 0 };
+      });
+      decks["at-table"].answers[key] = { host: "Something honest.", guest: "Mine too." };
+      steps[i] = { key, mechanic: i === 8 ? "noguess" : "guess", qids: qs.map((q) => q.id) };
+    });
+    const s = {
+      members: { host: { name: "Sarah", uid: "u1" }, guest: { name: "Judah", uid: "u2" } },
+      uids: { u1: true, u2: true },
+      decks,
+      path: { generatedAt: 1, version: 1, questionCount: 45, steps },
+      pathLamps: Object.fromEntries(KEYS.map((_, i) => [i, true])),
+    } as unknown as Session;
+    return (
+      <PathFlow
+        code="ABCD"
+        role="host"
+        session={s}
+        index={9}
+        myName="Sarah"
+        partnerName="Judah"
+        onExit={noop}
+      />
     );
   }
   if (view === "patharrival") {
@@ -284,7 +420,7 @@ function Preview() {
     } as unknown as Session;
     return (
       <PathStep
-        code="ABCD"
+        code={HARNESS_CODE}
         role="host"
         session={s}
         index={1}
@@ -299,12 +435,15 @@ function Preview() {
     return <StartMenu stage="engaged" onPick={noop} onSeeAll={noop} />;
   if (view === "start")
     return <StartScreen uid="u1" name="Sarah" onEnter={noop} />;
-  if (view === "play")
+  if (view === "play") {
+    // ?slug=&level= so any deck's question types (rank, open, importance) can
+    // be walked in the harness, not just the default deck's.
+    const q = new URLSearchParams(window.location.search);
     return (
       <PlayScreen
-        code="ABCD"
-        slug={slugC}
-        level={0}
+        code={HARNESS_CODE}
+        slug={q.get("slug") ?? slugC}
+        level={Number(q.get("level") ?? 0)}
         role="host"
         deck={{}}
         partnerName="Judah"
@@ -312,7 +451,53 @@ function Preview() {
         onExit={noop}
       />
     );
-  if (view === "results")
+  }
+  if (view === "results" || view === "results-talk") {
+    // results-talk: the couple's agenda — one open topic, one they've closed,
+    // plus a "your partner already confirmed" row.
+    const talkSession = view === "results-talk"
+      ? ({
+          ...session,
+          decks: Object.fromEntries(
+            Object.entries(session.decks!).map(([sl, d]) => {
+              if (sl !== slugB) return [sl, d];
+              const mcs = DECKS[sl].questions.filter((q) => q.type === "mc").slice(0, 3);
+              // A few host guesses made wrong, so the discoveries section has
+              // something to show (fakeDeck's host always guesses right).
+              const wrongGuesses = { ...(d.guesses ?? {}) };
+              mcs.forEach((q) => {
+                const a = d.answers?.[q.id];
+                if (a?.guest != null) wrongGuesses[q.id] = { ...wrongGuesses[q.id], host: 99 };
+              });
+              return [
+                sl,
+                {
+                  ...d,
+                  guesses: wrongGuesses,
+                  talks: {
+                    [mcs[0].id]: { pinned: { host: true } },
+                    [mcs[1].id]: { pinned: { guest: true }, talked: { guest: true } },
+                    [mcs[2].id]: { pinned: { host: true }, talked: { host: true, guest: true } },
+                  },
+                },
+              ];
+            }),
+          ),
+        } as Session)
+      : session;
+    return (
+      <div className="tabwrap">
+        <ResultsScreen
+          session={talkSession}
+          role="host"
+          code={view === "results-talk" ? "ABCD" : undefined}
+          onOpen={noop}
+        />
+        <FakeNav on="results" />
+      </div>
+    );
+  }
+  if (view === "results-old")
     return (
       <div className="tabwrap">
         <ResultsScreen session={session} role="host" onOpen={noop} />
@@ -326,6 +511,7 @@ function Preview() {
   // Targets are approximate — scoring is importance-weighted, so the rendered
   // percentage lands a little under the share of matching answers.
   const LADDER: Record<string, number> = {
+    "reveal-first": 84,
     "reveal-t0": 34, // ~27% — no celebration
     "reveal-t1": 72, // ~65% — the room turns, no petals
     "reveal-t2": 84, // ~78% — petals join
@@ -348,6 +534,8 @@ function Preview() {
       partnerName="Judah"
       questions={isReview ? lvlQs(slugB, 0) : tuned?.qs}
       review={isReview}
+      firstEver={view === "reveal-first"}
+      code={isReview ? "ABCD" : undefined}
       onDone={noop}
     />
   );

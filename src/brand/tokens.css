@@ -1,5 +1,6 @@
-/* TwoAgree — brand tokens
-   Single source of truth for colour. Import once in main.tsx:  import './brand/tokens.css'
+/* TwoAgree — design tokens
+   Single source of truth for colour, motion, micro-label type and radius.
+   Import once in main.tsx:  import './brand/tokens.css'
    Never hard-code a hex anywhere else in the app. */
 
 :root {
@@ -44,14 +45,23 @@
   --app-amber:        #8F5A12;  /* text-safe amber for honey-coloured TEXT on light */
 
   /* Secondary text / muted labels / hairlines / soft surfaces */
-  --app-sub:          #8A6A78;
-  --app-mut:          #7E6B76;
-  --app-card-line:    #F1E4E7;  /* card hairlines, option borders */
+  /* Darkened one notch: on the blush ground these measured 4.05:1 / 4.20:1 at
+     11-13px — below AA, and it's the wayfinding copy (play hints, caplines). */
+  --app-sub:          #7C5C6B;
+  --app-mut:          #6F5C68;
+  /* Card hairlines. Deliberately NOT taken to 3:1: this token also draws the
+     decorative rules between cards, where a 3:1 line would shout. The controls
+     that need the ratio carry it on their own border (see --app-opt-line). */
+  --app-card-line:    #E3D2D8;  /* 1.45:1 on white — hairlines only */
+  --app-opt-line:     #B07C90;  /* option/control boundary — 3.4:1 on white */
   --app-opt-bg:       #F8E9EC;  /* soft blush wells: inputs, chips, selected */
   --app-honey-bg:     #FBEBDC;  /* honey-tinted callout ground */
   --app-honey-line:   #F3E6CF;  /* honey-tinted hairline (guess card) */
   --app-track:        #F0DEE2;  /* progress/ring tracks */
-  --app-orb-line:     #E0B9C2;  /* unselected orb / dot borders */
+  /* An orb's ring IS the control — there's nothing else to see when it's
+     unselected — so it has to clear the 3:1 non-text floor (WCAG 1.4.11).
+     It measured 1.77:1. */
+  --app-orb-line:     #B07C90;  /* 3.4:1 on white, 2.9:1 on the blush ground */
   --app-opt-hover:    #DCC0CB;  /* option border on hover */
   --app-row-hover:    #FDF7F9;  /* result row hover ground */
 
@@ -89,6 +99,51 @@
   --ce-gold:          #DCB265;  /* the agreed arc + accents (mark-gold family) */
   --ce-blush:         #F3DED6;  /* the known arc — claret's light counterpart */
   --ce-track:         #57293F;  /* ring track on claret */
+
+  /* ==========================================================================
+     Motion. The language was already right but unnamed, so riseIn ran at five
+     different durations and three near-identical rise keyframes drifted apart.
+     Three rules govern this block:
+       1. Nothing loops except the waiting breath and the spinner.
+       2. Nothing outside the reveal ceremony runs 600–900ms.
+       3. One overshoot on screen at a time — springs are for the thing the
+          finger just touched, never for scenery.
+     Every animation here is decorative and is disabled wholesale under
+     prefers-reduced-motion (see the block at the foot of index.css).
+     ========================================================================== */
+  --dur-press:        120ms;    /* tap feedback: the thing under the finger */
+  --dur-enter:        280ms;    /* a screen or card arriving */
+  --dur-select:       400ms;    /* a choice registering */
+  --dur-ceremony:     900ms;    /* reveal only — the arc draw, the count-up */
+  --dur-breathe:      3200ms;   /* the one permitted loop */
+
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);  /* one overshoot */
+  --ease-glide:       cubic-bezier(0.22, 1, 0.36, 1);     /* decelerate hard */
+  --ease-settle:      cubic-bezier(0.25, 0.6, 0.3, 1);    /* calm arrival */
+
+  /* ==========================================================================
+     Micro-labels. The app had grown 23 variants of "small uppercase text" —
+     9 to 12.5px, tracking 0.4 to 3px, weights 600 to 800 — which is what type
+     drift looks like when nobody names the thing. There are exactly two jobs:
+       EYEBROW  a wide-tracked label announcing a section.
+       TAG      a tight label riding on a chip, row or badge.
+     Sizes are rem so they scale with the reader's OS text size.
+     ========================================================================== */
+  --eyebrow-size:     0.75rem;
+  --eyebrow-track:    0.18em;
+  --eyebrow-weight:   600;
+  --tag-size:         0.6875rem;   /* 11px — the floor for uppercase text */
+  --tag-track:        0.05em;
+  --tag-weight:       700;
+
+  /* ==========================================================================
+     Radius. The app declared 16 / 22 / 30 and then drew 10, 11, 12, 14, 18, 20
+     and 26 as well — seven sizes nobody chose. --r-xs is the missing small tier
+     (chips, pills, inline wells); everything else snaps to the declared scale.
+     Living in index.css's :root historically; moved here with the rest of the
+     design tokens so there is one place to look.
+     ========================================================================== */
+  --r-xs:             12px;
 }
 
 /* Focus ring — honey reads clearly on both claret and white grounds. */

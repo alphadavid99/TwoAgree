@@ -3,7 +3,7 @@
     "slug": "in-the-home",
     "prefix": "HOME",
     "name": "Home",
-    "color": "#B0865E",
+    "color": "#9C7A4A",
     "icon": "home",
     "hook": "HOME-006"
   },
@@ -19,7 +19,7 @@
     "slug": "faith-worship-practice",
     "prefix": "FAITH",
     "name": "Faith",
-    "color": "#682D5C",
+    "color": "#5C2E45",
     "icon": "faith",
     "hook": "FAITH-019"
   },
@@ -27,7 +27,7 @@
     "slug": "roles-responsibilities",
     "prefix": "ROLE",
     "name": "Roles",
-    "color": "#6E7A8A",
+    "color": "#7C4B72",
     "icon": "compass",
     "hook": "ROLE-011"
   },
@@ -35,7 +35,7 @@
     "slug": "theology-beliefs",
     "prefix": "THEO",
     "name": "Theology",
-    "color": "#7C4B72",
+    "color": "#5C2E45",
     "icon": "book"
   },
   {
@@ -49,14 +49,14 @@
     "slug": "family-children",
     "prefix": "FAM",
     "name": "Children",
-    "color": "#88A06A",
+    "color": "#9C7A4A",
     "icon": "family"
   },
   {
     "slug": "parenting-style",
     "prefix": "PAR",
     "name": "Parenting",
-    "color": "#88A06A",
+    "color": "#9C7A4A",
     "icon": "family"
   },
   {
@@ -71,7 +71,7 @@
     "slug": "conflict-communication",
     "prefix": "CONF",
     "name": "Conflict",
-    "color": "#B06A5E",
+    "color": "#A8554E",
     "icon": "chat",
     "hook": "CONF-021"
   },
@@ -87,7 +87,7 @@
     "slug": "fun-icebreakers",
     "prefix": "FUN",
     "name": "Fun",
-    "color": "#E0A93C",
+    "color": "#8F5A12",
     "icon": "star",
     "hook": "FUN-011"
   },
@@ -95,7 +95,7 @@
     "slug": "deal-breakers",
     "prefix": "DEAL",
     "name": "Deal-breakers",
-    "color": "#B0504E",
+    "color": "#A8554E",
     "icon": "shield",
     "hook": "DEAL-021"
   },
@@ -103,28 +103,28 @@
     "slug": "health-lifestyle",
     "prefix": "HEALTH",
     "name": "Health",
-    "color": "#7E9A5E",
+    "color": "#5E7A4E",
     "icon": "leaf"
   },
   {
     "slug": "past-baggage",
     "prefix": "PAST",
     "name": "The Past",
-    "color": "#7E6A78",
+    "color": "#7C4B72",
     "icon": "leaf"
   },
   {
     "slug": "career-ambition",
     "prefix": "CAREER",
     "name": "Work",
-    "color": "#C28A3A",
+    "color": "#8F5A12",
     "icon": "star"
   },
   {
     "slug": "character-self-awareness",
     "prefix": "SELF",
     "name": "Character",
-    "color": "#5E8074",
+    "color": "#5E7A4E",
     "icon": "star",
     "hook": "SELF-019"
   },
@@ -140,21 +140,21 @@
     "slug": "values-convictions",
     "prefix": "VAL",
     "name": "Convictions",
-    "color": "#C2843A",
+    "color": "#5C2E45",
     "icon": "compass"
   },
   {
     "slug": "faithfulness-loyalty",
     "prefix": "LOYAL",
     "name": "Faithfulness",
-    "color": "#8A5A4E",
+    "color": "#7C4B72",
     "icon": "shield"
   },
   {
     "slug": "where-we-are-now",
     "prefix": "NOW",
     "name": "Where We Are Now",
-    "color": "#7A6A9C",
+    "color": "#9C4A6E",
     "icon": "compass",
     "hook": "NOW-025"
   }

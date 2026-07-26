@@ -47,6 +47,30 @@ All of it is finishing work, not rework — most of the machinery already exists
 
 ## 3. Fix first — dead ends that strand real couples
 
+> ### STATUS — Jul 2026: the review is built out
+>
+> Everything in §3–§13 has shipped to `claude/app-ui-ux-review-kkvfo2` across
+> eight CI-green batches, except the items listed as **left for Dave** below.
+>
+> | § | What shipped |
+> |---|---|
+> | 3 | Dead ends: resume, invite-by-code, reveal herald, onboarding checkpoint |
+> | 4 | Answering loop: shared stones bar, inline importance, resume-into-guess, "change" affordance, skip on open questions |
+> | 5 | Ceremony: the "Gold on Claret" ladder, visible count-up, tiered agreed-line, per-tier petals |
+> | 6 | Score → conversation: the talk loop (pin / talked), keepsake card as a real image, discoveries |
+> | 7 | The Path: Lookout finale with journey-wide scores + keepsake, Path card on Home, halo on the current node, walked dots, per-partner lamp, step cap at 8 |
+> | 8 | Visual: 19 deck hexes → 7 brand hues, disabled-CTA recipe, one gold per claret ground, viewport-fill play screens, 23 micro-label variants → 2, radii snapped, phantom ring dot, Decks sort + depth-word dedupe |
+> | 9 | Motion: five duration tokens + three curves in `tokens.css`, three rise keyframes collapsed to one, the `.glide-in` cascade bug, `.brand-enter` deleted, onboarding stagger reserved for arrivals, slide-vs-rise grammar, Core count-up, Decks ring perf |
+> | 10 | Copy: every listed outlier, plus the two false notification promises |
+> | 11 | Accessibility: answers are real `<button>`s (they were click-divs — a keyboard tester could not play at all), 3:1 control borders, rem text with an 11px floor, 44px targets, ring/ceremony announcements, Escape closes the share sheet |
+> | 13 | Blind spots: readable GDPR export, honest delete explanation, day-zero Together tab |
+>
+> **Left for Dave — two calls that aren't mine to make:**
+> 1. **No re-engagement channel exists** (§13.2). No push, no email, no badge. Every "we'll let you know" has been rewritten to something true, but the structural gap stands: an async two-player product lives on "something from your person is waiting." The lightest honest fix is a partner-finished email on the planned Functions/Resend stack — one template, key in Functions secrets, opt-in at consent. Needs a provider account, so it is not invented here.
+> 2. **The raw GDPR export returns the partner's answers too** (they share the session node). The new readable copy deliberately shows only the subject's own data; the machine-readable payload was left as it is. Worth a lawyer's eye before the stranger gate.
+>
+> Also open, from §5: the celebration fires off `max(agreed, known)`, so 56% agreed / 80% known still gets the full claret room. Agreement-only is a one-line change in `celebrate.ts` if that's the wrong call.
+
 These are the launch-relevant flow breaks. Every one was reproduced against the code; none is speculative. Effort: **S** = under half a day, **M** = 1–3 days.
 
 | # | Finding | Impact | Effort |

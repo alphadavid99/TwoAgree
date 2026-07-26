@@ -4,8 +4,8 @@ import { auth } from "./firebase";
 import { useAuth } from "./hooks/useAuth";
 import { useProfile } from "./hooks/useProfile";
 import { getActiveCode, setActiveCode, clearActiveCode } from "./lib/local";
-import { currentInviteToken, onInviteToken } from "./lib/invite";
-import { redeemInvite } from "./lib/functions";
+import { currentInvite, onInvite, type Invite } from "./lib/invite";
+import { joinByCode, redeemInvite } from "./lib/functions";
 import { prettyError } from "./lib/errors";
 import { getLang } from "./lib/i18n";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -17,7 +17,7 @@ import { IconSettings, IconBack } from "./components/icons";
 import { useT } from "./lib/i18n";
 
 const BrandHead = () => (
-  <div className="brandhead brand-enter">
+  <div className="brandhead">
     <Wordmark size={32} />
   </div>
 );
@@ -50,7 +50,7 @@ function NoSession({
   const showProfile = view === "profile";
   return (
     <>
-      <div className="landinghead brand-enter">
+      <div className="landinghead">
         <Wordmark size={24} />
         <button
           className="iconbtn landinghead-action"
@@ -77,11 +77,11 @@ function NoSession({
   );
 }
 
-function SignedIn({ user, inviteToken }: { user: User; inviteToken: string | null }) {
+function SignedIn({ user, invite }: { user: User; invite: Invite | null }) {
   const t = useT();
   const { profile, loading } = useProfile(user.uid);
   const [code, setCode] = useState<string | null>(() => getActiveCode(user.uid));
-  const [redeeming, setRedeeming] = useState(!!inviteToken);
+  const [redeeming, setRedeeming] = useState(!!invite);
   const [inviteErr, setInviteErr] = useState("");
   // Attempt the redeem exactly once, so a state change can never re-trigger it
   // and no branch can leave us stuck on the "Joining…" spinner.
@@ -89,7 +89,7 @@ function SignedIn({ user, inviteToken }: { user: User; inviteToken: string | nul
 
   // Redeem an invite link once the user is signed in and has a name.
   useEffect(() => {
-    if (!inviteToken || redeemed.current) return;
+    if (!invite || redeemed.current) return;
 
     // Already seated in a session (e.g. the host opened the link they sent, or
     // a stale token from a previous visit): don't try to redeem into it — that
@@ -109,8 +109,12 @@ function SignedIn({ user, inviteToken }: { user: User; inviteToken: string | nul
     let cancelled = false;
     setRedeeming(true);
     // Backstop a slow/hung callable so we surface an error instead of spinning.
+    const seat =
+      invite.kind === "token"
+        ? redeemInvite({ token: invite.value })
+        : joinByCode({ code: invite.value });
     const withTimeout = Promise.race([
-      redeemInvite({ token: inviteToken }),
+      seat,
       new Promise<never>((_, rej) =>
         setTimeout(
           () =>
@@ -140,7 +144,7 @@ function SignedIn({ user, inviteToken }: { user: User; inviteToken: string | nul
     return () => {
       cancelled = true;
     };
-  }, [profile?.name, code, user.uid, inviteToken]);
+  }, [profile?.name, code, user.uid, invite]);
 
   if (loading)
     return (
@@ -194,30 +198,32 @@ function SignedIn({ user, inviteToken }: { user: User; inviteToken: string | nul
 // flow and only hands back a code when it's finished — critically, it stays
 // mounted THROUGH the mid-flow account upgrade (linkWithCredential flips
 // isAnonymous, but this gate doesn't re-route on that).
-function OnboardingGate({ inviteToken }: { inviteToken: string | null }) {
-  const [doneCode, setDoneCode] = useState<string | null>(null);
+function OnboardingGate({ invite }: { invite: Invite | null }) {
+  const [done, setDone] = useState<{ code: string; slug?: string } | null>(null);
   const u = auth.currentUser;
-  if (doneCode && u) {
+  if (done && u) {
     return (
       <SessionApp
-        code={doneCode}
+        code={done.code}
         user={u}
+        // The conversation they chose on the way out opens straight away.
+        openSlug={done.slug}
         onLeave={() => {
           clearActiveCode(u.uid);
-          setDoneCode(null);
+          setDone(null);
         }}
       />
     );
   }
   return (
     <Onboarding
-      inviteToken={inviteToken}
-      onDone={(c) => {
+      invite={invite}
+      onDone={(c, slug) => {
         // Persist the session so returning to the app (a fresh load, now a real
         // signed-in account) reopens it instead of dropping to "Start a session".
         const cu = auth.currentUser;
         if (cu) setActiveCode(cu.uid, c);
-        setDoneCode(c);
+        setDone({ code: c, slug });
       }}
     />
   );
@@ -228,10 +234,8 @@ export default function App() {
   const t = useT();
   // The invite token can arrive after mount on native (a universal link), so
   // track it in state and re-render when the deep-link bridge delivers one.
-  const [inviteToken, setInviteTokenState] = useState<string | null>(
-    currentInviteToken,
-  );
-  useEffect(() => onInviteToken(setInviteTokenState), []);
+  const [invite, setInviteState] = useState<Invite | null>(currentInvite);
+  useEffect(() => onInvite(setInviteState), []);
   // Decide the entry mode ONCE, when auth first settles, and lock it. A
   // pre-existing real account goes to the app; everyone else (no user, or an
   // anonymous user) enters onboarding and stays there even after the account is
@@ -267,9 +271,9 @@ export default function App() {
           <Boot label={t("Checking your account…", "Vérification de votre compte…")} />
         </>
       ) : mode === "app" && user ? (
-        <SignedIn user={user} inviteToken={inviteToken} />
+        <SignedIn user={user} invite={invite} />
       ) : (
-        <OnboardingGate inviteToken={inviteToken} />
+        <OnboardingGate invite={invite} />
       )}
     </div>
   );

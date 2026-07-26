@@ -145,6 +145,11 @@ export default function AuthScreen() {
             )}
       </p>
 
+      {/* The white-card rule (brand pack RULE 2): the fields were blush wells
+          sitting straight on a ground gradient that bottoms out at the same
+          blush, so the first screen a recruited tester ever sees read as
+          unfinished. One card, the way every other surface in the app works. */}
+      <div className="card authcard">
       {isSignup && (
         <label className="consent" style={{ marginTop: 0 }}>
           <input
@@ -255,6 +260,7 @@ export default function AuthScreen() {
               : t("Sign in →", "Se connecter →")}
         </button>
       </form>
+      </div>
 
       {!isSignup && (
         <button className="btn ghost" type="button" onClick={resetPw}>

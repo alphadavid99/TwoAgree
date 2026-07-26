@@ -13,6 +13,9 @@ export interface DeckData {
   guesses?: Record<string, RoleMap<AnswerValue>>;
   done?: Record<string, RoleMap<boolean>>;
   importance?: Record<string, RoleMap<number>>; // 1..5, asked on tier-3 + DEAL-*
+  // The talk loop: a question either partner has pinned to discuss, and each
+  // partner's confirmation that they have. Both confirmations retire it.
+  talks?: Record<string, { pinned?: RoleMap<boolean>; talked?: RoleMap<boolean> }>;
 }
 
 export type Verdict = "Shared" | "Agreed" | "Close" | "Worth a chat" | "Complementary";

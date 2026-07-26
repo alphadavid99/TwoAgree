@@ -9,11 +9,10 @@ import {
   stepRevealable,
   deckOf,
   AT_TABLE_SLUG,
-  lampLit,
 } from "../lib/path";
 import { VERSES } from "../data/path.generated";
 import { writeAnswer, writeGuess, lightLamp } from "../lib/session";
-import { Mark } from "../brand/Mark";
+import { seenLamp, markLampSeen } from "../lib/local";
 import { PathGlyph } from "../components/PathGlyph";
 import { TopBar } from "../components/TopBar";
 import RevealScreen from "./RevealScreen";
@@ -92,6 +91,7 @@ export default function PathStep({
         todo={todo}
         partnerName={partnerName}
         onDone={() => setPhase("reveal")}
+        onExit={onExit}
         t={t}
       />
     );
@@ -118,6 +118,7 @@ export default function PathStep({
         title={meta.name}
         myName={myName}
         partnerName={partnerName}
+        code={code}
         onDone={() => setPhase("lamp")}
       />
     );
@@ -129,8 +130,15 @@ export default function PathStep({
       index={index}
       stepKey={step.key}
       name={meta.name}
-      alreadyLit={lampLit(session, index)}
-      onLight={() => void lightLamp(code, index)}
+      // The lamp is SHARED state — whoever finishes second used to arrive at a
+      // pre-lit, static screen and never got the moment at all. The shared bit
+      // still drives the map; the lighting ceremony is now per-person, gated on
+      // a local seen-flag, so both partners get to light it.
+      alreadySeen={seenLamp(code, role, index)}
+      onLight={() => {
+        markLampSeen(code, role, index);
+        void lightLamp(code, index);
+      }}
       onDone={onExit}
       t={t}
     />
@@ -205,6 +213,7 @@ function StepPlay({
   todo,
   partnerName,
   onDone,
+  onExit,
   t,
 }: {
   code: string;
@@ -215,6 +224,7 @@ function StepPlay({
   todo: Question[];
   partnerName: string;
   onDone: () => void;
+  onExit: () => void;
   t: T;
 }) {
   const [idx, setIdx] = useState(0);
@@ -292,32 +302,42 @@ function StepPlay({
         </div>
         <div className="scale">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className={`orb ${value === i ? "sel" : ""}`} onClick={() => onPick(i)}>
+            <button
+              key={i}
+              type="button"
+              aria-pressed={value === i}
+              className={`orb ${value === i ? "sel" : ""}`}
+              onClick={() => onPick(i)}
+            >
               {i}
-            </div>
+            </button>
           ))}
         </div>
       </>
     ) : (
       <div style={{ marginTop: 4 }}>
         {q.opts?.map((o, i) => (
-          <div
+          <button
             key={i}
+            type="button"
+            aria-pressed={value === i}
             className={`opt ${guess ? "guess" : ""} ${value === i ? "sel" : ""}`}
             onClick={() => onPick(i)}
           >
             {o}
             <span className="dot" />
-          </div>
+          </button>
         ))}
       </div>
     );
 
   const header = (
     <>
-      <div className="brandhead brand-enter">
-        <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-      </div>
+      {/* A step can run to ~11 questions, doubled by the guess layer — and the
+          Path hides the bottom nav. Without this the only way out of The Garden
+          (intimacy) mid-sitting was killing the app. Answers are written per
+          question, so leaving is loss-free and re-entry resumes here. */}
+      <TopBar onExit={onExit} />
       {progress}
       <p className="eyebrow" style={{ marginTop: 12 }}>
         {stepName} &middot; {t(`${idx + 1} of ${todo.length}`, `${idx + 1} sur ${todo.length}`)}
@@ -329,9 +349,13 @@ function StepPlay({
   if (guessing) {
     const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
     return (
-      <section className="screen-enter">
+      <section className="screen-enter screenfill">
         {header}
-        <div className="qcard glide-in" style={{ marginTop: 12, borderColor: "var(--app-honey-line)" }}>
+        <div
+          key={`${q.id}-guess`}
+          className="qcard pane-in"
+          style={{ borderColor: "var(--app-honey-line)" }}
+        >
           <div className="qrow">
             <div className="eyebrow">{t("YOUR GUESS", "VOTRE INTUITION")}</div>
             <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
@@ -362,10 +386,10 @@ function StepPlay({
 
   // Answer step
   return (
-    <section className="screen-enter">
+    <section className="screen-enter screenfill">
       {header}
       {isOpen ? (
-        <div className="qcard glide-in" style={{ marginTop: 12, background: "var(--blush)", border: "none" }}>
+        <div key={q.id} className="qcard glide-in" style={{ background: "var(--blush)", border: "none" }}>
           <div className="eyebrow" style={{ color: "var(--berry)" }}>{t("At the table", "À table")}</div>
           <div className="qtext" style={{ marginTop: 8 }}>{q.q}</div>
           <p className="sub" style={{ marginTop: 10 }}>
@@ -383,7 +407,7 @@ function StepPlay({
           />
         </div>
       ) : (
-        <div className="qcard glide-in" style={{ marginTop: 12 }}>
+        <div key={q.id} className="qcard glide-in">
           <div className="qtext">{q.q}</div>
           {input(pend, setPend)}
         </div>
@@ -422,10 +446,13 @@ function WaitingForPartner({
         <h1 className="h1 center" style={{ marginTop: 18 }}>
           {t("You've walked this stretch.", "Vous avez parcouru cette étape.")}
         </h1>
+        {/* This used to promise "we'll let you know when Judah has walked it
+            too". There is no notification mechanism — no push, no email — so
+            that was a promise the app cannot keep. Say what's true instead. */}
         <p className="sub center" style={{ margin: "10px 24px 0", maxWidth: 320 }}>
           {t(
-            `The lamp lights once you've both been honest here. We'll let you know when ${partnerName} has walked it too.`,
-            `La lampe s'allume quand vous avez tous deux été sincères ici. Nous vous préviendrons quand ${partnerName} l'aura parcourue aussi.`,
+            `The lamp lights the moment ${partnerName} has walked it too. Your answers are already saved.`,
+            `La lampe s'allume dès que ${partnerName} l'aura parcourue aussi. Vos réponses sont déjà enregistrées.`,
           )}
         </p>
         <button className="btn pill" type="button" onClick={onBack} style={{ marginTop: 26 }}>
@@ -441,7 +468,7 @@ function LampScreen({
   index,
   stepKey,
   name,
-  alreadyLit,
+  alreadySeen,
   onLight,
   onDone,
   t,
@@ -449,16 +476,17 @@ function LampScreen({
   index: number;
   stepKey: string;
   name: string;
-  alreadyLit: boolean;
+  /** Has THIS person lit it before? Gates the ceremony (the lamp itself is shared). */
+  alreadySeen: boolean;
   onLight: () => void;
   onDone: () => void;
   t: T;
 }) {
-  const [lit, setLit] = useState(alreadyLit);
+  const [lit, setLit] = useState(alreadySeen);
   const verses = VERSES[stepKey] ?? [];
   const light = () => {
     setLit(true);
-    if (!alreadyLit) onLight();
+    onLight(); // idempotent: marks it seen for me, writes the shared lamp once
   };
   return (
     <section className="path-claret screen-enter" style={{ justifyContent: "flex-start", paddingTop: 60 }}>

@@ -69,7 +69,7 @@ export const ORDER: string[] = [
 export const DECKS: Record<string, Deck> = {
   "in-the-home": {
     "name": "Home",
-    "color": "#B0865E",
+    "color": "#9C7A4A",
     "icon": "home",
     "hook": {
       "id": "HOME-006",
@@ -444,7 +444,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "faith-worship-practice": {
     "name": "Faith",
-    "color": "#682D5C",
+    "color": "#5C2E45",
     "icon": "faith",
     "hook": {
       "id": "FAITH-019",
@@ -864,7 +864,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "roles-responsibilities": {
     "name": "Roles",
-    "color": "#6E7A8A",
+    "color": "#7C4B72",
     "icon": "compass",
     "hook": {
       "id": "ROLE-011",
@@ -1045,7 +1045,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "theology-beliefs": {
     "name": "Theology",
-    "color": "#7C4B72",
+    "color": "#5C2E45",
     "icon": "book",
     "questions": [
       {
@@ -1357,7 +1357,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "family-children": {
     "name": "Children",
-    "color": "#88A06A",
+    "color": "#9C7A4A",
     "icon": "family",
     "questions": [
       {
@@ -1521,7 +1521,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "parenting-style": {
     "name": "Parenting",
-    "color": "#88A06A",
+    "color": "#9C7A4A",
     "icon": "family",
     "questions": [
       {
@@ -1905,7 +1905,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "conflict-communication": {
     "name": "Conflict",
-    "color": "#B06A5E",
+    "color": "#A8554E",
     "icon": "chat",
     "hook": {
       "id": "CONF-021",
@@ -2538,7 +2538,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "fun-icebreakers": {
     "name": "Fun",
-    "color": "#E0A93C",
+    "color": "#8F5A12",
     "icon": "star",
     "hook": {
       "id": "FUN-011",
@@ -2874,7 +2874,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "deal-breakers": {
     "name": "Deal-breakers",
-    "color": "#B0504E",
+    "color": "#A8554E",
     "icon": "shield",
     "hook": {
       "id": "DEAL-021",
@@ -3211,7 +3211,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "health-lifestyle": {
     "name": "Health",
-    "color": "#7E9A5E",
+    "color": "#5E7A4E",
     "icon": "leaf",
     "questions": [
       {
@@ -3330,7 +3330,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "past-baggage": {
     "name": "The Past",
-    "color": "#7E6A78",
+    "color": "#7C4B72",
     "icon": "leaf",
     "questions": [
       {
@@ -3430,7 +3430,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "career-ambition": {
     "name": "Work",
-    "color": "#C28A3A",
+    "color": "#8F5A12",
     "icon": "star",
     "questions": [
       {
@@ -3548,7 +3548,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "character-self-awareness": {
     "name": "Character",
-    "color": "#5E8074",
+    "color": "#5E7A4E",
     "icon": "star",
     "hook": {
       "id": "SELF-019",
@@ -4436,7 +4436,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "values-convictions": {
     "name": "Convictions",
-    "color": "#C2843A",
+    "color": "#5C2E45",
     "icon": "compass",
     "questions": [
       {
@@ -4635,7 +4635,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "faithfulness-loyalty": {
     "name": "Faithfulness",
-    "color": "#8A5A4E",
+    "color": "#7C4B72",
     "icon": "shield",
     "questions": [
       {
@@ -4856,7 +4856,7 @@ export const DECKS: Record<string, Deck> = {
   },
   "where-we-are-now": {
     "name": "Where We Are Now",
-    "color": "#7A6A9C",
+    "color": "#9C4A6E",
     "icon": "compass",
     "hook": {
       "id": "NOW-025",

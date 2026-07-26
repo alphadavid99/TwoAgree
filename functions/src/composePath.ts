@@ -21,7 +21,21 @@ export const TOPICS = [
   "health",
 ] as const;
 
-const WEIGHTED_POOL = 40; // ~40 weighted questions on top of the ~30 spine.
+// No single waypoint should run past this many questions. The allocation was
+// unbounded, so a couple who both flagged one topic as avoided could land ~20
+// questions on that one step — with the guess layer, ~40 screens in a single
+// sitting, on the most sensitive ground they have (a live probe put 11 on The
+// Garden). Overflow is redistributed across the trail.
+const STEP_CAP = 8;
+
+// ~32 weighted questions on top of the ~30 spine (was 40, giving ~70 total).
+// The cap needs headroom or it destroys the personalisation it's protecting:
+// at 70 questions over 9 steps the mean sitting is 7.8, so an 8-cap flattens
+// every step to 8 and a couple who flagged one topic gets a path identical to
+// a couple who flagged nothing. At 32 the neutral mean is ~7 and a flagged
+// waypoint can still climb to the cap — the skew survives, the sitting doesn't
+// run long, and the journey lands at ~63 rather than ~70.
+const WEIGHTED_POOL = 32;
 
 type Mechanic = "guess" | "noguess";
 
@@ -106,7 +120,17 @@ function selectForStep(step: StepSpec, count: number, offset: number, used: Set<
   const gather = (minD: number, maxD: number) =>
     Object.entries(BANK)
       .filter(([id, e]: [string, BankEntry]) =>
-        decks.has(e.deck) && e.type !== "open" && !used.has(id) && e.depth >= minD && e.depth <= maxD)
+        decks.has(e.deck) &&
+        e.type !== "open" &&
+        // "rank" is excluded until the Path player can render an ordering UI.
+        // StepPlay draws options as single-select and writes a scalar, but
+        // scoring parses a rank answer as a comma-joined order — so a rank
+        // question selected into a step (a live probe put LOYAL-017 in the
+        // Summit) is both misrepresented to the couple and scored as nonsense.
+        e.type !== "rank" &&
+        !used.has(id) &&
+        e.depth >= minD &&
+        e.depth <= maxD)
       .sort((a, b) => {
         if (step.mechanic === "guess") {
           const ga = a[1].guessable ? 0 : 1;
@@ -123,6 +147,35 @@ function selectForStep(step: StepSpec, count: number, offset: number, used: Set<
   const picked = cands.slice(0, count);
   picked.forEach((id) => used.add(id));
   return picked;
+}
+
+/**
+ * Hold every step to STEP_CAP, dealing the overflow to the steps with room.
+ * Deterministic: always to the emptiest step, ties going to the earlier
+ * waypoint. The couple's flagged topic still skews *where* the weight went —
+ * that step is simply full, and the surplus walks further down the trail
+ * instead of stacking one exhausting sitting.
+ */
+function capSteps(raw: number[]): number[] {
+  const counts = [...raw];
+  let overflow = 0;
+  for (let i = 0; i < counts.length; i++) {
+    if (counts[i] > STEP_CAP) {
+      overflow += counts[i] - STEP_CAP;
+      counts[i] = STEP_CAP;
+    }
+  }
+  while (overflow > 0) {
+    let best = -1;
+    for (let i = 0; i < counts.length; i++) {
+      if (counts[i] >= STEP_CAP) continue;
+      if (best < 0 || counts[i] < counts[best]) best = i;
+    }
+    if (best < 0) break; // every waypoint full — the path is simply a bit shorter
+    counts[best]++;
+    overflow--;
+  }
+  return counts;
 }
 
 /**
@@ -150,12 +203,13 @@ export function composePath(host: Intake, guest: Intake): PathStructure {
     s.fixedWeighted ?? Math.round((pool * (BASE + stepTopicWeight(s))) / denom),
   );
 
+  const counts = capSteps(STEPS.map((s, i) => s.spine + weightedAlloc[i]));
+
   const used = new Set<string>();
   const steps: Record<number, PathStep> = {};
   let questionCount = 0;
   STEPS.forEach((step, i) => {
-    const count = step.spine + weightedAlloc[i];
-    const qids = selectForStep(step, count, offset, used);
+    const qids = selectForStep(step, counts[i], offset, used);
     steps[i] = { key: step.key, mechanic: step.mechanic, qids };
     questionCount += qids.length;
   });

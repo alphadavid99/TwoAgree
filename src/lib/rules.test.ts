@@ -106,6 +106,70 @@ describe("sessions/{code} — membership gating", () => {
     const db = env.authenticatedContext(STRANGER).database();
     await assertFails(set(ref(db, `sessions/${CODE}/uids/${HOST}`), true));
   });
+
+  // The talk loop (pin a question, then both confirm you've discussed it).
+  // Unlike answers these leaves are re-writable — un-pinning is a real action.
+  describe("decks/{slug}/talks — the talk list", () => {
+    const seatGuest = async () =>
+      await env.withSecurityRulesDisabled(async (ctx) => {
+        await update(ref(ctx.database(), `sessions/${CODE}`), {
+          "members/guest": { name: "Judah", uid: GUEST },
+          [`uids/${GUEST}`]: true,
+        });
+      });
+
+    it("lets a member pin a question and later un-pin it", async () => {
+      await seed();
+      const db = env.authenticatedContext(HOST).database();
+      const path = `sessions/${CODE}/decks/faith/talks/FAITH-001/pinned/host`;
+      await assertSucceeds(set(ref(db, path), true));
+      await assertSucceeds(set(ref(db, path), false));
+    });
+
+    it("lets each partner confirm their own half of 'we talked'", async () => {
+      await seed();
+      await seatGuest();
+      const hostDb = env.authenticatedContext(HOST).database();
+      const guestDb = env.authenticatedContext(GUEST).database();
+      const p = `sessions/${CODE}/decks/faith/talks/FAITH-001/talked`;
+      await assertSucceeds(set(ref(hostDb, `${p}/host`), true));
+      await assertSucceeds(set(ref(guestDb, `${p}/guest`), true));
+    });
+
+    it("forbids confirming on your partner's behalf", async () => {
+      await seed();
+      await seatGuest();
+      const db = env.authenticatedContext(HOST).database();
+      await assertFails(
+        set(ref(db, `sessions/${CODE}/decks/faith/talks/FAITH-001/talked/guest`), true),
+      );
+      await assertFails(
+        set(ref(db, `sessions/${CODE}/decks/faith/talks/FAITH-001/pinned/guest`), true),
+      );
+    });
+
+    it("keeps strangers out, and rejects non-boolean leaves", async () => {
+      await seed();
+      await assertFails(
+        set(
+          ref(
+            env.authenticatedContext(STRANGER).database(),
+            `sessions/${CODE}/decks/faith/talks/FAITH-001/pinned/host`,
+          ),
+          true,
+        ),
+      );
+      await assertFails(
+        set(
+          ref(
+            env.authenticatedContext(HOST).database(),
+            `sessions/${CODE}/decks/faith/talks/FAITH-001/pinned/host`,
+          ),
+          "yes",
+        ),
+      );
+    });
+  });
 });
 
 describe("invites — server-only", () => {

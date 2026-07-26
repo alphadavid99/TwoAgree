@@ -7,7 +7,10 @@ import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
+import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
+import { PATH_STEPS } from "../data/path.generated";
 import { Avatar } from "../components/Avatar";
+import { PathGlyph } from "../components/PathGlyph";
 import { IconDecks, IconSettings } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
 import { useT, useLang, type Lang } from "../lib/i18n";
@@ -21,6 +24,9 @@ export default function HomeScreen({
   onBrowse,
   onReview,
   onProfile,
+  pending = [],
+  onOpenReveal,
+  onPath,
 }: {
   code: string;
   session: Session;
@@ -30,6 +36,11 @@ export default function HomeScreen({
   onBrowse: () => void;
   onReview: (slug: string) => void;
   onProfile: () => void;
+  // Reveals that are ready and this person hasn't opened yet, newest last.
+  pending?: { slug: string; level: number }[];
+  onOpenReveal?: (slug: string, level: number) => void;
+  // Undefined when the Path is behind its flag — Home simply omits the card.
+  onPath?: () => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -81,12 +92,18 @@ export default function HomeScreen({
   const decksComplete = ORDER.filter((s) =>
     catComplete(s, session.decks?.[s], role),
   ).length;
-  const { rows, overallPct } = revealedRows(session.decks, role);
+  const { rows, overallPct, knownPct } = revealedRows(session.decks, role);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
   const ranked = [...rows].sort((a, b) => a.pct - b.pct);
   const lowest = ranked[0];
   const closest = ranked[ranked.length - 1];
+
+  // Where the couple stands on the Path, for the hero card below.
+  const pathCur = currentIndex(session);
+  const pathStep = PATH_STEPS[pathCur];
+  const atLookout = pathCur >= PATH_STEPS.length - 1;
+  const lamps = orderedSteps(session).filter((s) => lampLit(session, s.index)).length;
 
   const [inviteMsg, setInviteMsg] = useState("");
   const [inviteBusy, setInviteBusy] = useState(false);
@@ -101,7 +118,10 @@ export default function HomeScreen({
     );
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});
     else if (navigator.clipboard) {
-      navigator.clipboard.writeText(code).then(() => {
+      // Copy the whole invitation, not the bare code: a desktop host used to
+      // paste "ABCD" to their partner with no context, while the chip still
+      // said "Copied ✓" as though the warm message had gone.
+      navigator.clipboard.writeText(txt).then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1600);
       });
@@ -118,14 +138,27 @@ export default function HomeScreen({
         `Come do this with me on TwoAgree — we each answer the same questions, then see where the two of us land: ${link}`,
         `Fais-le avec moi sur TwoAgree — on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
       );
-      if (navigator.share) await navigator.share({ text: txt }).catch(() => {});
-      else if (navigator.clipboard) await navigator.clipboard.writeText(link);
-      setInviteMsg(
-        t(
-          "Invite link ready — sent to your share sheet or copied.",
-          "Lien d’invitation prêt — envoyé au partage ou copié.",
-        ),
-      );
+      // Only claim it went if it actually went. navigator.share rejects when
+      // the user cancels the sheet, and that rejection was swallowed while the
+      // success line rendered regardless.
+      const viaSheet = !!navigator.share;
+      let sent = false;
+      if (viaSheet) {
+        sent = await navigator.share({ text: txt }).then(
+          () => true,
+          () => false,
+        );
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(txt);
+        sent = true;
+      }
+      if (sent) {
+        setInviteMsg(
+          viaSheet
+            ? t("Invitation sent.", "Invitation envoyée.")
+            : t("Invitation copied — paste it to them.", "Invitation copiée — collez-la-leur."),
+        );
+      }
     } catch (e) {
       setInviteMsg(prettyError(e));
     } finally {
@@ -247,16 +280,98 @@ export default function HomeScreen({
             </svg>
           </span>
           <span className="tile-lb">
-            {t("Agreed", "D’accord")}
+            {t("Between", "Entre")}
             <br />
-            {t("so far", "jusqu’ici")}
+            {t("the two of you", "vous deux")}
           </span>
-          <div>
-            <b className="serif">{overallPct ?? "—"}</b>
-            {overallPct != null && <span className="tile-u">%</span>}
+          <div className="tilepair">
+            <span className="tp">
+              <b className="serif agreed">{overallPct ?? "—"}</b>
+              {overallPct != null && <span className="tile-u">%</span>}
+              <i>{t("agreed", "d’accord")}</i>
+            </span>
+            <span className="tp">
+              <b className="serif known">{knownPct ?? "—"}</b>
+              {knownPct != null && <span className="tile-u">%</span>}
+              <i>{t("known", "connus")}</i>
+            </span>
           </div>
         </div>
       </div>
+
+      {/* The reveal that's waiting. Claret on a light screen — the only dark
+          card Home ever shows, so it reads as an event, not another row.
+          Nothing announced this before: a couple who'd wandered off had no way
+          to learn their reveal had unlocked. */}
+      {pending.length > 0 && onOpenReveal && (
+        <button
+          className="readycard"
+          type="button"
+          onClick={() => onOpenReveal(pending[0].slug, pending[0].level)}
+        >
+          <span className="readycard-top">
+            <span className="readyseal" aria-hidden="true">&#10022;</span>
+            <span>
+              <span className="readycard-eyebrow">
+                {t("READY TO OPEN", "PRÊT À OUVRIR")}
+              </span>
+              <span className="readycard-nm">
+                {deckName(pending[0].slug, lang)}
+                {nLevels(pending[0].slug) > 1 &&
+                  t(` · Part ${pending[0].level + 1}`, ` · Partie ${pending[0].level + 1}`)}
+              </span>
+            </span>
+          </span>
+          <span className="readycard-sub">
+            {joined
+              ? t(
+                  `You and ${partnerName} have both answered. Best opened side by side.`,
+                  `${partnerName} et vous avez tous deux répondu. Mieux vaut l’ouvrir côte à côte.`,
+                )
+              : t("You've both answered.", "Vous avez tous les deux répondu.")}
+          </span>
+          <span className="readycard-cta">
+            {t("Open your reveal →", "Ouvrir votre révélation →")}
+          </span>
+        </button>
+      )}
+
+      {/* The Path, if they've laid one. Home and Results were Path-blind: the
+          flagship's "next lamp" pull only existed if you happened to open the
+          tab. Where you are, never what you owe — no streak, no debt. */}
+      {onPath && pathReady(session) && (
+        <button className="pathcard" type="button" onClick={onPath}>
+          <span className="pathcard-glyph">
+            <PathGlyph id={pathStep?.glyph ?? "g-lamp"} size={30} />
+          </span>
+          <span className="pathcard-txt">
+            <span className="pathcard-eyebrow">
+              {atLookout
+                ? t("THE PATH · JOURNEY'S END", "LE CHEMIN · FIN DU VOYAGE")
+                : t("CONTINUE THE PATH", "CONTINUER LE CHEMIN")}
+            </span>
+            <span className="pathcard-nm">
+              {atLookout
+                ? t("The Lookout", "Le Belvédère")
+                : t(
+                    `Step ${pathCur + 1} · ${pathStep?.name ?? ""}`,
+                    `Étape ${pathCur + 1} · ${pathStep?.name ?? ""}`,
+                  )}
+            </span>
+            <span className="pathcard-sub">
+              {atLookout
+                ? t("Your whole road is lit.", "Toute votre route est éclairée.")
+                : lamps === 0
+                  ? t("The trail starts here.", "Le sentier commence ici.")
+                  : t(
+                      `${lamps} lamp${lamps === 1 ? "" : "s"} lit behind you`,
+                      `${lamps} lampe${lamps === 1 ? "" : "s"} allumée${lamps === 1 ? "" : "s"} derrière vous`,
+                    )}
+            </span>
+          </span>
+          <span className="pathcard-go" aria-hidden="true">&rarr;</span>
+        </button>
+      )}
 
       {/* Featured deck: the orb meter — one orb per question this level. */}
       <div className="feat">
@@ -297,7 +412,12 @@ export default function HomeScreen({
               {joined && (
                 <>
                   {" · "}
-                  {partnerName} {t(`is at ${theirs}`, `en est à ${theirs}`)}
+                  {theirs === 0
+                    ? t(
+                        `${partnerName} hasn’t started this part yet`,
+                        `${partnerName} n’a pas encore commencé cette partie`,
+                      )
+                    : t(`${partnerName} is ${theirs} in`, `${partnerName} en a fait ${theirs}`)}
                 </>
               )}
             </>

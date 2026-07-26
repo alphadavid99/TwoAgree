@@ -14,6 +14,8 @@
   --sub: var(--app-sub);
   --mut: var(--app-mut);
   --cardb: var(--app-card-line);
+  /* the boundary of an actual control, which must clear 3:1 */
+  --optb: var(--app-opt-line);
   --optbg: var(--app-opt-bg);
   --honbg: var(--app-honey-bg);
   --track: var(--app-track);
@@ -92,14 +94,20 @@ body {
 /* The wordmark and mark are now React components (src/brand/Wordmark.tsx,
    src/brand/Mark.tsx) in self-hosted Inter — their colour is set per-usage via
    the component's tone/colour props, so no wordmark CSS lives here anymore. */
+/* READING SURFACES ARE rem. Every size in this file used to be px, so a
+   person's browser/system text-size preference did nothing at all — and inside
+   the Capacitor WKWebView there is no page-zoom path either. The reading type
+   (question, headings, body, option labels) is now rem so those settings work;
+   decorative micro-labels stay px on purpose. html stays at 16px, so nothing
+   moves for anyone on the default. */
 .h1 {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 1.875rem; /* 30px */
   font-weight: 600;
 }
 .sub {
   color: var(--sub);
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   line-height: 1.55;
 }
 .muted {
@@ -109,10 +117,10 @@ body {
   text-align: center;
 }
 .eyebrow {
-  font-size: 12px;
-  letter-spacing: 3px;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
   color: var(--amber);
-  font-weight: 600;
+  font-weight: var(--eyebrow-weight);
   text-transform: uppercase;
 }
 
@@ -192,9 +200,33 @@ textarea.input {
     transform: translateX(100%);
   }
 }
+/* Disabled gets its own recipe, not a dimmer. Fading the claret gradient to
+   55% over the blush ground produced a muddy grey-mauve slab — and that is the
+   state EVERY question starts in, so it was the most-seen button in the app.
+   A quiet blush well with claret text reads as "not yet", which is the truth. */
 .btn[disabled] {
-  opacity: 0.55;
+  background: var(--app-opt-bg);
+  color: var(--app-sub);
+  box-shadow: none;
+  opacity: 1;
   cursor: default;
+}
+.btn.pill[disabled],
+.btn.honey[disabled] {
+  background: var(--app-opt-bg);
+  color: var(--app-sub);
+}
+/* On a claret ground the blush well would glare, so disabled reads as a
+   recessed claret instead. */
+.path-claret .btn[disabled],
+.ceremony.lit .btn[disabled] {
+  background: var(--ce-track);
+  color: var(--ce-sub);
+}
+.btn.ghost[disabled],
+.btn.out[disabled] {
+  background: none;
+  box-shadow: none;
 }
 /* Honey pill — the action colour on the blush ground (approved revamp).
    The play screen deliberately keeps the plain berry .btn. */
@@ -219,7 +251,7 @@ textarea.input {
   font-weight: 500;
   font-size: 14px;
   margin-top: 16px;
-  padding: 8px;
+  padding: 13px 8px; /* 44px tall */
 }
 .google,
 .apple {
@@ -273,6 +305,37 @@ textarea.input {
   border-radius: var(--r-lg);
   box-shadow: var(--e2);
   padding: 22px;
+}
+/* The one card that can't be undone. It reads as its own place rather than
+   another white panel — irreversible actions should never share a surface with
+   "change your photo". */
+.card.danger {
+  border: 1px solid var(--app-banner-line);
+  background: linear-gradient(180deg, var(--ta-white), var(--app-honey-bg));
+}
+.card.danger .eyebrow {
+  color: var(--danger);
+}
+.deletelist {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.deletelist li + li {
+  margin-top: 7px;
+}
+/* Each data door with its own plain-English label underneath, so nobody has to
+   guess which button gives them something they can actually read. */
+.datarow + .datarow {
+  margin-top: 4px;
+}
+.datahint {
+  margin: 6px 2px 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--sub);
 }
 
 .avatarwrap {
@@ -328,7 +391,7 @@ textarea.input {
   margin-top: 10px;
   text-align: center;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.02em;
   color: var(--mut);
   opacity: 0.55;
@@ -396,7 +459,7 @@ textarea.input {
 }
 .qtext {
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 1.3125rem; /* 21px */
   line-height: 1.35;
   margin-top: 14px;
   color: var(--ink);
@@ -439,10 +502,11 @@ textarea.input {
 .hint {
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 11px;
+  letter-spacing: var(--eyebrow-track);
+  font-size: var(--eyebrow-size);
   color: var(--mut);
   margin-top: 16px;
+  font-weight: var(--eyebrow-weight);
 }
 
 .slabels {
@@ -476,7 +540,11 @@ textarea.input {
 .orb.sel {
   background: var(--honey);
   border-color: var(--honey);
-  color: var(--ta-white);
+  /* Dark ink on gold. White measures 2.08:1 here — and this is the readout of
+     the answer the user just gave, on the most-tapped control in the app. The
+     honey CTA already solved it with --app-honey-ink; the orbs never got the
+     memo. Same fix below for the rank badge and the partner discs. */
+  color: var(--app-honey-ink);
   animation: orbSpring 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
     orbGlow 0.7s ease;
 }
@@ -506,12 +574,13 @@ textarea.input {
 .opt {
   position: relative;
   padding: 16px 44px 16px 18px;
-  border: 1.5px solid var(--cardb);
+  border: 1.5px solid var(--optb);
   border-radius: var(--r-sm);
   margin-top: 10px;
   cursor: pointer;
   transition: all 0.12s;
   line-height: 1.4;
+  font-size: 1rem; /* 16px — a reading surface, so it scales */
 }
 .opt .dot {
   position: absolute;
@@ -592,7 +661,7 @@ textarea.input {
 .rankopt.sel .rankno {
   background: var(--honey);
   border-color: var(--honey);
-  color: var(--ta-white);
+  color: var(--app-honey-ink);
   animation: orbSpring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .ta {
@@ -603,7 +672,7 @@ textarea.input {
   font-size: 16px;
   font-family: inherit;
   color: var(--ink);
-  border: 1.5px solid var(--cardb);
+  border: 1.5px solid var(--optb);
   border-radius: var(--r-sm);
   outline: none;
   resize: none;
@@ -647,8 +716,9 @@ textarea.input {
   color: var(--berry);
   background: var(--ta-white);
   border: 1.5px solid var(--honeyD);
-  border-radius: 10px;
-  padding: 4px 12px;
+  border-radius: var(--r-xs);
+  /* the pairing moment — a fumbled copy here is real friction */
+  padding: 10px 14px;
   margin-left: 4px;
   cursor: pointer;
 }
@@ -656,7 +726,7 @@ textarea.input {
 .catico {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -670,7 +740,7 @@ textarea.input {
   padding: 13px 15px;
   margin-top: 10px;
   background: var(--ta-white);
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
   cursor: pointer;
   transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -708,9 +778,9 @@ textarea.input {
 }
 .verbadge {
   align-self: flex-start;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   border: 1.5px solid;
   border-radius: 999px;
@@ -734,20 +804,25 @@ textarea.input {
   align-items: flex-end;
   line-height: 1.05;
 }
+/* One colour per score, everywhere: AGREED is honey/amber (the warmth of
+   agreement, matching the reveal's gold ring and Home's pills), KNOWN is
+   claret. These rows used to run the mapping backwards, so the same gold
+   number meant "agreed" on the reveal and "known" one screen later. */
 .resrow-scores .rs b {
   font-weight: 700;
-  color: var(--berry);
+  color: var(--amber);
   font-variant-numeric: tabular-nums;
 }
 .resrow-scores .rs.kn b {
-  color: var(--amber);
+  color: var(--berry);
 }
 .resrow-scores .rs i {
   font-style: normal;
-  font-size: 9.5px;
-  letter-spacing: 0.4px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
+  font-weight: var(--tag-weight);
 }
 
 /* ---- floating pill nav — active tab is a honey pill wearing its label ---- */
@@ -845,8 +920,10 @@ textarea.input {
 .iconbtn {
   background: none;
   border: none;
-  padding: 8px;
-  margin: -8px;
+  /* 11px lifts the hit area to ~44px (WCAG 2.5.8 / Apple HIG) — the close
+     button is used every session. The negative margin keeps it optically put. */
+  padding: 11px;
+  margin: -11px;
   color: var(--berry);
   cursor: pointer;
   display: flex;
@@ -952,9 +1029,10 @@ textarea.input {
   gap: 10px;
   margin: 16px 2px 0;
   color: var(--mut);
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
+  font-weight: var(--tag-weight);
 }
 .authdiv::before,
 .authdiv::after {
@@ -981,15 +1059,20 @@ textarea.input {
   padding: 14px 16px;
   background: var(--ta-white);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
+  /* the warm callout is a real button now (it opens the conversation) */
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
 .scall.warm {
   background: var(--honbg);
 }
 .scall .lb {
-  font-size: 10px;
-  letter-spacing: 1.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   color: var(--amber);
 }
 .scall .nm {
@@ -1019,9 +1102,9 @@ textarea.input {
   min-width: 0;
 }
 .rankcol-h {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
   margin-bottom: 4px;
@@ -1093,22 +1176,15 @@ textarea.input {
   line-height: 1.35;
 }
 
-/* ---- reveal entrance motion (respects prefers-reduced-motion) ---- */
-@keyframes revealRise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
+/* ---- reveal entrance motion (respects prefers-reduced-motion) ----
+   Shares `riseIn` (defined with the motion block below) — this was its own
+   near-identical keyframe differing by 2px of travel, which is not a design
+   decision, it's drift. */
 .reveal-rise {
-  animation: revealRise 0.5s ease both;
+  animation: riseIn var(--dur-select) var(--ease-settle) both;
 }
 .row-rise {
-  animation: revealRise 0.42s ease both;
+  animation: riseIn var(--dur-select) var(--ease-settle) both;
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal-rise,
@@ -1126,7 +1202,7 @@ textarea.input {
 .qc {
   background: var(--ta-white);
   border: none;
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 15px 16px;
 }
@@ -1148,9 +1224,9 @@ textarea.input {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   border: none;
   padding: 2px 0;
@@ -1205,7 +1281,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--ta-white);
   border: 2px solid var(--ta-white);
@@ -1217,6 +1293,7 @@ textarea.input {
 }
 .sbar-dot.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .sbar-dot.both {
   background: linear-gradient(135deg, var(--berry), var(--honeyD));
@@ -1269,15 +1346,15 @@ textarea.input {
   flex-direction: column;
   gap: 1px;
   padding: 7px 12px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   font-size: 13px;
 }
 .mcchip i {
   font-style: normal;
-  font-size: 9.5px;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   opacity: 0.85;
 }
 .mcchip.s {
@@ -1304,9 +1381,9 @@ textarea.input {
   min-width: 0;
 }
 .rank2-h {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -1357,13 +1434,14 @@ textarea.input {
 }
 .oav.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .oq-who {
   display: block;
-  font-size: 10px;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   color: var(--sub);
 }
 .oq-text {
@@ -1473,9 +1551,14 @@ textarea.input {
    Everything here is decorative — all disabled under reduced motion.
    ============================================================ */
 
-/* 2. question glide — new question card slides in from the right */
-.glide-in {
-  animation: qIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+/* 2. question glide — new question card slides in from the right.
+   The compound selector is load-bearing: `.glide-in` and `.screen-enter > *`
+   tie on specificity, and `.screen-enter > *` is declared later, so every
+   question card inside onboarding and a Path step was silently playing the
+   generic rise instead of the glide. */
+.glide-in,
+.screen-enter > .glide-in {
+  animation: qIn var(--dur-enter) var(--ease-glide) both;
 }
 @keyframes qIn {
   from {
@@ -1490,7 +1573,7 @@ textarea.input {
 
 /* 7. tab crossfade — pane rises in on tab change (keyed per tab) */
 .pane-in {
-  animation: paneIn 0.22s ease both;
+  animation: paneIn calc(var(--dur-enter) - 60ms) var(--ease-settle) both;
 }
 @keyframes paneIn {
   from {
@@ -1515,8 +1598,15 @@ textarea.input {
     transform: none;
   }
 }
+/* fill-mode `backwards`, NOT `both`: `backwards` still holds the from-state
+   during the stagger delay (so nothing flashes in early), but releases the
+   element once the animation ends. With `both` the final keyframe's opacity:1
+   won the cascade forever, permanently overriding `.btn[disabled]{opacity:.55}`
+   — every gating CTA in onboarding looked fully tappable while disabled, so
+   people tapped "Start" on the consent screen with nothing ticked and got no
+   feedback at all. */
 .screen-enter > * {
-  animation: riseIn 0.45s ease both;
+  animation: riseIn 0.45s ease backwards;
 }
 .screen-enter > *:nth-child(1) { animation-delay: 0.05s; }
 .screen-enter > *:nth-child(2) { animation-delay: 0.11s; }
@@ -2319,7 +2409,7 @@ textarea.input {
 .tile {
   flex: 1;
   padding: 14px 15px;
-  border-radius: 20px;
+  border-radius: var(--r-md);
   background: var(--ta-white);
   box-shadow: 0 6px 18px rgba(62, 26, 46, 0.07);
 }
@@ -2335,7 +2425,7 @@ textarea.input {
 }
 .tile-lb {
   float: right;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--sub);
   text-align: right;
@@ -2356,7 +2446,7 @@ textarea.input {
 .feat {
   margin-top: 12px;
   padding: 16px;
-  border-radius: 22px;
+  border-radius: var(--r-md);
   background: var(--ta-white);
   box-shadow: var(--e2);
 }
@@ -2374,7 +2464,7 @@ textarea.input {
 .fchip {
   width: 34px;
   height: 34px;
-  border-radius: 11px;
+  border-radius: var(--r-xs);
   background: var(--honbg);
   color: var(--amber);
   display: grid;
@@ -2424,7 +2514,7 @@ textarea.input {
   gap: 10px;
   padding: 13px 15px;
   margin-top: 9px;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   background: var(--ta-white);
   border: none;
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
@@ -2587,7 +2677,7 @@ textarea.input {
   background: var(--berry);
   color: var(--ta-white);
   border: none;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   padding: 15px 18px;
   margin: 16px 0 6px;
   box-shadow: 0 10px 24px rgba(62, 26, 46, 0.22);
@@ -2632,24 +2722,24 @@ textarea.input {
 
 /* 5b — the grouped index */
 .flaggrp {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--berry);
   margin: 20px 2px 10px;
 }
 .flagrow {
   background: var(--ta-white);
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 14px 16px;
   margin-bottom: 10px;
 }
 .flagrow-k {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   margin-bottom: 5px;
@@ -2716,7 +2806,7 @@ textarea.input {
 /* 5c — the walkthrough, one flag per card */
 .walkcard {
   background: var(--ta-white);
-  border-radius: 20px;
+  border-radius: var(--r-md);
   box-shadow: var(--e2);
   padding: 20px 18px;
   margin-top: 14px;
@@ -2736,7 +2826,7 @@ textarea.input {
 }
 .cmp2-col {
   background: var(--optbg);
-  border-radius: 14px;
+  border-radius: var(--r-xs);
   padding: 12px;
 }
 .cmp2-who {
@@ -2762,6 +2852,7 @@ textarea.input {
 }
 .cmp2-av.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .cmp2-said {
   font-size: 15px;
@@ -2788,9 +2879,9 @@ textarea.input {
   border-top: 1px solid var(--cardb);
 }
 .walktalk-h {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.7px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--berry);
   margin-bottom: 8px;
@@ -2870,7 +2961,7 @@ textarea.input {
   text-align: left;
   background: var(--ta-white);
   border: 1.5px solid transparent;
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 14px 16px;
   cursor: pointer;
@@ -2894,9 +2985,9 @@ textarea.input {
   color: var(--ink);
 }
 .partrow-depth {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
 }
@@ -2948,26 +3039,37 @@ textarea.input {
   font-variant-numeric: tabular-nums;
   letter-spacing: -1px;
 }
-.corenum span {
+/* Scoped to the unit, not every span: the number itself is now its own span
+   so it can count up without the % inheriting the small size. */
+.corenum .pc {
   font-size: 21px;
 }
 .corestat.hero .corenum {
   font-size: 66px;
+}
+/* Colour says WHICH score; size says which one leads. */
+.corestat.agreed .corenum {
   color: var(--amber);
 }
-.corestat.hero .corenum span {
+.corestat.known .corenum {
+  color: var(--berry);
+}
+/* .pc, not `span`: the number is its own span now (so it can count up), and a
+   bare `span` selector shrank the hero's headline to the size of its unit —
+   Known ended up smaller than Agreed, which inverts the whole hierarchy. */
+.corestat.hero .corenum .pc {
   font-size: 30px;
 }
 .corelb {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
   margin-top: 7px;
 }
 .corestat.hero .corelb {
-  color: var(--amber);
+  color: var(--sub);
 }
 .coredenom {
   font-size: 12px;
@@ -2986,7 +3088,9 @@ textarea.input {
 .sharewrap {
   position: fixed;
   inset: 0;
-  background: rgba(46, 34, 48, 0.55);
+  /* Opaque enough to actually hide the screen behind it — at .82 the Lookout's
+     own claret type ghosted through and read as overlapping the sheet. */
+  background: rgba(28, 12, 22, 0.94);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3004,7 +3108,7 @@ textarea.input {
 .sharecard {
   width: min(360px, 86vw);
   background: linear-gradient(160deg, var(--ta-white), var(--app-ground-top));
-  border-radius: 26px;
+  border-radius: var(--r-md);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
   padding: 30px 24px;
   text-align: center;
@@ -3072,10 +3176,11 @@ textarea.input {
   margin-top: 12px;
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
   text-transform: uppercase;
   color: var(--amber);
+  font-weight: var(--eyebrow-weight);
 }
 .consentcard {
   background: var(--ta-white);
@@ -3106,7 +3211,7 @@ textarea.input {
   text-align: left;
   background: var(--ta-white);
   border: 1.5px solid transparent;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 16px;
   cursor: pointer;
@@ -3127,9 +3232,9 @@ textarea.input {
   color: var(--ink);
 }
 .menucard-depth {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   white-space: nowrap;
@@ -3175,7 +3280,15 @@ textarea.input {
 /* ---- The Path -------------------------------------------------------------
    Claret full-bleed interstitials (arrival, lamp, Lookout), the trail map and
    the lamp verses. Gold lives only on these claret grounds (brand rule). */
+/* Two different golds were sharing the claret grounds: the Path interstitials
+   drew glyphs, verse refs and CTAs in the app's warm --app-honey (#E5A93C),
+   which is the accent for LIGHT grounds. On claret the mark gold is the right
+   one — same re-point the lit reveal room does, so every claret surface in the
+   app now speaks one gold. */
 .path-claret {
+  --honey: var(--ce-gold);
+  --honeyD: var(--ce-gold);
+  --amber: var(--ce-gold);
   background: var(--berry);
   color: #fff;
   min-height: 100dvh;
@@ -3195,7 +3308,7 @@ textarea.input {
 }
 .path-verse-card {
   border: 1px solid var(--berry2, #5c2e45);
-  border-radius: 14px;
+  border-radius: var(--r-xs);
   padding: 15px 18px;
   margin-top: 12px;
   text-align: left;
@@ -3205,18 +3318,10 @@ textarea.input {
 .path-verse-card .verse {
   font-size: 15.5px;
 }
+/* Was `pathfade`, keyframe-for-keyframe identical to riseIn at 0.7s — inside
+   rule 2's forbidden 600–900ms band for anything outside the ceremony. */
 .path-fadein {
-  animation: pathfade 0.7s ease both;
-}
-@keyframes pathfade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  animation: riseIn var(--dur-select) var(--ease-settle) both;
 }
 .path-inscription {
   margin-top: 28px;
@@ -3238,6 +3343,124 @@ textarea.input {
     opacity: 0.22;
   }
 }
+/* Who has walked the current stretch — the legend for the two node dots. */
+.pathstate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  color: var(--sub);
+}
+.ps-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--app-track);
+  flex: none;
+}
+.ps-dot.me.on {
+  background: var(--berry);
+}
+.ps-dot.them.on {
+  background: var(--app-honey);
+}
+.ps-dot + .ps-dot {
+  margin-left: -2px;
+  margin-right: 3px;
+}
+
+/* ---- The Lookout ---------------------------------------------------------
+   Journey's end, on the claret ground. The app's own tokens re-point here the
+   same way they do inside the lit reveal room, so PctRing draws claret-native
+   (gold agreed arc, blush known arc, paper type) with no claret-aware props. */
+.lookout {
+  /* Restated because .path-claret paints `background: var(--berry)` and the
+     re-point below would otherwise turn the claret room blush. */
+  background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
+  --berry: var(--ce-blush);
+  --sub: var(--ce-sub);
+  --track: var(--ce-track);
+}
+.lk-rings {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+  width: 100%;
+}
+.lk-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.lk-denom {
+  margin-top: 2px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
+  text-transform: uppercase;
+  color: var(--ce-sub);
+}
+.lk-marks {
+  width: 100%;
+  max-width: 340px;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lk-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 11px 14px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--berry2, #5c2e45);
+  background: rgba(248, 233, 236, 0.05);
+}
+.lk-glyph {
+  flex: none;
+  display: flex;
+  color: var(--ce-gold);
+}
+.lk-mark.talk .lk-glyph {
+  color: var(--ce-sub);
+}
+.lk-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lk-txt b {
+  font-size: 0.9375rem;
+  color: var(--ce-ink);
+}
+.lk-txt i {
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--ce-sub);
+}
+.lk-pct {
+  flex: none;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--ce-gold);
+}
+.lk-mark.talk .lk-pct {
+  color: var(--ce-blush);
+}
+.lk-verses {
+  margin-top: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .path-toast {
   position: fixed;
   left: 50%;
@@ -3248,7 +3471,7 @@ textarea.input {
   font-size: 14px;
   font-weight: 600;
   padding: 11px 18px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   z-index: 99;
   max-width: 86vw;
   text-align: center;
@@ -3266,6 +3489,38 @@ textarea.input {
    theirs, and — at the marked destination — the alignment they walk away with.
    Sized to the viewport (min-height fills the tab area, CTA pinned bottom via
    margin-top:auto) so "Begin" is visible without scrolling. */
+/* Viewport-fill for the core answering loop. The play, guess and importance
+   screens left roughly 35–50% of the screen as dead blush below the CTA —
+   measured per-shot: scale ~48%, importance ~53%. That doesn't read as calm,
+   it reads as "failed to load", and it puts the button a stretch away from the
+   thumb. Same pattern the Path intro already uses: fill the frame, let the CTA
+   block sink to the bottom. Degrades to normal flow the moment the content is
+   taller than the viewport (margin-top:auto collapses to 0). */
+.screenfill {
+  display: flex;
+  flex-direction: column;
+  /* 100svh less the .phone frame's vertical padding (28 top + 36 bottom). */
+  min-height: calc(100svh - env(safe-area-inset-top, 0px) - 72px);
+}
+/* The header (bar + stones) stays pinned at the top; everything from the
+   question card down is centred as ONE block in the space that's left. Pinning
+   the CTA to the very bottom instead just relocates the emptiness — it opens a
+   canyon between the question and its button. Two auto margins split the slack
+   above and below the group, so a short card composes and a tall one simply
+   fills, with no media query. */
+.screenfill > .qcard {
+  margin-top: auto;
+}
+.screenfill > :last-child {
+  margin-bottom: auto;
+}
+/* The gap that used to be an inline marginTop on the card — moved here so the
+   auto margin above can actually do its job (an inline style always wins). */
+.screenfill > .qstones,
+.screenfill > .qprog {
+  margin-bottom: 18px;
+}
+
 .path-intro {
   display: flex;
   flex-direction: column;
@@ -3399,4 +3654,742 @@ textarea.input {
    "Begin" below the fold). */
 .pi-cta .btn {
   margin-top: 0;
+}
+
+/* The session code, shown large before leaving a session — the only place it
+   exists in the UI once a partner has joined. */
+.codebig {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  color: var(--berry);
+  background: var(--optbg);
+  border-radius: var(--r-sm);
+  padding: 12px 0;
+  margin: 8px 0 14px;
+}
+
+/* Home's second tile carries BOTH of the couple's numbers — Known was computed
+   and discarded, so half the product's promise never greeted them on the screen
+   they open most. Same colour law as everywhere else: agreed amber, known claret. */
+.tilepair {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+.tilepair .tp {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+}
+.tilepair .tp b {
+  font-size: 25px;
+  line-height: 1;
+}
+.tilepair .tp b.agreed {
+  color: var(--amber);
+}
+.tilepair .tp b.known {
+  color: var(--berry);
+}
+/* Not a micro-tag: this is the unit sitting beside a number, and at 9px it was
+   under the legibility floor while at uppercase-11px it shoulders the two
+   tiles out of alignment. Sentence case at the tag size does both jobs. */
+.tilepair .tp i {
+  font-style: normal;
+  font-size: var(--tag-size);
+  color: var(--sub);
+  margin-left: 3px;
+  align-self: center;
+  font-weight: 600;
+}
+
+/* ============================================================
+   The reveal herald — "ready to open". Claret on the light home, so the
+   couple's most anticipated moment is the one dark card on the screen and
+   can't be mistaken for another row. Gold type is legal here (RULE 1).
+   ============================================================ */
+.readycard {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
+  color: var(--ce-ink);
+  border-radius: var(--r-md);
+  padding: 15px 16px 14px;
+  margin: 4px 0 14px;
+  box-shadow: 0 10px 26px rgba(42, 17, 32, 0.28);
+  transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.readycard:active {
+  transform: scale(0.985);
+}
+.readycard-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.readyseal {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--ce-gold);
+  background: radial-gradient(circle at 34% 30%, #7A3B5C, #3E1A2E);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.34);
+}
+.readycard-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--ce-gold);
+}
+.readycard-nm {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin-top: 2px;
+}
+.readycard-sub {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ce-sub);
+  margin: 9px 0 0;
+  line-height: 1.45;
+}
+.readycard-cta {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ce-gold);
+  margin-top: 10px;
+}
+
+/* The account card. Its own padding, because the fields inside already carry
+   generous vertical rhythm and the default 22px would bloat the front door. */
+.authcard {
+  padding: 18px 18px 20px;
+  margin-top: 4px;
+}
+.authcard .btn:first-child {
+  margin-top: 0;
+}
+
+/* Day zero on the Together tab — the promise, not an empty instrument panel. */
+.daycard {
+  background: var(--ta-white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--e2);
+  padding: 6px 18px;
+}
+.dayrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px 0;
+}
+.dayrow + .dayrow {
+  border-top: 1px solid var(--app-card-line);
+}
+.dayglyph {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9375rem;
+  color: var(--ta-honey);
+  background: radial-gradient(circle at 34% 30%, #5c2e45, #3e1a2e);
+}
+.daytxt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.daytxt b {
+  font-size: 0.9375rem;
+}
+.daytxt i {
+  font-style: normal;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--sub);
+}
+
+/* The Path's presence on Home. Deliberately LIGHT: the ready-to-open reveal is
+   the only dark card Home shows and that darkness is what makes it read as an
+   event — a second claret card would spend the signal. This one is a standing
+   invitation, so it sits calm on white with a claret glyph well. */
+.pathcard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  background: var(--ta-white);
+  color: var(--ink);
+  border: 0;
+  /* Matches the featured-deck card's elevation (--e2) so the Path reads as an
+     invitation of the same weight, not a list row above it. */
+  border-radius: var(--r-md);
+  padding: 13px 14px;
+  margin: 12px 0 0;
+  box-shadow: var(--e2);
+  transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pathcard:active {
+  transform: scale(0.985);
+}
+.pathcard-glyph {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ta-honey);
+  background: radial-gradient(circle at 34% 30%, #5c2e45, #3e1a2e);
+  box-shadow: 0 3px 10px rgba(62, 26, 46, 0.26);
+}
+.pathcard-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pathcard-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--app-amber);
+}
+.pathcard-nm {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pathcard-sub {
+  font-size: 0.75rem;
+  color: var(--sub);
+  margin-top: 2px;
+}
+.pathcard-go {
+  flex: none;
+  font-size: 1.125rem;
+  color: var(--berry);
+  opacity: 0.55;
+}
+
+/* The threshold moment: the reveal unlocked while you were watching. */
+.unlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 58vh;
+  justify-content: center;
+}
+.unlock-pair {
+  display: flex;
+  margin-bottom: 18px;
+}
+.unlock-pair > * + * {
+  margin-left: -10px;
+}
+
+/* Waiting on a partner: statuses, not a two-colour scoreboard. */
+.waitstat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 auto 4px;
+  max-width: 250px;
+}
+.waitstat p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--sub);
+}
+.waitstat p b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Rung zero of the ladder: the first reveal a couple ever opens. */
+/* Not a micro-label — a whole sentence, and the warmest one on the screen.
+   Set in caps it wrapped to two shouting lines above the verdict; the moment
+   it marks is the couple's first reveal ever, which should read like a hand on
+   the shoulder. Serif, sentence case, the ceremony's gold. */
+.firstline {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--amber);
+  margin: 14px 24px 0;
+}
+.ceremony.lit .firstline {
+  color: var(--ce-gold);
+}
+
+/* The talk loop: pin a question onto the couple's shared agenda. */
+.pinbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--app-card-line);
+  border-radius: 999px;
+  background: var(--ta-white);
+  color: var(--sub);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.pinbtn:active {
+  transform: scale(0.96);
+}
+.pinbtn.on {
+  background: var(--app-opt-bg);
+  border-color: var(--berry);
+  color: var(--berry);
+}
+.pinbtn span {
+  font-size: 14px;
+  line-height: 1;
+}
+/* The verse anchor on a difference — neutral ground to start from. */
+.qc-ref {
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 8px;
+}
+
+/* ============================================================
+   The talk list — the couple's agenda on the Together tab.
+   ============================================================ */
+.talkwrap {
+  margin-top: 2px;
+}
+.talkrow {
+  background: var(--ta-white);
+  border-radius: var(--r-sm);
+  padding: 13px 14px 11px;
+  margin-bottom: 8px;
+  box-shadow: var(--e1);
+}
+.talkrow-q {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.talkbtn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--berry);
+  border-radius: 999px;
+  background: var(--ta-white);
+  color: var(--berry);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.talkbtn:active {
+  transform: scale(0.96);
+}
+/* Your partner has already confirmed — one tap from closing it together. */
+.talkbtn.go {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+  color: var(--app-honey-ink);
+}
+.talkrow-wait {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--sub);
+  font-style: italic;
+}
+.talkdrop {
+  margin: 10px 0 0 10px;
+  border: 0;
+  background: none;
+  color: var(--mut);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.talkdone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--sub);
+  margin: 12px 0 2px;
+}
+.talkdone-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--app-opt-bg);
+  color: var(--berry);
+  font-weight: 800;
+  font-size: 12px;
+}
+/* Closure is the celebration most worth having: it lands on the talking, not
+   on the score. Quiet on purpose — a settle, not a firework. */
+.talkcheer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
+  color: var(--ce-ink);
+  font-size: 13.5px;
+  animation: riseIn 0.5s ease both;
+}
+.talkcheer-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ce-gold);
+  color: var(--ce-ground-bot);
+  font-weight: 800;
+}
+
+/* The questions behind "most worth a conversation". */
+.gaps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.gap {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--app-card-line);
+  border-radius: var(--r-sm);
+  background: var(--ta-white);
+  padding: 12px 13px;
+  font: inherit;
+  cursor: pointer;
+}
+.gap-q {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.gap-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+
+/* ============================================================
+   The keepsake card — a real 9:16 PNG, previewed exactly as it will be shared.
+   The old sheet drew a DOM card that never left the app (the share sent plain
+   text), so what the couple admired and what they could actually post were two
+   different things.
+   ============================================================ */
+.sharesheet {
+  width: min(92vw, 380px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.sharepreview {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 58vh;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  align-self: center;
+}
+.sharepreview.loading {
+  background: linear-gradient(168deg, #4a2138, #2a1120);
+}
+.cardopts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+/* What goes on the card is opt-in. Agreement starts OFF — it's the most
+   private number the app holds. */
+.cardopt {
+  border: 1px solid rgba(248, 233, 236, 0.28);
+  background: transparent;
+  color: rgba(248, 233, 236, 0.72);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.cardopt.on {
+  background: var(--ce-gold);
+  border-color: var(--ce-gold);
+  color: var(--app-honey-ink);
+}
+
+/* "What you've learned about Judah" — wrong guesses, read as discoveries. */
+.discwrap {
+  margin-top: 2px;
+}
+.disc {
+  background: var(--ta-white);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--e1);
+}
+.disc-q {
+  font-size: 12.5px;
+  color: var(--sub);
+  line-height: 1.4;
+}
+.disc-learn {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 6px;
+  line-height: 1.35;
+}
+.disc-tag {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-right: 7px;
+  vertical-align: 2px;
+}
+.disc-thought {
+  font-size: 12px;
+  color: var(--mut);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ============================================================
+   The stones — one per question in the part, alive in every phase.
+   Answering fills the current stone; the guess completes it. Replaces a bar
+   that unmounted during the guess step and filled on arrival rather than on
+   anything the couple had actually done.
+   ============================================================ */
+.qstones {
+  display: flex;
+  gap: 4px;
+  margin-top: 14px;
+}
+.qstones i {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--track);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.qstones i.full {
+  background: var(--app-honey);
+}
+/* answered, guess still to come */
+.qstones i.half::after {
+  content: "";
+  position: absolute;
+  inset: 0 50% 0 0;
+  background: var(--app-honey);
+  border-radius: 999px;
+  animation: stoneFill 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes stoneFill {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+.qstones i.cur {
+  outline: 1.5px solid var(--app-honey-deep);
+  outline-offset: 1.5px;
+}
+
+/* Importance, folded onto the answer card. */
+.impinline {
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px dashed var(--app-card-line);
+  animation: paneIn 0.28s ease both;
+}
+.impinline-q {
+  font-size: 12.5px;
+  color: var(--sub);
+  margin-bottom: 9px;
+}
+.impinline-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.impdot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--app-orb-line);
+  background: var(--ta-white);
+  color: var(--sub);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.impdot:active {
+  transform: scale(0.92);
+}
+.impdot.on {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+  /* dark ink on gold — white here measures 2.08:1 */
+  color: var(--app-honey-ink);
+}
+.impinline-ends {
+  font-size: 11px;
+  color: var(--mut);
+  margin-left: 2px;
+}
+
+/* "YOU SAID …" is the way back to a mis-tapped answer. */
+.yousaid-edit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.yousaid-change {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--berry);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  flex: 0 0 auto;
+}
+
+
+/* ============================================================
+   Answer controls are real buttons now (they were click-divs: no keyboard
+   access, no roles, no focus ring — the core loop was inoperable on a laptop
+   and silent to a screen reader). These resets keep the rendering identical.
+   ============================================================ */
+.opt,
+.orb,
+.row {
+  font: inherit;
+  /* A <button> brings the UA's own background (buttonface grey) and border —
+     both of which showed up the moment these stopped being divs. */
+  background: transparent;
+  border-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.opt,
+.row {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+}
+.opt {
+  align-items: center;
+  /* restored after the reset above */
+  border: 1.5px solid var(--optb);
+}
+.orb {
+  background: var(--ta-white);
+  border: 2px solid var(--app-orb-line);
+  color: var(--mut);
+}
+.row {
+  background: var(--ta-white);
+}
+.rankopt {
+  gap: 12px;
+}
+
+/* Visible only to assistive tech. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

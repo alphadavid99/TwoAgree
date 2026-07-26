@@ -267,7 +267,7 @@ export function PathIntro({
           {t("Begin — just me", "Commencer — juste moi")}
         </button>
         <button className="btn ghost" type="button" onClick={onBrowseDecks}>
-          {t("Browse the decks instead", "Parcourir les jeux plutôt")}
+          {t("Browse the conversations instead", "Parcourir les conversations plutôt")}
         </button>
       </div>
     </section>
@@ -424,7 +424,7 @@ function PathWaiting({
           )}
         </p>
         <button className="btn ghost" type="button" onClick={onBrowseDecks} style={{ marginTop: 24 }}>
-          {t("Browse the decks meanwhile", "Parcourir les jeux en attendant")}
+          {t("Browse the conversations meanwhile", "Parcourir les conversations en attendant")}
         </button>
       </div>
     </section>

@@ -3933,12 +3933,15 @@ textarea.input {
 }
 
 /* Rung zero of the ladder: the first reveal a couple ever opens. */
+/* Not a micro-label — a whole sentence, and the warmest one on the screen.
+   Set in caps it wrapped to two shouting lines above the verdict; the moment
+   it marks is the couple's first reveal ever, which should read like a hand on
+   the shoulder. Serif, sentence case, the ceremony's gold. */
 .firstline {
   text-align: center;
-  font-size: var(--tag-size);
-  font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
   color: var(--amber);
   margin: 14px 24px 0;
 }

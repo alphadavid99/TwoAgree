@@ -22,6 +22,7 @@ import StartMenu from "./screens/StartMenu";
 import PathStep from "./screens/PathStep";
 import { PathMap, PathIntro, PathFlow } from "./screens/PathScreen";
 import ResultsScreen from "./screens/ResultsScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import RevealScreen from "./screens/RevealScreen";
 import AuthScreen from "./screens/AuthScreen";
 import { Mark } from "./brand/Mark";
@@ -263,6 +264,29 @@ function Preview() {
           onPath={noop}
         />
         <FakeNav on="home" />
+      </div>
+    );
+  if (view === "profile")
+    return (
+      <div className="tabwrap">
+        <ProfileScreen
+          user={{ uid: "u1", email: "sarah@example.com", displayName: "Sarah" } as never}
+          code="ABCD"
+          onLeave={noop}
+        />
+        <FakeNav on="profile" />
+      </div>
+    );
+  if (view === "results-day0")
+    return (
+      <div className="tabwrap">
+        <ResultsScreen
+          session={{ ...session, decks: {} } as Session}
+          role="host"
+          code="ABCD"
+          onOpen={noop}
+        />
+        <FakeNav on="results" />
       </div>
     );
   if (view === "decks")

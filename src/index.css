@@ -117,10 +117,10 @@ body {
   text-align: center;
 }
 .eyebrow {
-  font-size: 12px;
-  letter-spacing: 3px;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
   color: var(--amber);
-  font-weight: 600;
+  font-weight: var(--eyebrow-weight);
   text-transform: uppercase;
 }
 
@@ -306,6 +306,37 @@ textarea.input {
   box-shadow: var(--e2);
   padding: 22px;
 }
+/* The one card that can't be undone. It reads as its own place rather than
+   another white panel — irreversible actions should never share a surface with
+   "change your photo". */
+.card.danger {
+  border: 1px solid var(--app-banner-line);
+  background: linear-gradient(180deg, var(--ta-white), var(--app-honey-bg));
+}
+.card.danger .eyebrow {
+  color: var(--danger);
+}
+.deletelist {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.deletelist li + li {
+  margin-top: 7px;
+}
+/* Each data door with its own plain-English label underneath, so nobody has to
+   guess which button gives them something they can actually read. */
+.datarow + .datarow {
+  margin-top: 4px;
+}
+.datahint {
+  margin: 6px 2px 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--sub);
+}
 
 .avatarwrap {
   display: flex;
@@ -471,10 +502,11 @@ textarea.input {
 .hint {
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 11px;
+  letter-spacing: var(--eyebrow-track);
+  font-size: var(--eyebrow-size);
   color: var(--mut);
   margin-top: 16px;
+  font-weight: var(--eyebrow-weight);
 }
 
 .slabels {
@@ -684,7 +716,7 @@ textarea.input {
   color: var(--berry);
   background: var(--ta-white);
   border: 1.5px solid var(--honeyD);
-  border-radius: 10px;
+  border-radius: var(--r-xs);
   /* the pairing moment — a fumbled copy here is real friction */
   padding: 10px 14px;
   margin-left: 4px;
@@ -694,7 +726,7 @@ textarea.input {
 .catico {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -708,7 +740,7 @@ textarea.input {
   padding: 13px 15px;
   margin-top: 10px;
   background: var(--ta-white);
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
   cursor: pointer;
   transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -746,9 +778,9 @@ textarea.input {
 }
 .verbadge {
   align-self: flex-start;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   border: 1.5px solid;
   border-radius: 999px;
@@ -786,10 +818,11 @@ textarea.input {
 }
 .resrow-scores .rs i {
   font-style: normal;
-  font-size: 11px;
-  letter-spacing: 0.4px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
+  font-weight: var(--tag-weight);
 }
 
 /* ---- floating pill nav — active tab is a honey pill wearing its label ---- */
@@ -996,9 +1029,10 @@ textarea.input {
   gap: 10px;
   margin: 16px 2px 0;
   color: var(--mut);
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
+  font-weight: var(--tag-weight);
 }
 .authdiv::before,
 .authdiv::after {
@@ -1035,10 +1069,10 @@ textarea.input {
   background: var(--honbg);
 }
 .scall .lb {
-  font-size: 11px;
-  letter-spacing: 1.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   color: var(--amber);
 }
 .scall .nm {
@@ -1068,9 +1102,9 @@ textarea.input {
   min-width: 0;
 }
 .rankcol-h {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
   margin-bottom: 4px;
@@ -1168,7 +1202,7 @@ textarea.input {
 .qc {
   background: var(--ta-white);
   border: none;
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 15px 16px;
 }
@@ -1190,9 +1224,9 @@ textarea.input {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   border: none;
   padding: 2px 0;
@@ -1312,15 +1346,15 @@ textarea.input {
   flex-direction: column;
   gap: 1px;
   padding: 7px 12px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   font-size: 13px;
 }
 .mcchip i {
   font-style: normal;
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   opacity: 0.85;
 }
 .mcchip.s {
@@ -1347,9 +1381,9 @@ textarea.input {
   min-width: 0;
 }
 .rank2-h {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -1404,10 +1438,10 @@ textarea.input {
 }
 .oq-who {
   display: block;
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: var(--tag-weight);
   color: var(--sub);
 }
 .oq-text {
@@ -2375,7 +2409,7 @@ textarea.input {
 .tile {
   flex: 1;
   padding: 14px 15px;
-  border-radius: 20px;
+  border-radius: var(--r-md);
   background: var(--ta-white);
   box-shadow: 0 6px 18px rgba(62, 26, 46, 0.07);
 }
@@ -2412,7 +2446,7 @@ textarea.input {
 .feat {
   margin-top: 12px;
   padding: 16px;
-  border-radius: 22px;
+  border-radius: var(--r-md);
   background: var(--ta-white);
   box-shadow: var(--e2);
 }
@@ -2430,7 +2464,7 @@ textarea.input {
 .fchip {
   width: 34px;
   height: 34px;
-  border-radius: 11px;
+  border-radius: var(--r-xs);
   background: var(--honbg);
   color: var(--amber);
   display: grid;
@@ -2480,7 +2514,7 @@ textarea.input {
   gap: 10px;
   padding: 13px 15px;
   margin-top: 9px;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   background: var(--ta-white);
   border: none;
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.06);
@@ -2643,7 +2677,7 @@ textarea.input {
   background: var(--berry);
   color: var(--ta-white);
   border: none;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   padding: 15px 18px;
   margin: 16px 0 6px;
   box-shadow: 0 10px 24px rgba(62, 26, 46, 0.22);
@@ -2688,24 +2722,24 @@ textarea.input {
 
 /* 5b — the grouped index */
 .flaggrp {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--berry);
   margin: 20px 2px 10px;
 }
 .flagrow {
   background: var(--ta-white);
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 14px 16px;
   margin-bottom: 10px;
 }
 .flagrow-k {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   margin-bottom: 5px;
@@ -2772,7 +2806,7 @@ textarea.input {
 /* 5c — the walkthrough, one flag per card */
 .walkcard {
   background: var(--ta-white);
-  border-radius: 20px;
+  border-radius: var(--r-md);
   box-shadow: var(--e2);
   padding: 20px 18px;
   margin-top: 14px;
@@ -2792,7 +2826,7 @@ textarea.input {
 }
 .cmp2-col {
   background: var(--optbg);
-  border-radius: 14px;
+  border-radius: var(--r-xs);
   padding: 12px;
 }
 .cmp2-who {
@@ -2845,9 +2879,9 @@ textarea.input {
   border-top: 1px solid var(--cardb);
 }
 .walktalk-h {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.7px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--berry);
   margin-bottom: 8px;
@@ -2927,7 +2961,7 @@ textarea.input {
   text-align: left;
   background: var(--ta-white);
   border: 1.5px solid transparent;
-  border-radius: 16px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 14px 16px;
   cursor: pointer;
@@ -2951,9 +2985,9 @@ textarea.input {
   color: var(--ink);
 }
 .partrow-depth {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
 }
@@ -3020,13 +3054,16 @@ textarea.input {
 .corestat.known .corenum {
   color: var(--berry);
 }
-.corestat.hero .corenum span {
+/* .pc, not `span`: the number is its own span now (so it can count up), and a
+   bare `span` selector shrank the hero's headline to the size of its unit —
+   Known ended up smaller than Agreed, which inverts the whole hierarchy. */
+.corestat.hero .corenum .pc {
   font-size: 30px;
 }
 .corelb {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--sub);
   margin-top: 7px;
@@ -3071,7 +3108,7 @@ textarea.input {
 .sharecard {
   width: min(360px, 86vw);
   background: linear-gradient(160deg, var(--ta-white), var(--app-ground-top));
-  border-radius: 26px;
+  border-radius: var(--r-md);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
   padding: 30px 24px;
   text-align: center;
@@ -3139,10 +3176,11 @@ textarea.input {
   margin-top: 12px;
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
   text-transform: uppercase;
   color: var(--amber);
+  font-weight: var(--eyebrow-weight);
 }
 .consentcard {
   background: var(--ta-white);
@@ -3173,7 +3211,7 @@ textarea.input {
   text-align: left;
   background: var(--ta-white);
   border: 1.5px solid transparent;
-  border-radius: 18px;
+  border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(62, 26, 46, 0.07);
   padding: 16px;
   cursor: pointer;
@@ -3194,9 +3232,9 @@ textarea.input {
   color: var(--ink);
 }
 .menucard-depth {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   white-space: nowrap;
@@ -3270,7 +3308,7 @@ textarea.input {
 }
 .path-verse-card {
   border: 1px solid var(--berry2, #5c2e45);
-  border-radius: 14px;
+  border-radius: var(--r-xs);
   padding: 15px 18px;
   margin-top: 12px;
   text-align: left;
@@ -3359,9 +3397,9 @@ textarea.input {
 }
 .lk-denom {
   margin-top: 2px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--ce-sub);
 }
@@ -3379,7 +3417,7 @@ textarea.input {
   gap: 12px;
   text-align: left;
   padding: 11px 14px;
-  border-radius: 14px;
+  border-radius: var(--r-xs);
   border: 1px solid var(--berry2, #5c2e45);
   background: rgba(248, 233, 236, 0.05);
 }
@@ -3433,7 +3471,7 @@ textarea.input {
   font-size: 14px;
   font-weight: 600;
   padding: 11px 18px;
-  border-radius: 12px;
+  border-radius: var(--r-xs);
   z-index: 99;
   max-width: 86vw;
   text-align: center;
@@ -3655,14 +3693,16 @@ textarea.input {
 .tilepair .tp b.known {
   color: var(--berry);
 }
+/* Not a micro-tag: this is the unit sitting beside a number, and at 9px it was
+   under the legibility floor while at uppercase-11px it shoulders the two
+   tiles out of alignment. Sentence case at the tag size does both jobs. */
 .tilepair .tp i {
   font-style: normal;
-  font-size: 9px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  font-size: var(--tag-size);
   color: var(--sub);
   margin-left: 3px;
   align-self: center;
+  font-weight: 600;
 }
 
 /* ============================================================
@@ -3734,6 +3774,49 @@ textarea.input {
   margin-top: 10px;
 }
 
+/* Day zero on the Together tab — the promise, not an empty instrument panel. */
+.daycard {
+  background: var(--ta-white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--e2);
+  padding: 6px 18px;
+}
+.dayrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px 0;
+}
+.dayrow + .dayrow {
+  border-top: 1px solid var(--app-card-line);
+}
+.dayglyph {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9375rem;
+  color: var(--ta-honey);
+  background: radial-gradient(circle at 34% 30%, #5c2e45, #3e1a2e);
+}
+.daytxt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.daytxt b {
+  font-size: 0.9375rem;
+}
+.daytxt i {
+  font-style: normal;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--sub);
+}
+
 /* The Path's presence on Home. Deliberately LIGHT: the ready-to-open reveal is
    the only dark card Home shows and that darkness is what makes it read as an
    event — a second claret card would spend the signal. This one is a standing
@@ -3751,7 +3834,7 @@ textarea.input {
   border: 0;
   /* Matches the featured-deck card's elevation (--e2) so the Path reads as an
      invitation of the same weight, not a list row above it. */
-  border-radius: 22px;
+  border-radius: var(--r-md);
   padding: 13px 14px;
   margin: 12px 0 0;
   box-shadow: var(--e2);
@@ -3842,9 +3925,9 @@ textarea.input {
 /* Rung zero of the ladder: the first reveal a couple ever opens. */
 .firstline {
   text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   margin: 14px 24px 0;
@@ -3888,9 +3971,9 @@ textarea.input {
 }
 /* The verse anchor on a difference — neutral ground to start from. */
 .qc-ref {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   margin-top: 8px;
@@ -4111,9 +4194,9 @@ textarea.input {
 .disc-tag {
   display: inline-block;
   font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
   text-transform: uppercase;
   color: var(--amber);
   margin-right: 7px;
@@ -4140,7 +4223,7 @@ textarea.input {
 .qstones i {
   flex: 1;
   height: 6px;
-  border-radius: 99px;
+  border-radius: 999px;
   background: var(--track);
   position: relative;
   overflow: hidden;
@@ -4155,7 +4238,7 @@ textarea.input {
   position: absolute;
   inset: 0 50% 0 0;
   background: var(--app-honey);
-  border-radius: 99px;
+  border-radius: 999px;
   animation: stoneFill 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes stoneFill {

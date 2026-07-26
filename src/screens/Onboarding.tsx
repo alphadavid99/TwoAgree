@@ -947,9 +947,15 @@ function ProfileStep({
         {heading ??
           t(`Set up your profile to invite ${partner}.`, `Créez votre profil pour inviter ${partner}.`)}
       </h1>
+      {/* This promised "this is how we let you know when they answer" — there
+          is no notification channel in the app: no push, no email, no badge.
+          The account's real job here is keeping the answers, which is true. */}
       <p className="sub center" style={{ margin: "8px 24px 10px" }}>
         {sub ??
-          t("This is how we let you know when they answer.", "C'est ainsi que nous vous prévenons quand ils répondent.")}
+          t(
+            "It keeps your answers safe and lets you pick this back up on any device.",
+            "Il garde vos réponses en sécurité et vous permet de reprendre sur n’importe quel appareil.",
+          )}
       </p>
 
       <div className="avatarwrap" style={{ marginTop: 6 }}>

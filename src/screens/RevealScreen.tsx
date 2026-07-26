@@ -366,8 +366,15 @@ export default function RevealScreen({
       {know.pct != null && (
         <p className="knowline reveal-rise">
           {knowLine(know.pct, t)}
-          {" · "}
-          {t(`${know.right} of ${know.made} right`, `${know.right} sur ${know.made}`)}
+          {/* "0 of 3 right" is test vocabulary, and it sat directly beside the
+              line meant to soften the moment. At zero the tally says nothing
+              the sentence hasn't; above zero, phrase it as noticing rather
+              than marking. */}
+          {know.right > 0 &&
+            t(
+              ` · you saw ${know.right} of ${know.made} coming`,
+              ` · vous en avez vu venir ${know.right} sur ${know.made}`,
+            )}
         </p>
       )}
       <p className="sub serif center reveal-rise" style={{ fontStyle: "italic", margin: "0 24px 6px" }}>
@@ -619,17 +626,20 @@ function QCard({
 
       {(r.guessed || r.theyGuessed) && (
         <div className="guessrow">
+          {/* ✦ for a miss, not ✗. A wrong prediction is a surprise about the
+              person you love, not a mark against you — and the French said
+              "ton pari" (tu, and betting) inside otherwise-vous chrome. */}
           {r.guessed && (
             <span className={`gtag ${r.guessRight ? "gok" : "gno"}`}>
-              {r.guessRight ? "✓" : "✗"}{" "}
-              {t("You guessed they'd pick", "Ton pari pour l’autre")}:{" "}
+              {r.guessRight ? "✓" : "✦"}{" "}
+              {t("You guessed they'd pick", "Vous pensiez qu’ils diraient")}:{" "}
               <b>{optLabel(q, r.guess)}</b>
             </span>
           )}
           {r.theyGuessed && (
             <span className={`gtag ${r.theyGuessRight ? "gok" : "gno"}`}>
-              {r.theyGuessRight ? "✓" : "✗"} {partnerName}{" "}
-              {t("guessed you'd pick", "avait parié sur toi")}:{" "}
+              {r.theyGuessRight ? "✓" : "✦"} {partnerName}{" "}
+              {t("guessed you'd pick", "pensait que vous diriez")}:{" "}
               <b>{optLabel(q, r.theirGuess)}</b>
             </span>
           )}

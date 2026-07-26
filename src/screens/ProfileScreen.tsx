@@ -5,6 +5,7 @@ import { useProfile } from "../hooks/useProfile";
 import { fileToAvatarDataUrl } from "../lib/device/photo";
 import { prettyError } from "../lib/errors";
 import { exportMyData, deleteMyAccount } from "../lib/functions";
+import { renderReadableExport, type ExportPayload } from "../lib/dataexport";
 import { useT, useLang, setLang, LANGS } from "../lib/i18n";
 import BuildStamp from "../components/BuildStamp";
 import type { Profile } from "../types";
@@ -54,21 +55,44 @@ export default function ProfileScreen({
     setOk("");
   };
 
-  const doExport = async () => {
+  // Two doors on the same data. The right of access isn't honoured by a file
+  // nobody can read: `{"FAITH-019":{"host":3}}` tells a person nothing about
+  // what they were asked or what they said. The readable copy is the default;
+  // the raw JSON stays for portability into another service.
+  const download = (body: string, type: string, name: string) => {
+    const url = URL.createObjectURL(new Blob([body], { type }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  };
+
+  const doExport = async (readable: boolean) => {
     setDataBusy(true);
     setDataMsg("");
     try {
       const res = await exportMyData();
-      const blob = new Blob([JSON.stringify(res.data, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "twoagree-my-data.json";
-      a.click();
-      URL.revokeObjectURL(url);
-      setDataMsg(t("Your data has been downloaded.", "Vos données ont été téléchargées."));
+      if (readable) {
+        download(
+          renderReadableExport(res.data as ExportPayload, lang),
+          "text/html;charset=utf-8",
+          "twoagree-my-data.html",
+        );
+        setDataMsg(
+          t(
+            "Downloaded. Open it in any browser — it prints to PDF too.",
+            "Téléchargé. Ouvrez-le dans un navigateur — il s’imprime aussi en PDF.",
+          ),
+        );
+      } else {
+        download(
+          JSON.stringify(res.data, null, 2),
+          "application/json",
+          "twoagree-my-data.json",
+        );
+        setDataMsg(t("Your data has been downloaded.", "Vos données ont été téléchargées."));
+      }
     } catch (e) {
       setDataMsg(prettyError(e));
     } finally {
@@ -272,35 +296,105 @@ export default function ProfileScreen({
         {t("Sign out", "Se déconnecter")}
       </button>
 
+      {/* The trust surface. This app holds what a couple said about faith, sex
+          and money — the data controls ARE product, not a legal footnote, so
+          they say plainly what is held, what leaves, and what deletion costs. */}
       <div className="card" style={{ marginTop: 20 }}>
         <div className="eyebrow">{t("Your data", "Vos données")}</div>
-        <p className="muted" style={{ fontSize: 13, margin: "8px 0 14px" }}>
+        <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
           {t(
-            "TwoAgree holds sensitive answers. You can take them with you or erase everything, at any time.",
-            "TwoAgree conserve des réponses sensibles. Vous pouvez les emporter ou tout effacer, à tout moment.",
+            "TwoAgree holds your answers about faith, intimacy, health and money. They are yours. Take a copy whenever you like, or erase everything.",
+            "TwoAgree conserve vos réponses sur la foi, l’intimité, la santé et l’argent. Elles vous appartiennent. Prenez-en une copie quand vous voulez, ou effacez tout.",
           )}
         </p>
-        <button className="btn out" type="button" onClick={doExport} disabled={dataBusy}>
-          {dataBusy ? t("Working…", "En cours…") : t("Export my data", "Exporter mes données")}
-        </button>
 
-        {!confirmDelete ? (
-          <button
-            className="btn ghost"
-            type="button"
-            style={{ color: "var(--danger)" }}
-            onClick={() => setConfirmDelete(true)}
-            disabled={dataBusy}
-          >
-            {t("Delete my account", "Supprimer mon compte")}
+        <div className="datarow">
+          <button className="btn out" type="button" onClick={() => doExport(true)} disabled={dataBusy}>
+            {dataBusy ? t("Working…", "En cours…") : t("Download a readable copy", "Télécharger une copie lisible")}
           </button>
+          <p className="datahint">
+            {t(
+              "Every question you were asked and what you answered, as a page you can read or print.",
+              "Chaque question posée et votre réponse, sous forme de page lisible ou imprimable.",
+            )}
+          </p>
+        </div>
+        <div className="datarow">
+          <button className="btn ghost" type="button" onClick={() => doExport(false)} disabled={dataBusy}>
+            {t("Download the raw data (JSON)", "Télécharger les données brutes (JSON)")}
+          </button>
+          <p className="datahint">
+            {t(
+              "The machine-readable record, for moving your data to another service.",
+              "L’enregistrement lisible par machine, pour transférer vos données ailleurs.",
+            )}
+          </p>
+        </div>
+        {dataMsg && <div className="ok">{dataMsg}</div>}
+      </div>
+
+      <div className="card danger" style={{ marginTop: 16 }}>
+        <div className="eyebrow">{t("Erase everything", "Tout effacer")}</div>
+        {!confirmDelete ? (
+          <>
+            <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
+              {t(
+                "Deleting is permanent and immediate. Take a copy first if you want one.",
+                "La suppression est définitive et immédiate. Prenez une copie d’abord si vous en voulez une.",
+              )}
+            </p>
+            <button
+              className="btn ghost"
+              type="button"
+              style={{ color: "var(--danger)" }}
+              onClick={() => setConfirmDelete(true)}
+              disabled={dataBusy}
+            >
+              {t("Delete my account", "Supprimer mon compte")}
+            </button>
+          </>
         ) : (
           <>
-            <p className="err">
-              {t(
-                "This permanently erases your profile and removes you from every session. It can’t be undone.",
-                "Ceci efface définitivement votre profil et vous retire de toutes les sessions. C’est irréversible.",
-              )}
+            {/* Exactly what deleteMyAccount does — including the part that
+                affects the other person, which the old one-line warning left
+                them to discover afterwards. */}
+            <p style={{ fontSize: 13, margin: "10px 0 0", lineHeight: 1.55 }}>
+              {t("Here is precisely what happens:", "Voici précisément ce qui se passe :")}
+            </p>
+            <ul className="deletelist">
+              <li>
+                {t(
+                  "Your profile, photo and private Path answers are erased.",
+                  "Votre profil, votre photo et vos réponses privées du Chemin sont effacés.",
+                )}
+              </li>
+              <li>
+                {t(
+                  "Every answer, guess and rating you gave is removed from every session you're in.",
+                  "Chaque réponse, intuition et évaluation que vous avez données est retirée de toutes vos sessions.",
+                )}
+              </li>
+              <li>
+                {t(
+                  "Your partner keeps their own answers — but your side of every reveal you shared disappears from their app too, and the scores between you go with it.",
+                  "Votre partenaire garde ses propres réponses — mais votre côté de chaque révélation partagée disparaît aussi de son application, et les scores entre vous avec.",
+                )}
+              </li>
+              <li>
+                {t(
+                  "A session where you were the only member is removed entirely.",
+                  "Une session où vous étiez le seul membre est entièrement supprimée.",
+                )}
+              </li>
+              <li>
+                {t(
+                  "Your consent record is kept. It is the evidence we were allowed to hold your data, and it contains no answers.",
+                  "Votre enregistrement de consentement est conservé. C’est la preuve que nous étions autorisés à détenir vos données, et il ne contient aucune réponse.",
+                )}
+              </li>
+            </ul>
+            <p className="err" style={{ marginTop: 12 }}>
+              {t("This cannot be undone.", "C’est irréversible.")}
             </p>
             <button
               className="btn"
@@ -323,7 +417,6 @@ export default function ProfileScreen({
             </button>
           </>
         )}
-        {dataMsg && <div className="ok">{dataMsg}</div>}
         <p className="muted" style={{ fontSize: 12, marginTop: 12 }}>
           {t("See our", "Consultez notre")}{" "}
           <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">

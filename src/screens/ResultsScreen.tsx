@@ -6,6 +6,7 @@ import { TalkList } from "./TalkList";
 import { Discoveries } from "./Discoveries";
 import { revealedQs, catComplete } from "../lib/progress";
 import { ORDER } from "../lib/questions";
+import { DeckIcon } from "../components/icons";
 import { collectFlagRows } from "../lib/flags";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
@@ -73,6 +74,71 @@ export default function ResultsScreen({
       ).length,
     0,
   );
+
+  // Day zero. Before the first reveal this tab was machinery with nothing in
+  // it: two rings reading "—%", an empty agenda, an empty discoveries list.
+  // A new couple's first impression of the thing the whole app is FOR should
+  // be the promise, not an empty instrument panel.
+  if (coreAgreed.done === 0 && rows.length === 0) {
+    const previews: [string, string, string, string][] = [
+      [
+        "star",
+        "Two numbers",
+        "How much you agree, and how well you actually know each other.",
+        "À quel point vous êtes d’accord, et à quel point vous vous connaissez vraiment.",
+      ],
+      [
+        "heart",
+        "What surprised you",
+        "Every answer one of you didn't see coming, kept in one place.",
+        "Chaque réponse que l’un de vous n’avait pas vue venir, réunie en un seul endroit.",
+      ],
+      [
+        "chat",
+        "Your agenda",
+        "The questions you both pinned as worth a proper conversation.",
+        "Les questions que vous avez tous deux marquées comme méritant une vraie conversation.",
+      ],
+    ];
+    const names: [string, string] = [
+      `This is where ${myName.split(/\s+/)[0]} and ${partnerName.split(/\s+/)[0]} meet.`,
+      `C’est ici que ${myName.split(/\s+/)[0]} et ${partnerName.split(/\s+/)[0]} se retrouvent.`,
+    ];
+    return (
+      <section>
+        <div className="eyebrow center" style={{ marginTop: 24 }}>
+          {t("The two of you", "Vous deux")}
+        </div>
+        <h1 className="h1 center" style={{ margin: "8px 0 10px" }}>
+          {t(...names)}
+        </h1>
+        <p className="sub center" style={{ margin: "0 18px 20px" }}>
+          {t(
+            "Nothing here yet — it fills in the moment you've both answered your first conversation.",
+            "Rien ici pour l’instant — cela se remplit dès que vous avez tous deux répondu à votre première conversation.",
+          )}
+        </p>
+        <div className="daycard">
+          {previews.map(([glyph, h, en, fr]) => (
+            <div className="dayrow" key={h}>
+              <span className="dayglyph" aria-hidden="true">
+                <DeckIcon icon={glyph} size={17} />
+              </span>
+              <span className="daytxt">
+                <b>{t(h, h === "Two numbers" ? "Deux chiffres" : h === "Your agenda" ? "Votre ordre du jour" : "Ce qui vous a surpris")}</b>
+                <i>{t(en, fr)}</i>
+              </span>
+            </div>
+          ))}
+        </div>
+        {onOpen && (
+          <button className="btn pill" type="button" onClick={() => onOpen(ORDER[0])}>
+            {t("Start your first conversation →", "Commencer votre première conversation →")}
+          </button>
+        )}
+      </section>
+    );
+  }
 
   return (
     <section>

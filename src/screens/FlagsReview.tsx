@@ -173,7 +173,7 @@ function WalkCard({
             <div className="cmp2-said">{optLabel(q, r.me)}</div>
             {r.guessed && (
               <div className={`cmp2-guess ${r.guessRight ? "ok" : "no"}`}>
-                {t(`guessed ${partnerName}:`, `pari sur ${partnerName} :`)}{" "}
+                {t(`guessed ${partnerName}:`, `pensait que ${partnerName} dirait :`)}{" "}
                 <b>{optLabel(q, r.guess)}</b>
               </div>
             )}
@@ -186,7 +186,7 @@ function WalkCard({
             <div className="cmp2-said">{optLabel(q, r.th)}</div>
             {r.theyGuessed && (
               <div className={`cmp2-guess ${r.theyGuessRight ? "ok" : "no"}`}>
-                {t(`guessed ${myName}:`, `pari sur ${myName} :`)}{" "}
+                {t(`guessed ${myName}:`, `pensait que ${myName} dirait :`)}{" "}
                 <b>{optLabel(q, r.theirGuess)}</b>
               </div>
             )}

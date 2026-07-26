@@ -7,6 +7,8 @@
  * the admin SDK.
  */
 import { setGlobalOptions } from "firebase-functions/v2";
+import { defineSecret, defineString } from "firebase-functions/params";
+import { onValueWritten } from "firebase-functions/v2/database";
 import { onRequest, onCall, HttpsError } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import { initializeApp } from "firebase-admin/app";
@@ -14,6 +16,8 @@ import { getDatabase } from "firebase-admin/database";
 import { getAuth } from "firebase-admin/auth";
 import { randomUUID } from "node:crypto";
 import { composePath, type Intake } from "./composePath.js";
+import { redactSessionForSubject, type RawSession } from "./redact.js";
+import { shouldNotify, revealReadyEmail, type Role as NotifyRole } from "./notify.js";
 
 setGlobalOptions({ region: "europe-west1" });
 initializeApp();
@@ -78,7 +82,16 @@ export const exportMyData = onCall(async (request) => {
     profile: profileSnap.val() ?? null,
     intake: intakeSnap.val() ?? null,
     consent: consentSnap.val() ?? null,
-    sessions: Object.fromEntries(sessions),
+    // Narrowed to the caller's own answers. A session node holds BOTH partners
+    // under host/guest, so returning it whole handed the other person's
+    // Article 9 answers to someone who never should have received them — see
+    // redact.ts for the reasoning.
+    sessions: Object.fromEntries(
+      sessions.map(([code, s]) => [
+        code,
+        redactSessionForSubject(s as RawSession, uid),
+      ]),
+    ),
   };
 });
 
@@ -269,3 +282,107 @@ export const generatePath = onCall(async (request) => {
   logger.info("path generated", { code, uid, questionCount: path.questionCount });
   return { status: "ready" as const };
 });
+
+// ---- "Your reveal is ready" -------------------------------------------------
+// The one notification the app sends. See notify.ts for why this moment and no
+// other. Everything is gated: no RESEND_API_KEY secret → the trigger runs,
+// decides, logs and sends nothing, so main stays deployable before Dave has an
+// account. Recipients must have opted in explicitly (users/{uid}/notify).
+
+// Binding a secret that does not yet exist in Secret Manager makes
+// `firebase deploy --non-interactive` fail outright — and Functions deploy
+// BEFORE Hosting, so that failure would stop the whole site from updating
+// while CI still went green. The binding is therefore opt-in: set the repo
+// variable NOTIFY_EMAIL_ENABLED=true at the same time as creating the secret.
+// With it off, nothing here touches Secret Manager and the trigger deploys
+// happily in its "decide, log, send nothing" state.
+const EMAIL_ENABLED = process.env.NOTIFY_EMAIL_ENABLED === "true";
+const RESEND_API_KEY = EMAIL_ENABLED ? defineSecret("RESEND_API_KEY") : null;
+// Verified sender for the Resend domain, e.g. "TwoAgree <hello@twoagree.app>".
+const MAIL_FROM = defineString("MAIL_FROM", { default: "TwoAgree <onboarding@resend.dev>" });
+const APP_URL = defineString("APP_URL", { default: "https://twoagree.app" });
+
+async function sendViaResend(
+  key: string,
+  to: string,
+  copy: { subject: string; text: string; html: string },
+): Promise<void> {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from: MAIL_FROM.value(), to, ...copy }),
+  });
+  if (!res.ok) {
+    throw new Error(`resend ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  }
+}
+
+export const onLevelDone = onValueWritten(
+  {
+    ref: "/sessions/{code}/decks/{slug}/done/{level}/{role}",
+    ...(RESEND_API_KEY ? { secrets: [RESEND_API_KEY] } : {}),
+  },
+  async (event) => {
+    // Only a fresh completion is news; deletions and re-writes are not.
+    if (event.data.before.exists() || event.data.after.val() !== true) return;
+
+    const { code, slug, level, role } = event.params as Record<string, string>;
+    if (role !== "host" && role !== "guest") return;
+    const finisher = role as NotifyRole;
+    const other: NotifyRole = finisher === "host" ? "guest" : "host";
+
+    const db = getDatabase();
+    const otherDone =
+      (await db
+        .ref(`sessions/${code}/decks/${slug}/done/${level}/${other}`)
+        .once("value")).val() === true;
+
+    const recipientUid = (
+      await db.ref(`sessions/${code}/members/${other}/uid`).once("value")
+    ).val() as string | null;
+    if (!recipientUid) return;
+
+    const [emailSnap, notifySnap, lastSnap, finisherNameSnap] = await Promise.all([
+      db.ref(`users/${recipientUid}/email`).once("value"),
+      db.ref(`users/${recipientUid}/notify`).once("value"),
+      db.ref(`users/${recipientUid}/notifiedAt`).once("value"),
+      db.ref(`sessions/${code}/members/${finisher}/name`).once("value"),
+    ]);
+
+    const decision = shouldNotify({
+      finisher,
+      otherAlreadyDone: otherDone,
+      recipientOptedIn: notifySnap.val() === true,
+      recipientEmail: emailSnap.val() as string | null,
+      lastNotifiedMs: lastSnap.val() as number | null,
+      nowMs: Date.now(),
+    });
+
+    if (!decision.send) {
+      logger.debug("reveal-ready email skipped", { code, reason: decision.reason });
+      return;
+    }
+
+    const key = RESEND_API_KEY?.value();
+    if (!key) {
+      // Expected until the secret exists — the app is otherwise complete, and
+      // this line is the proof the decision path ran and chose to send.
+      logger.info("reveal-ready email would send, but no RESEND_API_KEY", { code });
+      return;
+    }
+
+    const copy = revealReadyEmail({
+      partnerName: (finisherNameSnap.val() as string) || "Your partner",
+      appUrl: APP_URL.value(),
+    });
+    try {
+      await sendViaResend(key, decision.to, copy);
+      // Stamped only on success, so a provider outage doesn't silently consume
+      // the recipient's one email for the next six hours.
+      await db.ref(`users/${recipientUid}/notifiedAt`).set(Date.now());
+      logger.info("reveal-ready email sent", { code, slug, level });
+    } catch (e) {
+      logger.error("reveal-ready email failed", { code, err: String(e) });
+    }
+  },
+);

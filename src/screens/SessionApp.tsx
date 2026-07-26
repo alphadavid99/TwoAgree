@@ -37,6 +37,7 @@ import type { Session } from "../types";
 import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
 import { Route } from "lucide-react";
 import { useT } from "../lib/i18n";
+import { track } from "../lib/observability";
 
 type Tab = "home" | "decks" | "path" | "results" | "profile";
 type Flow = null | "picker" | "play" | "review" | "reviewDeck";
@@ -194,6 +195,7 @@ export default function SessionApp({
   );
 
   const openPendingReveal = (s: string, lvl: number) => {
+    track("reveal opened", { deck: s });
     setFlowReturn("home");
     setSlug(s);
     setLastDeck(user.uid, code, s);
@@ -472,7 +474,12 @@ export default function SessionApp({
             />
           )}
           {tab === "profile" && (
-            <ProfileScreen user={user} onLeave={onLeave} code={code} />
+            <ProfileScreen
+              user={user}
+              onLeave={onLeave}
+              code={code}
+              partnerName={partnerName}
+            />
           )}
         </div>
       </div>

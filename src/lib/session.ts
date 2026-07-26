@@ -7,6 +7,7 @@ import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
 import type { Stage } from "../types";
+import { track } from "./observability";
 
 const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
@@ -37,6 +38,7 @@ export async function createSession(
         "members/host/uid": uid,
         [`uids/${uid}`]: true,
       });
+      track("session created");
       return code;
     } catch {
       // code already taken by someone else's session — try another
@@ -152,6 +154,7 @@ export function markLevelDone(
   lvl: number,
   role: Role,
 ): Promise<void> {
+  track("part finished", { deck: slug, part: lvl + 1 });
   return update(ref(db, `sessions/${code}/decks/${slug}/done/${lvl}`), {
     [role]: true,
   });
@@ -165,6 +168,8 @@ export function writeIntake(
   uid: string,
   answers: Record<string, number | number[]>,
 ): Promise<void> {
+  // The event, never the answers — the intake is the most private thing here.
+  track("path intake done");
   return update(ref(db, `intake/${uid}`), {
     updated: Date.now(),
     ...Object.fromEntries(
@@ -175,5 +180,6 @@ export function writeIntake(
 
 // Light a step's lamp — a shared couple milestone, writable by either member.
 export function lightLamp(code: string, stepIndex: number): Promise<void> {
+  track("lamp lit", { step: stepIndex + 1 });
   return update(ref(db, `sessions/${code}/pathLamps`), { [stepIndex]: true });
 }

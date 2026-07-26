@@ -33,18 +33,25 @@ export type ExportPayload = {
   sessions?: Record<string, RawSession> | null;
 };
 
-type RoleMap = Partial<Record<Role, unknown>>;
+// The payload exportMyData returns per session. It is ALREADY narrowed to the
+// caller server-side (functions/src/redact.ts) — `answers[qid]` is their own
+// value, not a { host, guest } pair — so this renderer no longer picks a role
+// out of a shared node. If that ever regresses, the partner's answers would
+// start appearing here, so the shape is typed to make it a compile error.
 type RawSession = {
   created?: number;
-  members?: Partial<Record<Role, { name?: string; uid?: string }>>;
+  stage?: string;
+  yourRole?: Role | null;
+  partnerName?: string;
   decks?: Record<
     string,
     {
-      answers?: Record<string, RoleMap>;
-      guesses?: Record<string, RoleMap>;
-      importance?: Record<string, RoleMap>;
+      answers?: Record<string, unknown>;
+      guesses?: Record<string, unknown>;
+      importance?: Record<string, unknown>;
     }
   >;
+  note?: string;
 };
 
 const esc = (s: unknown): string =>
@@ -83,7 +90,6 @@ function answerText(qid: string, v: unknown): string {
 export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): string {
   const T = (en: string, fr: string) => (lang === "fr" ? fr : en);
   const out: string[] = [];
-  const uid = data.uid;
 
   out.push(`<h1>${T("Your TwoAgree data", "Vos données TwoAgree")}</h1>`);
   out.push(
@@ -156,11 +162,8 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
     out.push(`<p class="none">${T("No sessions.", "Aucune session.")}</p>`);
   }
   for (const [code, s] of sessions) {
-    const role: Role | null =
-      s.members?.host?.uid === uid ? "host" : s.members?.guest?.uid === uid ? "guest" : null;
-    const partner = role
-      ? s.members?.[role === "host" ? "guest" : "host"]?.name
-      : undefined;
+    const role = s.yourRole ?? null;
+    const partner = s.partnerName;
     out.push(`<h3>${T("Session", "Session")} ${esc(code)}</h3>`);
     out.push(
       `<p class="meta">${T("Started", "Commencée le")} ${esc(date(s.created))}${
@@ -176,12 +179,12 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
     // step, not by question id — handled separately so they aren't dropped.
     const table = s.decks?.[AT_TABLE_SLUG]?.answers ?? {};
     const tableRows = Object.entries(table)
-      .filter(([, v]) => v?.[role] != null)
+      .filter(([, v]) => v != null)
       .map(([stepKey, v]) => {
         const meta = stepMeta(stepKey);
         return `<tr><td>${esc(meta?.atTable ?? stepKey)}<span class="q-src">${esc(
           meta?.name ?? stepKey,
-        )}</span></td><td>${esc(v[role])}</td><td>—</td></tr>`;
+        )}</span></td><td>${esc(v)}</td><td>—</td></tr>`;
       });
 
     let any = tableRows.length > 0;
@@ -191,9 +194,9 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
       if (!deck) continue;
       const rows: string[] = [];
       for (const q of DECKS[slug].questions) {
-        const mine = deck.answers?.[q.id]?.[role];
-        const guess = deck.guesses?.[q.id]?.[role];
-        const imp = deck.importance?.[q.id]?.[role];
+        const mine = deck.answers?.[q.id];
+        const guess = deck.guesses?.[q.id];
+        const imp = deck.importance?.[q.id];
         if (mine == null && guess == null && imp == null) continue;
         rows.push(
           `<tr><td>${esc(q.q)}</td><td>${esc(answerText(q.id, mine))}${
@@ -231,8 +234,8 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
 
   out.push(
     `<p class="foot">${T(
-      "This document lists your own answers. Your partner's answers belong to them and are not reproduced here. The machine-readable export contains the full session records.",
-      "Ce document liste vos propres réponses. Les réponses de votre partenaire lui appartiennent et ne sont pas reproduites ici. L’export lisible par machine contient les enregistrements complets.",
+      "This document lists your own answers. Your partner's answers are their personal data, not yours, so they are not part of your export — they can request their own copy from their account.",
+      "Ce document liste vos propres réponses. Les réponses de votre partenaire sont ses données personnelles, pas les vôtres : elles ne font donc pas partie de votre export — il peut en demander une copie depuis son compte.",
     )}</p>`,
   );
 

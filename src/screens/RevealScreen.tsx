@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { lvlQs, nLevels } from "../lib/leveling";
 import {
   overall,
@@ -13,6 +13,7 @@ import {
 } from "../lib/scoring";
 import { type Question } from "../lib/questions";
 import { collectFlagRows } from "../lib/flags";
+import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { ScorePair } from "../components/ScorePair";
 import FlagsReview, { FlagBox } from "./FlagsReview";
@@ -55,6 +56,26 @@ function knowLine(pct: number, t: (en: string, fr: string) => string): string {
     return t("Still discovering each other", "Vous continuez à vous découvrir");
   return t("So much still to discover", "Encore tant à découvrir");
 }
+
+// The same courtesy for the axis couples actually worry about. Agreement had no
+// interpretive line at any score, so a hard number landed bare. Honest, never
+// softened: difference is named as the reason the app exists, not as a failure.
+function agreedLine(pct: number, t: (en: string, fr: string) => string): string {
+  if (pct >= 100) return t("Of one mind", "D’un même esprit");
+  if (pct >= 90) return t("Of one mind on so much", "D’un même esprit sur tant de choses");
+  if (pct >= 75) return t("Closely agreed", "Très proches");
+  if (pct >= 60) return t("Walking well together", "Vous avancez bien ensemble");
+  if (pct >= 40)
+    return t(
+      "Plenty shared — and real differences",
+      "Beaucoup en commun — et de vraies différences",
+    );
+  return t(
+    "You differ on real things — that’s what this is for",
+    "Vous différez sur de vraies choses — c’est à cela que ça sert",
+  );
+}
+
 
 // Level reveal: the shared alignment score plus a per-question breakdown.
 // Both partners see the same number (it only unlocks once both have finished).
@@ -119,20 +140,32 @@ export default function RevealScreen({
   const [stage, setStage] = useState(reduced ? 2 : 1);
   const [party, setParty] = useState(false);
   const skipped = useRef(false);
+  const tier = celebrationTier(pct, know.pct);
+  // The claret room is the celebration's ground, so it has to be there from the
+  // first frame of the ceremony — not swept in after the score lands.
+  const lit = ceremony && tier > 0;
 
   useEffect(() => {
-    if (phase !== "ceremony" || reduced) return;
+    if (phase !== "ceremony" || reduced || tier === 0) return;
+    // The celebration lands with the number, not before it: stage 2 mounts at
+    // 1.15s and the rings draw for ~1.4s.
     const ts = [
-      setTimeout(() => setStage((s) => Math.max(s, 2)), 1150),
-      setTimeout(() => {
-        if (!skipped.current && pct > 75) setParty(true);
-      }, 2150),
-      setTimeout(() => setParty(false), 7400),
+      setTimeout(() => setParty(true), 2500),
+      setTimeout(() => setParty(false), 11000),
     ];
     return () => ts.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== "ceremony" || reduced) return;
+    const t1 = setTimeout(() => setStage((s) => Math.max(s, 2)), 1150);
+    return () => clearTimeout(t1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  // Skipping the meet fast-forwards; it must never confiscate the celebration.
+  // The excited partner who taps is exactly the one who wants the petals.
   const skipMeet = () => {
     skipped.current = true;
     setStage(2);
@@ -165,9 +198,15 @@ export default function RevealScreen({
 
   if (phase === "ceremony") {
     return (
-      <section onClick={stage < 2 ? skipMeet : undefined}>
+      <section
+        className={`ceremony${lit ? " lit" : ""}`}
+        onClick={stage < 2 ? skipMeet : undefined}
+      >
+        {/* The claret room. Full-bleed behind the notch and the home indicator —
+            grounds bleed, content stays inside the safe area. */}
+        {lit && <div className="ceremony-ground" aria-hidden="true" />}
         <TopBar onExit={onDone} />
-        {party && <Celebration big={pct > 90} />}
+        {party && <Celebration tier={tier} />}
         {eyebrow}
 
         {stage === 1 && (
@@ -175,6 +214,10 @@ export default function RevealScreen({
             <div className="meetpair">
               <Avatar name={myName} tone="berry" size={58} />
               <Avatar name={partnerName} tone="honey" size={58} />
+            </div>
+            <div className="meetnames">
+              <span>{myName}</span>
+              <span>{partnerName}</span>
             </div>
             <div className="meetline">
               {t("You've both answered.", "Vous avez tous les deux répondu.")}
@@ -184,30 +227,50 @@ export default function RevealScreen({
 
         {stage >= 2 && (
           <div className="levelup">
+            {/* 100% only: the two of them walk back in and settle together over
+                the full ring — the one beat no other band gets. */}
+            {tier >= 4 && (
+              <div className="meetpair oneheart lvlup-rise r2">
+                <Avatar name={myName} tone="berry" size={40} />
+                <Avatar name={partnerName} tone="honey" size={40} />
+              </div>
+            )}
             {/* The two axes at equal weight — agreement and Known — are the
-                whole point of the reveal (brief §3a). */}
+                whole point of the reveal (brief §3a). They draw in view now:
+                the count-up IS the entrance, not something that plays behind
+                an invisible layer. */}
             <div className="lvlup-rise r1">
-              <ScorePair agreed={pct} known={know.pct} t={t} size={140} />
+              <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony />
             </div>
+            <p className="agreedline lvlup-rise r2">{agreedLine(pct, t)}</p>
             {know.pct != null && (
-              <p className="knowline lvlup-rise r1">{knowLine(know.pct, t)}</p>
+              <p className="knowline lvlup-rise r2">{knowLine(know.pct, t)}</p>
             )}
             <p
-              className="sub serif center lvlup-rise r2"
+              className="sub serif center lvlup-rise r3"
               style={{ fontStyle: "italic", margin: "10px 24px 0" }}
             >
-              {t(
-                "Not a verdict — a place to start talking.",
-                "Pas un verdict — un point de départ pour discuter.",
-              )}
+              {tier >= 4
+                ? t(
+                    "“Can two walk together, unless they are agreed?”",
+                    "« Deux hommes marchent-ils ensemble, sans en être convenus ? »",
+                  )
+                : t(
+                    "Not a verdict — a place to start talking.",
+                    "Pas un verdict — un point de départ pour discuter.",
+                  )}
             </p>
-            <div className="lvlup-cta lvlup-rise r3">
+            <div className="lvlup-cta lvlup-rise r4">
               <button
                 className="btn pill"
                 type="button"
                 onClick={() => setPhase("answers")}
               >
-                {t("See your answers →", "Voir vos réponses →")}
+                {/* Below 60% the honest next step isn't admiring a number, it's
+                    finding the conversation the number is pointing at. */}
+                {tier === 0 && flagRows.length > 0
+                  ? t("See where to start talking →", "Voir par où commencer →")
+                  : t("See your answers →", "Voir vos réponses →")}
               </button>
               <button className="btn ghost" type="button" onClick={onDone}>
                 {t("Done for now", "Terminé pour l’instant")}
@@ -297,44 +360,117 @@ export default function RevealScreen({
   }
 }
 
-// Full-screen celebration overlay, constrained to the app column.
-// Petals drift down in brand colours; over 90% the fall is roughly twice as
-// dense, larger, and runs in two waves. Pointer-events pass through; the
-// parent unmounts it after ~5s.
-function Celebration({ big }: { big: boolean }) {
-  const count = big ? 96 : 26;
-  const petals = Array.from({ length: count }, (_, i) => i);
-  const colors = big
-    ? [
-        "var(--berry2)",
-        "var(--honey)",
-        "var(--honeyD)",
-        "var(--app-petal-pink)",
-        "var(--rose)",
-        "var(--app-spark)",
-      ]
-    : [
-        "var(--berry2)",
-        "var(--honey)",
-        "var(--honeyD)",
-        "var(--app-petal-pink)",
-        "var(--rose)",
-      ];
+// Petal colours read against the claret room: gold, paper and blush carry, the
+// deep claret tones give the fall depth without muddying into the ground.
+const PETAL_COLOURS = [
+  "var(--ce-gold)",
+  "var(--ce-blush)",
+  "var(--app-spark)",
+  "var(--app-petal-pink)",
+  "var(--ta-honey)",
+  "var(--ce-ink)",
+];
+
+// Full-screen celebration overlay, constrained to the app column and layered by
+// tier (see celebrationTier). Every layer is transform/opacity only so the whole
+// thing composites on the GPU; pointer-events pass through so a tap always
+// reaches the CTA underneath. The parent unmounts it after ~8.5s.
+function Celebration({ tier }: { tier: CelebrationTier }) {
+  const count = PETAL_COUNT[tier];
+  // Randomised per mount: the old formulaic left/delay produced petals falling
+  // in visible diagonal chains. Each petal now carries its own sway and spin.
+  const petals = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        i,
+        left: Math.random() * 102 - 1,
+        delay: Math.random() * (tier >= 3 ? 3.4 : 2.6),
+        dur: 3.6 + Math.random() * 3.8,
+        w: 7 + Math.random() * 7,
+        h: 10 + Math.random() * 9,
+        sway: Math.round((Math.random() * 2 - 1) * 46),
+        spin: Math.round(140 + Math.random() * 300),
+        opacity: (0.7 + Math.random() * 0.3).toFixed(2),
+        colour: PETAL_COLOURS[Math.floor(Math.random() * PETAL_COLOURS.length)],
+      })),
+    [count, tier],
+  );
+
+  // Sparks burst outward from the score as the number lands (tier 3+).
+  const sparks = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => {
+        const a = (i / 12) * Math.PI * 2;
+        const d = 78 + Math.random() * 46;
+        return {
+          i,
+          dx: `${Math.round(Math.cos(a) * d)}px`,
+          dy: `${Math.round(Math.sin(a) * d)}px`,
+          delay: `${(i % 4) * 0.06}s`,
+        };
+      }),
+    [],
+  );
+
   return (
-    <div className="celebrate" aria-hidden="true">
-      <span className="wash" />
-      {petals.map((i) => (
+    <div className={`celebrate tier${tier}`} aria-hidden="true">
+      {/* tier 1+ — the room itself: breathing ripples, rising motes, one pass
+          of light across the screen. */}
+      <span className="ce-ripple" />
+      <span className="ce-ripple d2" />
+      <span className="ce-sweep" />
+      {Array.from({ length: tier >= 3 ? 14 : 8 }, (_, i) => (
         <span
-          key={i}
-          className="petal"
+          key={`m${i}`}
+          className="ce-mote"
           style={{
-            left: `${(i * 37 + 11) % 100}%`,
-            width: (big ? 9 : 8) + (i % 4) * 2,
-            height: (big ? 12 : 11) + (i % 3) * 3,
-            background: colors[i % colors.length],
-            animationDelay: `${(i % (big ? 19 : 13)) * (big ? 0.13 : 0.17)}s`,
-            animationDuration: `${2.7 + (i % 5) * 0.3}s`,
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 6}s`,
+            animationDuration: `${7 + Math.random() * 5}s`,
           }}
+        />
+      ))}
+
+      {/* tier 3+ — the grand bloom: gold rays wheel behind the score, the wash
+          pulses, and sparks burst as the number settles. */}
+      {tier >= 3 && (
+        <>
+          <span className="ce-rays" />
+          <span className="ce-goldwash" />
+          {sparks.map((s) => (
+            <span
+              key={`s${s.i}`}
+              className="ce-spark"
+              style={
+                {
+                  "--dx": s.dx,
+                  "--dy": s.dy,
+                  animationDelay: s.delay,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </>
+      )}
+
+      {/* tier 2+ — the fall */}
+      {petals.map((p) => (
+        <span
+          key={p.i}
+          className="petal"
+          style={
+            {
+              left: `${p.left}%`,
+              width: p.w,
+              height: p.h,
+              background: p.colour,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.dur}s`,
+              "--sway": `${p.sway}px`,
+              "--spin": `${p.spin}deg`,
+              "--o": p.opacity,
+            } as CSSProperties
+          }
         />
       ))}
     </div>

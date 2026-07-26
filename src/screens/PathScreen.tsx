@@ -332,10 +332,16 @@ function PathIntake({
         {q.opts.map((o, oi) => {
           const sel = q.type === "multi" ? (a as number[]).includes(oi) : a === oi;
           return (
-            <div key={oi} className={`opt ${sel ? "sel" : ""}`} onClick={() => pick(oi)}>
+            <button
+              key={oi}
+              type="button"
+              aria-pressed={sel}
+              className={`opt ${sel ? "sel" : ""}`}
+              onClick={() => pick(oi)}
+            >
               {o}
               <span className="dot" />
-            </div>
+            </button>
           );
         })}
       </div>
@@ -471,7 +477,22 @@ export function PathMap({
             const lx = i % 2 === 0 ? x + 46 : x - 46;
             const anchor = i % 2 === 0 ? "start" : "end";
             return (
-              <g key={meta.key} onClick={() => tap(i)} style={{ cursor: "pointer" }} role="button" aria-label={meta.name}>
+              <g
+                key={meta.key}
+                onClick={() => tap(i)}
+                // role="button" without a tabIndex or key handler made the whole
+                // map unreachable by keyboard and switch control.
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    tap(i);
+                  }
+                }}
+                style={{ cursor: "pointer" }}
+                role="button"
+                aria-label={`${meta.name} — ${meta.theme}${done ? t(", walked", ", parcouru") : isCur ? t(", you are here", ", vous êtes ici") : t(", not yet open", ", pas encore ouvert")}`}
+              >
                 {done && (
                   <circle cx={x} cy={y} r={r + 15} opacity={0.16} className="path-halo" style={{ fill: "var(--honey)" }} />
                 )}
@@ -491,7 +512,11 @@ export function PathMap({
         </svg>
       </div>
 
-      {toast && <div className="path-toast">{toast}</div>}
+      {toast && (
+        <div className="path-toast" role="status" aria-live="polite">
+          {toast}
+        </div>
+      )}
     </section>
   );
 }

@@ -77,7 +77,12 @@ export default function DecksScreen({
                   : t(`${word} · ${total} questions`, `${word} · ${total} questions`);
               const pct = complete ? pctOf(slug) : undefined;
               return (
-                <div key={slug} className="row" onClick={() => onPlay(slug)}>
+                <button
+                  key={slug}
+                  type="button"
+                  className="row"
+                  onClick={() => onPlay(slug)}
+                >
                   <div className="catico" style={{ background: `${d.color}1A`, color: d.color }}>
                     <DeckIcon icon={d.icon} size={22} />
                   </div>
@@ -92,7 +97,7 @@ export default function DecksScreen({
                   ) : (
                     <ProgressRing done={mine} total={total} size={44} />
                   )}
-                </div>
+                </button>
               );
             })}
           </div>

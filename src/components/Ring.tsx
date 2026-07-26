@@ -56,7 +56,13 @@ export function ProgressRing({
   const frac = total ? done / total : 0;
   const dash = (circ * frac * p).toFixed(1);
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      role="img"
+      aria-label={`${done} of ${total} answered`}
+    >
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth="9" />
       <circle
         cx={size / 2}
@@ -103,13 +109,23 @@ export function PctRing({
   delayMs?: number;
 }) {
   const p = useDraw(drawMs ?? 900, delayMs);
+  // The number is an animating <text> node inside an SVG — assistive tech got
+  // either nothing or a changing fragment. Announce the settled value.
   const sw = 12;
   const r = size / 2 - sw;
   const circ = 2 * Math.PI * r;
   const dash = ((circ * pct) / 100) * p;
   const shown = Math.round(pct * p);
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      role="img"
+      // The FINAL value, not the animating one — otherwise a reader either gets
+      // nothing or a number that changes under it mid-announcement.
+      aria-label={`${pct}% ${label}`}
+    >
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth={sw} />
       <circle
         cx={size / 2}

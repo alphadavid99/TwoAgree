@@ -390,15 +390,18 @@ function QuestionInput({
           <span>{q.lo}</span>
           <span style={{ textAlign: "right" }}>{q.hi}</span>
         </div>
-        <div className="scale">
+        <div className="scale" role="group" aria-label={q.q}>
           {[1, 2, 3, 4, 5].map((i) => (
-            <div
+            <button
               key={i}
+              type="button"
               className={`orb ${value === i ? "sel" : ""}`}
               onClick={() => onPick(i)}
+              aria-pressed={value === i}
+              aria-label={`${i} — ${i >= 4 ? q.hi : i <= 2 ? q.lo : t("in the middle", "au milieu")}`}
             >
               {i}
-            </div>
+            </button>
           ))}
         </div>
         {/* Live label anchored under the chosen orb — names the middle so the
@@ -424,6 +427,7 @@ function QuestionInput({
     return (
       <textarea
         className="ta"
+        aria-label={q.q}
         placeholder={t(
           "Write as much or as little as you like…",
           "Écrivez autant ou aussi peu que vous le souhaitez…",
@@ -446,8 +450,15 @@ function QuestionInput({
           const pos = rankOrder.indexOf(i);
           const ranked = pos >= 0;
           return (
-            <div
+            <button
               key={i}
+              type="button"
+              aria-pressed={ranked}
+              aria-label={
+                ranked
+                  ? t(`${o}, ranked ${pos + 1}`, `${o}, classé ${pos + 1}`)
+                  : t(`${o}, not ranked`, `${o}, non classé`)
+              }
               className={`opt rankopt ${ranked ? "sel" : ""}`}
               onClick={() => {
                 const next = [...rankOrder];
@@ -469,7 +480,7 @@ function QuestionInput({
                 {ranked ? pos + 1 : ""}
               </span>
               <span style={{ flex: 1 }}>{o}</span>
-            </div>
+            </button>
           );
         })}
       </>
@@ -477,16 +488,18 @@ function QuestionInput({
   }
   // mc
   return (
-    <div style={{ marginTop: 4 }}>
+    <div style={{ marginTop: 4 }} role="group" aria-label={q.q}>
       {q.opts?.map((o, i) => (
-        <div
+        <button
           key={i}
+          type="button"
           className={`opt ${guess ? "guess" : ""} ${value === i ? "sel" : ""}`}
           onClick={() => onPick(i)}
+          aria-pressed={value === i}
         >
           {o}
           <span className="dot" />
-        </div>
+        </button>
       ))}
     </div>
   );

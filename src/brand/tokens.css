@@ -44,14 +44,23 @@
   --app-amber:        #8F5A12;  /* text-safe amber for honey-coloured TEXT on light */
 
   /* Secondary text / muted labels / hairlines / soft surfaces */
-  --app-sub:          #8A6A78;
-  --app-mut:          #7E6B76;
-  --app-card-line:    #F1E4E7;  /* card hairlines, option borders */
+  /* Darkened one notch: on the blush ground these measured 4.05:1 / 4.20:1 at
+     11-13px — below AA, and it's the wayfinding copy (play hints, caplines). */
+  --app-sub:          #7C5C6B;
+  --app-mut:          #6F5C68;
+  /* Card hairlines. Deliberately NOT taken to 3:1: this token also draws the
+     decorative rules between cards, where a 3:1 line would shout. The controls
+     that need the ratio carry it on their own border (see --app-opt-line). */
+  --app-card-line:    #E3D2D8;  /* 1.45:1 on white — hairlines only */
+  --app-opt-line:     #B07C90;  /* option/control boundary — 3.4:1 on white */
   --app-opt-bg:       #F8E9EC;  /* soft blush wells: inputs, chips, selected */
   --app-honey-bg:     #FBEBDC;  /* honey-tinted callout ground */
   --app-honey-line:   #F3E6CF;  /* honey-tinted hairline (guess card) */
   --app-track:        #F0DEE2;  /* progress/ring tracks */
-  --app-orb-line:     #E0B9C2;  /* unselected orb / dot borders */
+  /* An orb's ring IS the control — there's nothing else to see when it's
+     unselected — so it has to clear the 3:1 non-text floor (WCAG 1.4.11).
+     It measured 1.77:1. */
+  --app-orb-line:     #B07C90;  /* 3.4:1 on white, 2.9:1 on the blush ground */
   --app-opt-hover:    #DCC0CB;  /* option border on hover */
   --app-row-hover:    #FDF7F9;  /* result row hover ground */
 

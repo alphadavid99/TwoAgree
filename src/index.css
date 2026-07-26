@@ -14,6 +14,8 @@
   --sub: var(--app-sub);
   --mut: var(--app-mut);
   --cardb: var(--app-card-line);
+  /* the boundary of an actual control, which must clear 3:1 */
+  --optb: var(--app-opt-line);
   --optbg: var(--app-opt-bg);
   --honbg: var(--app-honey-bg);
   --track: var(--app-track);
@@ -92,14 +94,20 @@ body {
 /* The wordmark and mark are now React components (src/brand/Wordmark.tsx,
    src/brand/Mark.tsx) in self-hosted Inter — their colour is set per-usage via
    the component's tone/colour props, so no wordmark CSS lives here anymore. */
+/* READING SURFACES ARE rem. Every size in this file used to be px, so a
+   person's browser/system text-size preference did nothing at all — and inside
+   the Capacitor WKWebView there is no page-zoom path either. The reading type
+   (question, headings, body, option labels) is now rem so those settings work;
+   decorative micro-labels stay px on purpose. html stays at 16px, so nothing
+   moves for anyone on the default. */
 .h1 {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 1.875rem; /* 30px */
   font-weight: 600;
 }
 .sub {
   color: var(--sub);
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   line-height: 1.55;
 }
 .muted {
@@ -219,7 +227,7 @@ textarea.input {
   font-weight: 500;
   font-size: 14px;
   margin-top: 16px;
-  padding: 8px;
+  padding: 13px 8px; /* 44px tall */
 }
 .google,
 .apple {
@@ -328,7 +336,7 @@ textarea.input {
   margin-top: 10px;
   text-align: center;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.02em;
   color: var(--mut);
   opacity: 0.55;
@@ -396,7 +404,7 @@ textarea.input {
 }
 .qtext {
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 1.3125rem; /* 21px */
   line-height: 1.35;
   margin-top: 14px;
   color: var(--ink);
@@ -476,7 +484,11 @@ textarea.input {
 .orb.sel {
   background: var(--honey);
   border-color: var(--honey);
-  color: var(--ta-white);
+  /* Dark ink on gold. White measures 2.08:1 here — and this is the readout of
+     the answer the user just gave, on the most-tapped control in the app. The
+     honey CTA already solved it with --app-honey-ink; the orbs never got the
+     memo. Same fix below for the rank badge and the partner discs. */
+  color: var(--app-honey-ink);
   animation: orbSpring 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
     orbGlow 0.7s ease;
 }
@@ -506,12 +518,13 @@ textarea.input {
 .opt {
   position: relative;
   padding: 16px 44px 16px 18px;
-  border: 1.5px solid var(--cardb);
+  border: 1.5px solid var(--optb);
   border-radius: var(--r-sm);
   margin-top: 10px;
   cursor: pointer;
   transition: all 0.12s;
   line-height: 1.4;
+  font-size: 1rem; /* 16px — a reading surface, so it scales */
 }
 .opt .dot {
   position: absolute;
@@ -592,7 +605,7 @@ textarea.input {
 .rankopt.sel .rankno {
   background: var(--honey);
   border-color: var(--honey);
-  color: var(--ta-white);
+  color: var(--app-honey-ink);
   animation: orbSpring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .ta {
@@ -603,7 +616,7 @@ textarea.input {
   font-size: 16px;
   font-family: inherit;
   color: var(--ink);
-  border: 1.5px solid var(--cardb);
+  border: 1.5px solid var(--optb);
   border-radius: var(--r-sm);
   outline: none;
   resize: none;
@@ -648,7 +661,8 @@ textarea.input {
   background: var(--ta-white);
   border: 1.5px solid var(--honeyD);
   border-radius: 10px;
-  padding: 4px 12px;
+  /* the pairing moment — a fumbled copy here is real friction */
+  padding: 10px 14px;
   margin-left: 4px;
   cursor: pointer;
 }
@@ -748,7 +762,7 @@ textarea.input {
 }
 .resrow-scores .rs i {
   font-style: normal;
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--sub);
@@ -849,8 +863,10 @@ textarea.input {
 .iconbtn {
   background: none;
   border: none;
-  padding: 8px;
-  margin: -8px;
+  /* 11px lifts the hit area to ~44px (WCAG 2.5.8 / Apple HIG) — the close
+     button is used every session. The negative margin keeps it optically put. */
+  padding: 11px;
+  margin: -11px;
   color: var(--berry);
   cursor: pointer;
   display: flex;
@@ -995,7 +1011,7 @@ textarea.input {
   background: var(--honbg);
 }
 .scall .lb {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-weight: 700;
@@ -1157,7 +1173,7 @@ textarea.input {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
@@ -1214,7 +1230,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--ta-white);
   border: 2px solid var(--ta-white);
@@ -1226,6 +1242,7 @@ textarea.input {
 }
 .sbar-dot.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .sbar-dot.both {
   background: linear-gradient(135deg, var(--berry), var(--honeyD));
@@ -1283,7 +1300,7 @@ textarea.input {
 }
 .mcchip i {
   font-style: normal;
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   font-weight: 700;
@@ -1313,7 +1330,7 @@ textarea.input {
   min-width: 0;
 }
 .rank2-h {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1366,10 +1383,11 @@ textarea.input {
 }
 .oav.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .oq-who {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   font-weight: 700;
@@ -2351,7 +2369,7 @@ textarea.input {
 }
 .tile-lb {
   float: right;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--sub);
   text-align: right;
@@ -2778,6 +2796,7 @@ textarea.input {
 }
 .cmp2-av.j {
   background: var(--honeyD);
+  color: var(--app-honey-ink);
 }
 .cmp2-said {
   font-size: 15px;
@@ -3149,7 +3168,7 @@ textarea.input {
   color: var(--ink);
 }
 .menucard-depth {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -3513,7 +3532,7 @@ textarea.input {
 }
 .readycard-eyebrow {
   display: block;
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--ce-gold);
@@ -3623,7 +3642,7 @@ textarea.input {
 }
 /* The verse anchor on a difference — neutral ground to start from. */
 .qc-ref {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -3977,4 +3996,58 @@ textarea.input {
   text-decoration: underline;
   text-underline-offset: 2px;
   flex: 0 0 auto;
+}
+
+
+/* ============================================================
+   Answer controls are real buttons now (they were click-divs: no keyboard
+   access, no roles, no focus ring — the core loop was inoperable on a laptop
+   and silent to a screen reader). These resets keep the rendering identical.
+   ============================================================ */
+.opt,
+.orb,
+.row {
+  font: inherit;
+  /* A <button> brings the UA's own background (buttonface grey) and border —
+     both of which showed up the moment these stopped being divs. */
+  background: transparent;
+  border-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.opt,
+.row {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+}
+.opt {
+  align-items: center;
+  /* restored after the reset above */
+  border: 1.5px solid var(--optb);
+}
+.orb {
+  background: var(--ta-white);
+  border: 2px solid var(--app-orb-line);
+  color: var(--mut);
+}
+.row {
+  background: var(--ta-white);
+}
+.rankopt {
+  gap: 12px;
+}
+
+/* Visible only to assistive tech. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

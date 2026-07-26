@@ -173,6 +173,15 @@ function ShareCard({
     if (outcome === "failed") setNote(t("Couldn’t share that — try again.", "Partage impossible — réessayez."));
   };
 
+  // A dialog you can't dismiss from the keyboard isn't a dialog.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   const Toggle = ({
     on,
     set,

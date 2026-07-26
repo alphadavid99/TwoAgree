@@ -295,23 +295,31 @@ function StepPlay({
         </div>
         <div className="scale">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className={`orb ${value === i ? "sel" : ""}`} onClick={() => onPick(i)}>
+            <button
+              key={i}
+              type="button"
+              aria-pressed={value === i}
+              className={`orb ${value === i ? "sel" : ""}`}
+              onClick={() => onPick(i)}
+            >
               {i}
-            </div>
+            </button>
           ))}
         </div>
       </>
     ) : (
       <div style={{ marginTop: 4 }}>
         {q.opts?.map((o, i) => (
-          <div
+          <button
             key={i}
+            type="button"
+            aria-pressed={value === i}
             className={`opt ${guess ? "guess" : ""} ${value === i ? "sel" : ""}`}
             onClick={() => onPick(i)}
           >
             {o}
             <span className="dot" />
-          </div>
+          </button>
         ))}
       </div>
     );

@@ -271,6 +271,22 @@ export default function RevealScreen({
             <div className="lvlup-rise r1">
               <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony />
             </div>
+            {/* The whole ceremony is staged in motion, so without this a blind
+                partner — or one holding the phone between them with VoiceOver
+                on — gets none of the arc the animation carries. */}
+            <p className="sr-only" role="status">
+              {t(
+                `You agreed ${pct} percent.`,
+                `Vous êtes d’accord à ${pct} pour cent.`,
+              )}
+              {know.pct != null &&
+                t(
+                  ` You knew each other’s answers ${know.pct} percent.`,
+                  ` Vous avez deviné les réponses de l’autre à ${know.pct} pour cent.`,
+                )}
+              {" "}
+              {agreedLine(pct, t)}.
+            </p>
             {firstEver && (
               <p className="firstline lvlup-rise r2">
                 {t(

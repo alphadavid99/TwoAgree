@@ -45,7 +45,7 @@
     {
       "id": "avoided",
       "q": "Does anything feel avoided or unresolved between you?",
-      "hint": "Pick any that apply. Your partner will never see this.",
+      "hint": "Pick any that apply. Answer honestly, it shapes where your path goes.",
       "type": "multi",
       "excl": "Nothing comes to mind",
       "opts": [

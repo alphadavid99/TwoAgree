@@ -261,8 +261,8 @@ export default function Onboarding({
     }
   };
 
-  const shell = (children: React.ReactNode, onExit?: () => void) => (
-    <section className={enter}>
+  const shell = (children: React.ReactNode, onExit?: () => void, cls?: string) => (
+    <section className={cls ? `${enter} ${cls}` : enter}>
       {onExit ? (
         <TopBar onExit={onExit} />
       ) : (
@@ -430,14 +430,16 @@ export default function Onboarding({
             )}
             <span className="verse-ref">Amos 3:3</span>
           </p>
-          {/* Three short lines about what the couple GETS. The old version was
-              three long ones about how the app works: turn-taking, answer
-              privacy, and a paragraph promising nobody wins. All true, none of
-              it a reason to start, and it read as a terms page. */}
+          {/* Know, talk, walk. Three outcomes, ending where the verse above
+              starts: the two of you moving toward agreement with Christ at the
+              centre. Earlier versions sold the MECHANICS instead — turn-taking,
+              answering apart, nothing opening until you both had. All true, and
+              none of it a reason to start; framing separate answers as the draw
+              made a collaborative app sound like a locked diary. */}
           <ul className="obfacts">
-            <li>{t("Talk about things you'd never think to bring up.", "Parlez de choses que vous n'auriez jamais pensé aborder.")}</li>
-            <li>{t("Find out how well you really know each other.", "Découvrez à quel point vous vous connaissez vraiment.")}</li>
-            <li>{t("You answer on your own. Nothing opens until you both have.", "Vous répondez chacun de votre côté. Rien ne s'ouvre avant que vous ayez répondu tous les deux.")}</li>
+            <li>{t("Get to know each other better.", "Apprenez à mieux vous connaître.")}</li>
+            <li>{t("Talk through the things that matter most.", "Parlez de ce qui compte le plus.")}</li>
+            <li>{t("Walk toward agreement together, with Christ at the centre.", "Avancez ensemble vers l'accord, avec le Christ au centre.")}</li>
           </ul>
         </div>
         <button className="btn pill" type="button" onClick={() => setStepA("names")}>
@@ -451,6 +453,8 @@ export default function Onboarding({
           {t("Already have an account? Sign in", "Vous avez déjà un compte ? Connectez-vous")}
         </button>
       </>,
+      undefined,
+      "obwel",
     );
   }
 
@@ -1014,8 +1018,8 @@ function InviteStep({
 }) {
   const [msg, setMsg] = useState(
     t(
-      `${partner}, I've started something for the two of us on TwoAgree. We each answer the same questions honestly and on our own, then see where we land together. It only works with you in it, about five minutes: `,
-      `${partner}, j'ai commencé quelque chose pour nous deux sur TwoAgree. On répond chacun aux mêmes questions, honnêtement et de notre côté, puis on voit où on se retrouve. Ça ne marche qu'avec toi, environ cinq minutes : `,
+      `${partner}, I've started something for the two of us on TwoAgree. We each answer the same questions honestly, then talk through where we landed. It only works with you in it, about five minutes: `,
+      `${partner}, j'ai commencé quelque chose pour nous deux sur TwoAgree. On répond chacun aux mêmes questions, honnêtement, puis on parle de là où on en est. Ça ne marche qu'avec toi, environ cinq minutes : `,
     ),
   );
   const [busy, setBusy] = useState(false);

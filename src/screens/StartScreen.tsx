@@ -88,7 +88,9 @@ export default function StartScreen({
           <li className="step">
             <span className="stepn">1</span>
             <span className="stept">
-              <b>{t("You create a code", "Vous créez un code")}</b>{" "}
+              {/* No {" "} before the comma: the explicit space rendered as
+                  "You create a code , it takes one tap". */}
+              <b>{t("You create a code", "Vous créez un code")}</b>
               {t(", it takes one tap", ", un seul appui suffit")}
             </span>
           </li>
@@ -103,7 +105,7 @@ export default function StartScreen({
             <span className="stepn">3</span>
             <span className="stept">
               <b>{t("You each answer", "Vous répondez chacun")}</b>{" "}
-              {t("privately, on your own", "en privé, de votre côté")}
+              {t("the same questions, then talk it through", "aux mêmes questions, puis vous en parlez")}
             </span>
           </li>
         </ol>

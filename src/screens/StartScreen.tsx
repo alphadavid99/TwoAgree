@@ -80,6 +80,9 @@ export default function StartScreen({
       <h1 className="h1 center" style={{ marginTop: 8 }}>
         {t("Start a session", "Démarrer une session")}
       </h1>
+      {/* One white card, per brand RULE 2 — the steps, the stage chips and the
+          code field were blush wells on a blush ground with nothing to sit on. */}
+      <div className="card authcard">
       {mode === "choose" ? (
         <ol className="steps">
           <li className="step">
@@ -182,6 +185,7 @@ export default function StartScreen({
           </button>
         </>
       )}
+      </div>
     </section>
   );
 }

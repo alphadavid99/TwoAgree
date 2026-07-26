@@ -3774,6 +3774,16 @@ textarea.input {
   margin-top: 10px;
 }
 
+/* The account card. Its own padding, because the fields inside already carry
+   generous vertical rhythm and the default 22px would bloat the front door. */
+.authcard {
+  padding: 18px 18px 20px;
+  margin-top: 4px;
+}
+.authcard .btn:first-child {
+  margin-top: 0;
+}
+
 /* Day zero on the Together tab — the promise, not an empty instrument panel. */
 .daycard {
   background: var(--ta-white);

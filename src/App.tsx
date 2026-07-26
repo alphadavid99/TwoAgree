@@ -121,8 +121,8 @@ function SignedIn({ user, invite }: { user: User; invite: Invite | null }) {
             rej(
               new Error(
                 getLang() === "fr"
-                  ? "Cela a pris trop de temps — vérifiez votre connexion et rouvrez le lien."
-                  : "That took too long — check your connection and open the link again.",
+                  ? "Cela a pris trop de temps, vérifiez votre connexion et rouvrez le lien."
+                  : "That took too long: check your connection and open the link again.",
               ),
             ),
           20000,

@@ -20,7 +20,7 @@ describe("prettyError", () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
     const out = prettyError(err);
     expect(out).not.toMatch(/Firebase|auth\//);
-    expect(out).toBe("Something went wrong — please try again.");
+    expect(out).toBe("Something went wrong: please try again.");
   });
 
   it("maps the codes the account-linking flows actually throw", () => {
@@ -42,7 +42,7 @@ describe("prettyError", () => {
   it("suppresses a bare message that is really a stack-trace prefix", () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
     expect(prettyError({ message: "FirebaseError: boom" })).toBe(
-      "Something went wrong — please try again.",
+      "Something went wrong: please try again.",
     );
   });
 });

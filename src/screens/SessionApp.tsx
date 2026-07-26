@@ -336,8 +336,8 @@ export default function SessionApp({
               </h2>
               <p className="sub center" style={{ margin: "10px 24px 0" }}>
                 {t(
-                  "Your reveal is waiting — it's best opened side by side.",
-                  "Votre révélation vous attend — mieux vaut l’ouvrir côte à côte.",
+                  "Your reveal is waiting: it's best opened side by side.",
+                  "Votre révélation vous attend, mieux vaut l’ouvrir côte à côte.",
                 )}
               </p>
               <button
@@ -387,12 +387,12 @@ export default function SessionApp({
         <p className="sub center" style={{ margin: "10px 24px 20px" }}>
           {doneInLevel(slug, level, deck, other(role)) > 0
             ? t(
-                `${partnerName}'s answers are sealed until you've both finished — then you'll see the same score, together.`,
-                `Les réponses de ${partnerName} restent scellées jusqu’à ce que vous ayez tous deux terminé — vous verrez alors le même score, ensemble.`,
+                `${partnerName}'s answers are sealed until you've both finished, then you'll see the same score, together.`,
+                `Les réponses de ${partnerName} restent scellées jusqu’à ce que vous ayez tous deux terminé, vous verrez alors le même score, ensemble.`,
               )
             : t(
-                `Sealed until ${partnerName} has answered too — then you'll both see the same score.`,
-                `Scellé jusqu’à ce que ${partnerName} ait répondu aussi — vous verrez alors le même score tous les deux.`,
+                `Sealed until ${partnerName} has answered too, then you'll both see the same score.`,
+                `Scellé jusqu’à ce que ${partnerName} ait répondu aussi, vous verrez alors le même score tous les deux.`,
               )}
         </p>
         {/* Two counts side by side in team colours read as a scoreboard — the

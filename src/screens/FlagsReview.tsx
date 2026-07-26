@@ -205,8 +205,8 @@ function WalkCard({
         {row.flag === "blindSpot" && (
           <p className="walktalk-p">
             {t(
-              "Start with what you each expected the other to say — that’s usually the more interesting half.",
-              "Commencez par ce que chacun pensait que l’autre dirait — c’est souvent la moitié la plus intéressante.",
+              "Start with what you each expected the other to say, that’s usually the more interesting half.",
+              "Commencez par ce que chacun pensait que l’autre dirait, c’est souvent la moitié la plus intéressante.",
             )}
           </p>
         )}
@@ -273,8 +273,8 @@ export default function FlagsReview({
       </div>
       <p className="sub serif center" style={{ fontStyle: "italic", margin: "8px 24px 18px" }}>
         {t(
-          "Nothing here is a problem — it’s just where the talking is.",
-          "Rien ici n’est un problème — c’est simplement là où la conversation compte.",
+          "Nothing here is a problem, it’s just where the talking is.",
+          "Rien ici n’est un problème, c’est simplement là où la conversation compte.",
         )}
       </p>
 

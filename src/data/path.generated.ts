@@ -166,7 +166,7 @@ export const PATH_STEPS: PathStepMeta[] = [
     "glyph": "g-fork",
     "verse": "A soft answer turns away wrath, but a harsh word stirs up anger.",
     "ref": "Proverbs 15:1",
-    "frame": "Where the road splits, how do the two of you choose a way? This step leans on guessing — see how well you already read each other.",
+    "frame": "Where the road splits, how do the two of you choose a way? This step leans on guessing. See how well you already read each other.",
     "mechanic": "guess",
     "atTable": "Name one thing that would help the two of you handle disagreements better."
   },
@@ -190,7 +190,7 @@ export const PATH_STEPS: PathStepMeta[] = [
     "ref": "Psalm 128:3",
     "frame": "The family you came from, and the one you may build.",
     "mechanic": "guess",
-    "atTable": "What's one thing about family — the one you came from or the one you might build — you want to talk through?"
+    "atTable": "Family: the one you came from, and the one you might build. What's one thing you want to talk through?"
   },
   {
     "key": "garden",
@@ -221,7 +221,7 @@ export const PATH_STEPS: PathStepMeta[] = [
     "glyph": "g-hilltop",
     "verse": "I will lift up my eyes to the hills. Where does my help come from?",
     "ref": "Psalm 121:1",
-    "frame": "Your walk with God — alone, and side by side.",
+    "frame": "Your walk with God: alone, and side by side.",
     "mechanic": "guess",
     "atTable": "What's one thing about your walk with God you'd love to share more of together?"
   },
@@ -243,7 +243,7 @@ export const PATH_STEPS: PathStepMeta[] = [
     "glyph": "g-summit",
     "verse": "A wise man built his house on the rock.",
     "ref": "Matthew 7:24",
-    "frame": "The hardest questions, kept for last. No guessing up here — just honest answers, then the reveal.",
+    "frame": "The hardest questions, kept for last. No guessing up here. Just honest answers, then the reveal.",
     "mechanic": "noguess",
     "atTable": "What's one conviction you're holding that you want the other to really understand?"
   },

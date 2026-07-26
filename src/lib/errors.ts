@@ -6,8 +6,8 @@ import { getLang } from "./i18n";
 
 const MESSAGES: Record<string, { en: string; fr: string }> = {
   "auth/email-already-in-use": {
-    en: "That email already has an account — try signing in.",
-    fr: "Cet e-mail a déjà un compte — essayez de vous connecter.",
+    en: "That email already has an account, try signing in.",
+    fr: "Cet e-mail a déjà un compte, essayez de vous connecter.",
   },
   "auth/invalid-email": {
     en: "That email doesn’t look right.",
@@ -30,8 +30,8 @@ const MESSAGES: Record<string, { en: string; fr: string }> = {
     fr: "E-mail ou mot de passe incorrect.",
   },
   "auth/too-many-requests": {
-    en: "Too many attempts — wait a moment and try again.",
-    fr: "Trop de tentatives — patientez un instant et réessayez.",
+    en: "Too many attempts: wait a moment and try again.",
+    fr: "Trop de tentatives, patientez un instant et réessayez.",
   },
   "auth/popup-closed-by-user": {
     en: "Sign-in was closed before finishing.",
@@ -48,13 +48,13 @@ const MESSAGES: Record<string, { en: string; fr: string }> = {
     fr: "L’enregistrement a échoué. Reconnectez-vous et réessayez.",
   },
   "auth/network-request-failed": {
-    en: "You look offline — check your connection and try again.",
-    fr: "Vous semblez hors ligne — vérifiez votre connexion et réessayez.",
+    en: "You look offline: check your connection and try again.",
+    fr: "Vous semblez hors ligne, vérifiez votre connexion et réessayez.",
   },
   // The linking flows throw these when the person already has an account.
   "auth/credential-already-in-use": {
-    en: "That account already exists — sign in with it instead.",
-    fr: "Ce compte existe déjà — connectez-vous avec celui-ci.",
+    en: "That account already exists: sign in with it instead.",
+    fr: "Ce compte existe déjà, connectez-vous avec celui-ci.",
   },
   "auth/account-exists-with-different-credential": {
     en: "That email is already used with a different sign-in method.",
@@ -65,8 +65,8 @@ const MESSAGES: Record<string, { en: string; fr: string }> = {
     fr: "Ce compte est déjà connecté.",
   },
   "auth/popup-blocked": {
-    en: "Your browser blocked the sign-in window — allow pop-ups and try again.",
-    fr: "Votre navigateur a bloqué la fenêtre de connexion — autorisez les pop-ups et réessayez.",
+    en: "Your browser blocked the sign-in window, allow pop-ups and try again.",
+    fr: "Votre navigateur a bloqué la fenêtre de connexion, autorisez les pop-ups et réessayez.",
   },
   "auth/cancelled-popup-request": {
     en: "Sign-in was closed before finishing.",
@@ -101,5 +101,5 @@ export function prettyError(err: unknown): string {
     return message;
   }
   if (code) console.warn("[twoagree] unmapped error code:", code, message);
-  return fr ? "Une erreur s’est produite." : "Something went wrong — please try again.";
+  return fr ? "Une erreur s’est produite." : "Something went wrong: please try again.";
 }

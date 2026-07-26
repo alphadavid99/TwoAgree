@@ -61,7 +61,7 @@ if (EMU) {
   try {
     HARNESS_CODE = await seatHarness();
   } catch (e) {
-    console.warn("[preview] no seat — write flows will be denied", e);
+    console.warn("[preview] no seat: write flows will be denied", e);
   }
 }
 

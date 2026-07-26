@@ -114,8 +114,8 @@ export default function ResultsScreen({
         </h1>
         <p className="sub center" style={{ margin: "0 18px 20px" }}>
           {t(
-            "Nothing here yet — it fills in the moment you've both answered your first conversation.",
-            "Rien ici pour l’instant — cela se remplit dès que vous avez tous deux répondu à votre première conversation.",
+            "Nothing here yet: it fills in the moment you've both answered your first conversation.",
+            "Rien ici pour l’instant, cela se remplit dès que vous avez tous deux répondu à votre première conversation.",
           )}
         </p>
         <div className="daycard">
@@ -159,7 +159,7 @@ export default function ResultsScreen({
         t={t}
       />
 
-      {/* The couple's agenda — what they said they'd talk about, and what they
+      {/* The couple's agenda: what they said they'd talk about, and what they
           have. Nothing carried a couple from "worth a chat" to an actual chat
           before this, and nothing marked the talking as having happened. */}
       {code && (

@@ -89,7 +89,7 @@ export default function StartScreen({
             <span className="stepn">1</span>
             <span className="stept">
               <b>{t("You create a code", "Vous créez un code")}</b>{" "}
-              {t("— it takes one tap", "— un seul appui suffit")}
+              {t(", it takes one tap", ", un seul appui suffit")}
             </span>
           </li>
           <li className="step">

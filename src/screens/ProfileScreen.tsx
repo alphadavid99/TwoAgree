@@ -108,8 +108,8 @@ export default function ProfileScreen({
         );
         setDataMsg(
           t(
-            "Downloaded. Open it in any browser — it prints to PDF too.",
-            "Téléchargé. Ouvrez-le dans un navigateur — il s’imprime aussi en PDF.",
+            "Downloaded. Open it in any browser, it prints to PDF too.",
+            "Téléchargé. Ouvrez-le dans un navigateur, il s’imprime aussi en PDF.",
           ),
         );
       } else {
@@ -148,8 +148,8 @@ export default function ProfileScreen({
       setPendingPhoto(dataUrl);
       setOk(
         t(
-          "Photo ready — tap Save profile to keep it.",
-          "Photo prête — appuyez sur Enregistrer pour la garder.",
+          "Photo ready: tap Save profile to keep it.",
+          "Photo prête, appuyez sur Enregistrer pour la garder.",
         ),
       );
     } catch (e2) {
@@ -162,8 +162,8 @@ export default function ProfileScreen({
     if (!name.trim()) {
       setErr(
         t(
-          "Your name is needed — your partner sees it.",
-          "Votre nom est requis — votre partenaire le voit.",
+          "Your name is needed: your partner sees it.",
+          "Votre nom est requis, votre partenaire le voit.",
         ),
       );
       return;
@@ -280,8 +280,8 @@ export default function ProfileScreen({
           </div>
           <p className="muted" style={{ fontSize: 13, margin: "8px 0 12px" }}>
             {t(
-              "One email, only when they finish a conversation you were waiting on — so you know the reveal is open. Never a reminder, never a nudge.",
-              "Un e-mail, uniquement quand votre partenaire termine une conversation que vous attendiez — pour savoir que la révélation est ouverte. Jamais un rappel, jamais une relance.",
+              "One email, only when they finish a conversation you were waiting on, so you know the reveal is open. Never a reminder, never a nudge.",
+              "Un e-mail, uniquement quand votre partenaire termine une conversation que vous attendiez, pour savoir que la révélation est ouverte. Jamais un rappel, jamais une relance.",
             )}
           </p>
           <button
@@ -335,8 +335,8 @@ export default function ProfileScreen({
             <div className="eyebrow">{t("Leave this session?", "Quitter cette session ?")}</div>
             <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
               {t(
-                "Nothing is deleted — you can come back any time with your code:",
-                "Rien n’est supprimé — vous pouvez revenir à tout moment avec votre code :",
+                "Nothing is deleted: you can come back any time with your code:",
+                "Rien n’est supprimé, vous pouvez revenir à tout moment avec votre code :",
               )}
             </p>
             {code && <div className="codebig">{code}</div>}
@@ -436,8 +436,8 @@ export default function ProfileScreen({
               </li>
               <li>
                 {t(
-                  "Your partner keeps their own answers — but your side of every reveal you shared disappears from their app too, and the scores between you go with it.",
-                  "Votre partenaire garde ses propres réponses — mais votre côté de chaque révélation partagée disparaît aussi de son application, et les scores entre vous avec.",
+                  "Your partner keeps their own answers, but your side of every reveal you shared disappears from their app too, and the scores between you go with it.",
+                  "Votre partenaire garde ses propres réponses, mais votre côté de chaque révélation partagée disparaît aussi de son application, et les scores entre vous avec.",
                 )}
               </li>
               <li>

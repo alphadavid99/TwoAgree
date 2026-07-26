@@ -73,8 +73,8 @@ export function CoreScore({
         {complete
           ? t("You’ve finished the Core together.", "Vous avez terminé le Cœur ensemble.")
           : t(
-              `${agreed.done} of ${agreed.total} — the picture fills in as you answer.`,
-              `${agreed.done} sur ${agreed.total} — le tableau se complète à mesure que vous répondez.`,
+              `${agreed.done} of ${agreed.total}: the picture fills in as you answer.`,
+              `${agreed.done} sur ${agreed.total}, le tableau se complète à mesure que vous répondez.`,
             )}
       </p>
 
@@ -172,7 +172,7 @@ export function ShareCard({
     const blob = await renderShareCard(fields);
     if (!blob) {
       setBusy(false);
-      setNote(t("Couldn’t make the card — try again.", "Impossible de créer la carte — réessayez."));
+      setNote(t("Couldn’t make the card: try again.", "Impossible de créer la carte, réessayez."));
       return;
     }
     const outcome = await shareCardImage(
@@ -186,7 +186,7 @@ export function ShareCard({
     setBusy(false);
     // Only ever claim what actually happened — a dismissed sheet says nothing.
     if (outcome === "downloaded") setNote(t("Saved to your device.", "Enregistré sur votre appareil."));
-    if (outcome === "failed") setNote(t("Couldn’t share that — try again.", "Partage impossible — réessayez."));
+    if (outcome === "failed") setNote(t("Couldn’t share that: try again.", "Partage impossible, réessayez."));
   };
 
   // A dialog you can't dismiss from the keyboard isn't a dialog.

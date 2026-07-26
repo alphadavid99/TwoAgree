@@ -108,9 +108,9 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
   out.push(`<h2>${T("Your profile", "Votre profil")}</h2>`);
   if (data.profile) {
     out.push("<dl>");
-    out.push(`<dt>${T("Name", "Nom")}</dt><dd>${esc(data.profile.name) || "—"}</dd>`);
-    out.push(`<dt>${T("About you", "À propos de vous")}</dt><dd>${esc(data.profile.bio) || "—"}</dd>`);
-    out.push(`<dt>${T("Email", "E-mail")}</dt><dd>${esc(data.profile.email) || "—"}</dd>`);
+    out.push(`<dt>${T("Name", "Nom")}</dt><dd>${esc(data.profile.name) || T("Not given", "Non renseigné")}</dd>`);
+    out.push(`<dt>${T("About you", "À propos de vous")}</dt><dd>${esc(data.profile.bio) || T("Not given", "Non renseigné")}</dd>`);
+    out.push(`<dt>${T("Email", "E-mail")}</dt><dd>${esc(data.profile.email) || T("Not given", "Non renseigné")}</dd>`);
     out.push(`<dt>${T("Joined", "Inscrit le")}</dt><dd>${esc(date(data.profile.created))}</dd>`);
     out.push("</dl>");
   } else {
@@ -122,8 +122,8 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
   if (data.consent) {
     out.push(
       `<p>${T(
-        "You agreed to TwoAgree holding sensitive answers (faith, intimacy, health). This record is kept even if you delete your account — it is the evidence we were permitted to hold your data.",
-        "Vous avez accepté que TwoAgree conserve des réponses sensibles (foi, intimité, santé). Cet enregistrement est conservé même après la suppression du compte — c’est la preuve que nous étions autorisés à détenir vos données.",
+        "You agreed to TwoAgree holding sensitive answers (faith, intimacy, health). This record is kept even if you delete your account, it is the evidence we were permitted to hold your data.",
+        "Vous avez accepté que TwoAgree conserve des réponses sensibles (foi, intimité, santé). Cet enregistrement est conservé même après la suppression du compte, c’est la preuve que nous étions autorisés à détenir vos données.",
       )}</p>`,
     );
     out.push(`<pre>${esc(JSON.stringify(data.consent, null, 2))}</pre>`);
@@ -234,8 +234,8 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
 
   out.push(
     `<p class="foot">${T(
-      "This document lists your own answers. Your partner's answers are their personal data, not yours, so they are not part of your export — they can request their own copy from their account.",
-      "Ce document liste vos propres réponses. Les réponses de votre partenaire sont ses données personnelles, pas les vôtres : elles ne font donc pas partie de votre export — il peut en demander une copie depuis son compte.",
+      "This document lists your own answers. Your partner's answers are their personal data, not yours, so they are not part of your export, they can request their own copy from their account.",
+      "Ce document liste vos propres réponses. Les réponses de votre partenaire sont ses données personnelles, pas les vôtres : elles ne font donc pas partie de votre export, il peut en demander une copie depuis son compte.",
     )}</p>`,
   );
 

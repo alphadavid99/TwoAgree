@@ -199,16 +199,16 @@ export function PathIntro({
       node: <NodeStart />,
       h: t("A journey together", "Un chemin à deux"),
       s: t(
-        "Ten steps, side by side — from light ground to the deepest questions.",
-        "Dix étapes, côte à côte — du terrain léger aux questions les plus profondes.",
+        "Ten steps, side by side, from light ground to the deepest questions.",
+        "Dix étapes, côte à côte, du terrain léger aux questions les plus profondes.",
       ),
     },
     {
       node: <NodeStep />,
       h: t("Shaped by the two of you", "Façonné par vous deux"),
       s: t(
-        "Each step is drawn from what you both say matters — tailored to where you are now.",
-        "Chaque étape naît de ce qui compte pour vous deux — adaptée à là où vous en êtes.",
+        "Each step is drawn from what you both say matters, tailored to where you are now.",
+        "Chaque étape naît de ce qui compte pour vous deux, adaptée à là où vous en êtes.",
       ),
     },
     {
@@ -216,8 +216,8 @@ export function PathIntro({
       end: true,
       h: t("Where the two of you land", "Où vous vous retrouvez"),
       s: t(
-        "You arrive at your alignment — how much you agree, how well you know each other, and what's worth talking about.",
-        "Vous arrivez à votre accord — à quel point vous vous rejoignez, vous vous connaissez, et ce qui mérite d'être discuté.",
+        "You arrive at your alignment, how much you agree, how well you know each other, and what's worth talking about.",
+        "Vous arrivez à votre accord, à quel point vous vous rejoignez, vous vous connaissez, et ce qui mérite d'être discuté.",
       ),
     },
   ];
@@ -257,14 +257,14 @@ export function PathIntro({
           <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" strokeWidth={1.7} />
         </svg>
         {t(
-          `You each answer on your own — neither of you sees the other's until you land.`,
-          `Vous répondez chacun de votre côté — aucun ne voit les réponses de l'autre avant l'arrivée.`,
+          `You each answer on your own, neither of you sees the other's until you land.`,
+          `Vous répondez chacun de votre côté, aucun ne voit les réponses de l'autre avant l'arrivée.`,
         )}
       </p>
 
       <div className="pi-cta">
         <button className="btn pill" type="button" onClick={onBegin}>
-          {t("Begin — just me", "Commencer — juste moi")}
+          {t("Begin: just me", "Commencer: juste moi")}
         </button>
         <button className="btn ghost" type="button" onClick={onBrowseDecks}>
           {t("Browse the conversations instead", "Parcourir les conversations plutôt")}
@@ -355,7 +355,7 @@ function PathIntake({
     <section className="screen-enter">
       <div style={{ display: "flex", justifyContent: "center", marginTop: 6 }}>
         <span className="badge" style={{ background: "var(--blush)", color: "var(--berry)", fontWeight: 700 }}>
-          🔒 {t(`Just you — ${partnerName} won't see this`, `Rien que vous — ${partnerName} ne verra pas ceci`)}
+          🔒 {t(`Just you: ${partnerName} won't see this`, `Rien que vous, ${partnerName} ne verra pas ceci`)}
         </span>
       </div>
       {/* (idx+1)/, not idx/ — the bar sat at 0% while the label already said
@@ -482,7 +482,7 @@ export function PathMap({
     w.me && w.them
       ? t("You've both walked it", "Vous l'avez tous deux parcourue")
       : w.me
-        ? t(`You've walked it — waiting on ${partnerName}`, `Vous l'avez parcourue — en attente de ${partnerName}`)
+        ? t(`You've walked it: waiting on ${partnerName}`, `Vous l'avez parcourue, en attente de ${partnerName}`)
         : w.them
           ? t(`${partnerName} has walked it`, `${partnerName} l'a parcourue`)
           : t("Neither of you has walked it yet", "Aucun de vous ne l'a encore parcourue");

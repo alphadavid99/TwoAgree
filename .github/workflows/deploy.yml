@@ -64,6 +64,13 @@ jobs:
         if: steps.gate.outputs.ready == 'true'
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # Binds the RESEND_API_KEY secret to the reveal-ready email trigger.
+          # Leave unset until the secret actually exists: deploying a function
+          # that references a missing Secret Manager entry fails outright, and
+          # Functions deploy BEFORE Hosting — so it would stop the site from
+          # updating at all. Set the repo Variable NOTIFY_EMAIL_ENABLED=true in
+          # the same sitting as `firebase functions:secrets:set RESEND_API_KEY`.
+          NOTIFY_EMAIL_ENABLED: ${{ vars.NOTIFY_EMAIL_ENABLED }}
         run: |
           npm --prefix functions ci
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa.json"

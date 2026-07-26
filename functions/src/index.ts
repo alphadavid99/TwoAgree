@@ -289,7 +289,15 @@ export const generatePath = onCall(async (request) => {
 // decides, logs and sends nothing, so main stays deployable before Dave has an
 // account. Recipients must have opted in explicitly (users/{uid}/notify).
 
-const RESEND_API_KEY = defineSecret("RESEND_API_KEY");
+// Binding a secret that does not yet exist in Secret Manager makes
+// `firebase deploy --non-interactive` fail outright — and Functions deploy
+// BEFORE Hosting, so that failure would stop the whole site from updating
+// while CI still went green. The binding is therefore opt-in: set the repo
+// variable NOTIFY_EMAIL_ENABLED=true at the same time as creating the secret.
+// With it off, nothing here touches Secret Manager and the trigger deploys
+// happily in its "decide, log, send nothing" state.
+const EMAIL_ENABLED = process.env.NOTIFY_EMAIL_ENABLED === "true";
+const RESEND_API_KEY = EMAIL_ENABLED ? defineSecret("RESEND_API_KEY") : null;
 // Verified sender for the Resend domain, e.g. "TwoAgree <hello@twoagree.app>".
 const MAIL_FROM = defineString("MAIL_FROM", { default: "TwoAgree <onboarding@resend.dev>" });
 const APP_URL = defineString("APP_URL", { default: "https://twoagree.app" });
@@ -312,7 +320,7 @@ async function sendViaResend(
 export const onLevelDone = onValueWritten(
   {
     ref: "/sessions/{code}/decks/{slug}/done/{level}/{role}",
-    secrets: [RESEND_API_KEY],
+    ...(RESEND_API_KEY ? { secrets: [RESEND_API_KEY] } : {}),
   },
   async (event) => {
     // Only a fresh completion is news; deletions and re-writes are not.
@@ -355,10 +363,11 @@ export const onLevelDone = onValueWritten(
       return;
     }
 
-    const key = RESEND_API_KEY.value();
+    const key = RESEND_API_KEY?.value();
     if (!key) {
-      // Expected until Dave adds the secret — the app is otherwise complete.
-      logger.info("reveal-ready email would send, but RESEND_API_KEY is unset", { code });
+      // Expected until the secret exists — the app is otherwise complete, and
+      // this line is the proof the decision path ran and chose to send.
+      logger.info("reveal-ready email would send, but no RESEND_API_KEY", { code });
       return;
     }
 

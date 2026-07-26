@@ -47,6 +47,12 @@ All of it is finishing work, not rework — most of the machinery already exists
 
 ## 3. Fix first — dead ends that strand real couples
 
+> **STATUS (Jul 2026): all of §3 is built and merged**, along with §5's ceremony
+> work (the visible count-up and the "Gold on Claret" celebration ladder) and
+> §11's `viewport-fit=cover`. What remains is §4 (answering-loop feedback), §6
+> (score → conversation), §7 (the Path), §8–9 (visual/motion systems), the rest
+> of §11 (keyboard + contrast), §10's copy sweep, and §13's blind spots.
+
 These are the launch-relevant flow breaks. Every one was reproduced against the code; none is speculative. Effort: **S** = under half a day, **M** = 1–3 days.
 
 | # | Finding | Impact | Effort |

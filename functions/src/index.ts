@@ -321,7 +321,14 @@ async function sendViaResend(
   }
 }
 
-export const onLevelDone = onValueWritten(
+// Gated on NOTIFY_EMAIL_ENABLED in full, not just its secret. This is an
+// Eventarc-backed trigger, and deploying the FIRST Eventarc function in a
+// project needs three IAM roles granted to Google's own service agents. The
+// deploy service account is not a project owner, so it cannot grant them and
+// the whole deploy fails — taking Hosting with it, since Functions deploy
+// first. Until those roles exist the trigger simply isn't deployed; everything
+// else in the codebase deploys exactly as it did before. See docs/DEPLOY.md.
+export const onLevelDone = !EMAIL_ENABLED ? undefined : onValueWritten(
   {
     ref: "/sessions/{code}/decks/{slug}/done/{level}/{role}",
     ...(RESEND_API_KEY ? { secrets: [RESEND_API_KEY] } : {}),

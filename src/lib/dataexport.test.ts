@@ -13,17 +13,20 @@ const payload: ExportPayload = {
   profile: { name: "Sarah", bio: "Trying to be honest.", email: "s@example.com", created: 1 },
   intake: { answers: { depth: 1 } },
   consent: { at: 1, version: 1 },
+  // Already narrowed by functions/src/redact.ts — one value per question, the
+  // caller's own. The partner's side never reaches the client at all.
   sessions: {
     ABCD: {
       created: 1,
-      members: { host: { name: "Sarah", uid: "u1" }, guest: { name: "Judah", uid: "u2" } },
+      yourRole: "host",
+      partnerName: "Judah",
       decks: {
         [SLUG]: {
-          answers: { [mc.id]: { host: 0, guest: 1 }, [scale.id]: { host: 4, guest: 2 } },
-          guesses: { [mc.id]: { host: 1 } },
-          importance: { [scale.id]: { host: 5 } },
+          answers: { [mc.id]: 0, [scale.id]: 4 },
+          guesses: { [mc.id]: 1 },
+          importance: { [scale.id]: 5 },
         },
-        [AT_TABLE_SLUG]: { answers: { trailhead: { host: "A small thing.", guest: "Theirs." } } },
+        [AT_TABLE_SLUG]: { answers: { trailhead: "A small thing." } },
       },
     },
   },
@@ -56,11 +59,15 @@ describe("renderReadableExport", () => {
     expect(html).toContain("A small thing.");
   });
 
-  it("does NOT reproduce the partner's answers", () => {
-    // The partner said "Theirs." to the at-table prompt and picked option 1 on
-    // the scale; neither is this subject's data to be handed back in a document.
-    expect(html).not.toContain("Theirs.");
+  it("names the partner but never quotes them", () => {
+    // The server strips the partner's side before it reaches the client (see
+    // functions/src/redact.test.ts). This asserts the renderer adds nothing
+    // back: their name is context the subject is party to, their answers are
+    // not. The host answered 4 on the scale; the guest's 2 is simply absent.
+    expect(html).toContain("Judah");
+    expect(html).toContain("4 of 5");
     expect(html).not.toContain("2 of 5");
+    expect(html).toMatch(/not part of your export/i);
   });
 
   it("escapes user-supplied text rather than injecting it as markup", () => {

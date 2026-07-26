@@ -20,8 +20,17 @@ import ResultsScreen from "./ResultsScreen";
 import PlayScreen from "./PlayScreen";
 import { CoreScore } from "./CoreScore";
 
-// The screens write through these on mount in some states; the DOM is the
-// subject here, not Firebase.
+// The DOM is the subject here, not Firebase. src/firebase.ts calls getAuth()
+// at module load, which throws `auth/invalid-api-key` wherever VITE_FIREBASE_*
+// isn't set — true in CI, and not true on a machine with a .env.local, which
+// is exactly how this passed locally and failed on the first CI run. Mocked so
+// these tests never depend on any environment at all.
+vi.mock("../firebase", () => ({
+  app: {},
+  auth: { currentUser: null },
+  db: {},
+  googleProvider: {},
+}));
 vi.mock("../lib/functions", () => ({
   createInvite: vi.fn(),
   exportMyData: vi.fn(),

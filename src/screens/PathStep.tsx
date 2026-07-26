@@ -13,7 +13,6 @@ import {
 } from "../lib/path";
 import { VERSES } from "../data/path.generated";
 import { writeAnswer, writeGuess, lightLamp } from "../lib/session";
-import { Mark } from "../brand/Mark";
 import { PathGlyph } from "../components/PathGlyph";
 import { TopBar } from "../components/TopBar";
 import RevealScreen from "./RevealScreen";
@@ -92,6 +91,7 @@ export default function PathStep({
         todo={todo}
         partnerName={partnerName}
         onDone={() => setPhase("reveal")}
+        onExit={onExit}
         t={t}
       />
     );
@@ -205,6 +205,7 @@ function StepPlay({
   todo,
   partnerName,
   onDone,
+  onExit,
   t,
 }: {
   code: string;
@@ -215,6 +216,7 @@ function StepPlay({
   todo: Question[];
   partnerName: string;
   onDone: () => void;
+  onExit: () => void;
   t: T;
 }) {
   const [idx, setIdx] = useState(0);
@@ -315,9 +317,11 @@ function StepPlay({
 
   const header = (
     <>
-      <div className="brandhead brand-enter">
-        <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-      </div>
+      {/* A step can run to ~11 questions, doubled by the guess layer — and the
+          Path hides the bottom nav. Without this the only way out of The Garden
+          (intimacy) mid-sitting was killing the app. Answers are written per
+          question, so leaving is loss-free and re-entry resumes here. */}
+      <TopBar onExit={onExit} />
       {progress}
       <p className="eyebrow" style={{ marginTop: 12 }}>
         {stepName} &middot; {t(`${idx + 1} of ${todo.length}`, `${idx + 1} sur ${todo.length}`)}

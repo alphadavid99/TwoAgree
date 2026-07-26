@@ -37,23 +37,69 @@ const MESSAGES: Record<string, { en: string; fr: string }> = {
     en: "Sign-in was closed before finishing.",
     fr: "La connexion a été fermée avant la fin.",
   },
+  // Was "…isn't enabled in your Firebase console yet" — a couple has no console.
   "auth/operation-not-allowed": {
-    en: "That sign-in method isn’t enabled in your Firebase console yet.",
-    fr: "Cette méthode de connexion n’est pas encore activée dans votre console Firebase.",
+    en: "That way of signing in isn’t available right now.",
+    fr: "Cette façon de se connecter n’est pas disponible pour le moment.",
   },
+  // Was "Database rules blocked that — check your security rules."
   PERMISSION_DENIED: {
-    en: "Database rules blocked that — check your security rules.",
-    fr: "Les règles de la base ont bloqué cela — vérifiez vos règles de sécurité.",
+    en: "That didn’t save. Try signing in again.",
+    fr: "L’enregistrement a échoué. Reconnectez-vous et réessayez.",
+  },
+  "auth/network-request-failed": {
+    en: "You look offline — check your connection and try again.",
+    fr: "Vous semblez hors ligne — vérifiez votre connexion et réessayez.",
+  },
+  // The linking flows throw these when the person already has an account.
+  "auth/credential-already-in-use": {
+    en: "That account already exists — sign in with it instead.",
+    fr: "Ce compte existe déjà — connectez-vous avec celui-ci.",
+  },
+  "auth/account-exists-with-different-credential": {
+    en: "That email is already used with a different sign-in method.",
+    fr: "Cet e-mail est déjà utilisé avec une autre méthode de connexion.",
+  },
+  "auth/provider-already-linked": {
+    en: "That account is already connected.",
+    fr: "Ce compte est déjà connecté.",
+  },
+  "auth/popup-blocked": {
+    en: "Your browser blocked the sign-in window — allow pop-ups and try again.",
+    fr: "Votre navigateur a bloqué la fenêtre de connexion — autorisez les pop-ups et réessayez.",
+  },
+  "auth/cancelled-popup-request": {
+    en: "Sign-in was closed before finishing.",
+    fr: "La connexion a été fermée avant la fin.",
+  },
+  "auth/user-disabled": {
+    en: "That account has been disabled.",
+    fr: "Ce compte a été désactivé.",
+  },
+  "auth/requires-recent-login": {
+    en: "For your security, sign in again before making this change.",
+    fr: "Pour votre sécurité, reconnectez-vous avant de faire ce changement.",
   },
 };
 
+// Machine text that must never reach a couple. Firebase stamps every error
+// message with "Firebase: …", and our callables surface as "functions/…" —
+// an unmapped one used to be printed verbatim, so the capture in the UX review
+// shows "Firebase: Error (auth/internal-error)." sitting under the password
+// field at the invite gate, the single highest-trust moment in the flow.
+const MACHINE = /^Firebase:|^FirebaseError|INTERNAL|^\[?functions\//i;
+
 export function prettyError(err: unknown): string {
   const code = (err as { code?: string })?.code ?? "";
-  const message = (err as { message?: string })?.message;
+  const message = (err as { message?: string })?.message?.trim();
   const known = MESSAGES[code];
-  if (known) return getLang() === "fr" ? known.fr : known.en;
-  return (
-    message ||
-    (getLang() === "fr" ? "Une erreur s’est produite." : "Something went wrong.")
-  );
+  const fr = getLang() === "fr";
+  if (known) return fr ? known.fr : known.en;
+  // Our own Cloud Functions throw HttpsError with human-written messages, so
+  // those still pass through — anything that smells of a stack trace doesn't.
+  if (message && !MACHINE.test(message) && !code.startsWith("auth/")) {
+    return message;
+  }
+  if (code) console.warn("[twoagree] unmapped error code:", code, message);
+  return fr ? "Une erreur s’est produite." : "Something went wrong — please try again.";
 }

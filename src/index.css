@@ -1515,8 +1515,15 @@ textarea.input {
     transform: none;
   }
 }
+/* fill-mode `backwards`, NOT `both`: `backwards` still holds the from-state
+   during the stagger delay (so nothing flashes in early), but releases the
+   element once the animation ends. With `both` the final keyframe's opacity:1
+   won the cascade forever, permanently overriding `.btn[disabled]{opacity:.55}`
+   — every gating CTA in onboarding looked fully tappable while disabled, so
+   people tapped "Start" on the consent screen with nothing ticked and got no
+   feedback at all. */
 .screen-enter > * {
-  animation: riseIn 0.45s ease both;
+  animation: riseIn 0.45s ease backwards;
 }
 .screen-enter > *:nth-child(1) { animation-delay: 0.05s; }
 .screen-enter > *:nth-child(2) { animation-delay: 0.11s; }
@@ -3399,4 +3406,18 @@ textarea.input {
    "Begin" below the fold). */
 .pi-cta .btn {
   margin-top: 0;
+}
+
+/* The session code, shown large before leaving a session — the only place it
+   exists in the UI once a partner has joined. */
+.codebig {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  color: var(--berry);
+  background: var(--optbg);
+  border-radius: var(--r-sm);
+  padding: 12px 0;
+  margin: 8px 0 14px;
 }

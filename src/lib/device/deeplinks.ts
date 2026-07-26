@@ -8,7 +8,7 @@
 // same https link in the browser, which is the existing flow. Associated
 // Domains (Dave configures these in Xcode/portal — see docs/IOS.md) are what
 // route the link into the app in the first place.
-import { setInviteToken } from "../invite";
+import { setInvite, setInviteToken } from "../invite";
 import { isNativePlatform } from "./platform";
 
 function tokenFromUrl(url: string): string | null {
@@ -19,18 +19,30 @@ function tokenFromUrl(url: string): string | null {
   }
 }
 
+// The bare-code fallback link (/?c=CODE) is a universal link too, so the native
+// shell has to recognise it or a tapped fallback invite opens the app at the
+// front door with no join context.
+function codeFromUrl(url: string): string | null {
+  try {
+    return new URL(url).searchParams.get("c")?.trim().toUpperCase() || null;
+  } catch {
+    return null;
+  }
+}
+
 export function initNativeDeepLinks(): void {
   if (!isNativePlatform()) return;
   void import("@capacitor/app").then(({ App }) => {
     // Cold start: the app was launched BY the link.
-    void App.getLaunchUrl().then((res) => {
-      const t = res?.url ? tokenFromUrl(res.url) : null;
-      if (t) setInviteToken(t);
-    });
+    const route = (url: string | undefined) => {
+      if (!url) return;
+      const t = tokenFromUrl(url);
+      if (t) return setInviteToken(t);
+      const c = codeFromUrl(url);
+      if (c) setInvite({ kind: "code", value: c });
+    };
+    void App.getLaunchUrl().then((res) => route(res?.url));
     // Warm: a link tapped while the app is already running/backgrounded.
-    void App.addListener("appUrlOpen", (event) => {
-      const t = tokenFromUrl(event.url);
-      if (t) setInviteToken(t);
-    });
+    void App.addListener("appUrlOpen", (event) => route(event.url));
   });
 }

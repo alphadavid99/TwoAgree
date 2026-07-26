@@ -106,7 +106,17 @@ function selectForStep(step: StepSpec, count: number, offset: number, used: Set<
   const gather = (minD: number, maxD: number) =>
     Object.entries(BANK)
       .filter(([id, e]: [string, BankEntry]) =>
-        decks.has(e.deck) && e.type !== "open" && !used.has(id) && e.depth >= minD && e.depth <= maxD)
+        decks.has(e.deck) &&
+        e.type !== "open" &&
+        // "rank" is excluded until the Path player can render an ordering UI.
+        // StepPlay draws options as single-select and writes a scalar, but
+        // scoring parses a rank answer as a comma-joined order — so a rank
+        // question selected into a step (a live probe put LOYAL-017 in the
+        // Summit) is both misrepresented to the couple and scored as nonsense.
+        e.type !== "rank" &&
+        !used.has(id) &&
+        e.depth >= minD &&
+        e.depth <= maxD)
       .sort((a, b) => {
         if (step.mechanic === "guess") {
           const ga = a[1].guessable ? 0 : 1;

@@ -101,7 +101,10 @@ export default function HomeScreen({
     );
     if (navigator.share) navigator.share({ text: txt }).catch(() => {});
     else if (navigator.clipboard) {
-      navigator.clipboard.writeText(code).then(() => {
+      // Copy the whole invitation, not the bare code: a desktop host used to
+      // paste "ABCD" to their partner with no context, while the chip still
+      // said "Copied ✓" as though the warm message had gone.
+      navigator.clipboard.writeText(txt).then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1600);
       });
@@ -118,14 +121,27 @@ export default function HomeScreen({
         `Come do this with me on TwoAgree — we each answer the same questions, then see where the two of us land: ${link}`,
         `Fais-le avec moi sur TwoAgree — on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
       );
-      if (navigator.share) await navigator.share({ text: txt }).catch(() => {});
-      else if (navigator.clipboard) await navigator.clipboard.writeText(link);
-      setInviteMsg(
-        t(
-          "Invite link ready — sent to your share sheet or copied.",
-          "Lien d’invitation prêt — envoyé au partage ou copié.",
-        ),
-      );
+      // Only claim it went if it actually went. navigator.share rejects when
+      // the user cancels the sheet, and that rejection was swallowed while the
+      // success line rendered regardless.
+      const viaSheet = !!navigator.share;
+      let sent = false;
+      if (viaSheet) {
+        sent = await navigator.share({ text: txt }).then(
+          () => true,
+          () => false,
+        );
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(txt);
+        sent = true;
+      }
+      if (sent) {
+        setInviteMsg(
+          viaSheet
+            ? t("Invitation sent.", "Invitation envoyée.")
+            : t("Invitation copied — paste it to them.", "Invitation copiée — collez-la-leur."),
+        );
+      }
     } catch (e) {
       setInviteMsg(prettyError(e));
     } finally {

@@ -12,9 +12,14 @@ import type { Profile } from "../types";
 export default function ProfileScreen({
   user,
   onLeave,
+  code,
 }: {
   user: User;
   onLeave?: () => void;
+  // The session's code, shown before leaving and kept visible here — once a
+  // partner has joined, Home stops showing it, so this is the only place it
+  // exists in the UI.
+  code?: string;
 }) {
   const t = useT();
   const lang = useLang();
@@ -23,6 +28,7 @@ export default function ProfileScreen({
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [pendingPhoto, setPendingPhoto] = useState<string | null>(null);
+  const [leaving, setLeaving] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -235,11 +241,33 @@ export default function ProfileScreen({
         </div>
       </div>
 
-      {onLeave && (
-        <button className="btn out" type="button" onClick={onLeave}>
-          {t("Leave this session", "Quitter cette session")}
-        </button>
-      )}
+      {onLeave &&
+        (leaving ? (
+          // Leaving used to be one unconfirmed tap sitting directly above the
+          // identically-styled Sign out — and afterwards the code appears
+          // nowhere in the app, so a mis-tap cost the couple their shared
+          // history until the partner dug the code out.
+          <div className="card" style={{ marginTop: 16 }}>
+            <div className="eyebrow">{t("Leave this session?", "Quitter cette session ?")}</div>
+            <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
+              {t(
+                "Nothing is deleted — you can come back any time with your code:",
+                "Rien n’est supprimé — vous pouvez revenir à tout moment avec votre code :",
+              )}
+            </p>
+            {code && <div className="codebig">{code}</div>}
+            <button className="btn out" type="button" onClick={onLeave}>
+              {t("Yes, leave", "Oui, quitter")}
+            </button>
+            <button className="btn ghost" type="button" onClick={() => setLeaving(false)}>
+              {t("Stay", "Rester")}
+            </button>
+          </div>
+        ) : (
+          <button className="btn out" type="button" onClick={() => setLeaving(true)}>
+            {t("Leave this session", "Quitter cette session")}
+          </button>
+        ))}
       <button className="btn out" type="button" onClick={() => signOut(auth)}>
         {t("Sign out", "Se déconnecter")}
       </button>

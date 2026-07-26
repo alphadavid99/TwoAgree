@@ -3,7 +3,7 @@ import { lvlQs, nLevels } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import { NOT_YET, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
+import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang } from "../lib/i18n";
 
@@ -66,10 +66,26 @@ export default function PlayScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, level]);
 
-  const [idx, setIdx] = useState(firstUnanswered);
+  // Leaving between banking an answer and locking the guess used to forfeit
+  // that guess for good: resume position is computed from answers alone, and
+  // advance() skips anything answered — so the Known score quietly lost a data
+  // point with no trace. If the question just before the resume point is
+  // answered but unguessed, resume INTO its guess step.
+  const resumeGuess = useMemo(() => {
+    const q = qs[firstUnanswered - 1];
+    if (!q || !q.guessable || q.type === "open") return null;
+    const mine = deck?.answers?.[q.id]?.[role];
+    if (mine == null || isNotYet(mine)) return null;
+    if (deck?.guesses?.[q.id]?.[role] != null) return null;
+    return { at: firstUnanswered - 1, answer: mine };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, level]);
+
+  const [idx, setIdx] = useState(resumeGuess ? resumeGuess.at : firstUnanswered);
   const [impPhase, setImpPhase] = useState(false);
-  const [guessPhase, setGuessPhase] = useState(false);
-  const [pendAns, setPendAns] = useState<AnswerValue | null>(null);
+  const [guessPhase, setGuessPhase] = useState(!!resumeGuess);
+  // Seeded on a guess-resume so the "YOU SAID" recap has the banked answer.
+  const [pendAns, setPendAns] = useState<AnswerValue | null>(resumeGuess?.answer ?? null);
   const [pendImp, setPendImp] = useState<number | null>(null);
   const [pendGuess, setPendGuess] = useState<AnswerValue | null>(null);
   const [rankOrder, setRankOrder] = useState<number[]>([]);
@@ -299,7 +315,7 @@ export default function PlayScreen({
         />
       </div>
       <button
-        className="btn"
+        className={busy ? "btn busy" : "btn"}
         type="button"
         disabled={pendAns == null || busy}
         onClick={submitAnswer}
@@ -316,6 +332,20 @@ export default function PlayScreen({
           disabled={busy}
         >
           {t("Not yet", "Pas encore")}
+        </button>
+      )}
+      {/* Open questions demand typed text to advance, and not one of them
+          carries the "Not yet" flag — so someone who isn't ready to write about
+          their past had no way forward but the ×, which abandons the whole
+          part. They never score (scoring.ts), so skipping costs nothing. */}
+      {q.type === "open" && !q.notYet && (
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={() => advance(idx)}
+          disabled={busy}
+        >
+          {t("Skip for now", "Passer pour l’instant")}
         </button>
       )}
       <div className="hint">

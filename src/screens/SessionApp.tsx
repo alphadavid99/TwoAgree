@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "firebase/auth";
 import { ORDER } from "../lib/questions";
 import { lvlQs, nLevels } from "../lib/leveling";
 import { curLevel, levelDone, levelComplete, catComplete, doneInLevel, revealedQs } from "../lib/progress";
-import { jointQuestions, other } from "../lib/scoring";
+import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
+import { getLastDeck, setLastDeck } from "../lib/local";
 import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
 import ResultsScreen from "./ResultsScreen";
@@ -17,6 +18,7 @@ import { TopBar } from "../components/TopBar";
 import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { PillNav } from "../components/PillNav";
+import type { Session } from "../types";
 import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
 import { Route } from "lucide-react";
 import { useT } from "../lib/i18n";
@@ -50,21 +52,57 @@ const TABS: {
 
 const PATH_ENABLED = import.meta.env.VITE_PATH_ENABLED === "true";
 
+// Where opening a conversation should land: the full breakdown if it's
+// finished, the part picker if it has several parts, otherwise straight into
+// (or back to) the current part. Shared by the tap handler and the
+// open-on-arrival effect, which can't call each other — the effect has to be
+// declared before the loading guards, the handler after them.
+function deckEntry(
+  slug: string,
+  session: Session,
+  role: Role,
+): { flow: Flow; level: number } {
+  const d = session.decks?.[slug];
+  if (catComplete(slug, d, role)) return { flow: "reviewDeck", level: 0 };
+  if (nLevels(slug) > 1) return { flow: "picker", level: 0 };
+  const lvl = curLevel(slug, d, role);
+  return { flow: levelDone(d, lvl, role) ? "review" : "play", level: lvl };
+}
+
 export default function SessionApp({
   code,
   user,
   onLeave,
+  openSlug,
 }: {
   code: string;
   user: User;
   onLeave: () => void;
+  // A conversation to open on arrival — the one picked at the end of
+  // onboarding. Without it that choice was silently discarded.
+  openSlug?: string;
 }) {
   const t = useT();
   const { session, role, loading, denied } = useSession(code, user.uid);
   const [tab, setTab] = useState<Tab>("home");
-  const [slug, setSlug] = useState(ORDER[0]);
+  // Where the couple actually is, remembered across app opens. Defaulting to
+  // ORDER[0] meant Home pointed at the first deck in the bank on every reload,
+  // under a greeting that promises "Where you left off, together".
+  const [slug, setSlug] = useState(
+    () => openSlug ?? getLastDeck(user.uid, code) ?? ORDER[0],
+  );
   const [level, setLevel] = useState(0);
   const [flow, setFlow] = useState<Flow>(null);
+  // Open the picked conversation once, after the session has loaded.
+  const opened = useRef(false);
+  useEffect(() => {
+    if (!openSlug || opened.current || !session || !role) return;
+    opened.current = true;
+    const { flow: f, level: l } = deckEntry(openSlug, session, role);
+    setSlug(openSlug);
+    setLevel(l);
+    setFlow(f);
+  }, [openSlug, session, role]);
   // Which tab the play/reveal flow was entered from, so × returns there.
   const [flowReturn, setFlowReturn] = useState<Tab>("home");
   // The Path step being walked (full-screen, no bottom nav), or null on the map.
@@ -112,23 +150,13 @@ export default function SessionApp({
   const openDeck = (s: string) => {
     setFlowReturn(tab); // remember where we came from (Home or Decks)
     setSlug(s);
-    const d = session.decks?.[s];
-    if (catComplete(s, d, role)) {
-      // Finished deck → reopen the full breakdown so you can see what each of
-      // you answered, not just the score.
-      setFlow("reviewDeck");
-      return;
-    }
-    // Multi-part decks open the picker so a couple can choose any part and see
-    // both partners' per-part state (brief 2 §A7d). Single-part decks go straight
-    // in — there's nothing to pick.
-    if (nLevels(s) > 1) {
-      setFlow("picker");
-      return;
-    }
-    const lvl = curLevel(s, d, role);
-    setLevel(lvl);
-    setFlow(levelDone(d, lvl, role) ? "review" : "play");
+    setLastDeck(user.uid, code, s);
+    // Finished decks reopen as the full breakdown; multi-part decks open the
+    // picker so a couple can choose any part and see both partners' per-part
+    // state (brief 2 §A7d); single-part decks go straight in.
+    const { flow: f, level: l } = deckEntry(s, session, role);
+    setLevel(l);
+    setFlow(f);
   };
 
   // From the part picker: play a not-yet-finished part, or open the waiting/
@@ -309,7 +337,9 @@ export default function SessionApp({
           {tab === "results" && (
             <ResultsScreen session={session} role={role} onOpen={openReview} />
           )}
-          {tab === "profile" && <ProfileScreen user={user} onLeave={onLeave} />}
+          {tab === "profile" && (
+            <ProfileScreen user={user} onLeave={onLeave} code={code} />
+          )}
         </div>
       </div>
 

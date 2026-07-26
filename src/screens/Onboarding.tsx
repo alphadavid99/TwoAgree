@@ -19,7 +19,14 @@ import {
   recordConsent,
   writeProfile,
 } from "../lib/session";
-import { redeemInvite, createInvite } from "../lib/functions";
+import { redeemInvite, joinByCode, createInvite } from "../lib/functions";
+import type { Invite } from "../lib/invite";
+import {
+  getOnbCheckpoint,
+  setOnbCheckpoint,
+  clearOnbCheckpoint,
+  setActiveCode,
+} from "../lib/local";
 import { prettyError } from "../lib/errors";
 import { fileToAvatarDataUrl } from "../lib/device/photo";
 import { DECKS, type Question } from "../lib/questions";
@@ -73,30 +80,82 @@ type BStep =
 // Anonymous auth carries the pre-account state; the account is layered on at the
 // exact moment it earns its keep (the invite / the notification channel).
 export default function Onboarding({
-  inviteToken,
+  invite,
   onDone,
 }: {
-  inviteToken: string | null;
-  onDone: (code: string) => void;
+  invite: Invite | null;
+  // The conversation picked on the closing menu rides along, so the app can
+  // open it — the pick used to be dropped on the floor.
+  onDone: (code: string, slug?: string) => void;
 }) {
   const t = useT();
-  const joining = !!inviteToken;
 
-  const [myName, setMyName] = useState("");
-  const [partnerName, setPartnerName] = useState("");
-  const [stage, setStage] = useState<OnbStage | null>(null);
-  const [code, setCode] = useState("");
-  const [role, setRole] = useState<"host" | "guest">("host");
+  // A checkpoint from an interrupted run on this device, read once at mount.
+  // Only trusted while the same anonymous user is still signed in — the seat
+  // and the consent behind it were written under that uid.
+  const [saved] = useState(() => {
+    const u = auth.currentUser;
+    return u ? getOnbCheckpoint(u.uid) : null;
+  });
+
+  // A resumed invitee is still joining even though the spent token has been
+  // stripped from the URL — otherwise a reload would drop them into flow A and
+  // start them a second, separate session.
+  const joining = !!invite || saved?.flow === "b";
+
+  const [myName, setMyName] = useState(saved?.myName ?? "");
+  const [partnerName, setPartnerName] = useState(saved?.partnerName ?? "");
+  const [stage, setStage] = useState<OnbStage | null>(
+    (saved?.stage as OnbStage) ?? null,
+  );
+  const [code, setCode] = useState(saved?.code ?? "");
+  const [role, setRole] = useState<"host" | "guest">(saved?.role ?? "host");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [fallback, setFallback] = useState(false);
+  // Deliberately asking to sign in (front door link) — same screen as the
+  // anonymous-auth fallback, different framing, and it has a way back.
+  const [signIn, setSignIn] = useState(false);
 
-  const [stepA, setStepA] = useState<AStep>("welcome");
-  const [stepB, setStepB] = useState<BStep>("arrive");
-  const [initiatorName, setInitiatorName] = useState("");
+  const [stepA, setStepA] = useState<AStep>(
+    saved?.flow === "a" ? (saved.step as AStep) : "welcome",
+  );
+  const [stepB, setStepB] = useState<BStep>(
+    saved?.flow === "b" ? (saved.step as BStep) : "arrive",
+  );
+  const [initiatorName, setInitiatorName] = useState(saved?.initiatorName ?? "");
   const [bankedCount, setBankedCount] = useState(0);
 
   const partner = partnerName.trim() || t("your partner", "votre partenaire");
+
+  // Save where we are, so a reload picks the flow back up instead of starting
+  // a second session (initiator) or hitting a burnt token (invitee).
+  const checkpoint = (
+    flow: "a" | "b",
+    step: string,
+    extra: Partial<Parameters<typeof setOnbCheckpoint>[1]> = {},
+  ) => {
+    const u = auth.currentUser;
+    if (!u) return;
+    setOnbCheckpoint(u.uid, {
+      flow,
+      step,
+      code: code || undefined,
+      role,
+      myName: myName.trim() || undefined,
+      partnerName: partnerName.trim() || undefined,
+      stage: stage ?? undefined,
+      initiatorName: initiatorName || undefined,
+      ...extra,
+    });
+  };
+
+  // Onboarding is over: the session is the app's now, so the checkpoint goes.
+  const finish = (slug?: string) => {
+    const u = auth.currentUser;
+    if (u) clearOnbCheckpoint(u.uid);
+    onDone(code, slug);
+  };
 
   // Anonymous sign-in with a timeout backstop; on failure, degrade to the
   // account screen rather than stranding anyone.
@@ -126,6 +185,10 @@ export default function Onboarding({
       const c = await createSession(user.uid, myName.trim(), (stage ?? undefined) as Stage);
       setCode(c);
       setRole("host");
+      // The seat exists from here on — record it immediately so a reload can
+      // never strand these answers in an orphaned session.
+      setActiveCode(user.uid, c);
+      checkpoint("a", "questions", { code: c, role: "host" });
       setStepA("questions");
     } catch (e) {
       setErr(prettyError(e));
@@ -136,14 +199,19 @@ export default function Onboarding({
 
   // Flow B: consent → join → read the initiator's banked count → answer.
   const startFlowB = async () => {
-    if (busy || !inviteToken) return;
+    if (busy || !invite) return;
     setBusy(true);
     setErr("");
     const user = await ensureUser();
     if (!user) return setBusy(false);
     try {
       await recordConsent(user.uid);
-      const res = await redeemInvite({ token: inviteToken });
+      // A /?t= link redeems a single-use token; the /?c= fallback link seats
+      // by bare code. Both land the guest in the same seat.
+      const res =
+        invite.kind === "token"
+          ? await redeemInvite({ token: invite.value })
+          : await joinByCode({ code: invite.value });
       const c = res.data.code;
       setCode(c);
       setRole("guest");
@@ -163,6 +231,11 @@ export default function Onboarding({
       } catch {
         /* count is a nicety */
       }
+      setActiveCode(user.uid, c);
+      checkpoint("b", "questions", { code: c, role: "guest" });
+      // The token is single-use and now spent — drop it from the URL so a
+      // reload can't re-enter the flow and fail on "already used".
+      window.history.replaceState({}, "", window.location.pathname);
       setStepB("questions");
     } catch (e) {
       setErr(prettyError(e));
@@ -185,17 +258,23 @@ export default function Onboarding({
     </section>
   );
 
-  if (fallback) {
+  if (fallback || signIn) {
     return (
       <section className="screen-enter">
-        <div className="brandhead brand-enter">
-          <Wordmark size={32} />
-        </div>
+        {signIn ? (
+          <TopBar onExit={() => setSignIn(false)} />
+        ) : (
+          <div className="brandhead brand-enter">
+            <Wordmark size={32} />
+          </div>
+        )}
         <p className="sub center" style={{ margin: "14px 24px 0" }}>
-          {t(
-            "Let's set up a quick account to save your answers.",
-            "Créons un compte rapide pour enregistrer vos réponses.",
-          )}
+          {signIn
+            ? t("Welcome back — sign in to pick up where you left off.", "Bon retour — connectez-vous pour reprendre où vous en étiez.")
+            : t(
+                "Let's set up a quick account to save your answers.",
+                "Créons un compte rapide pour enregistrer vos réponses.",
+              )}
         </p>
         <AuthScreen />
       </section>
@@ -271,7 +350,7 @@ export default function Onboarding({
                 )
               : t("Your turn.", "À vous.")
           }
-          onDone={() => setStepB("reveal")}
+          onDone={() => (setStepB("reveal"), checkpoint("b", "reveal"))}
         />
       );
     }
@@ -282,7 +361,7 @@ export default function Onboarding({
           role={role}
           myName={myName.trim() || t("You", "Vous")}
           partnerName={initiatorName || partner}
-          onDone={() => setStepB("account")}
+          onDone={() => (setStepB("account"), checkpoint("b", "account"))}
           t={t}
         />
       );
@@ -305,7 +384,7 @@ export default function Onboarding({
             "Set up your account so the two of you can carry on — choose where to go next and pick it back up any time.",
             "Créez votre compte pour continuer tous les deux — choisissez la suite et reprenez quand vous voulez.",
           )}
-          onDone={() => setStepB("path")}
+          onDone={() => (setStepB("path"), checkpoint("b", "path"))}
           onFallback={() => setFallback(true)}
         />
       );
@@ -314,8 +393,8 @@ export default function Onboarding({
     return (
       <StartMenu
         stage={stage ?? "dating"}
-        onPick={() => onDone(code)}
-        onSeeAll={() => onDone(code)}
+        onPick={(slug) => finish(slug)}
+        onSeeAll={() => finish()}
       />
     );
   }
@@ -337,11 +416,21 @@ export default function Onboarding({
           <ul className="obfacts">
             <li>{t("It takes two — nothing happens until you're both in.", "Il en faut deux — rien ne se passe tant que vous n'êtes pas là tous les deux.")}</li>
             <li>{t("Neither of you sees the other's answers until you've both answered.", "Aucun de vous ne voit les réponses de l'autre avant que vous ayez tous deux répondu.")}</li>
-            <li>{t("There's no winner and no score — it opens a conversation, it doesn't judge it.", "Il n'y a ni gagnant ni score — cela ouvre la conversation, sans la juger.")}</li>
+            {/* Was "There's no winner and no score" — an app full of percentages
+                disproves that within five minutes. Keep the promise the app
+                actually keeps: nobody is graded, and nobody beats anybody. */}
+            <li>{t("There's no winner and nothing to pass — every number is about the two of you together, never one of you against the other.", "Il n'y a ni gagnant ni note à obtenir — chaque chiffre parle de vous deux ensemble, jamais de l'un contre l'autre.")}</li>
           </ul>
         </div>
         <button className="btn pill" type="button" onClick={() => setStepA("names")}>
           {t("Start", "Commencer")}
+        </button>
+        {/* The way back in. Without this an existing user on a new device could
+            only press Start, which mints a fresh anonymous user and a second
+            session — their real one unreachable, and the account gate later
+            failing with "that email already has an account" and nowhere to go. */}
+        <button className="btn ghost" type="button" onClick={() => setSignIn(true)}>
+          {t("Already have an account? Sign in", "Vous avez déjà un compte ? Connectez-vous")}
         </button>
       </>,
     );
@@ -401,7 +490,7 @@ export default function Onboarding({
         t={t}
         partnerName={partner}
         heading={t("A few to start with.", "Quelques-unes pour commencer.")}
-        onDone={() => setStepA("profile")}
+        onDone={() => (setStepA("profile"), checkpoint("a", "profile"))}
       />
     );
   }
@@ -413,7 +502,7 @@ export default function Onboarding({
         name={myName.trim()}
         code={code}
         t={t}
-        onDone={() => setStepA("invite")}
+        onDone={() => (setStepA("invite"), checkpoint("a", "invite"))}
         onFallback={() => setFallback(true)}
       />
     );
@@ -426,7 +515,7 @@ export default function Onboarding({
         partner={partner}
         myName={myName.trim()}
         t={t}
-        onContinue={() => setStepA("menu")}
+        onContinue={() => (setStepA("menu"), checkpoint("a", "menu"))}
       />
     );
   }
@@ -435,7 +524,11 @@ export default function Onboarding({
   // the Path). It renders alternatives with real questions; picking one enters
   // the app.
   return (
-    <StartMenu stage={stage ?? "dating"} onPick={() => onDone(code)} onSeeAll={() => onDone(code)} />
+    <StartMenu
+      stage={stage ?? "dating"}
+      onPick={(slug) => finish(slug)}
+      onSeeAll={() => finish()}
+    />
   );
 }
 
@@ -901,17 +994,22 @@ function InviteStep({
       const res = await createInvite({ code });
       link = `${window.location.origin}/?t=${res.data.token}`;
     } catch {
-      link = `${window.location.origin}/?c=${code}`; // fallback: bare code link
+      // Fallback: the bare-code link. This used to be a dead URL — nothing in
+      // the app read `c`, so the partner landed on the front door with no join
+      // context and could start a SECOND session. invite.ts reads it now.
+      link = `${window.location.origin}/?c=${code}`;
     }
     const text = `${msg}${link}`;
     try {
-      if (navigator.share) await navigator.share({ text });
-      else if (navigator.clipboard) {
+      if (navigator.share) {
+        await navigator.share({ text });
+        setStatus(t("Invitation sent.", "Invitation envoyée."));
+      } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(text);
         setStatus(t("Copied — paste it to ", "Copié — collez-le à ") + partner);
       }
     } catch {
-      /* user dismissed the share sheet */
+      // The share sheet was dismissed — say nothing rather than claim it sent.
     }
     setBusy(false);
   };

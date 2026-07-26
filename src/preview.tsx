@@ -3,6 +3,8 @@
 // via preview.html, which is not linked and excluded from the build inputs).
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { signInAnonymously } from "firebase/auth";
+import { auth } from "./firebase";
 import "./brand/tokens.css"; // brand tokens first — the app loads these via main.tsx
 import "./index.css";
 import { ORDER, DECKS, type Question } from "./lib/questions";
@@ -27,6 +29,14 @@ import { PillNav } from "./components/PillNav";
 import { IconHome, IconDecks, IconResults, IconProfile } from "./components/icons";
 
 const noop = () => {};
+
+// The harness drives real screens, so the ones that write (PlayScreen, PathStep)
+// need a signed-in user or every answer is rejected by the rules and the flow
+// stalls. Emulator only — never mint anonymous users against live Firebase just
+// to take a screenshot.
+if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS !== "false") {
+  void signInAnonymously(auth).catch(() => {});
+}
 
 function answerFor(qType: string, opts: string[] | undefined, who: "host" | "guest", i: number): AnswerValue {
   if (qType === "scale") return who === "host" ? 4 : i % 3 === 0 ? 4 : 5;
@@ -244,8 +254,9 @@ function Preview() {
       />
     );
   }
-  if (view === "onboard") return <Onboarding inviteToken={null} onDone={noop} />;
-  if (view === "joinb") return <Onboarding inviteToken="demo" onDone={noop} />;
+  if (view === "onboard") return <Onboarding invite={null} onDone={noop} />;
+  if (view === "joinb")
+    return <Onboarding invite={{ kind: "token", value: "demo" }} onDone={noop} />;
   if (view === "pathintro")
     return (
       <div className="tabwrap">
@@ -299,12 +310,15 @@ function Preview() {
     return <StartMenu stage="engaged" onPick={noop} onSeeAll={noop} />;
   if (view === "start")
     return <StartScreen uid="u1" name="Sarah" onEnter={noop} />;
-  if (view === "play")
+  if (view === "play") {
+    // ?slug=&level= so any deck's question types (rank, open, importance) can
+    // be walked in the harness, not just the default deck's.
+    const q = new URLSearchParams(window.location.search);
     return (
       <PlayScreen
         code="ABCD"
-        slug={slugC}
-        level={0}
+        slug={q.get("slug") ?? slugC}
+        level={Number(q.get("level") ?? 0)}
         role="host"
         deck={{}}
         partnerName="Judah"
@@ -312,6 +326,7 @@ function Preview() {
         onExit={noop}
       />
     );
+  }
   if (view === "results")
     return (
       <div className="tabwrap">

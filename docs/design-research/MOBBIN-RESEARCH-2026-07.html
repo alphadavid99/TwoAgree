@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TwoAgree — Mobbin design research, July 2026</title>
+<style>
+  :root{
+    --claret:#3E1A2E; --claret-deep:#2A1120; --claret-hover:#5C2E45;
+    --honey:#C6913C; --honey-raised:#DCB265; --amber-text:#8F5A12;
+    --blush:#F3DED6; --blush-ground:#FBF2F5; --paper:#FBF6F0;
+    --ink:#2A1120; --grey:#6B5A61; --line:#EADFD8; --white:#fff;
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Hanken Grotesk", -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:linear-gradient(180deg,var(--blush-ground),#F8E9EC 60%);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
+
+  header.hero{background:var(--claret);color:#F6EBE2;margin:0 0 48px;padding:64px 24px 56px}
+  header.hero .wrap{padding-bottom:0}
+  .hero .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--honey-raised);margin-bottom:14px}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.6vw,46px);line-height:1.12;max-width:21ch}
+  .hero .bar{width:72px;height:5px;background:var(--honey);border-radius:3px;margin:22px 0}
+  .hero p{max-width:64ch;color:#EAD9CD;font-size:16px}
+  .hero .meta{margin-top:18px;font-size:13px;color:#C9AE9F}
+
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:72px 0 6px;color:var(--claret-deep)}
+  h2 .no{color:var(--honey);margin-right:10px;font-size:.72em;vertical-align:.14em;letter-spacing:.04em}
+  .lede{color:var(--grey);max-width:74ch;margin:6px 0 26px;font-size:16px}
+  h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:34px 0 8px;color:var(--claret)}
+  p{max-width:78ch}
+  section p+p{margin-top:10px}
+  a{color:var(--claret-hover);text-decoration-color:var(--honey);text-underline-offset:2px}
+  strong{color:var(--claret-deep)}
+
+  .note{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--honey);border-radius:10px;padding:14px 18px;margin:26px 0;font-size:14.5px;color:var(--grey);max-width:100%}
+  .note b{color:var(--ink)}
+
+  .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:18px;margin:24px 0 8px}
+  figure.shot{background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(62,26,46,.07);display:flex;flex-direction:column}
+  figure.shot .imgbox{background:#EFE4E7;position:relative;aspect-ratio:296/640;overflow:hidden}
+  figure.shot img{width:100%;height:100%;object-fit:cover;display:block}
+  figure.shot .fallback{display:none;position:absolute;inset:0;padding:18px;font-size:13px;color:var(--grey);align-items:center;justify-content:center;text-align:center}
+  figure.shot.broken img{display:none}
+  figure.shot.broken .fallback{display:flex}
+  figcaption{padding:12px 14px 14px;font-size:13px;color:var(--grey)}
+  figcaption .app{display:block;font-weight:700;color:var(--claret);font-size:13.5px;margin-bottom:3px}
+  figcaption a{font-size:12px}
+
+  table{border-collapse:collapse;width:100%;margin:20px 0;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14.5px}
+  th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  th{background:var(--blush);color:var(--claret-deep);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+  tr:last-child td{border-bottom:none}
+  td.st{white-space:nowrap;font-weight:600}
+  .ok{color:#3E6B45}.part{color:var(--amber-text)}.gap{color:#9C3838}
+
+  .pattern{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .pattern h3{margin-top:0}
+  .pattern .who{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-text);margin-bottom:10px}
+  .anti{border-left:4px solid #9C3838}
+  .idea{border-left:4px solid var(--honey)}
+  .tablewrap{overflow-x:auto}
+  .verse{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--claret);margin:40px auto;text-align:center;max-width:44ch}
+  .verse small{display:block;font-style:normal;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-top:8px}
+  footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--grey)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">TwoAgree · Design research · July 2026</div>
+    <h1>How the best dating, couples &amp; devotional apps design the moments TwoAgree lives on</h1>
+    <div class="bar"></div>
+    <p>Screen-level research via Mobbin across Paired, Hinge, Bumble, Badoo, Tinder, Flo&nbsp;for&nbsp;Partners, Co-Star, Dimensional, stoic., Atoms, Waking&nbsp;Up, 5&nbsp;Minute&nbsp;Journal, Moonly, Spotify and Deezer — mapped to TwoAgree's six defining moments, with the patterns the category converges on, where they use motion, and what we're still missing.</p>
+    <p class="meta">Companion to <em>docs/UX-REVIEW-2026-07.md</em> — that review named these patterns from comparative research; this report brings the visual evidence, checks its calls against the wild, and adds net-new findings at the end.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="note"><b>About the images:</b> screenshots are hot-linked from Mobbin's CDN (this file stays lightweight and inside their terms). View this page online in a normal browser. If a thumbnail ever expires, its caption links to the canonical Mobbin screen page.</div>
+
+<!-- ============================================================ -->
+<h2><span class="no">01</span>The six moments, in the wild</h2>
+<p class="lede">Every app in this category is built from the same six moments TwoAgree has: <strong>pair → return → answer apart → the seal → the reveal → living with the results</strong>. Below, the best screen for each moment found in ~15 apps.</p>
+
+<h3>Moment 1 — Pairing: one screen, both directions, and a designed wait</h3>
+<p>Paired puts <strong>invite</strong> and <strong>join</strong> on a single screen as two coloured cards — no "are you the host?" branching, letter-boxed codes that feel like a game, one tap to copy or share. Flo treats the wait itself as UI: a three-step "here's what happens next" checklist with padlocks that unlock, a resend, and a cancel. Nobody leaves the inviter staring at a spinner.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/joAMHoeD" alt="Paired — Pair with your partner"><div class="fallback">Paired — pairing screen (image expired; use link below)</div></div><figcaption><span class="app">Paired — Pair with your partner</span>Invite + enter-code as two cards on one screen; boxed 6-letter code; "Tap to copy". <a href="https://mobbin.com/screens/00e77caa-2489-411a-b392-51d307797c19">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/0hYacRan" alt="Flo — share pairing code"><div class="fallback">Flo — share pairing code (image expired; use link below)</div></div><figcaption><span class="app">Flo — Share your pairing code</span>Big code, one action, plus a trust line: "Only share it with a trusted, responsible partner." <a href="https://mobbin.com/screens/bc55fb7b-5a07-4618-a23d-4b3c8da94fe1">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/VNAx8Byn" alt="Flo — waiting for partner to pair"><div class="fallback">Flo — waiting state (image expired; use link below)</div></div><figcaption><span class="app">Flo — Waiting for him to pair</span>The wait as a 3-step checklist with padlocks, resend and cancel — bounded, honest, calm. <a href="https://mobbin.com/screens/00e033f2-fd01-4841-be97-ca1d9c7e69fc">View on Mobbin</a></figcaption></figure>
+</div>
+
+<h3>Moment 2 — The return: a "today" ritual, not a menu</h3>
+<p>The calm apps all anchor the home screen on <strong>one editorial "today" object</strong> — stoic.'s morning/evening pair, Atoms' daily lesson card, Waking Up's daily quote, Co-Star's day-at-a-glance. Paired structures today as a tiny 3-item session (question → quiz → game) on a dotted thread, each item ticking off. The shared trait: the home screen answers <em>"what do we do right now?"</em> in one glance, and everything else recedes.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/Jxy45qns" alt="Paired — home, session complete"><div class="fallback">Paired — home checklist (image expired; use link below)</div></div><figcaption><span class="app">Paired — today's session, done</span>Three cards on a thread, ticked; "You've completed your first Paired session. Come back tomorrow…" <a href="https://mobbin.com/screens/465bdf7a-087e-4a5b-995f-9d18864b66aa">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/gbTA4I5s" alt="stoic — morning and evening cards"><div class="fallback">stoic. — home (image expired; use link below)</div></div><figcaption><span class="app">stoic. — morning / evening</span>The day framed as two rituals ("Ready to take on the day?" / "Time to clear your mind") + one 7-day theme. <a href="https://mobbin.com/screens/a35e2d20-fc2d-4d30-a7c3-adcfc2555d16">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/T9VR1Qzv" alt="Atoms — daily lesson"><div class="fallback">Atoms — daily lesson (image expired; use link below)</div></div><figcaption><span class="app">Atoms — Daily Lesson</span>One warm gradient card carries the whole day; reading time stated up front (pre-commitment). <a href="https://mobbin.com/screens/63fd9e06-83a9-4e76-b3f9-760b48a04276">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/sC7RGowA" alt="Waking Up — daily quote"><div class="fallback">Waking Up — daily quote (image expired; use link below)</div></div><figcaption><span class="app">Waking Up — Daily Quote</span>A devotional register without ornament: one gradient card, big serif text, a byline. <a href="https://mobbin.com/screens/17f552f8-7a09-4137-a21d-463234c96f4b">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/edRfMY2Z" alt="Co-Star — home"><div class="fallback">Co-Star — home (image expired; use link below)</div></div><figcaption><span class="app">Co-Star — day at a glance</span>Pure editorial identity: serif aphorism, mono labels, Do/Don't columns. Instantly recognisable from across a room. <a href="https://mobbin.com/screens/4b860908-3dac-4ad8-a7ef-758ea2c78151">View on Mobbin</a></figcaption></figure>
+</div>
+
+<h3>Moment 3 — Answering: one question, one screen, one breath</h3>
+<p>Hinge's onboarding is the category's gold standard for asking many questions without fatigue: <strong>one question per screen</strong>, a big serif headline, a dot-track with a section icon so you always know where you are, a privacy toggle ("Visible on profile") at the point of disclosure, and honest framing on sensitive items. Note how close Hinge's register is to TwoAgree's — serious serif questions about intentions and beliefs, answered in one tap.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/rIIpjV8h" alt="Hinge — dating intention"><div class="fallback">Hinge — dating intention (image expired; use link below)</div></div><figcaption><span class="app">Hinge — What is your dating intention?</span>Serif question, plain radio rows, optional "in your own words" field, visibility toggle. <a href="https://mobbin.com/screens/e2b9e8fd-e826-43b5-b084-d3c55341e33e">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/2TzxbuHg" alt="Hinge — who do you want to date"><div class="fallback">Hinge — onboarding question (image expired; use link below)</div></div><figcaption><span class="app">Hinge — one-per-screen grammar</span>Icon + dot-track stepper: progress without a percentage; each dot is a question, the icon names the chapter. <a href="https://mobbin.com/screens/fdf470d0-6483-4479-8258-c2d2df11f010">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/Z9KM33hb" alt="Hinge — voice prompt on profile"><div class="fallback">Hinge — voice prompt (image expired; use link below)</div></div><figcaption><span class="app">Hinge — voice &amp; video prompts</span>Disclosure by voice: 30-second waveform answers. Tone survives in audio in a way text can't carry. <a href="https://mobbin.com/screens/e2d1cad2-bbce-4171-b92e-b3d2933f867d">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/D76pyMJH" alt="Moonly — hold to reveal"><div class="fallback">Moonly — hold to reveal (image expired; use link below)</div></div><figcaption><span class="app">Moonly — "Hold to find your rune"</span>A press-and-hold ritual before a reveal — deliberate touch as ceremony, not friction. <a href="https://mobbin.com/screens/b7142921-1918-4935-a45b-d4717317b4a6">View on Mobbin</a></figcaption></figure>
+</div>
+
+<h3>Moment 4 — The seal: absence made visible</h3>
+<p>This is TwoAgree's core mechanic, and the category is unanimous about how to present it: <strong>show the sealed thing, don't hide it</strong>. Badoo renders the partner's unanswered reply as a lock-badged bubble — "Not answered yet… Your answers will be revealed once you both respond." Tinder shows the compatibility bars <em>greyed with padlocks</em> and names exactly who owes what ("Amelia needs to add more information"). Bumble launches a shared question game from the match moment itself, stating the seal rule up front. The locked state isn't an empty state — it's the anticipation engine.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/Vq8XeITO" alt="Badoo — answer sealed until both respond"><div class="fallback">Badoo — sealed answer (image expired; use link below)</div></div><figcaption><span class="app">Badoo — "Not answered yet" 🔒</span>The partner's answer exists on screen, sealed with a padlock; the rule is stated in one line below. <a href="https://mobbin.com/screens/25d0fdbe-e4cb-4052-87af-11ddaa117980">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/nLaR9mW0" alt="Tinder — locked compatibility bars"><div class="fallback">Tinder — locked bars (image expired; use link below)</div></div><figcaption><span class="app">Tinder — locked until both contribute</span>Greyed bars with padlocks + "Amelia needs to add more information to reveal your complete compatibility." <a href="https://mobbin.com/screens/7c552e9f-1f66-4fd1-97f8-cdaa08b265b2">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/e5WojJm5" alt="Bumble — matched, question game"><div class="fallback">Bumble — question game invite (image expired; use link below)</div></div><figcaption><span class="app">Bumble — the game starts at the match</span>"You'll see their answer after you've both responded" — the seal rule as the hook, offered at the moment of highest excitement. <a href="https://mobbin.com/screens/fe348966-5923-4342-a84c-700b4fb871bb">View on Mobbin</a></figcaption></figure>
+</div>
+
+<h3>Moment 5 — The reveal: a ceremony, then a conversation</h3>
+<p>Two reveal grammars dominate. The <strong>ceremony</strong>: a full-screen number with a one-line verdict in warm, non-judgmental language — Spotify's "Relationships are all about compromise" under a 67% is the masterclass (the copy absorbs the low score so the couple doesn't have to). The <strong>side-by-side</strong>: Paired and Badoo place both answers as two voices in one thread, then immediately open a chat/reaction layer beneath — the reveal flows straight into talking.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/j2wKtM7u" alt="Paired — 70% matching answers, confetti"><div class="fallback">Paired — reveal confetti (image expired; use link below)</div></div><figcaption><span class="app">Paired — 70% matching answers</span>Confetti at the moment both sides land; avatars meet at the top of the result. <a href="https://mobbin.com/screens/ffea3f7b-6855-4eef-8dac-bcedafbf1abf">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/8ojuOaNa" alt="Spotify — taste match 67%"><div class="fallback">Spotify — taste match (image expired; use link below)</div></div><figcaption><span class="app">Spotify — "Your taste match is 67%"</span>One number, one forgiving line. The copy does the emotional work: "Relationships are all about compromise." <a href="https://mobbin.com/screens/43c08000-c832-417a-94d6-06d897eefaa1">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/Vdlo67Tb" alt="Deezer — compatibility check"><div class="fallback">Deezer — compatibility (image expired; use link below)</div></div><figcaption><span class="app">Deezer — Compatibility check</span>Two avatars above the number; verdict written to the pair ("you're rocking to the same beat"), plus Share. <a href="https://mobbin.com/screens/9ae16e4b-afdb-477f-b48a-5958e520c1be">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/RDVcYa4e" alt="Badoo — both answers revealed"><div class="fallback">Badoo — revealed answers (image expired; use link below)</div></div><figcaption><span class="app">Badoo — the seal breaks in place</span>The locked bubble becomes the partner's answer, in the same thread — reveal lands where the conversation continues. <a href="https://mobbin.com/screens/2bc7359b-b723-4f97-bc88-84d6d84cddf3">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/pyiigEe8" alt="Paired — both answers side by side with reactions"><div class="fallback">Paired — answers side-by-side (image expired; use link below)</div></div><figcaption><span class="app">Paired — two voices, one thread</span>Both open answers as chat bubbles with avatars, "Add a reaction", and a message box right underneath. <a href="https://mobbin.com/screens/7c6e826c-9d52-4481-8844-49f4dd0bdddb">View on Mobbin</a></figcaption></figure>
+</div>
+
+<h3>Moment 6 — Living with the results: identity, not scoreboard</h3>
+<p>The apps people love don't leave results as percentages. Paired's Relationship Checkup renders <strong>two named gauges side by side</strong> and splits everything into "strength areas" and "growth areas". Dimensional turns traits into <strong>positions on shared axes</strong> — a picture you point at, not a grade you defend. Co-Star sells a whole <em>report</em> about a pair as a keepsake artifact, and Weverse mints a milestone card ("First DM with…") for a couple-history moment. Results become an identity the pair carries, and the thing they share.</p>
+<div class="shots">
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/iY5xjXZF" alt="Paired — relationship checkup results"><div class="fallback">Paired — checkup results (image expired; use link below)</div></div><figcaption><span class="app">Paired — Relationship Checkup</span>Two heart-gauges with both names + avatars; "Strength areas… growth areas" framing; chat box below. <a href="https://mobbin.com/screens/3a76c52e-6359-4093-afd0-03f459180c54">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/wOP34sGL" alt="Dimensional — archetype breakdown sliders"><div class="fallback">Dimensional — archetype (image expired; use link below)</div></div><figcaption><span class="app">Dimensional — positions, not scores</span>Trait pairs as dots on axes — proximity as the picture. The model for a "where the two of you sit" view. <a href="https://mobbin.com/screens/73c7de85-dedd-4f30-8cc8-381662e757d2">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/78e9qHBr" alt="Co-Star — crush report"><div class="fallback">Co-Star — crush report (image expired; use link below)</div></div><figcaption><span class="app">Co-Star — the pair as a report</span>A compatibility <em>document</em> — named chapters, best case / worst case, communication styles. People pay for a beautiful artifact about "us". <a href="https://mobbin.com/screens/5b992bfa-233f-4c1a-bf30-ecbf27c5e2b0">View on Mobbin</a></figcaption></figure>
+  <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/r9UoL7A3" alt="Weverse — first DM milestone card"><div class="fallback">Weverse — milestone card (image expired; use link below)</div></div><figcaption><span class="app">Weverse — the milestone keepsake</span>A dated, holographic "first ever" card with confetti — firsts minted as collectibles. <a href="https://mobbin.com/screens/1b63c5e5-3b3c-4ffe-b9e4-49331149369f">View on Mobbin</a></figcaption></figure>
+</div>
+
+<!-- ============================================================ -->
+<h2><span class="no">02</span>What the top apps converge on</h2>
+<p class="lede">Ten patterns that recur across every well-designed app in the set — and where TwoAgree stands on each after the July review build-out.</p>
+
+<div class="tablewrap">
+<table>
+  <tr><th style="width:34%">Pattern</th><th>Seen in</th><th>TwoAgree status</th></tr>
+  <tr><td><strong>One question per screen</strong>, serif headline, section-aware progress</td><td>Hinge, Paired, Life Reset</td><td class="st ok">✅ Have — play loop + 16-step onboarding already work this way</td></tr>
+  <tr><td><strong>The visible seal</strong> — partner's answer shown locked, rule stated in one line</td><td>Badoo, Tinder, Bumble, Paired</td><td class="st part">🔶 Planned (wax-seal motif, §12) — the wild versions confirm: show <em>the thing itself</em> locked, name who it's waiting on</td></tr>
+  <tr><td><strong>Pair by code, both directions on one screen</strong>, wait as a checklist</td><td>Paired, Flo, Life360</td><td class="st part">🔶 Invite-by-code shipped; the dual-card single screen + checklist wait are worth stealing</td></tr>
+  <tr><td><strong>Today as a tiny finishable session</strong> (2–3 items, thread, tick-off)</td><td>Paired, stoic., Atoms</td><td class="st part">🔶 "Tonight's step" slot planned; Paired's 3-item thread is the strongest shape for it</td></tr>
+  <tr><td><strong>Ceremony number + forgiving verdict line</strong> written to the pair</td><td>Spotify, Deezer, Paired</td><td class="st ok">✅ Have — agreedLine tiers shipped; Spotify's copy register is the calibration target</td></tr>
+  <tr><td><strong>Reveal lands where the talking happens</strong> (answers side-by-side + react/respond right there)</td><td>Paired, Badoo</td><td class="st part">🔶 Talk loop (pin/talked) shipped; a lightweight per-question reaction is still open</td></tr>
+  <tr><td><strong>Results as positions on shared space</strong>, not grades</td><td>Dimensional, Paired checkup</td><td class="st part">🔶 Question-level S/J dots are excellent; the deck-level overlap band is designed, not yet built</td></tr>
+  <tr><td><strong>Strength / growth framing</strong> — every low number reframed as material</td><td>Paired, Gottman</td><td class="st ok">✅ Have — "Nothing here is a problem — it's just where the talking is."</td></tr>
+  <tr><td><strong>Milestone keepsakes</strong> — dated, beautiful, shareable artifacts for firsts</td><td>Weverse, Co-Star, Spotify Wrapped</td><td class="st part">🔶 Keepsake PNG shipped for Core; firsts ("first reveal ever", "Core complete") not yet minted</td></tr>
+  <tr><td><strong>Privacy stated at the point of disclosure</strong> ("Visible on profile", "Your answers are private")</td><td>Hinge, Paired</td><td class="st part">🔶 Consent screen is strong; per-question reassurance line on sensitive items is a cheap add</td></tr>
+</table>
+</div>
+
+<div class="pattern anti">
+  <h3>The anti-patterns, with receipts</h3>
+  <div class="who">Paired · Duolingo — what TwoAgree deliberately refuses</div>
+  <p>Paired — the closest competitor — greets a couple's first ever answered question with a <strong>streak flame and "skipping a day resets it!"</strong>, and interrupts day one with an App&nbsp;Store subscription sheet. Duolingo's match-complete screen pays out XP, medals and an ELO. These are loss-aversion mechanics pointed at a relationship — exactly the guilt machinery CLAUDE.md bans. Worth keeping the receipts: <em>this is the gap in the market TwoAgree occupies.</em> Calm is a differentiator precisely because the market leader isn't.</p>
+  <div class="shots" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+    <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/hxN1Y97h" alt="Paired — 1 day streak modal"><div class="fallback">Paired — streak modal (image expired; use link below)</div></div><figcaption><span class="app">Paired — "1 day streak"</span>Flame + weekly tracker + reset threat, shown after the <em>first</em> question. <a href="https://mobbin.com/screens/a6d44089-3a2e-4909-9d96-7179ef99938e">View on Mobbin</a></figcaption></figure>
+    <figure class="shot"><div class="imgbox"><img loading="lazy" src="https://mobbin.com/api/mcp/short/vdp9FBvb" alt="Duolingo — match complete, XP"><div class="fallback">Duolingo — match complete (image expired; use link below)</div></div><figcaption><span class="app">Duolingo — XP / medals / ELO</span>Competitive payout grammar — the "you vs them" framing TwoAgree must never borrow. <a href="https://mobbin.com/screens/cdc6c47f-f54a-4ac8-838f-cd25e99b2988">View on Mobbin</a></figcaption></figure>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2><span class="no">03</span>Where the best apps spend motion</h2>
+<p class="lede">Screenshots can't show motion, but the category's animation budget is legible from where the designed moments sit — and it's remarkably consistent. The best apps are nearly static <em>except</em> at five beats:</p>
+
+<div class="pattern">
+  <h3>The five beats that earn animation</h3>
+  <p><strong>1 · The threshold.</strong> Match/pairing moments get the biggest gesture in the app: Bumble's "You matched" overlay (background blurs, card scales in), Paired's pairing success. One-time events, full-screen, 600–900ms. <em>TwoAgree equivalents: partner joins; a part becomes revealable (the claret ready-card).</em></p>
+  <p><strong>2 · The seal breaking.</strong> Badoo's locked bubble swaps to the real answer in-place; Tinder's padlocked bars fill on unlock. The object that was locked is the object that opens — never a cut to a different screen. <em>TwoAgree: the planned wax-seal break as the reveal's entry.</em></p>
+  <p><strong>3 · The number landing.</strong> Count-ups + a settle beat (Paired's gauge sweep, Spotify's number card). Sequenced, never simultaneous — each stat a beat apart. <em>TwoAgree: shipped (visible count-up, ring sweep); the calibration is Duolingo's stagger at half speed.</em></p>
+  <p><strong>4 · The celebration, scaled by rarity.</strong> Paired's confetti burst on high match; Weverse's milestone card shimmer. Once per threshold, never routine. <em>TwoAgree: the Gold-on-Claret ladder + petals — already the right instincts; keep celebration tied to firsts and true peaks.</em></p>
+  <p><strong>5 · The held ritual.</strong> Moonly's press-and-hold to draw the daily rune — duration as reverence. A deliberate 700ms hold makes a reveal feel <em>chosen</em>. <em>TwoAgree: a strong candidate for opening a reveal ceremony ("Hold to open — best side by side") instead of a tap; it also softly enforces the couple actually pausing.</em></p>
+  <p style="margin-top:14px;color:var(--grey)">Everything else in these apps moves on one quiet grammar: cards rise ~12px with fade on entry, lists stagger ~40ms, presses spring. TwoAgree's single-spring system (one bezier, reduced-motion guards, marks never animate) is already <em>better disciplined</em> than most of the set — the gap was never the grammar, it's finishing beats 1–2.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2><span class="no">04</span>Blind spots &amp; net-new opportunities</h2>
+<p class="lede">Checked against the July review so this list is genuinely additive — items its build-out already covers are excluded. Ranked by leverage.</p>
+
+<div class="pattern idea">
+  <h3>1 · The pairing surface is competing below the category bar</h3>
+  <p>This research's clearest finding. Pairing in the wild is a <em>designed room</em>: Paired's dual invite/join cards, boxed letter codes, Flo's checklist wait with resend + cancel + trust line. TwoAgree's invite is a link/token flow with a code fallback — functionally there after the July fixes, but the <em>surface</em> is the couple's first shared moment and first impression of craft. Worth one dedicated screen: both directions on one card pair (berry "Invite Sarah's way" / honey "Join with Judah's code"), boxed code, share sheet, and a waiting state with the three-step checklist + "send it again". Mostly composition of parts that already exist.</p>
+</div>
+
+<div class="pattern idea">
+  <h3>2 · Voice answers for the disclosure questions</h3>
+  <p>Net-new from Hinge: 30-second <strong>voice-note answers</strong> with a waveform, for exactly the 37 OPEN identity/disclosure prompts that can't feed scores anyway. Hearing your partner's voice say "what I'm afraid to tell you" lands categorically differently from reading it — and it fits the reveal (both voice notes unlock together, played side by side). Technically shaped for the existing adapter pattern (<code>device/audio.ts</code>, MediaRecorder on web → Capacitor plugin later; ~256kbps Opus, short, stored like the base64 photo or in Storage). A genuine differentiator no couples app currently has; Tier-3 romance/intimacy decks are the natural pilot.</p>
+</div>
+
+<div class="pattern idea">
+  <h3>3 · A "two of you" identity page — positions, chapters, no grades</h3>
+  <p>Dimensional and Co-Star show what results-as-identity looks like when it's the product's centre: named chapters about the pair, positions on axes, best-case/worst-case honesty. TwoAgree's Together tab has the data to become this — the overlap bands (already designed) plus two or three <em>written</em> lines per deck generated from the data ("You two agree most about money's purpose, and differ most on how tightly to hold it") would turn the tab from instrument panel into portrait. The Co-Star lesson: prose about "us" is what people screenshot; percentages aren't.</p>
+</div>
+
+<div class="pattern idea">
+  <h3>4 · Mint the firsts</h3>
+  <p>Weverse dates and frames "firsts" as collectible cards. TwoAgree's first-reveal-ever beat is scheduled (§13.3) but not yet a <em>keepsake</em>: "Your first conversation — Money, Part 1 — 27 July 2026, Sarah &amp; Judah" as a claret card with the gold bar, minted once, kept on Together, shareable. Composes entirely from the shipped keepsake renderer. Firsts are the zero-budget growth loop's best inventory: a couple's first card is the one they'll actually post.</p>
+</div>
+
+<div class="pattern idea">
+  <h3>5 · Say "private" at the moment it matters</h3>
+  <p>Hinge places a visibility toggle on every disclosure; Paired writes "Your answers are private" directly under the question. TwoAgree's privacy story lives at consent — one screen, early, then never again. A single quiet line under Tier-3 questions ("Only Judah will ever see this — after you both answer") costs a string and re-earns trust exactly where hands hesitate. Cheapest item on this list.</p>
+</div>
+
+<div class="pattern idea">
+  <h3>6 · The forgiving verdict register, one notch warmer</h3>
+  <p>Spotify's "Relationships are all about compromise" under a 67% is doing something specific: the <em>system</em> absorbs the disappointment so neither person has to. Deezer writes the verdict to the pair as a compliment about difference ("same groove with a few twists"). Worth an audit pass of TwoAgree's tiered agreed-lines against this register — especially the low tiers, where "surface, don't settle" copy has to work hardest. The test: would either partner feel <em>graded</em> reading it aloud to the other?</p>
+</div>
+
+<div class="pattern">
+  <h3>Confirmed by the wild (already planned — build with confidence)</h3>
+  <p>The research strongly validates four July-review calls, now with visual evidence: the <strong>visible seal</strong> (Badoo/Tinder prove naming who it waits on is standard, not nagging), the <strong>both-done gate as an event</strong> (Bumble fires its question game from the match high-point), the <strong>reveal→conversation weld</strong> (Paired/Badoo put reply affordances inside the reveal itself), and <strong>bounded waiting</strong> (Flo's checklist). None of these is speculative design anymore — they're category table stakes done with varying grace.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2><span class="no">05</span>The UI identity — what "joined up" actually is</h2>
+<p class="lede">The apps in this set that feel like <em>someone</em> — Co-Star, stoic., Atoms, Waking Up — get their identity from discipline, not decoration. Four moves, consistently:</p>
+
+<div class="pattern">
+  <p><strong>One typographic voice, used with total confidence.</strong> Co-Star is a serif speaking in aphorisms; stoic. is quiet grotesk questions; Waking Up is one giant quote on a gradient. The font isn't the identity — the <em>register</em> is, and it never breaks. TwoAgree's equivalent already exists on the Path (Fraunces verse cards, the lamp ritual) — the identity gap is that the daily surfaces don't yet speak with that voice. The planned <code>&lt;VerseCard&gt;</code> at three peaks is precisely the fix; this research says: trust it, and let Fraunces carry more of the everyday headlines too.</p>
+  <p><strong>One recurring motif that means something.</strong> Paired's thread-with-ticks, Co-Star's chart circle, Duolingo's path. TwoAgree owns a better one than all of them: <em>two strokes leaning into agreement, under a gold bar</em>. It already is the mark; the joined-up move is letting the geometry recur — two dots converging on every scale line, two avatar orbs meeting in the reveal, the gold bar as every progress fill, the trail on the Path. When the same shape means "the two of you" everywhere, the app feels authored.</p>
+  <p><strong>One card grammar.</strong> stoic. and Atoms build every screen from one card shape with strict internal rules (eyebrow, serif line, one action). TwoAgree's white-cards-on-blush is right; the July radius/label consolidation is the enforcement. The remaining tell is any screen composed ad hoc rather than from the family.</p>
+  <p><strong>A palette small enough to memorise.</strong> Co-Star: black/white/one grey. stoic.: paper and ink. TwoAgree's claret/honey/blush/white is already correctly small — the deck-hue curation (19→7) was the right instinct. Identity erodes hue by hue; the brand rules ("gold only on claret", "white screens") are the moat.</p>
+  <p style="margin-top:12px">Net: <strong>TwoAgree does not need a new visual direction.</strong> It needs the existing one applied with Co-Star-grade nerve — the devotional voice promoted from the Path's special occasions to the app's everyday speech, the two-strokes-and-bar geometry made systemic, and the ceremony beats finished. The July review's "Claret is for ceremony" + "illuminated layer" moves are exactly this; consider this report the category evidence that the direction wins.</p>
+</div>
+
+<p class="verse">"Can two walk together, unless they be agreed?"<small>Amos 3:3</small></p>
+
+<!-- ============================================================ -->
+<h2><span class="no">06</span>Source index</h2>
+<div class="tablewrap">
+<table>
+  <tr><th>App</th><th>What was studied</th><th>Why it matters to TwoAgree</th></tr>
+  <tr><td>Paired</td><td>Onboarding, pairing, daily session, Q&amp;A reveal, checkup results, streak/paywall</td><td>Closest competitor; strongest pairing + results surfaces; anti-pattern receipts</td></tr>
+  <tr><td>Hinge</td><td>26-screen onboarding, profile prompts (voice/video/poll)</td><td>One-per-screen grammar; disclosure UX; voice answers idea</td></tr>
+  <tr><td>Badoo</td><td>Question game (ask → seal → reveal in chat)</td><td>The seal mechanic, minimal and perfect</td></tr>
+  <tr><td>Bumble</td><td>Match moment → question game hand-off</td><td>Both-done gate as an event</td></tr>
+  <tr><td>Tinder</td><td>Locked compatibility ("Cosmic Spark")</td><td>Locked-until-both-contribute visual language</td></tr>
+  <tr><td>Flo for Partners</td><td>Partner linking, waiting states, "what your partner can see"</td><td>Best-in-class pairing wait + privacy transparency</td></tr>
+  <tr><td>Co-Star</td><td>Home, together readings, crush report</td><td>Editorial identity; the pair-as-report artifact</td></tr>
+  <tr><td>Dimensional</td><td>Archetype breakdown</td><td>Positions-not-grades results</td></tr>
+  <tr><td>stoic. / Atoms / Waking&nbsp;Up / 5&nbsp;Minute&nbsp;Journal / Moonly</td><td>Daily ritual homes, quote cards, hold-to-reveal</td><td>The calm register done commercially; devotional typography; ritual motion</td></tr>
+  <tr><td>Spotify / Deezer</td><td>Taste-match ceremonies</td><td>Verdict copy that absorbs the low score</td></tr>
+  <tr><td>Duolingo / Weverse / Life&nbsp;Reset</td><td>Celebrations, milestone cards, setup quizzes</td><td>Motion budget; keepsake minting; (and what not to copy)</td></tr>
+</table>
+</div>
+
+<footer>
+  Research conducted 27 July 2026 via the Mobbin MCP (iOS library). Screenshots © their respective apps, served via Mobbin; each caption links to the canonical Mobbin screen. Companion doc: <em>docs/UX-REVIEW-2026-07.md</em>. Fonts in this report render via system fallbacks (Georgia / system grotesk) — no external font requests.
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('figure.shot img').forEach(function(img){
+    img.addEventListener('error', function(){ img.closest('figure').classList.add('broken'); });
+  });
+</script>
+</body>
+</html>

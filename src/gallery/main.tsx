@@ -1,6 +1,7 @@
 // Entry for the dev-only gallery. See vite.gallery.config.ts for why this can
 // never ship: it has its own HTML entry, Firebase is aliased to fakes, and
 // scripts/check-no-gallery.mjs fails the production build if any of it leaks.
+import './storage-shim'
 import { createRoot } from 'react-dom/client'
 import '../brand/tokens.css'
 import '@fontsource/hanken-grotesk/latin-400.css'

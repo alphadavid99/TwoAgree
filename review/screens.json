@@ -1,0 +1,746 @@
+[
+  {
+    "flow": "boot",
+    "title": "1 · Boot & errors",
+    "frames": [
+      {
+        "id": "boot-checking",
+        "num": "01",
+        "title": "Checking your account",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/01-boot-checking.png"
+      },
+      {
+        "id": "boot-crash",
+        "num": "02",
+        "title": "Render-error fallback (ErrorBoundary)",
+        "note": "The app’s last line of defence. console.error is expected here.",
+        "unrenderable": "",
+        "png": "screens/02-boot-crash.png"
+      }
+    ],
+    "sheet": "sheets/boot.png"
+  },
+  {
+    "flow": "welcome",
+    "title": "2 · Welcome & onboarding (the person who arrives first)",
+    "frames": [
+      {
+        "id": "onb-welcome",
+        "num": "03",
+        "title": "Welcome",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/03-onb-welcome.png"
+      },
+      {
+        "id": "onb-names",
+        "num": "04",
+        "title": "Names",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/04-onb-names.png"
+      },
+      {
+        "id": "onb-stage",
+        "num": "05",
+        "title": "Relationship stage",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/05-onb-stage.png"
+      },
+      {
+        "id": "onb-consent",
+        "num": "06",
+        "title": "Consent (two ticks)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/06-onb-consent.png"
+      },
+      {
+        "id": "onb-consent-ticked",
+        "num": "07",
+        "title": "Consent, both ticked",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/07-onb-consent-ticked.png"
+      },
+      {
+        "id": "onb-consent-error",
+        "num": "08",
+        "title": "Consent: save failed",
+        "note": "Database write denied → friendly error.",
+        "unrenderable": "",
+        "png": "screens/08-onb-consent-error.png"
+      },
+      {
+        "id": "onb-q-answer",
+        "num": "09",
+        "title": "Starter question: answer",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/09-onb-q-answer.png"
+      },
+      {
+        "id": "onb-q-guess",
+        "num": "10",
+        "title": "Starter question: guess your partner",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/10-onb-q-guess.png"
+      },
+      {
+        "id": "onb-profile",
+        "num": "11",
+        "title": "Create your profile (account)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/11-onb-profile.png"
+      },
+      {
+        "id": "onb-profile-error",
+        "num": "12",
+        "title": "Create your profile: email taken",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/12-onb-profile-error.png"
+      },
+      {
+        "id": "onb-invite",
+        "num": "13",
+        "title": "Invite your partner",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/13-onb-invite.png"
+      },
+      {
+        "id": "onb-menu",
+        "num": "14",
+        "title": "Where would you like to start?",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/14-onb-menu.png",
+        "full": "full/14-onb-menu.png"
+      }
+    ],
+    "sheet": "sheets/welcome.png"
+  },
+  {
+    "flow": "join",
+    "title": "3 · Joining by invite (the person they bring)",
+    "frames": [
+      {
+        "id": "join-arrive",
+        "num": "15",
+        "title": "You’ve been invited",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/15-join-arrive.png"
+      },
+      {
+        "id": "join-name",
+        "num": "16",
+        "title": "Your name",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/16-join-name.png"
+      },
+      {
+        "id": "join-consent",
+        "num": "17",
+        "title": "Consent",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/17-join-consent.png"
+      },
+      {
+        "id": "join-questions",
+        "num": "18",
+        "title": "Their turn to answer",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/18-join-questions.png"
+      },
+      {
+        "id": "join-reveal",
+        "num": "19",
+        "title": "First reveal",
+        "note": "The warm-up reveal the invitee sees before making an account.",
+        "unrenderable": "",
+        "png": "screens/19-join-reveal.png"
+      },
+      {
+        "id": "join-account",
+        "num": "20",
+        "title": "Make it yours (account)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/20-join-account.png"
+      },
+      {
+        "id": "join-menu",
+        "num": "21",
+        "title": "Where would you like to start?",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/21-join-menu.png",
+        "full": "full/21-join-menu.png"
+      },
+      {
+        "id": "join-redeeming",
+        "num": "22",
+        "title": "Joining your partner’s session…",
+        "note": "",
+        "unrenderable": "Driven by the invite link in the page URL, which is module-level state shared by every frame (src/lib/invite.ts). Showing it here would put every other frame in \"joining\" too."
+      },
+      {
+        "id": "join-invite-failed",
+        "num": "23",
+        "title": "Invite link failed (banner)",
+        "note": "",
+        "unrenderable": "Same cause as the frame above: it needs a real ?t= link on the page URL."
+      }
+    ],
+    "sheet": "sheets/join.png"
+  },
+  {
+    "flow": "auth",
+    "title": "4 · Sign in & account",
+    "frames": [
+      {
+        "id": "auth-signup",
+        "num": "24",
+        "title": "Create account",
+        "note": "Reached via “Already have an account? Sign in” on Welcome.",
+        "unrenderable": "",
+        "png": "screens/24-auth-signup.png"
+      },
+      {
+        "id": "auth-signup-validation",
+        "num": "25",
+        "title": "Create account: validation",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/25-auth-signup-validation.png",
+        "full": "full/25-auth-signup-validation.png"
+      },
+      {
+        "id": "auth-signin",
+        "num": "26",
+        "title": "Sign in",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/26-auth-signin.png"
+      },
+      {
+        "id": "auth-signin-error",
+        "num": "27",
+        "title": "Sign in: wrong password",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/27-auth-signin-error.png"
+      },
+      {
+        "id": "auth-signin-busy",
+        "num": "28",
+        "title": "Sign in: waiting on the server",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/28-auth-signin-busy.png"
+      },
+      {
+        "id": "auth-reset",
+        "num": "29",
+        "title": "Password reset sent",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/29-auth-reset.png"
+      }
+    ],
+    "sheet": "sheets/auth.png"
+  },
+  {
+    "flow": "start",
+    "title": "5 · Signed in, no session yet",
+    "frames": [
+      {
+        "id": "start-profile-loading",
+        "num": "30",
+        "title": "Loading your profile",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/30-start-profile-loading.png"
+      },
+      {
+        "id": "start-firstrun",
+        "num": "31",
+        "title": "First run: set up your profile",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/31-start-firstrun.png",
+        "full": "full/31-start-firstrun.png"
+      },
+      {
+        "id": "start-choose",
+        "num": "32",
+        "title": "Start a session",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/32-start-choose.png"
+      },
+      {
+        "id": "start-stage",
+        "num": "33",
+        "title": "Start a session: stage picked",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/33-start-stage.png"
+      },
+      {
+        "id": "start-join",
+        "num": "34",
+        "title": "Join with a code",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/34-start-join.png"
+      },
+      {
+        "id": "start-join-error",
+        "num": "35",
+        "title": "Join with a code: not found",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/35-start-join-error.png"
+      },
+      {
+        "id": "start-settings",
+        "num": "36",
+        "title": "Settings from the landing screen",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/36-start-settings.png",
+        "full": "full/36-start-settings.png"
+      }
+    ],
+    "sheet": "sheets/start.png"
+  },
+  {
+    "flow": "sessionstate",
+    "title": "6 · Session loading & access",
+    "frames": [
+      {
+        "id": "session-loading",
+        "num": "37",
+        "title": "Opening your session",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/37-session-loading.png"
+      },
+      {
+        "id": "session-denied",
+        "num": "38",
+        "title": "Session unavailable",
+        "note": "Wrong code, closed session, or not a member.",
+        "unrenderable": "",
+        "png": "screens/38-session-denied.png"
+      }
+    ],
+    "sheet": "sheets/sessionstate.png"
+  },
+  {
+    "flow": "home",
+    "title": "7 · Home",
+    "frames": [
+      {
+        "id": "home-new",
+        "num": "39",
+        "title": "Partner not yet joined",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/39-home-new.png"
+      },
+      {
+        "id": "home-invite-busy",
+        "num": "40",
+        "title": "Partner not yet joined: creating invite link",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/40-home-invite-busy.png"
+      },
+      {
+        "id": "home-solo",
+        "num": "41",
+        "title": "Partner not yet joined: answers banked",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/41-home-solo.png",
+        "full": "full/41-home-solo.png"
+      },
+      {
+        "id": "home-joined",
+        "num": "42",
+        "title": "Both joined, mid-way",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/42-home-joined.png",
+        "full": "full/42-home-joined.png"
+      },
+      {
+        "id": "home-herald",
+        "num": "43",
+        "title": "A reveal is ready (herald card)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/43-home-herald.png",
+        "full": "full/43-home-herald.png"
+      },
+      {
+        "id": "home-path",
+        "num": "44",
+        "title": "Home with the Path card",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/44-home-path.png",
+        "full": "full/44-home-path.png"
+      }
+    ],
+    "sheet": "sheets/home.png"
+  },
+  {
+    "flow": "talk",
+    "title": "8 · Talk (conversations)",
+    "frames": [
+      {
+        "id": "talk-decks",
+        "num": "45",
+        "title": "All conversations",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/45-talk-decks.png",
+        "full": "full/45-talk-decks.png"
+      },
+      {
+        "id": "talk-picker",
+        "num": "46",
+        "title": "Choose a part (multi-part deck)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/46-talk-picker.png",
+        "full": "full/46-talk-picker.png"
+      }
+    ],
+    "sheet": "sheets/talk.png"
+  },
+  {
+    "flow": "play",
+    "title": "9 · Answering",
+    "frames": [
+      {
+        "id": "play-scale",
+        "num": "47",
+        "title": "Scale question",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/47-play-scale.png"
+      },
+      {
+        "id": "play-mc",
+        "num": "48",
+        "title": "Multiple choice",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/48-play-mc.png"
+      },
+      {
+        "id": "play-guess",
+        "num": "49",
+        "title": "Guess your partner",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/49-play-guess.png"
+      },
+      {
+        "id": "play-rank",
+        "num": "50",
+        "title": "Rank question",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/50-play-rank.png"
+      },
+      {
+        "id": "play-open",
+        "num": "51",
+        "title": "Open question",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/51-play-open.png"
+      },
+      {
+        "id": "play-importance",
+        "num": "52",
+        "title": "Answer + importance (tier-3 / deal-breaker)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/52-play-importance.png"
+      }
+    ],
+    "sheet": "sheets/play.png"
+  },
+  {
+    "flow": "wait",
+    "title": "10 · Waiting & unlocking",
+    "frames": [
+      {
+        "id": "wait-partner",
+        "num": "53",
+        "title": "All yours are in (waiting on partner)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/53-wait-partner.png",
+        "full": "full/53-wait-partner.png"
+      },
+      {
+        "id": "wait-unlock",
+        "num": "54",
+        "title": "Ready to open (partner just finished)",
+        "note": "Scripted: open the deck, wait, then the fixture partner finishes live.",
+        "unrenderable": "",
+        "png": "screens/54-wait-unlock.png"
+      }
+    ],
+    "sheet": "sheets/wait.png"
+  },
+  {
+    "flow": "reveal",
+    "title": "11 · Reveal",
+    "frames": [
+      {
+        "id": "reveal-t0",
+        "num": "55",
+        "title": "Reveal: low agreement (no celebration)",
+        "note": "27% agreed: plain",
+        "unrenderable": "",
+        "png": "screens/55-reveal-t0.png"
+      },
+      {
+        "id": "reveal-t1",
+        "num": "56",
+        "title": "Reveal: warm (claret room)",
+        "note": "65% agreed",
+        "unrenderable": "",
+        "png": "screens/56-reveal-t1.png"
+      },
+      {
+        "id": "reveal-t2",
+        "num": "57",
+        "title": "Reveal: strong (petals)",
+        "note": "76% agreed",
+        "unrenderable": "",
+        "png": "screens/57-reveal-t2.png"
+      },
+      {
+        "id": "reveal-t3",
+        "num": "58",
+        "title": "Reveal: grand bloom",
+        "note": "100% agreed",
+        "unrenderable": "",
+        "png": "screens/58-reveal-t3.png"
+      },
+      {
+        "id": "reveal-first",
+        "num": "59",
+        "title": "Reveal: the couple’s first ever",
+        "note": "Adds the first-reveal line",
+        "unrenderable": "",
+        "png": "screens/59-reveal-first.png"
+      },
+      {
+        "id": "reveal-answers",
+        "num": "60",
+        "title": "Every answer, side by side (review)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/60-reveal-answers.png",
+        "full": "full/60-reveal-answers.png"
+      },
+      {
+        "id": "reveal-flags",
+        "num": "61",
+        "title": "Worth a closer look (flags)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/61-reveal-flags.png",
+        "full": "full/61-reveal-flags.png"
+      }
+    ],
+    "sheet": "sheets/reveal.png"
+  },
+  {
+    "flow": "together",
+    "title": "12 · Together (results)",
+    "frames": [
+      {
+        "id": "together-empty",
+        "num": "62",
+        "title": "Nothing revealed yet",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/62-together-empty.png"
+      },
+      {
+        "id": "together-results",
+        "num": "63",
+        "title": "Where you agree",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/63-together-results.png",
+        "full": "full/63-together-results.png"
+      },
+      {
+        "id": "together-talk",
+        "num": "64",
+        "title": "Your agenda & discoveries",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/64-together-talk.png",
+        "full": "full/64-together-talk.png"
+      }
+    ],
+    "sheet": "sheets/together.png"
+  },
+  {
+    "flow": "path",
+    "title": "13 · The Path",
+    "frames": [
+      {
+        "id": "path-loading",
+        "num": "65",
+        "title": "Path: checking your progress",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/65-path-loading.png"
+      },
+      {
+        "id": "path-intro",
+        "num": "66",
+        "title": "Path: intro",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/66-path-intro.png"
+      },
+      {
+        "id": "path-intake",
+        "num": "67",
+        "title": "Path: private intake",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/67-path-intake.png"
+      },
+      {
+        "id": "path-waiting",
+        "num": "68",
+        "title": "Path: waiting for your partner",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/68-path-waiting.png"
+      },
+      {
+        "id": "path-map",
+        "num": "69",
+        "title": "Path: the map",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/69-path-map.png",
+        "full": "full/69-path-map.png"
+      },
+      {
+        "id": "path-step-arrival",
+        "num": "70",
+        "title": "Path: arriving at a waypoint",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/70-path-step-arrival.png",
+        "full": "full/70-path-step-arrival.png"
+      },
+      {
+        "id": "path-step-play",
+        "num": "71",
+        "title": "Path: a waypoint question",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/71-path-step-play.png"
+      },
+      {
+        "id": "path-lookout",
+        "num": "72",
+        "title": "Path: The Lookout (finale)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/72-path-lookout.png",
+        "full": "full/72-path-lookout.png"
+      }
+    ],
+    "sheet": "sheets/path.png"
+  },
+  {
+    "flow": "profile",
+    "title": "14 · Profile & settings",
+    "frames": [
+      {
+        "id": "profile-loading",
+        "num": "73",
+        "title": "Profile: loading",
+        "note": "Profile reads stall after the app shell has loaded.",
+        "unrenderable": "",
+        "png": "screens/73-profile-loading.png"
+      },
+      {
+        "id": "profile-main",
+        "num": "74",
+        "title": "Profile & settings",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/74-profile-main.png",
+        "full": "full/74-profile-main.png"
+      },
+      {
+        "id": "profile-leave",
+        "num": "75",
+        "title": "Leave this session? (confirm)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/75-profile-leave.png",
+        "full": "full/75-profile-leave.png"
+      },
+      {
+        "id": "profile-delete",
+        "num": "76",
+        "title": "Delete account (confirm)",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/76-profile-delete.png",
+        "full": "full/76-profile-delete.png"
+      },
+      {
+        "id": "profile-delete-busy",
+        "num": "77",
+        "title": "Delete account: deleting…",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/77-profile-delete-busy.png",
+        "full": "full/77-profile-delete-busy.png"
+      },
+      {
+        "id": "profile-export-error",
+        "num": "78",
+        "title": "Data export: offline error",
+        "note": "The success state triggers a real file download, so it is not shown.",
+        "unrenderable": "",
+        "png": "screens/78-profile-export-error.png",
+        "full": "full/78-profile-export-error.png"
+      }
+    ],
+    "sheet": "sheets/profile.png"
+  }
+]

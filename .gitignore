@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-gallery
 *.local
 
 # Env — local overrides are never committed; .env.example is the template.

@@ -29,6 +29,11 @@ describe("revealed levels", () => {
 });
 
 describe("readyReveals", () => {
+  it("ignores synthetic decks that are not in the bank (Path at-table)", () => {
+    const decks = { "at-table": { answers: { table: { host: "x" } } } } as never;
+    expect(readyReveals(decks, "host")).toEqual([]);
+  });
+
   const deck = (done: Record<number, { host?: boolean; guest?: boolean }>) =>
     ({ done }) as DeckData;
 

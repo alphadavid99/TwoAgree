@@ -293,7 +293,7 @@ export default function Onboarding({
                 "Créons un compte rapide pour enregistrer vos réponses.",
               )}
         </p>
-        <AuthScreen />
+        <AuthScreen initialMode={signIn ? "signin" : "signup"} />
       </section>
     );
   }

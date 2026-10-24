@@ -14,14 +14,20 @@ import { prettyError } from "../lib/errors";
 import { hasReturned } from "../lib/local";
 import { useT } from "../lib/i18n";
 
-type Mode = "signup" | "signin";
+export type AuthMode = "signup" | "signin";
+type Mode = AuthMode;
 
 // Email/password + Google + password reset. On success, the top-level
 // onAuthStateChanged (useAuth) swaps the view — this screen just kicks it off.
-export default function AuthScreen() {
+export default function AuthScreen({ initialMode }: { initialMode?: Mode } = {}) {
   const t = useT();
-  // Returning devices land on "Sign in"; genuinely new visitors on "Create".
-  const [mode, setMode] = useState<Mode>(hasReturned() ? "signin" : "signup");
+  // The caller's intent wins: "Sign in" must open sign-in even on a phone
+  // that has never signed in before (it used to open Create there, because
+  // only the device's history was consulted). With no stated intent,
+  // returning devices land on "Sign in" and new visitors on "Create".
+  const [mode, setMode] = useState<Mode>(
+    initialMode ?? (hasReturned() ? "signin" : "signup"),
+  );
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);

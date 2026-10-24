@@ -283,18 +283,18 @@ export const FRAMES: FrameDef[] = [
   // ============ 4 · Sign in & account ============
   ...(
     [
-      ['auth-signup', 'Create account', false, [], undefined],
-      ['auth-signup-validation', 'Create account: validation', false, [{ click: /Create account →/ }], undefined],
-      ['auth-signin', 'Sign in', true, [], undefined],
+      ['auth-signup', 'Create account', false, [{ click: /Create one/ }], undefined],
+      ['auth-signup-validation', 'Create account: validation', false, [{ click: /Create one/ }, { click: /Create account →/ }], undefined],
+      ['auth-signin', 'Sign in (a phone that has never signed in)', false, [], undefined],
       ['auth-signin-error', 'Sign in: wrong password', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-wrong' }, { click: /Sign in →/ }, { wait: 150 }], { authError: 'auth/invalid-credential' }],
       ['auth-signin-busy', 'Sign in: waiting on the server', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Sign in →/ }], { authHang: true }],
       ['auth-reset', 'Password reset sent', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { click: /Forgot password/ }, { wait: 150 }], undefined],
     ] as [string, string, boolean, Step[], Partial<FrameDef> | undefined][]
   ).map(([id, title, returning, steps, extra]): FrameDef => ({
     id, flow: 'auth', title, user: null,
-    note: id === 'auth-signup' ? 'Reached via “Already have an account? Sign in” on Welcome.' : undefined,
-    // AuthScreen reads the "has signed in here before" flag when it mounts,
-    // i.e. at the click below, so set it immediately before the click.
+    note: id === 'auth-signup' ? 'Reached via “Already have an account? Sign in” on Welcome, then “Create one”.' : undefined,
+    // "Sign in" opens sign-in whatever the device's history; the returning
+    // flag is still set per frame so both kinds of phone are exercised.
     steps: [
       [
         { run: () => (returning ? localStorage.setItem('aligned_returning', '1') : localStorage.removeItem('aligned_returning')) },

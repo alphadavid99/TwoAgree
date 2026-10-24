@@ -194,6 +194,8 @@ Palette (from the pack README):
 
 ## 11. Working rules for Claude Code
 
+- **Before building or changing any UI, read `docs/design-system.md`** (the kit, type, spacing, contrast and the “never” list). The design refresh in progress is planned in `docs/DESIGN-REFRESH-PLAN.md`, with every decision and mockup in `docs/refresh/`.
+
 - **Port the brain, rebuild the body.** The scoring math, complementary-verdict logic, deck leveling, guess/predict layer, and data model are pure logic — lift them out of `index.html` **verbatim** into typed functions/modules; do not reinterpret or re-derive them. Only the hand-rolled `innerHTML` rendering gets rebuilt as React components. Preserve the reveal-screen fixes (rev1/rev2 kept out of the FLOW nav logic so bottom nav shows on reveal).
 - **Test rules and flows in the emulator before any deploy.**
 - **Never put secrets client-side.** Email/API keys for invites go in Functions secrets.

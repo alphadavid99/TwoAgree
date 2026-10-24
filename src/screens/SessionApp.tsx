@@ -7,11 +7,11 @@ import {
   levelDone,
   levelComplete,
   catComplete,
-  doneInLevel,
   revealedQs,
   readyReveals,
   revealKey,
 } from "../lib/progress";
+import { startedLevel } from "../lib/privacy";
 import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
 import {
@@ -368,7 +368,6 @@ export default function SessionApp({
         />
       );
     }
-    const total = lvlQs(slug, level).length;
     return (
       <section>
         <TopBar onExit={exitFlow} />
@@ -385,7 +384,7 @@ export default function SessionApp({
             the answers already exist, they're just closed until you've both
             finished. Same constraint, told as anticipation. */}
         <p className="sub center" style={{ margin: "10px 24px 20px" }}>
-          {doneInLevel(slug, level, deck, other(role)) > 0
+          {startedLevel(deck, level, other(role))
             ? t(
                 `${partnerName}'s answers are sealed until you've both finished, then you'll see the same score, together.`,
                 `Les réponses de ${partnerName} restent scellées jusqu’à ce que vous ayez tous deux terminé, vous verrez alors le même score, ensemble.`,
@@ -405,10 +404,9 @@ export default function SessionApp({
           <p>
             <b>{partnerName}</b>
             <span>
-              {t(
-                `${doneInLevel(slug, level, deck, other(role))} of ${total} so far`,
-                `${doneInLevel(slug, level, deck, other(role))} sur ${total} pour l’instant`,
-              )}
+              {startedLevel(deck, level, other(role))
+                ? t("started", "commencé")
+                : t("not started yet", "pas encore commencé")}
             </span>
           </p>
         </div>

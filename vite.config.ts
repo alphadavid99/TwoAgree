@@ -44,7 +44,7 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      '**/rules.test.ts',
+      '**/*rules.test.ts',
       'functions/**',
     ],
   },

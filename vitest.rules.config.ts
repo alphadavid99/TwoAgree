@@ -6,6 +6,6 @@ import { defineConfig } from "vitest/config";
 // point vitest here directly if you already have one up.
 export default defineConfig({
   test: {
-    include: ["src/lib/rules.test.ts"],
+    include: ["src/lib/rules.test.ts", "src/lib/privacy.rules.test.ts"],
   },
 });

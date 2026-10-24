@@ -12,6 +12,11 @@ export interface DeckData {
   answers?: Record<string, RoleMap<AnswerValue>>;
   guesses?: Record<string, RoleMap<AnswerValue>>;
   done?: Record<string, RoleMap<boolean>>;
+  // Shared partner status (recommendation 5): who has begun a part, and which
+  // parts the server has published. Answers themselves stay in each author's
+  // private space until both have finished the part.
+  started?: Record<string, RoleMap<boolean>>;
+  published?: Record<string, boolean>;
   importance?: Record<string, RoleMap<number>>; // 1..5, asked on tier-3 + DEAL-*
   // The talk loop: a question either partner has pinned to discuss, and each
   // partner's confirmation that they have. Both confirmations retire it.

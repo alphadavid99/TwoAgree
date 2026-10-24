@@ -4,78 +4,80 @@
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid",
-
-        "notify": { ".validate": "newData.isBoolean()" },
-
-        "notifiedAt": { ".validate": false }
+        "notify": {
+          ".validate": "newData.isBoolean()"
+        },
+        "notifiedAt": {
+          ".validate": false
+        }
       }
     },
-
     "consents": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid"
       }
     },
-
     "intake": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid"
       }
     },
-
+    "private": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$code": {
+          "decks": {
+            "$slug": {
+              "$kind": {
+                "$qid": {
+                  ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()",
+                  ".validate": "($kind === 'answers' || $kind === 'guesses' || $kind === 'importance') && (newData.isString() || newData.isNumber())"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "sessions": {
       "$code": {
         ".read": "auth != null && data.child('uids').child(auth.uid).exists()",
         ".write": "auth != null && !data.exists()",
-
+        ".validate": "data.exists() || (newData.child('members/host/uid').val() === auth.uid && !newData.child('members/guest').exists() && !newData.child('decks').exists() && !newData.child('path').exists() && !newData.child('pathDone').exists() && !newData.child('pathPublished').exists() && !newData.child('pathLamps').exists())",
         "uids": {
-          "$uid": { ".validate": "auth.uid === $uid" }
+          "$uid": {
+            ".validate": "auth.uid === $uid"
+          }
         },
-
         "meetAt": {
           ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()"
         },
-
         "path": {
           ".write": false
         },
-
         "pathLamps": {
           "$step": {
             ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()",
             ".validate": "newData.isBoolean()"
           }
         },
-
         "decks": {
           "$slug": {
-            "answers": {
-              "$qid": {
+            "started": {
+              "$lvl": {
                 "$role": {
-                  ".write": "auth != null && !data.exists() && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))"
-                }
-              }
-            },
-            "guesses": {
-              "$qid": {
-                "$role": {
-                  ".write": "auth != null && !data.exists() && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))"
-                }
-              }
-            },
-            "importance": {
-              "$qid": {
-                "$role": {
-                  ".write": "auth != null && !data.exists() && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))"
+                  ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                  ".validate": "newData.isBoolean()"
                 }
               }
             },
             "done": {
               "$lvl": {
                 "$role": {
-                  ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))"
+                  ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                  ".validate": "newData.isBoolean()"
                 }
               }
             },
@@ -96,10 +98,17 @@
               }
             }
           }
+        },
+        "pathDone": {
+          "$step": {
+            "$role": {
+              ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+              ".validate": "newData.isBoolean()"
+            }
+          }
         }
       }
     },
-
     "invites": {
       ".read": false,
       ".write": false

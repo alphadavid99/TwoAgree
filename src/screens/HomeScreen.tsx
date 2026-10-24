@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ORDER } from "../lib/questions";
 import { nLevels, lvlQs } from "../lib/leveling";
-import { curLevel, doneInLevel, catComplete } from "../lib/progress";
+import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
+import { startedLevel } from "../lib/privacy";
 import { revealedRows, answersWaiting } from "../lib/results";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
@@ -79,7 +80,10 @@ export default function HomeScreen({
   const lvl = curLevel(slug, deck, role);
   const lvlTotal = lvlQs(slug, lvl).length;
   const mine = doneInLevel(slug, lvl, deck, role);
-  const theirs = doneInLevel(slug, lvl, deck, other(role));
+  // Their answers are private until you've both finished, so partner status
+  // comes from the shared started/done flags only.
+  const theyStarted = startedLevel(deck, lvl, other(role));
+  const theyFinished = levelDone(deck, lvl, other(role));
   const allDone = catComplete(slug, deck, role);
 
   const cta = allDone
@@ -416,12 +420,14 @@ export default function HomeScreen({
               {joined && (
                 <>
                   {" · "}
-                  {theirs === 0
+                  {!theyStarted
                     ? t(
                         `${partnerName} hasn’t started this part yet`,
                         `${partnerName} n’a pas encore commencé cette partie`,
                       )
-                    : t(`${partnerName} is ${theirs} in`, `${partnerName} en a fait ${theirs}`)}
+                    : theyFinished
+                      ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
+                      : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
                 </>
               )}
             </>

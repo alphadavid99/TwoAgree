@@ -5,6 +5,7 @@ import type { User } from 'firebase/auth'
 import { exclusive, runSteps, sleep, type Step } from './actions'
 import { setActiveFrame, type CallableHandler, type FrameRuntime } from './mock/runtime'
 import { exportFixture, fixtureUser } from './fixtures'
+import { publishInFrame, stampPublished } from './mock/publish'
 
 export type Ctx = {
   uid: string
@@ -49,6 +50,7 @@ const defaultCallables = (c: Ctx): Record<string, CallableHandler> => ({
   generatePath: (() => ({ status: 'ready' })) as CallableHandler,
   exportMyData: (() => exportFixture(c.uid)) as CallableHandler,
   deleteMyAccount: (() => ({ ok: true, sessionsUpdated: 1, sessionsDeleted: 0 })) as CallableHandler,
+  publishPart: publishInFrame as CallableHandler,
 })
 
 export function ctxFor(def: FrameDef): Ctx {
@@ -70,7 +72,7 @@ function runtimeFor(def: FrameDef, c: Ctx): FrameRuntime {
   return {
     id: def.id,
     user: c.user,
-    db: structuredClone(tree),
+    db: stampPublished(structuredClone(tree)),
     listeners: new Set(),
     pending: resolve(def.pending, c),
     denied: resolve(def.denied, c),

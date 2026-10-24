@@ -101,3 +101,21 @@ describe("redactSessionForSubject", () => {
     expect(bare.yourRole).toBe("host");
   });
 });
+
+describe("withUnpublished — answers still private go in your export", () => {
+  it("adds your private answers to the deck lists without touching published ones", async () => {
+    const { withUnpublished } = await import("./redact.js");
+    const base = {
+      yourRole: "host" as const,
+      decks: { faith: { answers: { "FAITH-001": 2 } } },
+      note: "",
+    };
+    const out = withUnpublished(base, {
+      decks: { faith: { answers: { "FAITH-009": 4 }, importance: { "FAITH-009": 5 } }, money: { guesses: { "MON-001": 1 } } },
+    });
+    expect(out.decks.faith.answers).toEqual({ "FAITH-001": 2, "FAITH-009": 4 });
+    expect(out.decks.faith.importance).toEqual({ "FAITH-009": 5 });
+    expect(out.decks.money.guesses).toEqual({ "MON-001": 1 });
+    expect(withUnpublished(base, null)).toEqual(base);
+  });
+});

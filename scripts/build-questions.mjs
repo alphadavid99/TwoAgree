@@ -240,6 +240,25 @@ for (const q of questions) {
   if (q.complement === true) e.complement = true;
   bank[q.id] = e;
 }
+// The parts of each deck, as question ids. The publish function copies exactly
+// one part's answers into the shared session once both partners have finished
+// it, so it must cut parts the same way the app does — the same ~7-question
+// split as src/lib/leveling.ts (levelsOf), computed from the same ordered bank.
+const levels = {};
+for (const slug of Object.keys(decksLiteral)) {
+  const ids = decksLiteral[slug].questions.map((q) => q.id);
+  const L = Math.max(1, Math.round(ids.length / 7));
+  const base = Math.floor(ids.length / L);
+  const rem = ids.length % L;
+  const out = [];
+  let i = 0;
+  for (let k = 0; k < L; k++) {
+    const n = base + (k < rem ? 1 : 0);
+    out.push(ids.slice(i, i + n));
+    i += n;
+  }
+  levels[slug] = out;
+}
 const fnBody = `${header}
 // Compact question metadata for the Path generation Cloud Function.
 export type QuestionType = "scale" | "mc" | "rank" | "open";
@@ -253,6 +272,9 @@ export interface BankEntry {
 
 /** Every question's selection metadata, keyed by id. */
 export const BANK: Record<string, BankEntry> = ${JSON.stringify(bank, null, 2)};
+
+/** Each deck's parts, in order, as question ids (what one publish releases). */
+export const LEVELS: Record<string, string[][]> = ${JSON.stringify(levels, null, 2)};
 `;
 
 function checkFile(outPath, expected, label) {

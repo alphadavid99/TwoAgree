@@ -16,8 +16,15 @@ import { getDatabase } from "firebase-admin/database";
 import { getAuth } from "firebase-admin/auth";
 import { randomUUID } from "node:crypto";
 import { composePath, type Intake } from "./composePath.js";
-import { redactSessionForSubject, type RawSession } from "./redact.js";
+import { redactSessionForSubject, withUnpublished, type RawSession } from "./redact.js";
 import { shouldNotify, revealReadyEmail, type Role as NotifyRole } from "./notify.js";
+import {
+  levelSlots,
+  stepSlots,
+  publishUpdates,
+  type PrivateSpace,
+  type Slot,
+} from "./publish.js";
 
 setGlobalOptions({ region: "europe-west1" });
 initializeApp();
@@ -39,9 +46,14 @@ interface SessionNode {
       answers?: Record<string, Record<string, unknown>>;
       guesses?: Record<string, Record<string, unknown>>;
       done?: Record<string, Record<string, unknown>>;
+      started?: Record<string, Record<string, unknown>>;
+      importance?: Record<string, Record<string, unknown>>;
+      published?: Record<string, unknown>;
     }
   >;
-  path?: unknown;
+  path?: { steps?: Record<string, { key?: string; qids?: string[] }> };
+  pathDone?: Record<string, Record<string, unknown>>;
+  pathPublished?: Record<string, unknown>;
 }
 
 function requireUid(auth: { uid: string } | undefined): string {
@@ -75,6 +87,12 @@ export const exportMyData = onCall(async (request) => {
   // the export.
   const consentSnap = await db.ref(`consents/${uid}`).once("value");
   const sessions = await sessionsForUser(uid);
+  // Answers not yet published (a part your partner hasn't finished) live only
+  // in your private space — still your data, so they travel with the export.
+  const privateAll = ((await db.ref(`private/${uid}`).once("value")).val() ?? {}) as Record<
+    string,
+    Parameters<typeof withUnpublished>[1]
+  >;
 
   return {
     exportedAt: new Date().toISOString(),
@@ -89,7 +107,7 @@ export const exportMyData = onCall(async (request) => {
     sessions: Object.fromEntries(
       sessions.map(([code, s]) => [
         code,
-        redactSessionForSubject(s as RawSession, uid),
+        withUnpublished(redactSessionForSubject(s as RawSession, uid), privateAll[code] ?? null),
       ]),
     ),
   };
@@ -138,9 +156,17 @@ export const deleteMyAccount = onCall(async (request) => {
           updates[`sessions/${code}/decks/${slug}/answers/${qid}/${role}`] = null;
         for (const qid of Object.keys(deck.guesses ?? {}))
           updates[`sessions/${code}/decks/${slug}/guesses/${qid}/${role}`] = null;
+        for (const qid of Object.keys(deck.importance ?? {}))
+          updates[`sessions/${code}/decks/${slug}/importance/${qid}/${role}`] = null;
         for (const lvl of Object.keys(deck.done ?? {}))
           updates[`sessions/${code}/decks/${slug}/done/${lvl}/${role}`] = null;
+        for (const lvl of Object.keys(deck.started ?? {}))
+          updates[`sessions/${code}/decks/${slug}/started/${lvl}/${role}`] = null;
       }
+    }
+    if (role) {
+      for (const step of Object.keys(s.pathDone ?? {}))
+        updates[`sessions/${code}/pathDone/${step}/${role}`] = null;
     }
     await db.ref().update(updates);
     sessionsUpdated++;
@@ -149,6 +175,8 @@ export const deleteMyAccount = onCall(async (request) => {
   await db.ref(`users/${uid}`).remove();
   // The Path intake is author-only private data; erasure must purge it too.
   await db.ref(`intake/${uid}`).remove();
+  // So are answers not yet published (parts the partner hasn't finished).
+  await db.ref(`private/${uid}`).remove();
   await getAuth().deleteUser(uid);
 
   logger.info("account deleted", { uid, sessionsUpdated, sessionsDeleted });
@@ -283,6 +311,109 @@ export const generatePath = onCall(async (request) => {
   return { status: "ready" as const };
 });
 
+// ---- Publishing a finished part ---------------------------------------------
+// Answers live in each author's private space until both partners have
+// finished a part; then the server copies that part into the shared session
+// (see publish.ts). Two routes run the same code: the publishPart callable,
+// which the app calls right after it writes a "done" flag and again whenever it
+// sees a part both have finished that isn't published yet; and the reveal-email
+// trigger below, once that is deployed. The callable is what makes reveals work
+// without the trigger: an Eventarc trigger can't be deployed in this project
+// until the IAM roles in docs/DEPLOY.md are granted.
+
+type PublishResult =
+  | { status: "published" }
+  | { status: "waiting"; reason: "not-both-done" | "partner-missing" };
+
+async function publishSlots(
+  code: string,
+  s: SessionNode,
+  slots: Slot[],
+  marker: string,
+): Promise<PublishResult> {
+  const db = getDatabase();
+  const hostUid = s.members?.host?.uid;
+  const guestUid = s.members?.guest?.uid;
+  if (!hostUid || !guestUid) return { status: "waiting", reason: "partner-missing" };
+  const [hostSnap, guestSnap] = await Promise.all([
+    db.ref(`private/${hostUid}/${code}`).once("value"),
+    db.ref(`private/${guestUid}/${code}`).once("value"),
+  ]);
+  const updates = publishUpdates(code, slots, {
+    host: hostSnap.val() as PrivateSpace | null,
+    guest: guestSnap.val() as PrivateSpace | null,
+  });
+  // Idempotent: answers are write-once, so re-copying writes the same values.
+  // The marker lands in the same atomic update as the answers it vouches for.
+  updates[marker] = true;
+  await db.ref().update(updates);
+  return { status: "published" };
+}
+
+/** Publish deck part `level` of `slug`, if both partners have marked it done. */
+export async function publishLevel(
+  code: string,
+  slug: string,
+  level: number,
+  known?: SessionNode,
+): Promise<PublishResult> {
+  const s =
+    known ??
+    ((await getDatabase().ref(`sessions/${code}`).once("value")).val() as SessionNode | null);
+  const slots = levelSlots(slug, level);
+  if (!s || !slots) throw new HttpsError("not-found", "No such part.");
+  const done = s.decks?.[slug]?.done?.[level];
+  if (done?.host !== true || done?.guest !== true) {
+    return { status: "waiting", reason: "not-both-done" };
+  }
+  return publishSlots(code, s, slots, `sessions/${code}/decks/${slug}/published/${level}`);
+}
+
+/** Publish Path step `index`, if both partners have marked it done. */
+async function publishStep(code: string, index: number, s: SessionNode): Promise<PublishResult> {
+  const step = s.path?.steps?.[String(index)];
+  if (!step) throw new HttpsError("not-found", "No such step.");
+  const done = s.pathDone?.[String(index)];
+  if (done?.host !== true || done?.guest !== true) {
+    return { status: "waiting", reason: "not-both-done" };
+  }
+  return publishSlots(code, s, stepSlots(step), `sessions/${code}/pathPublished/${index}`);
+}
+
+/**
+ * publishPart({ code, slug, level }) or publishPart({ code, step }). Any member
+ * may call it; it only ever publishes a part BOTH members have marked done, and
+ * a member can only mark their own role done (database.rules.json), so neither
+ * partner can make the other's answers public early.
+ */
+export const publishPart = onCall(async (request) => {
+  const uid = requireUid(request.auth);
+  const data = (request.data ?? {}) as {
+    code?: string;
+    slug?: string;
+    level?: number;
+    step?: number;
+  };
+  const code = String(data.code ?? "").trim().toUpperCase();
+  if (code.length < 4) {
+    throw new HttpsError("invalid-argument", "A valid session code is required.");
+  }
+  const s = (await getDatabase().ref(`sessions/${code}`).once("value")).val() as
+    | SessionNode
+    | null;
+  if (!s) throw new HttpsError("not-found", "No such session.");
+  if (!s.uids?.[uid]) {
+    throw new HttpsError("permission-denied", "You are not in this session.");
+  }
+  if (Number.isInteger(data.step) && (data.step as number) >= 0) {
+    return publishStep(code, data.step as number, s);
+  }
+  if (typeof data.slug === "string" && Number.isInteger(data.level) && (data.level as number) >= 0) {
+    return publishLevel(code, data.slug, data.level as number, s);
+  }
+  throw new HttpsError("invalid-argument", "Name a part (slug and level) or a step.");
+});
+
 // ---- "Your reveal is ready" -------------------------------------------------
 // The one notification the app sends. See notify.ts for why this moment and no
 // other. Everything is gated: no RESEND_API_KEY secret → the trigger runs,
@@ -347,6 +478,17 @@ export const onLevelDone = !EMAIL_ENABLED ? undefined : onValueWritten(
       (await db
         .ref(`sessions/${code}/decks/${slug}/done/${level}/${other}`)
         .once("value")).val() === true;
+
+    // The second "done" is the moment the part opens: publish it server-side,
+    // so it opens even if the finisher's phone went offline before it could
+    // call publishPart. Never let a publish failure stop the email decision.
+    if (otherDone) {
+      try {
+        await publishLevel(code, slug, Number(level));
+      } catch (e) {
+        logger.error("publish on done failed", { code, slug, level, err: String(e) });
+      }
+    }
 
     const recipientUid = (
       await db.ref(`sessions/${code}/members/${other}/uid`).once("value")

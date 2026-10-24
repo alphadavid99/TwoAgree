@@ -239,12 +239,10 @@ export default function Onboarding({
         // The path screen after the reveal is stage-keyed — inherit the stage
         // the initiator set so the invitee sees the same tailored conversations.
         if (val?.stage) setStage(val.stage as OnbStage);
-        const decks = (val.decks ?? {}) as Record<string, { answers?: Record<string, { host?: unknown }> }>;
-        let n = 0;
-        for (const s in decks)
-          for (const qid in decks[s].answers ?? {})
-            if (decks[s].answers![qid].host != null) n++;
-        setBankedCount(n);
+        // Their answers stay private until you've both finished, so this
+        // reads only the shared "done" flag on the starter questions.
+        const decks = (val.decks ?? {}) as Record<string, { done?: Record<string, { host?: boolean }> }>;
+        setBankedCount(decks[STARTER_SLUG]?.done?.[0]?.host === true ? STARTER_QS.length : 0);
       } catch {
         /* count is a nicety */
       }

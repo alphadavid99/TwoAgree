@@ -8,8 +8,8 @@
 // and another collapsed Home's stat tiles — both caught only because a human
 // looked at a screenshot. These are not a replacement for looking; they are the
 // floor beneath it.
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { ORDER } from "../lib/questions";
 import { lvlQs, nLevels, stageOf } from "../lib/leveling";
 import type { DeckData } from "../lib/scoring";
@@ -39,6 +39,11 @@ vi.mock("../lib/functions", () => ({
   redeemInvite: vi.fn(),
   generatePath: vi.fn(),
 }));
+
+// Unmount after every test: a screen left mounted keeps its timers, which then
+// fire after this file's jsdom is torn down ("window is not defined" under a
+// loaded parallel run).
+afterEach(cleanup);
 
 const t = (en: string) => en;
 const noop = () => {};

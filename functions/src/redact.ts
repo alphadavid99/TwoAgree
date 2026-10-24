@@ -125,3 +125,24 @@ export function redactSessionForSubject(s: RawSession, uid: string): RedactedSes
     note: NOTE,
   };
 }
+
+/**
+ * Your answers in parts your partner hasn't finished yet live only in your
+ * private space (private/{uid}/{code}), not in the session. They are still
+ * your data, so the export folds them into the same per-deck lists.
+ */
+export function withUnpublished(
+  r: RedactedSession,
+  space: { decks?: Record<string, Record<string, Record<string, unknown> | undefined>> } | null,
+): RedactedSession {
+  const decks = { ...r.decks };
+  for (const [slug, kinds] of Object.entries(space?.decks ?? {})) {
+    const entry = { ...(decks[slug] ?? {}) };
+    for (const kind of ["answers", "guesses", "importance"] as const) {
+      const own = kinds?.[kind];
+      if (own && Object.keys(own).length) entry[kind] = { ...(entry[kind] ?? {}), ...own };
+    }
+    if (Object.keys(entry).length) decks[slug] = entry;
+  }
+  return { ...r, decks };
+}

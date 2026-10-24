@@ -47,4 +47,8 @@ export interface Session {
   decks?: Record<string, DeckData>;
   path?: SessionPath;
   pathLamps?: Record<string, boolean>;
+  /** Each partner's "I've walked this step" flag, keyed by step index. */
+  pathDone?: Record<string, Partial<Record<Role, boolean>>>;
+  /** Steps the server has published (both walked them). */
+  pathPublished?: Record<string, boolean>;
 }

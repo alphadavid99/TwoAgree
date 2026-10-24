@@ -491,7 +491,11 @@ export function PathMap({
     if (!s) return null;
     return {
       me: stepDoneBy(session, s.data, role),
-      them: stepDoneBy(session, s.data, other(role)),
+      // Their answers stay private until you've both walked it; their own
+      // "walked" flag is shared, so it says when they have.
+      them:
+        session.pathDone?.[String(i)]?.[other(role)] === true ||
+        stepDoneBy(session, s.data, other(role)),
     };
   };
   const walkLabel = (w: { me: boolean; them: boolean }) =>

@@ -16,7 +16,7 @@
     "lint": "oxlint",
     "pretest": "node scripts/build-questions.mjs --check && node scripts/build-path.mjs --check",
     "test": "vitest run",
-    "test:rules": "firebase emulators:exec --only database \"vitest run --config vitest.rules.config.ts\"",
+    "test:rules": "firebase emulators:exec --only database,auth \"vitest run --config vitest.rules.config.ts\"",
     "preview": "vite preview",
     "cap:sync": "npm run build && cap sync ios",
     "cap:copy": "npm run build && cap copy ios",

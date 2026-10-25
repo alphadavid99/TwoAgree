@@ -1,0 +1,140 @@
+{
+ "_note": "Reveal encouragement library (item 2). Agree % picks the range. One line and one verse at random per reveal, seeded by couple + part so both partners see the same, never repeating the last pick. ESV except Amos 3:3 (NKJV). Confirm Crossway terms before public release.",
+ "ranges": [
+  {
+   "range": "0–33%",
+   "stage": "The discovery stage",
+   "lines": [
+    "New paths to explore together.",
+    "A rich foundation for conversation.",
+    "Plenty of ground to cover.",
+    "So much to discover in each other.",
+    "Every difference is a door to open.",
+    "The best conversations start right here.",
+    "A journey worth taking, one step at a time."
+   ],
+   "verses": [
+    {
+     "text": "Iron sharpens iron, and one man sharpens another.",
+     "ref": "Proverbs 27:17"
+    },
+    {
+     "text": "The purpose in a man’s heart is like deep water, but a man of understanding will draw it out.",
+     "ref": "Proverbs 20:5"
+    },
+    {
+     "text": "Let every person be quick to hear, slow to speak, slow to anger.",
+     "ref": "James 1:19"
+    }
+   ]
+  },
+  {
+   "range": "34–60%",
+   "stage": "The finding-rhythm stage",
+   "lines": [
+    "Finding your shared stride.",
+    "Building your common ground.",
+    "Learning each other’s pace.",
+    "Common ground, and room to grow.",
+    "Your paths are drawing closer.",
+    "Real agreement, with more to explore.",
+    "Growing in step, together."
+   ],
+   "verses": [
+    {
+     "text": "With all humility and gentleness, with patience, bearing with one another in love.",
+     "ref": "Ephesians 4:2"
+    },
+    {
+     "text": "Love is patient and kind.",
+     "ref": "1 Corinthians 13:4"
+    },
+    {
+     "text": "Welcome one another as Christ has welcomed you, for the glory of God.",
+     "ref": "Romans 15:7"
+    }
+   ]
+  },
+  {
+   "range": "61–90%",
+   "stage": "The strong-stride stage",
+   "lines": [
+    "Walking well together.",
+    "A strong, shared direction.",
+    "Beautifully aligned.",
+    "Heading the same way.",
+    "Strong ground beneath your feet.",
+    "Moving forward as one.",
+    "Your hearts are pointing the same way."
+   ],
+   "verses": [
+    {
+     "text": "Two are better than one, because they have a good reward for their toil.",
+     "ref": "Ecclesiastes 4:9"
+    },
+    {
+     "text": "A threefold cord is not quickly broken.",
+     "ref": "Ecclesiastes 4:12"
+    },
+    {
+     "text": "And above all these put on love, which binds everything together in perfect harmony.",
+     "ref": "Colossians 3:14"
+    }
+   ]
+  },
+  {
+   "range": "91–99%",
+   "stage": "The deeply-synced stage",
+   "lines": [
+    "Step for step.",
+    "Deeply in sync.",
+    "Of one heart and mind.",
+    "Walking as one.",
+    "Remarkably close.",
+    "Woven closely together.",
+    "Hand in hand on what matters."
+   ],
+   "verses": [
+    {
+     "text": "That their hearts may be encouraged, being knit together in love.",
+     "ref": "Colossians 2:2"
+    },
+    {
+     "text": "Being of the same mind, having the same love, being in full accord and of one mind.",
+     "ref": "Philippians 2:2"
+    },
+    {
+     "text": "May the God of endurance and encouragement grant you to live in such harmony with one another.",
+     "ref": "Romans 15:5"
+    }
+   ]
+  },
+  {
+   "range": "100%",
+   "stage": "The complete-alignment stage",
+   "lines": [
+    "Perfectly in step.",
+    "A rare and beautiful alignment.",
+    "Uniquely united.",
+    "Completely of one mind.",
+    "Fully aligned, every step of the way.",
+    "Two walking as one.",
+    "All the way together."
+   ],
+   "verses": [
+    {
+     "text": "I am my beloved’s and my beloved is mine.",
+     "ref": "Song of Solomon 6:3"
+    },
+    {
+     "text": "Where you go I will go, and where you lodge I will lodge. Your people shall be my people, and your God my God.",
+     "ref": "Ruth 1:16"
+    },
+    {
+     "text": "Many waters cannot quench love, neither can floods drown it.",
+     "ref": "Song of Solomon 8:7"
+    }
+   ]
+  }
+ ]
+}

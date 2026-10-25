@@ -369,6 +369,7 @@ export default function SessionApp({
           level={level}
           role={role}
           deck={deck}
+          pick={deck?.pick?.[level]}
           myName={myName}
           partnerName={partnerName}
           firstEver={seen.length === 0}

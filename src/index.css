@@ -5305,3 +5305,184 @@ a.btn {
   justify-content: center;
   text-decoration: none;
 }
+
+/* ---- The reveal (design refresh, item 2) ---- */
+.reveal-line {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ta-white);
+  margin: 20px 16px 0;
+}
+.reveal-verse {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+  text-align: center;
+  color: var(--ta-blush);
+  margin: 16px 20px 0;
+}
+.reveal-ref {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ta-honey);
+}
+.notverdict {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--ta-blush);
+  margin: 20px 16px 0;
+}
+.ceremony.lit .score-basis {
+  font-size: 1rem;
+  margin-top: 16px;
+}
+/* 100%: the gold medallion. */
+.medal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.medal-badge {
+  position: relative;
+  z-index: 1;
+  margin-bottom: -14px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: var(--ta-honey);
+  color: var(--ta-claret);
+  font-size: var(--eyebrow-size);
+  font-weight: 700;
+  letter-spacing: var(--eyebrow-track);
+  text-transform: uppercase;
+}
+.medal-ring {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 10px solid var(--ta-honey);
+  box-shadow: 0 0 0 8px rgba(198, 145, 60, 0.25), 0 0 60px rgba(220, 178, 101, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.medal-num {
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ta-honey-raised);
+}
+.medal-pc {
+  font-size: 2rem;
+  vertical-align: top;
+}
+.medal-lb {
+  margin-top: 6px;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
+  text-transform: uppercase;
+  color: var(--ta-honey-raised);
+  font-weight: 600;
+}
+/* Fireworks: gold and blush bursts across the top for the first seconds. */
+.ce-firework {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: fwBurst 2.4s ease-out 2;
+}
+.ce-firework i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 50%;
+  margin-left: -1px;
+  transform-origin: 50% 100%;
+  background: linear-gradient(to top, transparent 35%, currentColor 36%, currentColor 80%, transparent 81%);
+}
+.ce-firework i::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.ce-firework.gold {
+  color: var(--ta-honey-raised);
+}
+.ce-firework.blush {
+  color: var(--ta-blush);
+}
+@keyframes fwBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ce-firework {
+    display: none;
+  }
+}
+/* "Not yet" in the review: shown, unscored. */
+.nycard {
+  border-left-color: var(--ta-line);
+}
+.ny-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ny-side {
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: var(--kit-sel-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ny-side b {
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.ny-wait {
+  background: var(--ta-white);
+  border: 2px dashed var(--app-banner-line);
+}
+.ny-wait b {
+  color: var(--app-amber);
+}
+.ny-name {
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+}

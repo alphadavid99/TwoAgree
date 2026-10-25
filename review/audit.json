@@ -1,5 +1,5 @@
 {
-  "screens": 92,
+  "screens": 94,
   "results": [
     {
       "id": "kit-sheet",
@@ -428,7 +428,19 @@
       "contrast": []
     },
     {
+      "id": "reveal-t4",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
       "id": "reveal-first",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-notyet",
       "small": [],
       "taps": [],
       "contrast": []

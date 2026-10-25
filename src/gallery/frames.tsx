@@ -15,6 +15,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary'
 import { ORDER, DECKS, type Question } from '../lib/questions'
 import { lvlQs, nLevels } from '../lib/leveling'
 import { revealKey } from '../lib/progress'
+import { NOT_YET } from '../lib/scoring'
 import { KitSheet } from './KitSheet'
 import type { DeckData } from '../lib/scoring'
 import {
@@ -214,7 +215,7 @@ const revealTier = (id: string, title: string, hit: number, note: string, firstE
     steps: [{ wait: 3800 }],
     render: (c) => (
       <RevealScreen slug="fun-icebreakers" level={0} role="host" deck={tuned.deck} myName="Sarah"
-        partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} onDone={() => {}} />
+        partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}} />
     ),
   }
 }
@@ -402,11 +403,24 @@ export const FRAMES: FrameDef[] = [
   }),
 
   // ============ 11 · Reveal ============
-  revealTier('reveal-t0', 'Reveal: low agreement (no celebration)', 34, '27% agreed: plain'),
-  revealTier('reveal-t1', 'Reveal: warm (claret room)', 72, '65% agreed'),
-  revealTier('reveal-t2', 'Reveal: strong (petals)', 84, '76% agreed'),
-  revealTier('reveal-t3', 'Reveal: grand bloom', 98, '100% agreed'),
-  revealTier('reveal-first', 'Reveal: the couple’s first ever', 84, 'Adds the first-reveal line', true),
+  revealTier('reveal-t0', 'Reveal: 0–33%, the discovery stage', 27, 'Claret room, gold ripples. Line and verse for this range.'),
+  revealTier('reveal-t1', 'Reveal: 34–60%, finding your rhythm', 50, 'Claret room, gold ripples.'),
+  revealTier('reveal-t2', 'Reveal: 61–90%, a strong stride', 77, '+ falling petals'),
+  revealTier('reveal-t3', 'Reveal: 91–99%, deeply in sync', 95, '+ gold rays and sparks'),
+  revealTier('reveal-t4', 'Reveal: 100%, complete alignment', 100, 'Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line.'),
+  revealTier('reveal-first', 'Reveal: the couple’s first ever', 77, 'Adds the first-reveal line', true),
+  inSession({
+    id: 'reveal-notyet', flow: 'reveal', title: 'A “Not yet” answer, shown and unscored',
+    session: (c) => {
+      const slug = ORDER.find((sl) => DECKS[sl].questions.some((q) => q.notYet))!
+      const deck = fakeDeck(slug, nLevels(slug))
+      const q = DECKS[slug].questions.find((x) => x.notYet)!
+      deck.answers![q.id] = { host: q.type === 'scale' ? 3 : deck.answers![q.id].host!, guest: NOT_YET }
+      return sessionOf(seat(c), { decks: { [slug]: deck } })
+    },
+    openSlug: ORDER.find((sl) => DECKS[sl].questions.some((q) => q.notYet)),
+    steps: [{ wait: 500 }, { scrollToText: /Not yet/ }],
+  }),
   inSession({ id: 'reveal-answers', flow: 'reveal', title: 'Every answer, side by side (review)', session: (c) => sessionOf(seat(c), { decks: { [FULL]: fakeDeck(FULL, nLevels(FULL)) } }), openSlug: FULL, steps: [{ wait: 500 }] }),
   {
     id: 'reveal-flags', flow: 'reveal', title: 'Worth a closer look (flags)',

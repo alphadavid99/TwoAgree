@@ -455,3 +455,28 @@ describe("the one-off re-ask of the 18 which-of-you questions", () => {
     expect(again.find((r) => r.code === CODE)!.writes).toBe(0);
   });
 });
+
+describe("the reveal's line and verse", () => {
+  it("is picked once when a part opens, the same for both, and never the couple's last pick", async () => {
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    await call(GUEST, { code: CODE, slug: SLUG, level: 0 });
+    const a = (await get(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/pick/0`))).val();
+    const b = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/pick/0`))).val();
+    expect(a).toEqual(b);
+    expect(a.line).toBeGreaterThanOrEqual(0);
+    // Publishing again never re-picks.
+    await call(HOST, { code: CODE, slug: SLUG, level: 0 });
+    expect((await get(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/pick/0`))).val()).toEqual(a);
+    // The next part to open avoids the previous line and verse.
+    await playPart(HOST, "host", 1, true);
+    await playPart(GUEST, "guest", 1, true);
+    await call(HOST, { code: CODE, slug: SLUG, level: 1 });
+    const next = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/pick/1`))).val();
+    expect(next.line).not.toBe(a.line);
+    expect(next.verse).not.toBe(a.verse);
+    // Nobody can choose their own.
+    await assertFails(set(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/pick/1`), { line: 0, verse: 0 }));
+    await assertFails(set(ref(asUser(HOST), `sessions/${CODE}/lastPick`), { line: 0, verse: 0 }));
+  });
+});

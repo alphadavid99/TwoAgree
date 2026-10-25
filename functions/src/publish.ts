@@ -86,3 +86,24 @@ export function publishUpdates(
   }
   return updates;
 }
+
+/**
+ * The reveal's encouragement line and verse (design refresh, item 2) are
+ * picked here, once, when a part opens: random, the same for both partners
+ * (they read it from the session), and never the same as the couple's previous
+ * reveal. Indices, not text: the app maps them into the range the Agree score
+ * lands in (7 lines and 3 verses per range).
+ */
+export const LINES_PER_RANGE = 7;
+export const VERSES_PER_RANGE = 3;
+export interface Pick {
+  line: number;
+  verse: number;
+}
+export function choosePick(last: Pick | null | undefined, rand: () => number = Math.random): Pick {
+  const draw = (n: number, avoid: number | undefined) => {
+    const options = Array.from({ length: n }, (_, i) => i).filter((i) => i !== avoid);
+    return options[Math.min(options.length - 1, Math.floor(rand() * options.length))];
+  };
+  return { line: draw(LINES_PER_RANGE, last?.line), verse: draw(VERSES_PER_RANGE, last?.verse) };
+}

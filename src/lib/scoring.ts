@@ -17,6 +17,8 @@ export interface DeckData {
   // private space until both have finished the part.
   started?: Record<string, RoleMap<boolean>>;
   published?: Record<string, boolean>;
+  /** The reveal's line and verse, picked by the server when a part opens. */
+  pick?: Record<string, { line: number; verse: number }>;
   importance?: Record<string, RoleMap<number>>; // 1..5, asked on tier-3 + DEAL-*
   // The talk loop: a question either partner has pinned to discuss, and each
   // partner's confirmation that they have. Both confirmations retire it.

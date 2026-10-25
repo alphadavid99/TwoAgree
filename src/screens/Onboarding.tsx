@@ -948,6 +948,7 @@ function RevealStep({
       level={0}
       role={role}
       deck={deck ?? {}}
+      pick={deck?.pick?.[0]}
       myName={myName}
       partnerName={partnerName}
       onDone={onDone}

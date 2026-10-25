@@ -51,4 +51,6 @@ export interface Session {
   pathDone?: Record<string, Partial<Record<Role, boolean>>>;
   /** Steps the server has published (both walked them). */
   pathPublished?: Record<string, boolean>;
+  /** Each published step's reveal line and verse (lib/reveal.ts). */
+  pathPick?: Record<string, { line: number; verse: number }>;
 }

@@ -25,6 +25,8 @@ import {
   type PrivateSpace,
   type SharedDecks,
   type Slot,
+  type Pick,
+  choosePick,
 } from "./publish.js";
 
 setGlobalOptions({ region: "europe-west1" });
@@ -50,11 +52,14 @@ interface SessionNode {
       started?: Record<string, Record<string, unknown>>;
       importance?: Record<string, Record<string, unknown>>;
       published?: Record<string, unknown>;
+      pick?: Record<string, Pick>;
     }
   >;
   path?: { steps?: Record<string, { key?: string; qids?: string[] }> };
   pathDone?: Record<string, Record<string, unknown>>;
   pathPublished?: Record<string, unknown>;
+  pathPick?: Record<string, Pick>;
+  lastPick?: Pick;
 }
 
 function requireUid(auth: { uid: string } | undefined): string {
@@ -332,6 +337,7 @@ async function publishSlots(
   s: SessionNode,
   slots: Slot[],
   marker: string,
+  pick: { path: string; existing?: Pick },
 ): Promise<PublishResult> {
   const db = getDatabase();
   const hostUid = s.members?.host?.uid;
@@ -353,6 +359,12 @@ async function publishSlots(
   // Idempotent: an entry already shared is never rewritten (publish.ts).
   // The marker lands in the same atomic update as the answers it vouches for.
   updates[marker] = true;
+  // The reveal's line and verse, chosen once per part (publish.ts choosePick).
+  if (!pick.existing) {
+    const chosen = choosePick(s.lastPick);
+    updates[pick.path] = chosen;
+    updates[`sessions/${code}/lastPick`] = chosen;
+  }
   await db.ref().update(updates);
   return { status: "published" };
 }
@@ -373,7 +385,10 @@ export async function publishLevel(
   if (done?.host !== true || done?.guest !== true) {
     return { status: "waiting", reason: "not-both-done" };
   }
-  return publishSlots(code, s, slots, `sessions/${code}/decks/${slug}/published/${level}`);
+  return publishSlots(code, s, slots, `sessions/${code}/decks/${slug}/published/${level}`, {
+    path: `sessions/${code}/decks/${slug}/pick/${level}`,
+    existing: s.decks?.[slug]?.pick?.[level],
+  });
 }
 
 /** Publish Path step `index`, if both partners have marked it done. */
@@ -384,7 +399,10 @@ async function publishStep(code: string, index: number, s: SessionNode): Promise
   if (done?.host !== true || done?.guest !== true) {
     return { status: "waiting", reason: "not-both-done" };
   }
-  return publishSlots(code, s, stepSlots(step), `sessions/${code}/pathPublished/${index}`);
+  return publishSlots(code, s, stepSlots(step), `sessions/${code}/pathPublished/${index}`, {
+    path: `sessions/${code}/pathPick/${index}`,
+    existing: s.pathPick?.[String(index)],
+  });
 }
 
 /**

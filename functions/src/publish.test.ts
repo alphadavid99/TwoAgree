@@ -80,3 +80,23 @@ describe("a shared answer never changes", () => {
     expect(u).toEqual({ [`sessions/ABCD/decks/${slug}/answers/${q}/guest`]: 1 });
   });
 });
+
+describe("choosePick — the reveal's line and verse", () => {
+  it("never repeats the couple's previous line or verse", async () => {
+    const { choosePick } = await import("./publish.js");
+    for (let i = 0; i < 200; i++) {
+      const last = { line: i % 7, verse: i % 3 };
+      const p = choosePick(last);
+      expect(p.line).not.toBe(last.line);
+      expect(p.verse).not.toBe(last.verse);
+      expect(p.line).toBeGreaterThanOrEqual(0);
+      expect(p.line).toBeLessThan(7);
+      expect(p.verse).toBeLessThan(3);
+    }
+  });
+  it("is random across the whole set the first time", async () => {
+    const { choosePick } = await import("./publish.js");
+    expect(choosePick(null, () => 0)).toEqual({ line: 0, verse: 0 });
+    expect(choosePick(null, () => 0.999)).toEqual({ line: 6, verse: 2 });
+  });
+});

@@ -4,6 +4,7 @@ import {
   overall,
   knowScore,
   agreeBasis,
+  isNotYet,
   other,
   scoreQ,
   jointQuestions,
@@ -16,7 +17,10 @@ import {
 import { type Question } from "../lib/questions";
 import { collectFlagRows } from "../lib/flags";
 import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
+import { revealWords, type Pick } from "../lib/reveal";
+import { PctRing } from "../components/Ring";
 import { talkStateOf, type TalkState } from "../lib/talks";
+import { answerText } from "../lib/discoveries";
 import { deckOf } from "../lib/path";
 import { writeTalkPin } from "../lib/session";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
@@ -73,24 +77,6 @@ function knowLine(pct: number, t: (en: string, fr: string) => string): string {
   return t("So much still to discover", "Encore tant à découvrir");
 }
 
-// The same courtesy for the axis couples actually worry about. Agreement had no
-// interpretive line at any score, so a hard number landed bare. Honest, never
-// softened: difference is named as the reason the app exists, not as a failure.
-function agreedLine(pct: number, t: (en: string, fr: string) => string): string {
-  if (pct >= 100) return t("Of one mind", "D’un même esprit");
-  if (pct >= 90) return t("Of one mind on so much", "D’un même esprit sur tant de choses");
-  if (pct >= 75) return t("Closely agreed", "Très proches");
-  if (pct >= 60) return t("Walking well together", "Vous avancez bien ensemble");
-  if (pct >= 40)
-    return t(
-      "Plenty shared, and real differences",
-      "Beaucoup en commun, et de vraies différences",
-    );
-  return t(
-    "You differ on real things, that’s what this is for",
-    "Vous différez sur de vraies choses, c’est à cela que ça sert",
-  );
-}
 
 
 // Level reveal: the shared alignment score plus a per-question breakdown.
@@ -109,7 +95,10 @@ export default function RevealScreen({
   code,
   talkFirst = false,
   title,
+  pick,
 }: {
+  /** The line and verse the server picked when this part opened (lib/reveal.ts). */
+  pick?: Pick;
   slug: string;
   level: number;
   role: Role;
@@ -147,6 +136,11 @@ export default function RevealScreen({
   };
   const know = knowScore(qs, data, role);
   const jointRaw = jointQuestions(qs, data);
+  // Both answered, at least one with "Not yet": shown, never scored.
+  const notYet = qs.filter((q) => {
+    const a = data.answers?.[q.id];
+    return a?.host != null && a?.guest != null && (isNotYet(a.host) || isNotYet(a.guest));
+  });
   const VERDICT_ORDER: Record<Verdict, number> = {
     "Worth a chat": 0,
     Close: 1,
@@ -188,13 +182,15 @@ export default function RevealScreen({
   const [stage, setStage] = useState(reduced ? 2 : 1);
   const [party, setParty] = useState(false);
   const skipped = useRef(false);
-  const tier = celebrationTier(pct, know.pct);
-  // The claret room is the celebration's ground, so it has to be there from the
-  // first frame of the ceremony — not swept in after the score lands.
-  const lit = ceremony && tier > 0;
+  const tier = celebrationTier(pct);
+  // The claret room is for every score (item 2), and the celebration's ground,
+  // so it is there from the first frame of the ceremony.
+  const lit = ceremony;
+  // The same line and verse for both of you (picked when the part opened).
+  const words = revealWords(pct, pick, `${code ?? ""}|${slug}|${level}`);
 
   useEffect(() => {
-    if (phase !== "ceremony" || reduced || tier === 0) return;
+    if (phase !== "ceremony" || reduced) return;
     // The celebration lands with the number, not before it: stage 2 mounts at
     // 1.15s and the rings draw for ~1.4s.
     const ts = [
@@ -276,36 +272,41 @@ export default function RevealScreen({
 
         {stage >= 2 && (
           <div className="levelup">
-            {/* 100% only: the two of them walk back in and settle together over
-                the full ring — the one beat no other band gets. */}
+            {/* 100% only: the two of them settle together above the medallion,
+                the one beat no other range gets. */}
             {tier >= 4 && (
               <div className="meetpair oneheart lvlup-rise r2">
                 <Avatar name={myName} tone={toneFor(role)} size={40} />
                 <Avatar name={partnerName} tone={toneFor(other(role))} size={40} />
               </div>
             )}
-            {/* The two axes at equal weight — agreement and Known — are the
-                whole point of the reveal (brief §3a). They draw in view now:
-                the count-up IS the entrance, not something that plays behind
-                an invisible layer. */}
             <div className="lvlup-rise r1">
-              <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony basis={basis} right={know.right} made={know.made} />
+              {tier >= 4 ? (
+                <div className="medal">
+                  <span className="medal-badge">{t("Complete alignment", "Accord complet")}</span>
+                  <div className="medal-ring">
+                    <span className="medal-num">
+                      100<span className="medal-pc">%</span>
+                    </span>
+                    <span className="medal-lb">{t("agreed", "d’accord")}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="center" style={{ margin: "8px 0 0" }}>
+                  <PctRing pct={pct} size={190} color="var(--ta-honey)" label={t("agreed", "d’accord")} drawMs={1400} />
+                </div>
+              )}
+              <p className="score-basis">
+                {t(
+                  `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
+                  `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+                )}
+              </p>
             </div>
             {/* The whole ceremony is staged in motion, so without this a blind
-                partner — or one holding the phone between them with VoiceOver
-                on — gets none of the arc the animation carries. */}
+                partner gets none of the arc the animation carries. */}
             <p className="sr-only" role="status">
-              {t(
-                `You agreed ${pct} percent.`,
-                `Vous êtes d’accord à ${pct} pour cent.`,
-              )}
-              {know.pct != null &&
-                t(
-                  ` You knew each other’s answers ${know.pct} percent.`,
-                  ` Vous avez deviné les réponses de l’autre à ${know.pct} pour cent.`,
-                )}
-              {" "}
-              {agreedLine(pct, t)}.
+              {t(`You agreed ${pct} percent.`, `Vous êtes d’accord à ${pct} pour cent.`)} {words.line}
             </p>
             {firstEver && (
               <p className="firstline lvlup-rise r2">
@@ -315,40 +316,26 @@ export default function RevealScreen({
                 )}
               </p>
             )}
-            <p className="agreedline lvlup-rise r2">{agreedLine(pct, t)}</p>
-            {know.pct != null && (
-              <p className="knowline lvlup-rise r2">{knowLine(know.pct, t)}</p>
-            )}
-            <p
-              className="sub serif center lvlup-rise r3"
-              style={{ fontStyle: "italic", margin: "10px 24px 0" }}
-            >
-              {tier >= 4
-                ? t(
-                    "“Can two walk together, unless they are agreed?”",
-                    "« Deux hommes marchent-ils ensemble, sans en être convenus ? »",
-                  )
-                : t(
-                    "Not a verdict: a place to start talking.",
-                    "Pas un verdict, un point de départ pour discuter.",
-                  )}
+            {/* The range's encouragement and its verse (ESV): the same for both
+                of you, never the same as your last reveal. */}
+            <p className="reveal-line lvlup-rise r2">{words.line}</p>
+            <p className="reveal-verse lvlup-rise r3">
+              “{words.verse.text}”
+              <span className="reveal-ref">{words.verse.ref}</span>
             </p>
             <div className="lvlup-cta lvlup-rise r4">
-              <button
-                className="btn pill"
-                type="button"
-                onClick={() => setPhase("answers")}
-              >
-                {/* Below 60% the honest next step isn't admiring a number, it's
-                    finding the conversation the number is pointing at. */}
-                {tier === 0 && flagRows.length > 0
-                  ? t("See where to start talking →", "Voir par où commencer →")
-                  : t("See your answers →", "Voir vos réponses →")}
+              <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
+                {t("See your answers →", "Voir vos réponses →")}
               </button>
               <button className="btn ghost" type="button" onClick={onDone}>
                 {t("Done for now", "Terminé pour l’instant")}
               </button>
             </div>
+            {tier < 4 && (
+              <p className="notverdict lvlup-rise r4">
+                {t("Not a verdict: a place to start talking.", "Pas un verdict, un point de départ pour discuter.")}
+              </p>
+            )}
           </div>
         )}
       </section>
@@ -429,7 +416,26 @@ export default function RevealScreen({
             />
           );
         })}
-        {joint.length === 0 && (
+        {/* "Not yet" is shown, unscored (item 12): your partner sees it was
+            set aside, and it can still be talked about. */}
+        {notYet.map((q) => {
+          const lq = withNames(localizeQuestion(q, lang), names);
+          const talkSlug = deckOf(q.id) ?? slug;
+          return (
+            <NotYetCard
+              key={q.id}
+              q={lq}
+              mine={data.answers?.[q.id]?.[role]}
+              theirs={data.answers?.[q.id]?.[other(role)]}
+              myName={myName}
+              partnerName={partnerName}
+              t={t}
+              talk={code ? talkStateOf(talkSlug, q, data, role) : undefined}
+              onPin={code ? (on) => void writeTalkPin(code, talkSlug, q.id, role, on) : undefined}
+            />
+          );
+        })}
+        {joint.length === 0 && notYet.length === 0 && (
           <div className="qc" style={{ borderLeftColor: "var(--sub)" }}>
             <div className="muted" style={{ fontSize: 13 }}>
               {t(
@@ -464,6 +470,14 @@ const PETAL_COLOURS = [
 // tier (see celebrationTier). Every layer is transform/opacity only so the whole
 // thing composites on the GPU; pointer-events pass through so a tap always
 // reaches the CTA underneath. The parent unmounts it after ~8.5s.
+const FIREWORKS: { x: number; y: number; size: number; delay: number; tone: "gold" | "blush" }[] = [
+  { x: 14, y: 6, size: 110, delay: 0, tone: "gold" },
+  { x: 36, y: 2, size: 60, delay: 0.5, tone: "gold" },
+  { x: 70, y: 5, size: 66, delay: 0.25, tone: "blush" },
+  { x: 86, y: 12, size: 104, delay: 0.8, tone: "gold" },
+  { x: 30, y: 16, size: 70, delay: 1.1, tone: "blush" },
+];
+
 function Celebration({ tier }: { tier: CelebrationTier }) {
   const count = PETAL_COUNT[tier];
   // Randomised per mount: the old formulaic left/delay produced petals falling
@@ -541,6 +555,20 @@ function Celebration({ tier }: { tier: CelebrationTier }) {
           ))}
         </>
       )}
+
+      {/* tier 4 — 100%: gold and blush fireworks across the top. */}
+      {tier >= 4 &&
+        FIREWORKS.map((f, i) => (
+          <span
+            key={`f${i}`}
+            className={`ce-firework ${f.tone}`}
+            style={{ left: `${f.x}%`, top: `${f.y}%`, width: f.size, height: f.size, animationDelay: `${f.delay}s` }}
+          >
+            {Array.from({ length: 12 }, (_, k) => (
+              <i key={k} style={{ transform: `rotate(${k * 30}deg)` }} />
+            ))}
+          </span>
+        ))}
 
       {/* tier 2+ — the fall */}
       {petals.map((p) => (
@@ -823,6 +851,79 @@ function Quote({ name, tone, text }: { name: string; tone: "s" | "j"; text: stri
         <span className="oq-who">{name}</span>
         <div className="oq-text">{text}</div>
       </div>
+    </div>
+  );
+}
+
+// A question one of you answered "Not yet" (item 12): shown, unscored, open to
+// talk about. Never a verdict or a badge colour, just the plain fact.
+function NotYetCard({
+  q,
+  mine,
+  theirs,
+  myName,
+  partnerName,
+  t,
+  talk,
+  onPin,
+}: {
+  q: Question;
+  mine: AnswerValue | undefined;
+  theirs: AnswerValue | undefined;
+  myName: string;
+  partnerName: string;
+  t: (en: string, fr: string) => string;
+  talk?: TalkState;
+  onPin?: (on: boolean) => void;
+}) {
+  const first = (n: string) => n.trim().split(/\s+/)[0] || n;
+  const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
+  const side = (name: string, v: AnswerValue | undefined) =>
+    isNotYet(v) ? (
+      <div className="ny-side ny-wait">
+        <span className="ny-name">{first(name)}</span>
+        <b>{t("Not yet", "Pas encore")}</b>
+      </div>
+    ) : (
+      <div className="ny-side">
+        <span className="ny-name">{first(name)}</span>
+        <b>{v == null ? "—" : cap(answerText(q, v))}</b>
+      </div>
+    );
+  const who = isNotYet(mine) && isNotYet(theirs) ? null : isNotYet(theirs) ? first(partnerName) : first(myName);
+  const pinned = talk ? talk.pinnedByMe || talk.pinnedByThem : false;
+  return (
+    <div className="qc row-rise nycard">
+      <div className="qc-head">
+        <div className="qc-q">{q.q}</div>
+        <span className="kbadge shared">{t("Not yet", "Pas encore")}</span>
+      </div>
+      <div className="ny-pair">
+        {side(myName, mine)}
+        {side(partnerName, theirs)}
+      </div>
+      <p className="helper" style={{ margin: "10px 0 0" }}>
+        {who
+          ? t(
+              `${who} chose “Not yet” for this one. It isn’t scored. You can ask about it when you talk.`,
+              `${who} a choisi « Pas encore » pour celle-ci. Elle n’est pas comptée. Vous pourrez en parler ensemble.`,
+            )
+          : t(
+              "You both chose “Not yet” for this one. It isn’t scored.",
+              "Vous avez tous deux choisi « Pas encore ». Elle n’est pas comptée.",
+            )}
+      </p>
+      {talk && onPin && (
+        <button
+          type="button"
+          className={`pinbtn${pinned ? " on" : ""}`}
+          onClick={() => onPin(!talk.pinnedByMe)}
+          aria-pressed={pinned}
+        >
+          <span aria-hidden="true">{pinned ? "♥" : "♡"}</span>
+          {pinned ? t("On your talk list", "Sur votre liste") : t("Talk about this", "En parler")}
+        </button>
+      )}
     </div>
   );
 }

@@ -11,12 +11,14 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { ORDER } from "../lib/questions";
-import { lvlQs, nLevels, stageOf } from "../lib/leveling";
+import { lvlQs, nLevels, partName } from "../lib/leveling";
 import { readyReveals } from "../lib/progress";
 import type { DeckData } from "../lib/scoring";
 import type { Session } from "../types";
 import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
+import PartPicker from "./PartPicker";
+import userEvent from "@testing-library/user-event";
 import ResultsScreen from "./ResultsScreen";
 import PlayScreen from "./PlayScreen";
 
@@ -177,35 +179,43 @@ describe("HomeScreen", () => {
 });
 
 describe("DecksScreen", () => {
-  it("lists every conversation as a real button", () => {
+  it("lists every conversation as a real button, grouped by subject", () => {
     const { container } = render(
       <DecksScreen session={session} role="host" onPlay={noop} />,
     );
     // They were click-divs — a keyboard user could not open one at all.
-    const rows = container.querySelectorAll("button.row");
+    const rows = container.querySelectorAll("button.cv-row");
     expect(rows.length).toBe(ORDER.length);
+    expect(screen.getByRole("heading", { name: "Light to start" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Deeper and honest" })).toBeTruthy();
   });
 
-  it("puts what you're in the middle of above what you've finished", () => {
-    // A completed deck used to sit above an in-progress one, so the list gave
-    // no answer to "where was I?".
-    const [doneSlug, partialSlug] = twoInOneStage();
-    const partial: DeckData = { answers: {} };
-    partial.answers![lvlQs(partialSlug, 0)[0].id] = { host: 0 };
-    const s = {
-      ...session,
-      decks: {
-        [doneSlug]: revealed(doneSlug, nLevels(doneSlug)),
-        [partialSlug]: partial,
-      },
-    } as unknown as Session;
-    const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} />);
-    const labels = [...container.querySelectorAll("button.row")].map((b) => b.textContent ?? "");
-    const iComplete = labels.findIndex((l) => l.includes("complete"));
-    const iPartial = labels.findIndex((l) => l.includes("1 of"));
-    expect(iComplete).toBeGreaterThanOrEqual(0);
-    expect(iPartial).toBeGreaterThanOrEqual(0);
-    expect(iComplete).toBeGreaterThan(iPartial);
+  it("talks in parts, never question counts (item 11)", () => {
+    const { container } = render(<DecksScreen session={empty} role="host" onPlay={noop} />);
+    expect(container.textContent).not.toMatch(/\d+ questions/);
+    expect(container.textContent).toMatch(/\d+ parts?/);
+  });
+
+  it("puts where you left off first, and search narrows the list", async () => {
+    const partialSlug = slugA;
+    const partial: DeckData = { answers: { [lvlQs(partialSlug, 0)[0].id]: { host: 0 } } };
+    const s = { ...session, decks: { [partialSlug]: partial } } as unknown as Session;
+    const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} current={partialSlug} />);
+    expect(screen.getByText("Pick up where you left off")).toBeTruthy();
+    await userEvent.type(screen.getByRole("searchbox"), "  MONEY ");
+    expect(container.querySelectorAll("button.cv-row").length).toBe(1);
+  });
+});
+
+describe("PartPicker", () => {
+  it("names every part and shows both of you on each", () => {
+    const { container } = render(
+      <PartPicker slug={slugA} deck={revealed(slugA)} role="host" myName="Sarah" partnerName="Judah" onSelect={noop} onExit={noop} />,
+    );
+    for (let i = 0; i < nLevels(slugA); i++) expect(screen.getByText(partName(slugA, i))).toBeTruthy();
+    expect(container.textContent).not.toMatch(/Part \d/);
+    expect(container.querySelectorAll(".pp-row .pp-avs").length).toBe(nLevels(slugA));
+    expect(screen.getByText(/Opened together/)).toBeTruthy();
   });
 });
 

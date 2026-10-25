@@ -320,6 +320,7 @@ function Preview() {
         slug={slugA}
         deck={pdeck}
         role="host"
+        myName="Sarah"
         partnerName="Judah"
         onSelect={noop}
         onExit={noop}

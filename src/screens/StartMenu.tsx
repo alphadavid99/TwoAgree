@@ -1,11 +1,13 @@
 import { a7Cards, type OnbStage } from "../lib/onboarding";
 import { useT, useLang } from "../lib/i18n";
 import { deckName } from "../lib/questions.fr";
+import { nLevels } from "../lib/leveling";
 
 // A7 (brief 2 §A7) — "Where would you like to start?" Five stage-keyed
 // conversations, each showing a REAL question from inside it (the hook), so the
 // screen is a table of contents, not a menu. A label is a folder; a question is
-// a conversation they can already feel. Ordered Warm-up → Hardest.
+// a conversation they can already feel. Ordered Warm-up → Hardest. Sized in
+// parts, not questions (item 11): "50 questions" read like homework.
 export default function StartMenu({
   stage,
   onPick,
@@ -36,7 +38,7 @@ export default function StartMenu({
             </div>
             <div className="menucard-hook">“{c.hook}”</div>
             <div className="menucard-count">
-              {t(`${c.count} questions`, `${c.count} questions`)}
+              {t(`${nLevels(c.slug)} part${nLevels(c.slug) === 1 ? "" : "s"}`, `${nLevels(c.slug)} partie${nLevels(c.slug) === 1 ? "" : "s"}`)}
             </div>
           </button>
         ))}

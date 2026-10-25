@@ -274,7 +274,9 @@ export default function SessionApp({
         slug={slug}
         deck={deck}
         role={role}
+        myName={myName}
         partnerName={partnerName}
+        members={session.members}
         onSelect={selectPart}
         onExit={exitFlow}
       />
@@ -486,7 +488,7 @@ export default function SessionApp({
             />
           )}
           {tab === "decks" && (
-            <DecksScreen session={session} role={role} onPlay={openDeck} />
+            <DecksScreen session={session} role={role} onPlay={openDeck} current={slug} />
           )}
           {PATH_ENABLED && tab === "path" && (
             <PathScreen

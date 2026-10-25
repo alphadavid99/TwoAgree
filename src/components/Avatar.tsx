@@ -66,11 +66,13 @@ export function Avatar({
     </div>
   );
   if (!done) return disc;
+  // On a small avatar the tick shrinks too, so it never covers the initial.
+  const tick = Math.max(15, Math.round(size * 0.46));
   return (
     <div className="avatar-done" style={{ width: size, height: size }}>
       {disc}
-      <span className="avatar-tick" aria-hidden="true">
-        <svg viewBox="0 0 12 12" width="12" height="12">
+      <span className="avatar-tick" aria-hidden="true" style={size < 44 ? { width: tick, height: tick, right: -4, bottom: -4 } : undefined}>
+        <svg viewBox="0 0 12 12" width={size < 44 ? 9 : 12} height={size < 44 ? 9 : 12}>
           <path d="M2.5 6.2 5 8.6l4.5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>

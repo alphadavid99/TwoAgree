@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDraw } from "../lib/motion";
 import { renderShareCard, shareCardImage } from "../lib/sharecard";
 import { HowScores } from "../components/HowScores";
+import { revealWords } from "../lib/reveal";
 
 type T = (en: string, fr: string) => string;
 type Stat = { pct: number | null; done: number; total: number; right?: number; made?: number };
@@ -160,9 +161,17 @@ export function ShareCard({
     conversationsDone: conversations.done,
     conversationsTotal: conversations.total,
     story,
-    known: withKnown && known.pct != null ? { pct: known.pct, done: known.done, total: known.total } : undefined,
+    known:
+      withKnown && known.pct != null
+        ? { pct: known.pct, done: known.done, total: known.total, right: known.right, made: known.made }
+        : undefined,
     agreed: withAgreed && agreed.pct != null ? { pct: agreed.pct, done: agreed.done, total: agreed.total } : undefined,
     closest: withClosest ? closest : undefined,
+    // The encouragement line and verse ride only with the Agree score (item 2).
+    words:
+      withAgreed && agreed.pct != null
+        ? revealWords(agreed.pct, null, `${myName}|${partnerName}|card`)
+        : undefined,
   };
   const key = JSON.stringify(fields);
 

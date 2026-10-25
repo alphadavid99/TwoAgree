@@ -10,6 +10,7 @@ import { DeckIcon } from "../components/icons";
 import { collectFlagRows } from "../lib/flags";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { namesFor, optText } from "../lib/who";
+import { shareTopic } from "../lib/shareTopic";
 import { useT, useLang } from "../lib/i18n";
 
 // Overall alignment across every mutually-revealed level — a deck counts as
@@ -156,7 +157,8 @@ export default function ResultsScreen({
         myName={myName}
         partnerName={partnerName}
         conversations={{ done: completeCount, total: ORDER.length }}
-        closest={closest ? deckName(closest.slug, lang) : undefined}
+        // A shared card never names a sensitive topic (lib/shareTopic.ts).
+        closest={closest ? shareTopic(closest.slug, lang) : undefined}
         t={t}
       />
 

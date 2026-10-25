@@ -207,12 +207,12 @@ const partnerFinishes = (slug: string) => (rt: FrameRuntime) => {
 const deckLabel = (slug: string) => new RegExp(DECKS[slug].name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
 // ---- Reveal ladder ------------------------------------------------------------
-const revealTier = (id: string, title: string, hit: number, note: string, firstEver = false): FrameDef => {
+const revealTier = (id: string, title: string, hit: number, note: string, firstEver = false, more: Step[] = []): FrameDef => {
   const tuned = tunedReveal('fun-icebreakers', hit)
   return {
     id, flow: 'reveal', title, note,
     db: dbWith((c) => sessionOf(seat(c))),
-    steps: [{ wait: 3800 }],
+    steps: [{ wait: 3800 }, ...more],
     render: (c) => (
       <RevealScreen slug="fun-icebreakers" level={0} role="host" deck={tuned.deck} myName="Sarah"
         partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}} />
@@ -408,6 +408,8 @@ export const FRAMES: FrameDef[] = [
   revealTier('reveal-t2', 'Reveal: 61–90%, a strong stride', 77, '+ falling petals'),
   revealTier('reveal-t3', 'Reveal: 91–99%, deeply in sync', 95, '+ gold rays and sparks'),
   revealTier('reveal-t4', 'Reveal: 100%, complete alignment', 100, 'Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line.'),
+  revealTier('reveal-share', 'Share your score: the preview', 77, 'Names are off until switched on.', false, [{ click: /Share your score/ }, { wait: 600 }]),
+  revealTier('reveal-share-names', 'Share your score: names on', 77, '', false, [{ click: /Share your score/ }, { wait: 300 }, { click: /Include our names/ }, { wait: 600 }]),
   revealTier('reveal-first', 'Reveal: the couple’s first ever', 77, 'Adds the first-reveal line', true),
   inSession({
     id: 'reveal-notyet', flow: 'reveal', title: 'A “Not yet” answer, shown and unscored',
@@ -434,6 +436,7 @@ export const FRAMES: FrameDef[] = [
   // ============ 12 · Together ============
   inSession({ id: 'together-empty', flow: 'together', title: 'Nothing revealed yet', session: (c) => sessionOf(seat(c)), tab: 'Together' }),
   inSession({ id: 'together-results', flow: 'together', title: 'Where you agree', tab: 'Together' }),
+  inSession({ id: 'together-sharecard', flow: 'together', title: 'Progress card, with Agree ticked', note: 'The wordmark; the range line and verse ride only with the Agree score.', tab: 'Together', steps: [{ wait: 200 }, { click: /Share your card/ }, { wait: 300 }, { click: /We agree|agree/i }, { wait: 800 }] }),
   inSession({ id: 'together-howscores', flow: 'together', title: 'How scores work', note: 'Opened from the scores; the same sheet opens from every reveal.', tab: 'Together', steps: [{ wait: 200 }, { click: /How scores work/ }] }),
   inSession({ id: 'together-talk', flow: 'together', title: 'Your agenda & discoveries', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
 

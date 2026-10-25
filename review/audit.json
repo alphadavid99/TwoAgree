@@ -1,5 +1,5 @@
 {
-  "screens": 94,
+  "screens": 97,
   "results": [
     {
       "id": "kit-sheet",
@@ -434,6 +434,18 @@
       "contrast": []
     },
     {
+      "id": "reveal-share",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-share-names",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
       "id": "reveal-first",
       "small": [],
       "taps": [],
@@ -465,6 +477,12 @@
     },
     {
       "id": "together-results",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-sharecard",
       "small": [],
       "taps": [],
       "contrast": []

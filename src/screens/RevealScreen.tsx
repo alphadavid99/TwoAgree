@@ -19,6 +19,8 @@ import { collectFlagRows } from "../lib/flags";
 import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
 import { revealWords, type Pick } from "../lib/reveal";
 import { PctRing } from "../components/Ring";
+import { ScoreShare } from "../components/ScoreShare";
+import { shareTopic } from "../lib/shareTopic";
 import { talkStateOf, type TalkState } from "../lib/talks";
 import { answerText } from "../lib/discoveries";
 import { deckOf } from "../lib/path";
@@ -96,9 +98,12 @@ export default function RevealScreen({
   talkFirst = false,
   title,
   pick,
+  shareKey,
 }: {
   /** The line and verse the server picked when this part opened (lib/reveal.ts). */
   pick?: Pick;
+  /** For a Path step: its key, so a shared card names it safely. */
+  shareKey?: string;
   slug: string;
   level: number;
   role: Role;
@@ -188,6 +193,7 @@ export default function RevealScreen({
   const lit = ceremony;
   // The same line and verse for both of you (picked when the part opened).
   const words = revealWords(pct, pick, `${code ?? ""}|${slug}|${level}`);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
     if (phase !== "ceremony" || reduced) return;
@@ -327,10 +333,29 @@ export default function RevealScreen({
               <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
                 {t("See your answers →", "Voir vos réponses →")}
               </button>
+              <button className="btn onclaret" type="button" onClick={() => setSharing(true)}>
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {t("Share your score", "Partager votre score")}
+              </button>
               <button className="btn ghost" type="button" onClick={onDone}>
                 {t("Done for now", "Terminé pour l’instant")}
               </button>
             </div>
+            {sharing && (
+              <ScoreShare
+                fields={{
+                  pct,
+                  basis,
+                  line: words.line,
+                  tier,
+                  topic: shareTopic(title ? (shareKey ?? slug) : slug, lang, title ? undefined : level),
+                }}
+                names={`${myName.trim().split(/\s+/)[0]} & ${partnerName.trim().split(/\s+/)[0]}`}
+                onClose={() => setSharing(false)}
+              />
+            )}
             {tier < 4 && (
               <p className="notverdict lvlup-rise r4">
                 {t("Not a verdict: a place to start talking.", "Pas un verdict, un point de départ pour discuter.")}

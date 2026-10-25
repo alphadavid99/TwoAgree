@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useT } from "../lib/i18n";
+import { Sheet } from "./Sheet";
 
 // "How scores work" (design refresh, item 4). The Agree score stays weighted,
 // so it can't be written as "x of y agreed"; this sheet says plainly what goes
@@ -16,44 +15,8 @@ export function HowScores({
   onClose: () => void;
 }) {
   const t = useT();
-  const sheet = useRef<HTMLDivElement>(null);
-  // Rendered into the phone container, not in place: a screen's entry motion
-  // makes its own stacking layer, which would put the tab bar over the sheet.
-  const anchor = useRef<HTMLSpanElement>(null);
-  const [host, setHost] = useState<Element | null>(null);
-  useEffect(() => {
-    setHost(anchor.current?.closest(".phone") ?? document.body);
-  }, []);
-  useEffect(() => {
-    // Focus the dialog itself (not the ×), so screen readers land in it
-    // without a focus ring appearing on a touch open.
-    sheet.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose, host]);
-  if (!host) return <span ref={anchor} hidden />;
-  return createPortal(
-    <div className="sheet-scrim" onClick={onClose}>
-      <div
-        ref={sheet}
-        tabIndex={-1}
-        className="sheet"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="howscores-h"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sheet-grip" aria-hidden="true" />
-        <div className="sheet-head">
-          <h2 id="howscores-h" className="sheet-title">
-            {t("How scores work", "Comment fonctionnent les scores")}
-          </h2>
-          <button className="iconbtn" type="button" onClick={onClose} aria-label={t("Close", "Fermer")}>
-            ×
-          </button>
-        </div>
-
+  return (
+    <Sheet title={t("How scores work", "Comment fonctionnent les scores")} onClose={onClose}>
         <div className="kcard">
           <div className="kcard-row">
             <span className="kcard-label">{t("Agree", "D’accord")}</span>
@@ -118,8 +81,6 @@ export function HowScores({
             "Ces chiffres décrivent vos réponses, pas votre relation. Ils sont un point de départ pour discuter.",
           )}
         </p>
-      </div>
-    </div>,
-    host,
+    </Sheet>
   );
 }

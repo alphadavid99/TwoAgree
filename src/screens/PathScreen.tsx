@@ -24,7 +24,8 @@ import { Wordmark } from "../brand/Wordmark";
 import { PathGlyph } from "../components/PathGlyph";
 import { PctRing } from "../components/Ring";
 import { ShareCard } from "./CoreScore";
-import { useT } from "../lib/i18n";
+import { shareTopic } from "../lib/shareTopic";
+import { useLang, useT } from "../lib/i18n";
 import PathStep from "./PathStep";
 
 type T = (en: string, fr: string) => string;
@@ -658,6 +659,7 @@ function Lookout({
   onBack: () => void;
   t: T;
 }) {
+  const lang = useLang();
   const meta = stepMeta("lookout");
   const verses = VERSES["lookout"] ?? [];
   const j = useMemo(() => journeyStats(session, role), [session, role]);
@@ -766,10 +768,11 @@ function Lookout({
           partnerName={partnerName}
           conversations={{ done: j.walked, total: j.total }}
           story={t(
-            "have walked the whole Path together, side by side",
-            "ont parcouru tout le Chemin ensemble, côte à côte",
+            "have walked the whole Path together",
+            "ont parcouru tout le Chemin ensemble",
           )}
-          closest={j.brightest?.name}
+          // A shared card never names a sensitive step (lib/shareTopic.ts).
+          closest={j.brightest ? shareTopic(j.brightest.key, lang) : undefined}
           t={t}
           onClose={() => setKeepsake(false)}
         />

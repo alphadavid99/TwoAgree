@@ -69,30 +69,63 @@ for (const id of ids) {
   // (so a positioned backdrop, like the reveal's claret room, counts), blended
   // down to the first opaque layer. Off-screen elements fall back to their
   // ancestors. A gradient or image ground is approximated by its first stop.
-  const groundOf = (el) => {
+  const sample = (el) => {
     const r = el.getBoundingClientRect()
     const cx = r.left + r.width / 2
     const cy = r.top + r.height / 2
     const fr = el.closest('.gframe').getBoundingClientRect()
     const onScreen = cx > fr.left && cx < fr.right && cy > fr.top && cy < fr.bottom &&
       cx > 0 && cy > 0 && cx < innerWidth && cy < innerHeight
-    // Text scrolled under something else (the floating tab bar) is measured on
-    // its own ground, as it reads once scrolled into view.
-    const top = onScreen ? document.elementFromPoint(cx, cy) : null
-    const occluded = top && !(el.contains(top) || top.contains(el))
-    if (onScreen && !occluded) {
-      const layers = []
-      for (const n of document.elementsFromPoint(cx, cy)) {
-        if (n !== el && el.contains(n)) continue
-        const l = layerOf(n)
-        if (l) layers.push(l)
-        if (l && l.a >= 1) break
-        if (n.classList.contains('gframe')) break
-      }
-      let c = { r: 255, g: 255, b: 255, a: 1 }
-      for (let i = layers.length - 1; i >= 0; i--) c = blend(layers[i], c)
-      return c
+    if (!onScreen) return null
+    // Text under something else (the floating tab bar) isn't readable here.
+    const top = document.elementFromPoint(cx, cy)
+    if (top && !(el.contains(top) || top.contains(el))) return null
+    const layers = []
+    for (const n of document.elementsFromPoint(cx, cy)) {
+      if (n !== el && el.contains(n)) continue
+      const l = layerOf(n)
+      if (l) layers.push(l)
+      if (l && l.a >= 1) break
+      if (n.classList.contains('gframe')) break
     }
+    let c = { r: 255, g: 255, b: 255, a: 1 }
+    for (let i = layers.length - 1; i >= 0; i--) c = blend(layers[i], c)
+    return c
+  }
+  // The ground under an element: what is actually painted beneath its centre
+  // (so a positioned backdrop, like the reveal's claret room, counts), blended
+  // down to the first opaque layer. An element scrolled out of view, or under
+  // the tab bar, is scrolled into view first; only if that fails do we fall
+  // back to its ancestors. A gradient ground is approximated by its first stop.
+  const groundOf = (el) => {
+    // The reveal's claret room is position:fixed in the app (it covers the
+    // phone however far you scroll); in a gallery frame, which uses transform
+    // to contain fixed elements, it scrolls away. Measure against the room.
+    const room = el.closest('.ceremony.lit')?.querySelector('.ceremony-ground')
+    if (room) {
+      const stop = getComputedStyle(room).backgroundImage.match(/rgba?\([^)]+\)/g)
+      if (stop) {
+        const layers = []
+        for (let n = el; n && n !== room.parentElement; n = n.parentElement) {
+          const l = layerOf(n)
+          if (l) layers.push(l)
+        }
+        let c = parse(stop[stop.length - 1])
+        for (let i = layers.length - 1; i >= 0; i--) c = blend(layers[i], c)
+        return c
+      }
+    }
+    let got = sample(el)
+    if (!got) {
+      const box = el.closest('.gframe')
+      const keep = [...box.querySelectorAll('*')].filter((n) => n.scrollTop).map((n) => [n, n.scrollTop])
+      const pageY = scrollY
+      el.scrollIntoView({ block: 'center' })
+      got = sample(el)
+      keep.forEach(([n, y]) => (n.scrollTop = y))
+      scrollTo(0, pageY)
+    }
+    if (got) return got
     const layers = []
     for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
       const cs = getComputedStyle(n)
@@ -131,12 +164,15 @@ for (const id of ids) {
     const taps = []
     const contrast = []
     const seenText = new Set()
+    // An open dialog makes everything behind it inert: measure only the dialog.
+    const modal = frame.querySelector('[aria-modal="true"]')
+    const inScope = (el) => !modal || modal.contains(el)
     // Text: every element that directly holds visible text.
     const walker = document.createTreeWalker(frame, NodeFilter.SHOW_TEXT)
     for (let t = walker.nextNode(); t; t = walker.nextNode()) {
       if (!t.textContent.trim()) continue
       const el = t.parentElement
-      if (!el || seenText.has(el) || !visible(el)) continue
+      if (!el || seenText.has(el) || !visible(el) || !inScope(el)) continue
       if (el.closest('[aria-hidden="true"], .sr-only, svg, .gframe-crash')) continue
       seenText.add(el)
       const cs = getComputedStyle(el)
@@ -154,7 +190,7 @@ for (const id of ids) {
     // Tap targets.
     const sel = 'button, a[href], input:not([type=hidden]), select, textarea, [role=button], [role=switch], [role=checkbox], [role=radio], [role=tab]'
     for (const el of frame.querySelectorAll(sel)) {
-      if (!visible(el) || el.disabled) continue
+      if (!visible(el) || el.disabled || !inScope(el)) continue
       if (el.closest('[aria-hidden="true"], .gframe-crash')) continue
       let r = el.getBoundingClientRect()
       // A checkbox wrapped in its label is tapped through the label.

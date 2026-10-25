@@ -121,6 +121,7 @@ export default function PathStep({
         role={role}
         deck={stepDeckData(session, step)}
         pick={session.pathPick?.[String(index)]}
+        shareKey={step.key}
         questions={qs}
         title={meta.name}
         myName={myName}

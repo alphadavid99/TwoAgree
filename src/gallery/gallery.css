@@ -18,7 +18,7 @@ body { background: color-mix(in srgb, var(--ta-claret) 7%, white); }
 .gviol ul { margin: 4px 0 0 18px; }
 
 .gflow { padding: 28px 24px 8px; scroll-margin-top: 90px; }
-.gflow h2 { font: 600 20px var(--font-display); margin: 0 0 16px; color: var(--ta-claret); }
+.gflow > h2 { font: 600 20px var(--font-display); margin: 0 0 16px; color: var(--ta-claret); }
 .ggrid { display: grid; grid-template-columns: repeat(auto-fill, 430px); gap: 28px 24px; align-items: start; }
 
 .gcell { margin: 0; width: 430px; scroll-margin-top: 90px; }

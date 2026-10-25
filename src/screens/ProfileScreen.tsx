@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { signOut, type User } from "firebase/auth";
 import { auth } from "../firebase";
 import { useProfile } from "../hooks/useProfile";
@@ -8,48 +8,60 @@ import { exportMyData, deleteMyAccount } from "../lib/functions";
 import { renderReadableExport, type ExportPayload } from "../lib/dataexport";
 import { useT, useLang, setLang, LANGS } from "../lib/i18n";
 import BuildStamp from "../components/BuildStamp";
+import { Avatar } from "../components/Avatar";
+import { Sheet } from "../components/Sheet";
+import { Loading } from "../components/Loading";
+import { ErrorPanel } from "../components/AuthBits";
+import {
+  IconBack,
+  IconBell,
+  IconChevron,
+  IconDoc,
+  IconDoorIn,
+  IconDoorOut,
+  IconDownload,
+  IconEye,
+  IconGlobe,
+  IconLink,
+} from "../components/icons";
 import type { Profile } from "../types";
 
+type T = (en: string, fr: string) => string;
+type View = "main" | "edit" | "sees" | "data" | "delete";
+// A name at the start of a sentence ("your partner" when there is none yet).
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// You (design refresh, item 15): a settings list in the thick-card style, you at
+// the top with Edit; Preferences; You and your partner; Privacy and data; Sign
+// out; and Delete my account on its own at the bottom. Edit profile, What they
+// see, Download my data and Delete each get their own screen.
 export default function ProfileScreen({
   user,
   onLeave,
   code,
   partnerName,
+  myNameHere,
 }: {
   user: User;
   onLeave?: () => void;
-  /** Named in the notification opt-in, so it reads as a person not a feature. */
+  /** Named in the settings, so they read as a person, not a feature. */
   partnerName?: string;
-  // The session's code, shown before leaving and kept visible here — once a
-  // partner has joined, Home stops showing it, so this is the only place it
-  // exists in the UI.
+  // The session's code. Once a partner has joined, Home stops showing it, so
+  // this is the only place it exists in the UI.
   code?: string;
+  /** Your name as this session shows it to your partner. */
+  myNameHere?: string;
 }) {
   const t = useT();
   const lang = useLang();
   const { profile, loading, saveProfile } = useProfile(user.uid);
-
-  const [name, setName] = useState("");
-  const [bio, setBio] = useState("");
-  const [pendingPhoto, setPendingPhoto] = useState<string | null>(null);
-  const [leaving, setLeaving] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [view, setView] = useState<View>("main");
+  const [closing, setClosing] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [err, setErr] = useState("");
-  const [ok, setOk] = useState("");
-  const fileInput = useRef<HTMLInputElement>(null);
 
-  // Hydrate the form once from the stored profile (or the Google displayName),
-  // then leave it alone so live snapshots don't clobber in-progress edits.
-  useEffect(() => {
-    if (!loading && !hydrated) {
-      setName(profile?.name ?? user.displayName ?? "");
-      setBio(profile?.bio ?? "");
-      setHydrated(true);
-    }
-  }, [loading, hydrated, profile, user.displayName]);
-
-  // The notification opt-in. Mirrored locally so the toggle responds instantly
+  // The notification opt-in. Mirrored locally so the switch responds at once
   // rather than waiting for the round trip through the profile listener.
   const [notify, setNotify] = useState(false);
   const [notifyBusy, setNotifyBusy] = useState(false);
@@ -57,12 +69,13 @@ export default function ProfileScreen({
     if (!loading) setNotify(profile?.notify === true);
   }, [loading, profile?.notify]);
 
-  const partnerFirst = (partnerName ?? "").trim().split(/\s+/)[0] || "your partner";
+  const them = (partnerName ?? "").trim().split(/\s+/)[0] || t("your partner", "votre partenaire");
 
   const toggleNotify = async () => {
     const next = !notify;
     setNotify(next);
     setNotifyBusy(true);
+    setErr("");
     try {
       await saveProfile({ notify: next, email: user.email ?? "" });
     } catch (e) {
@@ -73,19 +86,417 @@ export default function ProfileScreen({
     }
   };
 
-  const [dataBusy, setDataBusy] = useState(false);
-  const [dataMsg, setDataMsg] = useState("");
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const clear = () => {
-    setErr("");
-    setOk("");
+  const copyCode = () => {
+    if (!code) return;
+    navigator.clipboard?.writeText(code).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1600);
+      },
+      () => {},
+    );
   };
 
+  if (loading) return <Loading label={t("Loading your profile", "Chargement de votre profil")} />;
+
+  const back = () => setView("main");
+  if (view === "edit")
+    return <EditProfile user={user} profile={profile} saveProfile={saveProfile} nameHere={myNameHere} them={them} onBack={back} t={t} />;
+  if (view === "sees") return <WhatTheySee them={them} nameHere={myNameHere} onBack={back} t={t} />;
+  if (view === "data") return <DownloadData them={them} onBack={back} t={t} />;
+  if (view === "delete") return <DeleteAccount them={them} onBack={back} onExport={() => setView("data")} t={t} />;
+
+  const name = profile?.name || user.displayName || t("You", "Vous");
+  const langName = LANGS.find((l) => l.code === lang)?.native ?? lang;
+
+  return (
+    <section>
+      <h1 className="h1" style={{ margin: "20px 2px 14px" }}>
+        {t("You", "Vous")}
+      </h1>
+
+      <div className="card you-head">
+        <Avatar name={name} photo={profile?.photo} size={64} />
+        <span className="you-head-txt">
+          <b>{name}</b>
+          {user.email && <span>{user.email}</span>}
+        </span>
+        <button className="you-edit" type="button" onClick={() => setView("edit")}>
+          {t("Edit", "Modifier")}
+        </button>
+      </div>
+
+      <h2 className="you-group">{t("Preferences", "Préférences")}</h2>
+      <div className="card you-list">
+        {/* The app's only notification, and the only one planned. Off unless
+            asked for: emailing someone about special-category activity because
+            a switch defaulted to on is not consent. Needs an email address. */}
+        {user.email && (
+          <button type="button" role="switch" aria-checked={notify} className="you-row" onClick={toggleNotify} disabled={notifyBusy}>
+            <RowIcon>
+              <IconBell size={20} />
+            </RowIcon>
+            <span className="you-row-txt">
+              <b>{t("Email me when a reveal is ready", "M’écrire quand une révélation est prête")}</b>
+              <span>
+                {t(
+                  `Once you’ve both finished a part. Never a reminder to ${them}.`,
+                  `Quand vous avez tous deux terminé une partie. Jamais un rappel à ${them}.`,
+                )}
+              </span>
+            </span>
+            <span className={`switch${notify ? " on" : ""}`} aria-hidden="true">
+              <i />
+            </span>
+          </button>
+        )}
+        <button type="button" className="you-row" onClick={() => setLangOpen(true)}>
+          <RowIcon>
+            <IconGlobe size={20} />
+          </RowIcon>
+          <span className="you-row-txt">
+            <b>{t("Language", "Langue")}</b>
+          </span>
+          <span className="you-row-val">{langName}</span>
+          <Chevron />
+        </button>
+      </div>
+      {err && <ErrorPanel>{err}</ErrorPanel>}
+
+      {code && (
+        <>
+          <h2 className="you-group">{t(`You and ${them}`, `Vous et ${them}`)}</h2>
+          <div className="card you-list">
+            <button type="button" className="you-row" onClick={copyCode} aria-label={t(`Your session code ${code}: copy it`, `Votre code de session ${code} : le copier`)}>
+              <RowIcon>
+                <IconLink size={20} />
+              </RowIcon>
+              <span className="you-row-txt">
+                <b>{t("Your session code", "Votre code de session")}</b>
+                <span>
+                  {copied
+                    ? t("Copied ✓", "Copié ✓")
+                    : t(`${code} · share it to invite or come back`, `${code} · pour inviter ou revenir`)}
+                </span>
+              </span>
+              <Chevron />
+            </button>
+            {onLeave && (
+              <button type="button" className="you-row" onClick={() => setClosing(true)}>
+                <RowIcon>
+                  <IconDoorIn size={20} />
+                </RowIcon>
+                <span className="you-row-txt">
+                  <b>{t("Close this session on this device", "Fermer cette session sur cet appareil")}</b>
+                  <span>{t("Your answers stay saved", "Vos réponses restent enregistrées")}</span>
+                </span>
+                <Chevron />
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      <h2 className="you-group">{t("Privacy and data", "Confidentialité et données")}</h2>
+      <div className="card you-list">
+        <button type="button" className="you-row" onClick={() => setView("sees")}>
+          <RowIcon>
+            <IconEye size={20} />
+          </RowIcon>
+          <span className="you-row-txt">
+            <b>{t(`What ${them} sees`, `Ce que voit ${them}`)}</b>
+            <span>{t("Your name, and your answers once a part opens", "Votre nom, et vos réponses quand une partie s’ouvre")}</span>
+          </span>
+          <Chevron />
+        </button>
+        <button type="button" className="you-row" onClick={() => setView("data")}>
+          <RowIcon>
+            <IconDownload size={20} />
+          </RowIcon>
+          <span className="you-row-txt">
+            <b>{t("Download my data", "Télécharger mes données")}</b>
+            <span>{t("A copy of your profile and answers", "Une copie de votre profil et de vos réponses")}</span>
+          </span>
+          <Chevron />
+        </button>
+        <a className="you-row" href="/privacy.html" target="_blank" rel="noreferrer">
+          <RowIcon>
+            <IconDoc size={20} />
+          </RowIcon>
+          <span className="you-row-txt">
+            <b>{t("Privacy policy", "Politique de confidentialité")}</b>
+          </span>
+          <Chevron />
+        </a>
+      </div>
+
+      <div className="card you-list" style={{ marginTop: 24 }}>
+        <button type="button" className="you-row" onClick={() => signOut(auth)}>
+          <RowIcon>
+            <IconDoorOut size={20} />
+          </RowIcon>
+          <span className="you-row-txt">
+            <b>{t("Sign out", "Se déconnecter")}</b>
+          </span>
+        </button>
+      </div>
+
+      <button className="btn you-delete" type="button" onClick={() => setView("delete")}>
+        {t("Delete my account", "Supprimer mon compte")}
+      </button>
+
+      <div className="foot">
+        {t("Signed in as", "Connecté en tant que")} {user.email || t("your Google account", "votre compte Google")}
+      </div>
+      <BuildStamp />
+
+      {closing && onLeave && (
+        <Sheet title={t("Close this session on this device?", "Fermer cette session sur cet appareil ?")} onClose={() => setClosing(false)}>
+          <p className="helper" style={{ marginTop: 0 }}>
+            {t(
+              `Your answers stay saved, and it stays open for ${them}. Come back any time with your code:`,
+              `Vos réponses restent enregistrées, et elle reste ouverte pour ${them}. Revenez quand vous voulez avec votre code :`,
+            )}
+          </p>
+          {code && (
+            <div className="you-code">
+              <span className="codebig">{code}</span>
+              <button className="btn out" type="button" onClick={copyCode}>
+                {copied ? t("Copied ✓", "Copié ✓") : t("Copy", "Copier")}
+              </button>
+            </div>
+          )}
+          <button className="btn" type="button" onClick={onLeave}>
+            {t("Close session", "Fermer la session")}
+          </button>
+          <button className="btn ghost" type="button" onClick={() => setClosing(false)}>
+            {t("Keep it open", "La garder ouverte")}
+          </button>
+        </Sheet>
+      )}
+
+      {langOpen && (
+        <Sheet title={t("Language", "Langue")} onClose={() => setLangOpen(false)}>
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              className={`opt${lang === l.code ? " sel" : ""}`}
+              aria-pressed={lang === l.code}
+              onClick={() => {
+                setLang(l.code);
+                setLangOpen(false);
+              }}
+            >
+              {l.native}
+              <span className="dot" />
+            </button>
+          ))}
+        </Sheet>
+      )}
+    </section>
+  );
+}
+
+const RowIcon = ({ children }: { children: ReactNode }) => (
+  <span className="you-row-ic" aria-hidden="true">
+    {children}
+  </span>
+);
+const Chevron = () => (
+  <span className="you-row-go" aria-hidden="true">
+    <IconChevron size={18} />
+  </span>
+);
+
+function SubHead({ title, onBack, t }: { title: string; onBack: () => void; t: T }) {
+  return (
+    <>
+      <button className="you-back" type="button" onClick={onBack}>
+        <IconBack size={20} />
+        {t("You", "Vous")}
+      </button>
+      <h1 className="h1" style={{ margin: "8px 2px 14px" }}>
+        {title}
+      </h1>
+    </>
+  );
+}
+
+// ---- Edit profile: its own screen, saying who sees what -------------------
+function EditProfile({
+  user,
+  profile,
+  saveProfile,
+  nameHere,
+  them,
+  onBack,
+  t,
+}: {
+  user: User;
+  profile: Profile | null;
+  saveProfile: (p: Partial<Profile>) => Promise<void>;
+  nameHere?: string;
+  them: string;
+  onBack: () => void;
+  t: T;
+}) {
+  const [name, setName] = useState(profile?.name ?? user.displayName ?? "");
+  const [bio, setBio] = useState(profile?.bio ?? "");
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const [saved, setSaved] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setErr("");
+    setSaved(false);
+    try {
+      setPhoto(await fileToAvatarDataUrl(file));
+    } catch (e2) {
+      setErr(prettyError(e2));
+    }
+  };
+
+  const save = async () => {
+    setErr("");
+    setSaved(false);
+    if (!name.trim()) {
+      setErr(t("Add your name: it’s how you appear in a session.", "Ajoutez votre nom : c’est ainsi que vous apparaissez dans une session."));
+      return;
+    }
+    setBusy(true);
+    const data: Partial<Profile> = { name: name.trim(), bio: bio.trim(), email: user.email ?? "" };
+    if (!profile?.created) data.created = Date.now();
+    if (photo) data.photo = photo; // only overwrite if newly chosen
+    try {
+      await saveProfile(data);
+      setPhoto(null);
+      setSaved(true);
+    } catch (e2) {
+      setErr(prettyError(e2));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const shown = photo ?? profile?.photo ?? null;
+  return (
+    <section>
+      <SubHead title={t("Edit profile", "Modifier le profil")} onBack={onBack} t={t} />
+      <div className="you-photo">
+        <Avatar name={name || "?"} photo={shown} size={104} />
+        <button className="btn out you-photo-btn" type="button" onClick={() => fileInput.current?.click()}>
+          {t("Change photo", "Changer la photo")}
+        </button>
+        <input ref={fileInput} type="file" accept="image/*" hidden onChange={onPhoto} />
+      </div>
+
+      <label className="you-label" htmlFor="name">
+        {t("Name", "Nom")}
+      </label>
+      <input
+        className="input"
+        id="name"
+        maxLength={20}
+        placeholder={t("e.g. Sarah", "p. ex. Sarah")}
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value);
+          setSaved(false);
+        }}
+      />
+      {/* The session keeps the name you had when it started, so say so: a
+          change here doesn't reach a session that's already running. */}
+      <p className="helper you-hint">
+        {nameHere
+          ? t(
+              `Used when you start or join a session. ${cap(them)} sees you as “${nameHere}” in this one.`,
+              `Utilisé quand vous commencez ou rejoignez une session. ${cap(them)} vous voit comme « ${nameHere} » dans celle-ci.`,
+            )
+          : t("Used when you start or join a session.", "Utilisé quand vous commencez ou rejoignez une session.")}
+      </p>
+
+      <label className="you-label" htmlFor="bio">
+        {t("A line about you", "Une ligne sur vous")} <span>· {t("optional, just for you", "facultatif, pour vous seul")}</span>
+      </label>
+      <textarea
+        className="input"
+        id="bio"
+        maxLength={140}
+        placeholder={t("Something honest and short.", "Quelque chose d’honnête et de court.")}
+        value={bio}
+        onChange={(e) => {
+          setBio(e.target.value);
+          setSaved(false);
+        }}
+      />
+      <p className="helper you-hint">
+        {t(`Your photo and this line stay on your account. ${cap(them)} doesn’t see them.`, `Votre photo et cette ligne restent sur votre compte. ${cap(them)} ne les voit pas.`)}
+      </p>
+
+      {err && <ErrorPanel>{err}</ErrorPanel>}
+      {saved && (
+        <p className="you-saved" role="status">
+          ✓ {t("Saved", "Enregistré")}
+        </p>
+      )}
+      <button className={`btn pill${busy ? " busy" : ""}`} type="button" onClick={save} disabled={busy}>
+        {busy ? t("Saving…", "Enregistrement…") : t("Save changes", "Enregistrer")}
+      </button>
+    </section>
+  );
+}
+
+// ---- What your partner sees: a plain list ---------------------------------
+function WhatTheySee({ them, nameHere, onBack, t }: { them: string; nameHere?: string; onBack: () => void; t: T }) {
+  return (
+    <section>
+      <SubHead title={t(`What ${them} sees`, `Ce que voit ${them}`)} onBack={onBack} t={t} />
+      <div className="card">
+        <h2 className="ktitle">{t(`${cap(them)} sees`, `${cap(them)} voit`)}</h2>
+        <ul className="you-bullets">
+          <li>
+            {nameHere
+              ? t(`Your name in this session: “${nameHere}”.`, `Votre nom dans cette session : « ${nameHere} ».`)
+              : t("Your name in your session.", "Votre nom dans votre session.")}
+          </li>
+          <li>{t("That you’ve started or finished a part, never what you answered before then.", "Que vous avez commencé ou terminé une partie, jamais ce que vous avez répondu avant.")}</li>
+          <li>
+            {t(
+              "Your answers, guesses and how much each one matters to you, for each part once you’ve both finished it.",
+              "Vos réponses, intuitions et l’importance de chacune pour vous, pour chaque partie une fois que vous l’avez tous deux terminée.",
+            )}
+          </li>
+          <li>{t("What you add to talk about, and any note you share there.", "Ce que vous ajoutez à aborder, et toute note partagée.")}</li>
+        </ul>
+      </div>
+      <div className="card" style={{ marginTop: 12 }}>
+        <h2 className="ktitle">{t(`${cap(them)} never sees`, `${cap(them)} ne voit jamais`)}</h2>
+        <ul className="you-bullets">
+          <li>{t("Your email, your photo or your line about you.", "Votre e-mail, votre photo ou votre ligne sur vous.")}</li>
+          <li>{t("Your path questions, only the path they helped choose.", "Vos questions du chemin, seulement le chemin qu’elles ont aidé à choisir.")}</li>
+          <li>{t("An answer in a part they haven’t finished too.", "Une réponse dans une partie qu’il ou elle n’a pas aussi terminée.")}</li>
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+// ---- Download my data: what's in it, two formats, a real error -------------
+function DownloadData({ them, onBack, t }: { them: string; onBack: () => void; t: T }) {
+  const lang = useLang();
+  const [readable, setReadable] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState("");
+  const [done, setDone] = useState("");
+
   // Two doors on the same data. The right of access isn't honoured by a file
-  // nobody can read: `{"FAITH-019":{"host":3}}` tells a person nothing about
-  // what they were asked or what they said. The readable copy is the default;
-  // the raw JSON stays for portability into another service.
+  // nobody can read, so the readable copy is the default; the raw JSON stays
+  // for moving your data to another service.
   const download = (body: string, type: string, name: string) => {
     const url = URL.createObjectURL(new Blob([body], { type }));
     const a = document.createElement("a");
@@ -95,401 +506,143 @@ export default function ProfileScreen({
     setTimeout(() => URL.revokeObjectURL(url), 4000);
   };
 
-  const doExport = async (readable: boolean) => {
-    setDataBusy(true);
-    setDataMsg("");
+  const go = async () => {
+    setBusy(true);
+    setFailed("");
+    setDone("");
     try {
       const res = await exportMyData();
       if (readable) {
-        download(
-          renderReadableExport(res.data as ExportPayload, lang),
-          "text/html;charset=utf-8",
-          "twoagree-my-data.html",
-        );
-        setDataMsg(
-          t(
-            "Downloaded. Open it in any browser, it prints to PDF too.",
-            "Téléchargé. Ouvrez-le dans un navigateur, il s’imprime aussi en PDF.",
-          ),
-        );
+        download(renderReadableExport(res.data as ExportPayload, lang), "text/html;charset=utf-8", "twoagree-my-data.html");
+        setDone(t("Downloaded. Open it in any browser, it prints to PDF too.", "Téléchargé. Ouvrez-le dans un navigateur, il s’imprime aussi en PDF."));
       } else {
-        download(
-          JSON.stringify(res.data, null, 2),
-          "application/json",
-          "twoagree-my-data.json",
-        );
-        setDataMsg(t("Your data has been downloaded.", "Vos données ont été téléchargées."));
+        download(JSON.stringify(res.data, null, 2), "application/json", "twoagree-my-data.json");
+        setDone(t("Your data file has been downloaded.", "Votre fichier de données a été téléchargé."));
       }
     } catch (e) {
-      setDataMsg(prettyError(e));
-    } finally {
-      setDataBusy(false);
-    }
-  };
-
-  const doDelete = async () => {
-    setDataBusy(true);
-    setDataMsg("");
-    try {
-      await deleteMyAccount();
-      await signOut(auth); // App swaps to the sign-in screen
-    } catch (e) {
-      setDataMsg(prettyError(e));
-      setDataBusy(false);
-    }
-  };
-
-  const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    clear();
-    try {
-      const dataUrl = await fileToAvatarDataUrl(file);
-      setPendingPhoto(dataUrl);
-      setOk(
-        t(
-          "Photo ready: tap Save profile to keep it.",
-          "Photo prête, appuyez sur Enregistrer pour la garder.",
-        ),
-      );
-    } catch (e2) {
-      setErr(prettyError(e2));
-    }
-  };
-
-  const save = async () => {
-    clear();
-    if (!name.trim()) {
-      setErr(
-        t(
-          "Your name is needed: your partner sees it.",
-          "Votre nom est requis, votre partenaire le voit.",
-        ),
-      );
-      return;
-    }
-    setBusy(true);
-    const data: Partial<Profile> = {
-      name: name.trim(),
-      bio: bio.trim(),
-      email: user.email ?? "",
-    };
-    if (!profile?.created) data.created = Date.now();
-    if (pendingPhoto) data.photo = pendingPhoto; // only overwrite if newly chosen
-    try {
-      await saveProfile(data);
-      setPendingPhoto(null);
-      setOk(t("Saved.", "Enregistré."));
-    } catch (e2) {
-      setErr(prettyError(e2));
+      setFailed(prettyError(e));
     } finally {
       setBusy(false);
     }
   };
 
-  if (loading) {
-    return (
-      <>
-        <div className="spin" />
-        <p className="muted center" style={{ fontSize: 14 }}>
-          {t("Loading your profile…", "Chargement de votre profil…")}
-        </p>
-      </>
-    );
-  }
-
-  const photo = pendingPhoto ?? profile?.photo ?? null;
+  const choice = (on: boolean, en: string, fr: string, subEn: string, subFr: string) => (
+    <button
+      type="button"
+      className={`opt you-format${readable === on ? " sel" : ""}`}
+      aria-pressed={readable === on}
+      onClick={() => setReadable(on)}
+    >
+      <span>
+        <b>{t(en, fr)}</b>
+        <span>{t(subEn, subFr)}</span>
+      </span>
+      <span className="dot" />
+    </button>
+  );
 
   return (
     <section>
-      <div className="eyebrow center" style={{ marginTop: 30 }}>
-        {t("Your profile", "Votre profil")}
-      </div>
-
-      <div className="card" style={{ marginTop: 16, textAlign: "center" }}>
-        <div className="avatarwrap">
-          <div className="avatar">
-            {/* No photo → the branded blush/claret placeholder, not initials
-                (brand pack §6). Identity avatars elsewhere keep their initials. */}
-            <img src={photo ?? "/avatar-placeholder-256.png"} alt="" />
-          </div>
-          <button
-            className="photobtn"
-            type="button"
-            onClick={() => fileInput.current?.click()}
-          >
-            {t("Change photo", "Changer la photo")}
-          </button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={onPhoto}
-          />
-        </div>
-
-        <div style={{ textAlign: "left" }}>
-          <label htmlFor="name">
-            {t("Name", "Nom")}{" "}
-            <span className="muted" style={{ fontWeight: 400 }}>
-              {t("(your partner sees this)", "(votre partenaire le voit)")}
-            </span>
-          </label>
-          <input
-            className="input"
-            id="name"
-            maxLength={20}
-            placeholder={t("e.g. Sarah", "p. ex. Sarah")}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <label htmlFor="bio">
-            {t("A line about you", "Une ligne sur vous")}{" "}
-            <span className="muted" style={{ fontWeight: 400 }}>
-              {t("(optional)", "(facultatif)")}
-            </span>
-          </label>
-          <textarea
-            className="input"
-            id="bio"
-            maxLength={140}
-            placeholder={t("Something honest and short.", "Quelque chose d’honnête et de court.")}
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-          />
-        </div>
-
-        {err && <div className="err">{err}</div>}
-        {ok && <div className="ok">{ok}</div>}
-
-        <button className={busy ? "btn pill busy" : "btn pill"} type="button" onClick={save} disabled={busy}>
-          {busy ? t("Saving…", "Enregistrement…") : t("Save profile", "Enregistrer le profil")}
-        </button>
-      </div>
-
-      {/* The app's only notification, and the only one planned. Off unless
-          asked for: emailing someone about special-category activity because a
-          checkbox defaulted to on is not consent. Needs an email address, so
-          anonymous accounts don't see it. */}
-      {user.email && (
-        <div className="card" style={{ marginTop: 20 }}>
-          <div className="eyebrow">
-            {t(`When ${partnerFirst} answers`, `Quand ${partnerFirst} répond`)}
-          </div>
-          <p className="muted" style={{ fontSize: 13, margin: "8px 0 12px" }}>
-            {t(
-              "One email, only when they finish a conversation you were waiting on, so you know the reveal is open. Never a reminder, never a nudge.",
-              "Un e-mail, uniquement quand votre partenaire termine une conversation que vous attendiez, pour savoir que la révélation est ouverte. Jamais un rappel, jamais une relance.",
-            )}
-          </p>
-          <button
-            type="button"
-            className={`notifyopt${notify ? " on" : ""}`}
-            aria-pressed={notify}
-            disabled={notifyBusy}
-            onClick={toggleNotify}
-          >
-            <span className="notifyopt-box" aria-hidden="true">
-              {notify ? "✓" : ""}
-            </span>
-            {t("Email me when they answer", "M’envoyer un e-mail quand il répond")}
-          </button>
-          <p className="datahint">
-            {t(`We'd send it to ${user.email}.`, `Nous l’enverrions à ${user.email}.`)}
-          </p>
-        </div>
-      )}
-
-      <div className="card" style={{ marginTop: 20 }}>
-        <div className="eyebrow">{t("Language", "Langue")}</div>
-        <p className="muted" style={{ fontSize: 13, margin: "8px 0 14px" }}>
-          {t(
-            "Choose the language for the app.",
-            "Choisissez la langue de l’application.",
-          )}
-        </p>
-        <div className="langrow">
-          {LANGS.map((l) => (
-            <button
-              key={l.code}
-              type="button"
-              className={`langopt ${lang === l.code ? "on" : ""}`}
-              onClick={() => setLang(l.code)}
-              aria-pressed={lang === l.code}
-            >
-              {l.native}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {onLeave &&
-        (leaving ? (
-          // Leaving used to be one unconfirmed tap sitting directly above the
-          // identically-styled Sign out — and afterwards the code appears
-          // nowhere in the app, so a mis-tap cost the couple their shared
-          // history until the partner dug the code out.
-          <div className="card" style={{ marginTop: 16 }}>
-            <div className="eyebrow">{t("Leave this session?", "Quitter cette session ?")}</div>
-            <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
-              {t(
-                "Nothing is deleted: you can come back any time with your code:",
-                "Rien n’est supprimé, vous pouvez revenir à tout moment avec votre code :",
-              )}
-            </p>
-            {code && <div className="codebig">{code}</div>}
-            <button className="btn out" type="button" onClick={onLeave}>
-              {t("Yes, leave", "Oui, quitter")}
-            </button>
-            <button className="btn ghost" type="button" onClick={() => setLeaving(false)}>
-              {t("Stay", "Rester")}
-            </button>
-          </div>
-        ) : (
-          <button className="btn out" type="button" onClick={() => setLeaving(true)}>
-            {t("Leave this session", "Quitter cette session")}
-          </button>
-        ))}
-      <button className="btn out" type="button" onClick={() => signOut(auth)}>
-        {t("Sign out", "Se déconnecter")}
-      </button>
-
-      {/* The trust surface. This app holds what a couple said about faith, sex
-          and money — the data controls ARE product, not a legal footnote, so
-          they say plainly what is held, what leaves, and what deletion costs. */}
-      <div className="card" style={{ marginTop: 20 }}>
-        <div className="eyebrow">{t("Your data", "Vos données")}</div>
-        <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
-          {t(
-            "TwoAgree holds your answers about faith, intimacy, health and money. They are yours. Take a copy whenever you like, or erase everything.",
-            "TwoAgree conserve vos réponses sur la foi, l’intimité, la santé et l’argent. Elles vous appartiennent. Prenez-en une copie quand vous voulez, ou effacez tout.",
-          )}
-        </p>
-
-        <div className="datarow">
-          <button className="btn out" type="button" onClick={() => doExport(true)} disabled={dataBusy}>
-            {dataBusy ? t("Working…", "En cours…") : t("Download a readable copy", "Télécharger une copie lisible")}
-          </button>
-          <p className="datahint">
-            {t(
-              "Every question you were asked and what you answered, as a page you can read or print.",
-              "Chaque question posée et votre réponse, sous forme de page lisible ou imprimable.",
-            )}
-          </p>
-        </div>
-        <div className="datarow">
-          <button className="btn ghost" type="button" onClick={() => doExport(false)} disabled={dataBusy}>
-            {t("Download the raw data (JSON)", "Télécharger les données brutes (JSON)")}
-          </button>
-          <p className="datahint">
-            {t(
-              "The same information, machine-readable, for moving your data to another service.",
-              "Les mêmes informations, lisibles par machine, pour transférer vos données ailleurs.",
-            )}
-          </p>
-        </div>
-        {dataMsg && <div className="ok">{dataMsg}</div>}
-      </div>
-
-      <div className="card danger" style={{ marginTop: 16 }}>
-        <div className="eyebrow">{t("Erase everything", "Tout effacer")}</div>
-        {!confirmDelete ? (
-          <>
-            <p className="muted" style={{ fontSize: 13, margin: "8px 0 4px" }}>
-              {t(
-                "Deleting is permanent and immediate. Take a copy first if you want one.",
-                "La suppression est définitive et immédiate. Prenez une copie d’abord si vous en voulez une.",
-              )}
-            </p>
-            <button
-              className="btn ghost"
-              type="button"
-              style={{ color: "var(--danger)" }}
-              onClick={() => setConfirmDelete(true)}
-              disabled={dataBusy}
-            >
-              {t("Delete my account", "Supprimer mon compte")}
-            </button>
-          </>
-        ) : (
-          <>
-            {/* Exactly what deleteMyAccount does — including the part that
-                affects the other person, which the old one-line warning left
-                them to discover afterwards. */}
-            <p style={{ fontSize: 13, margin: "10px 0 0", lineHeight: 1.55 }}>
-              {t("Here is precisely what happens:", "Voici précisément ce qui se passe :")}
-            </p>
-            <ul className="deletelist">
-              <li>
-                {t(
-                  "Your profile, photo and private Path answers are erased.",
-                  "Votre profil, votre photo et vos réponses privées du Chemin sont effacés.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Every answer, guess and rating you gave is removed from every session you're in.",
-                  "Chaque réponse, intuition et évaluation que vous avez données est retirée de toutes vos sessions.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Your partner keeps their own answers, but your side of every reveal you shared disappears from their app too, and the scores between you go with it.",
-                  "Votre partenaire garde ses propres réponses, mais votre côté de chaque révélation partagée disparaît aussi de son application, et les scores entre vous avec.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "A session where you were the only member is removed entirely.",
-                  "Une session où vous étiez le seul membre est entièrement supprimée.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Your consent record is kept. It is the evidence we were allowed to hold your data, and it contains no answers.",
-                  "Votre enregistrement de consentement est conservé. C’est la preuve que nous étions autorisés à détenir vos données, et il ne contient aucune réponse.",
-                )}
-              </li>
-            </ul>
-            <p className="err" style={{ marginTop: 12 }}>
-              {t("This cannot be undone.", "C’est irréversible.")}
-            </p>
-            <button
-              className="btn red"
-              type="button"
-              onClick={doDelete}
-              disabled={dataBusy}
-            >
-              {dataBusy
-                ? t("Deleting…", "Suppression…")
-                : t("Yes, delete everything", "Oui, tout supprimer")}
-            </button>
-            <button
-              className="btn ghost"
-              type="button"
-              onClick={() => setConfirmDelete(false)}
-              disabled={dataBusy}
-            >
-              {t("Cancel", "Annuler")}
-            </button>
-          </>
+      <SubHead title={t("Download my data", "Télécharger mes données")} onBack={onBack} t={t} />
+      <p className="pstep-frame">
+        {t(
+          `Your profile, every answer, guess and note you’ve given, your path questions and your consent record. ${cap(them)}’s answers aren’t included.`,
+          `Votre profil, chaque réponse, intuition et note que vous avez données, vos questions du chemin et votre consentement. Les réponses de ${them} ne sont pas incluses.`,
         )}
-        <p className="muted" style={{ fontSize: 12, marginTop: 12 }}>
-          {t("See our", "Consultez notre")}{" "}
-          <a className="link" href="/privacy.html" target="_blank" rel="noreferrer">
-            {t("Privacy Policy", "Politique de confidentialité")}
-          </a>
-          .
+      </p>
+      {choice(true, "A readable copy", "Une copie lisible", "A page you can read or print", "Une page à lire ou imprimer")}
+      {choice(false, "A data file (JSON)", "Un fichier de données (JSON)", "For moving your data to another service", "Pour transférer vos données ailleurs")}
+      {failed && (
+        <ErrorPanel>
+          <b>{t("We couldn’t create your download.", "Nous n’avons pas pu créer votre téléchargement.")}</b> {failed}
+        </ErrorPanel>
+      )}
+      {done && (
+        <p className="you-saved" role="status">
+          ✓ {done}
         </p>
-      </div>
+      )}
+      <button className={`btn pill${busy ? " busy" : ""}`} type="button" onClick={go} disabled={busy}>
+        {busy ? t("Preparing your download…", "Préparation…") : failed ? t("Try again", "Réessayer") : t("Download", "Télécharger")}
+      </button>
+    </section>
+  );
+}
 
-      <div className="foot">
-        {t("Signed in as", "Connecté en tant que")}{" "}
-        {user.email || t("your Google account", "votre compte Google")}
+// ---- Delete your account and answers: its own screen, honest about what's kept
+function DeleteAccount({ them, onBack, onExport, t }: { them: string; onBack: () => void; onExport: () => void; t: T }) {
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState("");
+
+  const go = async () => {
+    setBusy(true);
+    setFailed("");
+    try {
+      await deleteMyAccount();
+      await signOut(auth); // App swaps to the sign-in screen
+    } catch (e) {
+      setFailed(prettyError(e));
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section>
+      {!busy && (
+        <button className="you-back" type="button" onClick={onBack}>
+          <IconBack size={20} />
+          {t("You", "Vous")}
+        </button>
+      )}
+      <h1 className="h1" style={{ margin: "8px 2px 14px" }}>
+        {t("Delete your account and answers?", "Supprimer votre compte et vos réponses ?")}
+      </h1>
+      {/* Exactly what deleteMyAccount does (functions/src/index.ts), including
+          the part that affects the other person. */}
+      <ul className="you-bullets">
+        <li>{t("Your profile, photo and path questions are deleted.", "Votre profil, votre photo et vos questions du chemin sont supprimés.")}</li>
+        <li>
+          {t(
+            "Every answer, guess, rating and talk-list note you gave is removed from every session you’re in.",
+            "Chaque réponse, intuition, évaluation et note que vous avez données est retirée de toutes vos sessions.",
+          )}
+        </li>
+        <li>
+          {t(
+            `${cap(them)} keeps their own answers, but your side of every reveal disappears from their app too, and the scores between you go with it.`,
+            `${cap(them)} garde ses propres réponses, mais votre côté de chaque révélation disparaît aussi de son application, et les scores entre vous avec.`,
+          )}
+        </li>
+        <li>{t("A session with no one else in it is removed entirely.", "Une session où il n’y a personne d’autre est entièrement supprimée.")}</li>
+      </ul>
+      <div className="you-keep">
+        <b>{t("What we keep:", "Ce que nous gardons :")}</b>{" "}
+        {t(
+          "your consent record. It shows we were allowed to hold your data, and it has no answers in it.",
+          "votre enregistrement de consentement. Il montre que nous pouvions détenir vos données, et il ne contient aucune réponse.",
+        )}
       </div>
-      <BuildStamp />
+      <p className="you-final">{t("This can’t be undone. You can download your data first.", "C’est irréversible. Vous pouvez d’abord télécharger vos données.")}</p>
+      {failed && (
+        <ErrorPanel>
+          <b>{t("Your account wasn’t deleted.", "Votre compte n’a pas été supprimé.")}</b> {failed}{" "}
+          {t("It’s safe to try again.", "Vous pouvez réessayer sans risque.")}
+        </ErrorPanel>
+      )}
+      <button className={`btn red${busy ? " busy" : ""}`} type="button" onClick={go} disabled={busy}>
+        {busy ? t("Deleting your account…", "Suppression de votre compte…") : failed ? t("Try again", "Réessayer") : t("Delete my account", "Supprimer mon compte")}
+      </button>
+      {/* Once deletion starts it can't be stopped, so there's nothing to cancel. */}
+      {!busy && (
+        <>
+          <button className="btn ghost" type="button" onClick={onExport}>
+            {t("Download my data first", "Télécharger mes données d’abord")}
+          </button>
+          <button className="btn ghost" type="button" onClick={onBack}>
+            {t("Cancel", "Annuler")}
+          </button>
+        </>
+      )}
     </section>
   );
 }

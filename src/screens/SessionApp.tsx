@@ -516,6 +516,7 @@ export default function SessionApp({
               onLeave={onLeave}
               code={code}
               partnerName={partnerName}
+              myNameHere={session.members?.[role]?.name}
             />
           )}
         </div>

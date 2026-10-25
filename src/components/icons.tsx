@@ -79,6 +79,65 @@ export const IconShare = ({ size = 24 }: P) =>
     </>
   ));
 
+// The You screen's settings rows (item 15).
+export const IconBell = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" />
+      <path d="M10 20.5a2 2 0 0 0 4 0" />
+    </>
+  ));
+export const IconGlobe = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17M12 3.5c2.6 2.6 2.6 14.4 0 17M12 3.5c-2.6 2.6-2.6 14.4 0 17" />
+    </>
+  ));
+export const IconLink = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+      <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+    </>
+  ));
+export const IconDoorIn = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M14 4h5v16h-5" />
+      <path d="M4 12h10M10.5 8.5 14 12l-3.5 3.5" />
+    </>
+  ));
+export const IconDoorOut = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M10 4H5v16h5" />
+      <path d="M10 12h10M16.5 8.5 20 12l-3.5 3.5" />
+    </>
+  ));
+export const IconEye = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ));
+export const IconDownload = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M12 4v11M7.5 10.5 12 15l4.5-4.5" />
+      <path d="M5 20h14" />
+    </>
+  ));
+export const IconDoc = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M6 3.5h8l4 4V20.5H6z" />
+      <path d="M14 3.5v4h4" />
+    </>
+  ));
+export const IconChevron = ({ size = 24 }: P) => svg(size, <path d="M9.5 6l6 6-6 6" />);
+
 // Deck category glyphs, keyed by the `icon` field in the question bank.
 // Rendered inside DecksScreen's category tile; stroke inherits the deck colour.
 const DECK_GLYPHS: Record<string, React.ReactNode> = {

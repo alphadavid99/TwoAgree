@@ -1,5 +1,5 @@
 {
-  "screens": 105,
+  "screens": 108,
   "results": [
     {
       "id": "kit-sheet",
@@ -608,7 +608,31 @@
       "contrast": []
     },
     {
-      "id": "profile-leave",
+      "id": "profile-edit",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-sees",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-close",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-data",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-export-error",
       "small": [],
       "taps": [],
       "contrast": []
@@ -621,12 +645,6 @@
     },
     {
       "id": "profile-delete-busy",
-      "small": [],
-      "taps": [],
-      "contrast": []
-    },
-    {
-      "id": "profile-export-error",
       "small": [],
       "taps": [],
       "contrast": []

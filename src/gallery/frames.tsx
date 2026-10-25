@@ -506,16 +506,19 @@ export const FRAMES: FrameDef[] = [
     note: 'Profile reads stall after the app shell has loaded.',
     steps: [{ wait: 150 }, { run: (rt) => rt.pending.push(`users/${rt.user!.uid}`) }, { click: 'You' }],
   }),
-  inSession({ id: 'profile-main', flow: 'profile', title: 'Profile & settings', tab: 'You' }),
-  inSession({ id: 'profile-leave', flow: 'profile', title: 'Leave this session? (confirm)', tab: 'You', steps: [{ click: /Leave/ }, { scrollToText: /Leave this session\?/ }] }),
-  inSession({ id: 'profile-delete', flow: 'profile', title: 'Delete account (confirm)', tab: 'You', steps: [{ click: /Delete my account/ }, { scrollToText: /Here is precisely what happens/ }] }),
-  inSession({ id: 'profile-delete-busy', flow: 'profile', title: 'Delete account: deleting…', tab: 'You', callables: { deleteMyAccount: never }, steps: [{ click: /Delete my account/ }, { click: /Yes, delete everything/ }, { scrollToText: /Here is precisely what happens/ }] }),
+  inSession({ id: 'profile-main', flow: 'profile', title: 'You: a settings list', tab: 'You' }),
+  inSession({ id: 'profile-edit', flow: 'profile', title: 'Edit profile, on its own screen', note: 'Says plainly who sees what: Judah sees the name the session started with, never the photo or line.', tab: 'You', steps: [{ click: 'Edit' }] }),
+  inSession({ id: 'profile-sees', flow: 'profile', title: 'What Judah sees', tab: 'You', steps: [{ click: /^What Judah sees/ }] }),
+  inSession({ id: 'profile-close', flow: 'profile', title: 'Close this session on this device (sheet)', tab: 'You', steps: [{ click: /^Close this session on this device/ }] }),
+  inSession({ id: 'profile-data', flow: 'profile', title: 'Download my data', tab: 'You', steps: [{ click: /^Download my data/ }] }),
   inSession({
-    id: 'profile-export-error', flow: 'profile', title: 'Data export: offline error',
+    id: 'profile-export-error', flow: 'profile', title: 'Download my data: a real error, and Try again',
     note: 'The success state triggers a real file download, so it is not shown.',
     tab: 'You', callables: { exportMyData: fail('auth/network-request-failed') },
-    steps: [{ click: /Download the raw data/ }, { wait: 150 }, { scrollToText: /offline/i }],
+    steps: [{ click: /^Download my data/ }, { wait: 150 }, { click: 'Download' }, { wait: 200 }],
   }),
+  inSession({ id: 'profile-delete', flow: 'profile', title: 'Delete your account and answers?', tab: 'You', steps: [{ click: 'Delete my account' }] }),
+  inSession({ id: 'profile-delete-busy', flow: 'profile', title: 'Deleting: no Cancel once it has started', tab: 'You', callables: { deleteMyAccount: never }, steps: [{ click: 'Delete my account' }, { wait: 150 }, { click: 'Delete my account' }] }),
 ]
 
 // A finished journey: real answers behind every waypoint so the finale's numbers

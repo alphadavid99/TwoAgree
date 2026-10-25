@@ -579,3 +579,75 @@ describe("the Path: the Trailhead opens before you've both answered the path que
     await assertFails(get(ref(asUser(HOST), `intake/${GUEST}`)));
   });
 });
+
+describe("the You screen's Download and Delete do exactly what they say (item 15)", () => {
+  it("Download: profile, every answer, guess and note you gave, path questions and consent; never your partner's", async () => {
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    await call(GUEST, { code: CODE, slug: SLUG, level: 0 });
+    await assertSucceeds(set(ref(asUser(GUEST), `users/${GUEST}`), { name: "Judah", bio: "Judah's line" }));
+    await assertSucceeds(set(ref(asUser(GUEST), `intake/${GUEST}`), { updated: 1, answers: { depth: 1 } }));
+    await assertSucceeds(set(ref(asUser(GUEST), `consents/${GUEST}`), { at: 1, version: "v1" }));
+    await assertSucceeds(
+      update(ref(asUser(GUEST)), {
+        [`sessions/${CODE}/decks/${SLUG}/talks/${part0[0].id}/talked/guest`]: true,
+        [`sessions/${CODE}/decks/${SLUG}/talks/${part0[0].id}/note/guest`]: "Judah's note",
+      }),
+    );
+    const out = (await exportMyData.run({ auth: { uid: GUEST }, data: null, rawRequest: {} })) as {
+      profile: { bio: string };
+      intake: unknown;
+      consent: unknown;
+      sessions: Record<string, { decks: Record<string, { answers?: object; guesses?: object; talks?: Record<string, { note?: string }> }> }>;
+    };
+    expect(out.profile.bio).toBe("Judah's line");
+    expect(out.intake).not.toBeNull();
+    expect(out.consent).not.toBeNull();
+    const deck = out.sessions[CODE].decks[SLUG];
+    expect(Object.keys(deck.answers ?? {})).toHaveLength(part0.length);
+    expect(Object.keys(deck.guesses ?? {}).length).toBeGreaterThan(0);
+    expect(deck.talks?.[part0[0].id]?.note).toBe("Judah's note");
+    expect(JSON.stringify(out)).not.toContain("Written by host");
+  });
+
+  it("Delete: every promise on the screen, and the consent record kept", async () => {
+    const { getAuth } = await import("../../functions/node_modules/firebase-admin/lib/auth/index.js");
+    await getAuth().createUser({ uid: GUEST }).catch(() => {});
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    await call(GUEST, { code: CODE, slug: SLUG, level: 0 });
+    // A second session Judah is in on their own.
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await set(ref(ctx.database(), "sessions/SOLO"), {
+        created: 1,
+        members: { host: { name: "Judah", uid: GUEST } },
+        uids: { [GUEST]: true },
+      });
+      await set(ref(ctx.database(), `users/${GUEST}`), { name: "Judah", photo: "data:image/jpeg;base64,x" });
+      await set(ref(ctx.database(), `intake/${GUEST}`), { updated: 1 });
+      await set(ref(ctx.database(), `consents/${GUEST}`), { at: 1 });
+    });
+
+    await deleteMyAccount.run({ auth: { uid: GUEST }, data: null, rawRequest: {} });
+
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      const db = ctx.database();
+      // "Your profile, photo and path questions are deleted."
+      expect((await get(ref(db, `users/${GUEST}`))).val()).toBeNull();
+      expect((await get(ref(db, `intake/${GUEST}`))).val()).toBeNull();
+      // "Every answer, guess and rating you gave is removed from every session."
+      const deck = (await get(ref(db, `sessions/${CODE}/decks/${SLUG}`))).val() as DeckData;
+      for (const q of part0) {
+        expect(deck.answers?.[q.id]?.guest).toBeUndefined();
+        expect(deck.guesses?.[q.id]?.guest).toBeUndefined();
+        expect(deck.importance?.[q.id]?.guest).toBeUndefined();
+        // "Your partner keeps their own answers."
+        expect(deck.answers?.[q.id]?.host).toBeDefined();
+      }
+      // "A session with no one else in it is removed entirely."
+      expect((await get(ref(db, "sessions/SOLO"))).val()).toBeNull();
+      // "What we keep: your consent record."
+      expect((await get(ref(db, `consents/${GUEST}`))).val()).not.toBeNull();
+    });
+  });
+});

@@ -6544,3 +6544,207 @@ a.btn {
   font-size: 1.375rem;
   color: var(--ta-ink);
 }
+
+/* ---- You (item 15): a settings list ---- */
+.you-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.you-head-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.you-head-txt b {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.you-head-txt span {
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+  overflow-wrap: anywhere;
+}
+.you-edit {
+  min-height: 48px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--kit-sel-bg);
+  font: inherit;
+  font-weight: 600;
+  color: var(--ta-claret);
+  cursor: pointer;
+}
+.you-group {
+  margin: 24px 4px 8px;
+  font-family: var(--font-ui);
+  line-height: 1.3;
+  font-size: var(--eyebrow-size);
+  letter-spacing: var(--eyebrow-track);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--app-amber);
+}
+.you-list {
+  padding: 0;
+  overflow: hidden;
+}
+.you-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 16px;
+  border: none;
+  background: var(--ta-white);
+  text-align: left;
+  font: inherit;
+  color: var(--ta-ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+.you-row + .you-row {
+  border-top: 1px solid var(--ta-line);
+}
+.you-row-ic {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--kit-sel-bg);
+  color: var(--ta-claret);
+}
+.you-row-txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.you-row-txt b {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.you-row-txt span {
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+}
+.you-row-val {
+  font-size: 0.9375rem;
+  color: var(--ta-grey);
+}
+.you-row-go {
+  color: var(--ta-grey);
+  display: grid;
+}
+.btn.you-delete {
+  margin-top: 24px;
+  background: var(--ta-white);
+  color: var(--kit-red);
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 4px solid var(--kit-card-base);
+}
+.you-code {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 4px;
+}
+.you-code .codebig {
+  margin: 0;
+  padding: 8px 18px;
+  font-size: 1.5rem;
+}
+.you-code .btn.out {
+  width: auto;
+  margin: 0;
+  padding: 0 20px;
+}
+.you-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ta-ink);
+  cursor: pointer;
+}
+.you-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.btn.out.you-photo-btn {
+  width: auto;
+  margin: 0;
+  padding: 0 20px;
+}
+.you-label {
+  display: block;
+  margin: 18px 2px 6px;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.you-label span {
+  font-weight: 400;
+  color: var(--ta-grey);
+}
+.you-hint {
+  margin: 6px 2px 0;
+}
+.you-saved {
+  margin: 12px 2px 0;
+  font-weight: 600;
+  color: var(--app-guess-ok);
+}
+.you-bullets {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ta-ink);
+}
+.you-keep {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--kit-sel-bg);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ta-grey);
+}
+.you-keep b {
+  color: var(--ta-ink);
+}
+.you-final {
+  margin: 18px 2px 4px;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.you-format {
+  text-align: left;
+}
+.you-format > span:first-child {
+  display: flex;
+  flex-direction: column;
+}
+.you-format > span:first-child span {
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+}

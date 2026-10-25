@@ -3,6 +3,7 @@
 import { ORDER } from "./questions";
 import { completedLevels, revealedQs } from "./progress";
 import {
+  agreeBasis,
   overall,
   weightedStats,
   knowScore,
@@ -57,7 +58,7 @@ export function knownAll(
   decks: Session["decks"],
   role: Role,
   filter: QFilter = () => true,
-): { pct: number | null; done: number; total: number } {
+): { pct: number | null; done: number; total: number; right: number; made: number } {
   let right = 0;
   let made = 0;
   let done = 0;
@@ -82,7 +83,7 @@ export function knownAll(
       }
     }
   }
-  return { pct: made ? Math.round((right / made) * 100) : null, done, total };
+  return { pct: made ? Math.round((right / made) * 100) : null, done, total, right, made };
 }
 
 // The fixed Core instrument (brief 2 §C6).
@@ -123,7 +124,16 @@ export type DeckRow = {
 export function revealedRows(
   decks: Session["decks"],
   role: Role,
-): { rows: DeckRow[]; overallPct: number | null; knownPct: number | null } {
+): {
+  rows: DeckRow[];
+  overallPct: number | null;
+  knownPct: number | null;
+  /** Questions behind overallPct; guesses behind knownPct (scoring v2 counts). */
+  basis: number;
+  right: number;
+  made: number;
+} {
+  let basis = 0;
   let weightedSum = 0;
   let weightSum = 0;
   let rightSum = 0;
@@ -139,6 +149,7 @@ export function revealedRows(
     const pct = overall(qs, deck ?? {}, role);
     const know = knowScore(qs, deck ?? {}, role);
     rows.push({ slug, pct, known: know.pct, lvls: lvls.length, of: nLevels(slug), weight });
+    basis += agreeBasis(qs, deck ?? {});
     weightedSum += weighted;
     weightSum += weight;
     rightSum += know.right;
@@ -148,5 +159,8 @@ export function revealedRows(
     rows,
     overallPct: weightSum ? Math.round((weightedSum / weightSum) * 100) : null,
     knownPct: madeSum ? Math.round((rightSum / madeSum) * 100) : null,
+    basis,
+    right: rightSum,
+    made: madeSum,
   };
 }

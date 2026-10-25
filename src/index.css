@@ -4499,3 +4499,149 @@ textarea.input {
   color: var(--ta-grey);
   margin-top: 8px;
 }
+
+/* ---- Bottom sheet (How scores work; later the conversation guide) ---- */
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; /* above the bottom tab bar */
+  background: rgba(42, 17, 32, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--ta-white);
+  border-radius: 24px 24px 0 0;
+  padding: 8px 20px calc(24px + env(safe-area-inset-bottom));
+  text-align: left;
+  outline: none;
+}
+.sheet-grip {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--ta-line);
+  margin: 4px auto 12px;
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+  color: var(--ta-ink);
+  margin: 0;
+}
+.iconbtn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: none;
+  color: var(--ta-grey);
+  font-size: 1.75rem;
+  line-height: 1;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* The thick card (docs/design-system.md): white, 2px edge, 5px base. */
+.kcard {
+  background: var(--ta-white);
+  border: 2px solid var(--kit-card-edge);
+  border-bottom-width: 5px;
+  border-bottom-color: var(--kit-card-base);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: var(--ta-ink);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.kcard p {
+  margin: 8px 0 0;
+}
+.kcard ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+.kcard li + li {
+  margin-top: 4px;
+}
+.kcard-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.kcard-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ta-ink);
+}
+.kcard-num {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.kcard .amber {
+  color: var(--app-amber);
+}
+.sheet-note {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--ta-grey);
+  margin: 0 0 16px;
+}
+.sheet-close-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  color: var(--ta-ink);
+  text-align: center;
+  margin: 0;
+}
+
+/* The count under a score: what the number stands on (scoring version 2). */
+.score-basis {
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--app-sub);
+  margin: 4px 24px 0;
+}
+.ceremony.lit .score-basis {
+  color: var(--ta-honey);
+}
+.howlink {
+  display: block;
+  margin: 4px auto 0;
+  min-height: 48px;
+  padding: 0 12px;
+  border: none;
+  background: none;
+  color: var(--app-sub);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.ceremony.lit .howlink {
+  color: var(--ta-blush);
+}
+.tile-basis {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--app-sub);
+  margin: 6px 0 0;
+}

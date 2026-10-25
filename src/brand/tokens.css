@@ -65,6 +65,10 @@
   --app-opt-hover:    #DCC0CB;  /* option border on hover */
   --app-row-hover:    #FDF7F9;  /* result row hover ground */
 
+  /* The thick-card kit (design refresh, item 16; docs/design-system.md). */
+  --kit-card-edge:    #F0E3DC;  /* card's 2px edge */
+  --kit-card-base:    #E8D3C7;  /* card's 5px base */
+
   /* Ground gradient (blush field the white cards float on) */
   --app-ground-top:   #FBF2F5;
   --app-ground-bot:   #F8E9EC;

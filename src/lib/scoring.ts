@@ -105,13 +105,12 @@ export function weightedStats(
   return { weighted, weight };
 }
 
-// Some flagged questions score as fully aligned even when answers differ.
-const COMPLEMENT = new Set(["PAR-004"]);
+// A question flagged `complement` in the bank scores as fully aligned even when
+// answers differ. Scoring version 2 (design refresh, item 4) dropped the one
+// hard-coded exception, PAR-004: firm against gentle discipline is exactly the
+// kind of difference the app exists to surface. No question carries the flag.
 export function isComplement(q: Question): boolean {
-  return (
-    (q.complement || COMPLEMENT.has(q.id)) &&
-    (q.type === "scale" || q.type === "mc")
-  );
+  return !!q.complement && (q.type === "scale" || q.type === "mc");
 }
 
 // unevenStakes (brief §4b): both partners rated importance and the gap is ≥3.
@@ -226,6 +225,13 @@ export function jointQuestions(qs: Question[], deck: DeckData): Question[] {
       !isNotYet(a.guest)
     );
   });
+}
+
+// How many questions an Agree score stands on: the ones you both answered
+// that can be scored (written answers and "Not yet" are left out). Every score
+// on screen carries this count ("Based on 22 questions you both answered").
+export function agreeBasis(qs: Question[], deck: DeckData): number {
+  return jointQuestions(qs, deck).filter((q) => q.type !== "open").length;
 }
 
 // Overall agreement % across the given (scoreable) joint questions — a weighted

@@ -101,7 +101,7 @@ export default function HomeScreen({
   const decksComplete = ORDER.filter((s) =>
     catComplete(s, session.decks?.[s], role),
   ).length;
-  const { rows, overallPct, knownPct } = revealedRows(session.decks, role);
+  const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
   const ranked = [...rows].sort((a, b) => a.pct - b.pct);
@@ -305,6 +305,13 @@ export default function HomeScreen({
               <i>{t("known", "connus")}</i>
             </span>
           </div>
+          {overallPct != null && (
+            <p className="tile-basis">
+              {t(`Based on ${basis} question${basis === 1 ? "" : "s"}`, `Sur ${basis} question${basis === 1 ? "" : "s"}`)}
+              {knownPct != null &&
+                t(` · ${right} of ${made} guesses right`, ` · ${right} intuitions justes sur ${made}`)}
+            </p>
+          )}
         </div>
       </div>
 

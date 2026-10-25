@@ -213,17 +213,20 @@ describe("CoreScore", () => {
     expect(hero!.querySelector(".corenum .pc")?.textContent).toBe("%");
   });
 
-  it("states the denominator, so a big number can't mislead", () => {
+  it("states what each number stands on, so a big number can't mislead", () => {
+    // Scoring version 2 (design refresh, item 4): the count, in words.
     render(
       <CoreScore
         agreed={{ pct: 94, done: 9, total: 70 }}
-        known={{ pct: 90, done: 9, total: 63 }}
+        known={{ pct: 90, done: 9, total: 63, right: 9, made: 10 }}
         myName="Sarah"
         partnerName="Judah"
         t={t}
       />,
     );
-    expect(screen.getByText("9 / 70")).toBeTruthy();
+    expect(screen.getByText("based on 9 questions")).toBeTruthy();
+    expect(screen.getByText("9 of 10 guesses right")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "How scores work" })).toBeTruthy();
   });
 });
 

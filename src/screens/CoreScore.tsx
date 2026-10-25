@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDraw } from "../lib/motion";
 import { renderShareCard, shareCardImage } from "../lib/sharecard";
+import { HowScores } from "../components/HowScores";
 
 type T = (en: string, fr: string) => string;
-type Stat = { pct: number | null; done: number; total: number };
+type Stat = { pct: number | null; done: number; total: number; right?: number; made?: number };
 
 // The Core headline (brief 2 §C). Two numbers computed over the fixed 70-question
 // instrument, each with its denominator on screen (§C7) — a 71% over 70 is a
@@ -29,6 +30,7 @@ export function CoreScore({
   t: T;
 }) {
   const [sharing, setSharing] = useState(false);
+  const [how, setHow] = useState(false);
   const complete = agreed.done >= agreed.total;
   // The reveal rings were the only numbers in the app that were alive; the
   // Core headline — the thing a couple comes back to — sat inert. Same curve,
@@ -50,7 +52,9 @@ export function CoreScore({
           </div>
           <div className="corelb">{t("Known", "Connus")}</div>
           <div className="coredenom">
-            {known.done} / {known.total}
+            {known.made
+              ? t(`${known.right} of ${known.made} guesses right`, `${known.right} intuitions justes sur ${known.made}`)
+              : t("no guesses yet", "pas encore d’intuitions")}
           </div>
         </div>
         <div className="corestat agreed">
@@ -60,7 +64,10 @@ export function CoreScore({
           </div>
           <div className="corelb">{t("Agreed", "D’accord")}</div>
           <div className="coredenom">
-            {agreed.done} / {agreed.total}
+            {t(
+              `based on ${agreed.done} question${agreed.done === 1 ? "" : "s"}`,
+              `sur ${agreed.done} question${agreed.done === 1 ? "" : "s"}`,
+            )}
           </div>
         </div>
       </div>
@@ -77,6 +84,17 @@ export function CoreScore({
               `${agreed.done} sur ${agreed.total}, le tableau se complète à mesure que vous répondez.`,
             )}
       </p>
+
+      <button className="howlink" type="button" onClick={() => setHow(true)}>
+        {t("How scores work", "Comment fonctionnent les scores")}
+      </button>
+      {how && (
+        <HowScores
+          agree={{ pct: agreed.pct, basis: agreed.done }}
+          known={{ pct: known.pct, right: known.right ?? 0, made: known.made ?? 0 }}
+          onClose={() => setHow(false)}
+        />
+      )}
 
       {agreed.done > 0 && (
         <button className="btn out" type="button" onClick={() => setSharing(true)}>

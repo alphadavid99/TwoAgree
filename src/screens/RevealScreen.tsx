@@ -3,6 +3,7 @@ import { lvlQs, nLevels } from "../lib/leveling";
 import {
   overall,
   knowScore,
+  agreeBasis,
   scoreQ,
   jointQuestions,
   type DeckData,
@@ -126,6 +127,7 @@ export default function RevealScreen({
   const qs = questions ?? lvlQs(slug, level);
   const data = deck ?? {};
   const pct = overall(qs, data, role);
+  const basis = agreeBasis(qs, data);
   const know = knowScore(qs, data, role);
   const jointRaw = jointQuestions(qs, data);
   const VERDICT_ORDER: Record<Verdict, number> = {
@@ -269,7 +271,7 @@ export default function RevealScreen({
                 the count-up IS the entrance, not something that plays behind
                 an invisible layer. */}
             <div className="lvlup-rise r1">
-              <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony />
+              <ScorePair agreed={pct} known={know.pct} t={t} size={140} ceremony basis={basis} right={know.right} made={know.made} />
             </div>
             {/* The whole ceremony is staged in motion, so without this a blind
                 partner — or one holding the phone between them with VoiceOver
@@ -341,7 +343,7 @@ export default function RevealScreen({
       {eyebrow}
 
       {hasScore ? (
-        <ScorePair agreed={pct} known={know.pct} t={t} size={120} />
+        <ScorePair agreed={pct} known={know.pct} t={t} size={120} basis={basis} right={know.right} made={know.made} />
       ) : (
         <h1 className="h1 center" style={{ margin: "16px 0 6px" }}>
           {t("What you each said", "Ce que chacun a dit")}

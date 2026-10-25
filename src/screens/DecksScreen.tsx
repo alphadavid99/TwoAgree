@@ -55,7 +55,7 @@ export default function DecksScreen({
     DECKS[slug].questions.filter((q) => deck?.answers?.[q.id]?.[role] != null).length;
 
   // Completed decks wear their alignment score right in the list.
-  const { rows, overallPct } = revealedRows(session.decks, role);
+  const { rows, overallPct, basis } = revealedRows(session.decks, role);
   const pctOf = (slug: string) => rows.find((r) => r.slug === slug)?.pct;
   const done = ORDER.filter((s) => catComplete(s, session.decks?.[s], role)).length;
 
@@ -70,7 +70,10 @@ export default function DecksScreen({
       <p className="muted center" style={{ fontSize: 13, margin: "0 0 14px" }}>
         {t(`${done} of ${ORDER.length} complete`, `${done} sur ${ORDER.length} terminées`)}
         {overallPct != null &&
-          t(` · ${overallPct}% agreed so far`, ` · ${overallPct}% d’accord jusqu’ici`)}
+          t(
+            ` · ${overallPct}% agreed, based on ${basis} question${basis === 1 ? "" : "s"}`,
+            ` · ${overallPct}% d’accord, sur ${basis} question${basis === 1 ? "" : "s"}`,
+          )}
       </p>
 
       {buckets.map((bucket, i) =>

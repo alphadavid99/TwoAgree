@@ -389,6 +389,7 @@ export const FRAMES: FrameDef[] = [
   // ============ 12 · Together ============
   inSession({ id: 'together-empty', flow: 'together', title: 'Nothing revealed yet', session: (c) => sessionOf(seat(c)), tab: 'Together' }),
   inSession({ id: 'together-results', flow: 'together', title: 'Where you agree', tab: 'Together' }),
+  inSession({ id: 'together-howscores', flow: 'together', title: 'How scores work', note: 'Opened from the scores; the same sheet opens from every reveal.', tab: 'Together', steps: [{ wait: 200 }, { click: /How scores work/ }] }),
   inSession({ id: 'together-talk', flow: 'together', title: 'Your agenda & discoveries', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
 
   // ============ 13 · The Path ============

@@ -37,7 +37,7 @@ Build from these. Don't hand-style a one-off when a kit piece fits.
 | Text button | Grey, no fill, still 48px tall to tap. |
 | Answer row | At least 52px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
 | Filter pill | 40px. Selected: claret fill, white text. |
-| Importance button | Three in a row, white with the card's base. Selected: fills claret from its centre with a small spring, white text. |
+| Importance control | A soft segmented control on a light track (A little · Somewhat · A lot). Selected: a white segment with a claret edge and a small spring, never a filled button. Optional; tapping the choice clears it. |
 | Badge | A label, not a button. Agreed `#FBEBDC`/`#8F5A12` · Close `#F7EEF1`/`#5C2E45` · Worth a chat claret/`#F3D58E`. |
 | Avatar | Host: white on claret. Guest: ink `#3A2410` on `#D9963A`. Each person keeps their colour on both phones. Side by side, never overlapping. |
 | Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. They shrink into a slim bar as you scroll on Review and Together. |
@@ -74,8 +74,10 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 ## Interaction
 
 - Tap targets at least 48×48px (44pt on iOS).
-- Question screens are exactly the phone's height. The top (back, close, the stones, "3 of 8", the question) and the bottom (importance, the main button) stay put; only the answers scroll between them, fading at the bottom edge with a "More below" chip when there's more. "How much does this matter?" rises in above the main button once an answer is chosen, so it never needs scrolling. Skip, Not yet and Skip for now sit beside the main button in the same row.
-- Back (top left, opposite close) steps through earlier questions and guesses with their answers still picked; any of them can be changed until the part is finished.
+- Question screens are exactly the phone's height. The top (back, close, the stones, "3 of 8", the question) and the bottom (importance, the main button) stay put; only the answers scroll between them, fading at whichever edge has more beyond it, with a "More below" chip on the card's bottom edge when there's more below. "How much does this matter?" rises in above the main button once an answer is chosen, so it never needs scrolling. Back (a square white button), then Skip, Not yet or Skip for now, then the main button, all in one row at the bottom.
+- Back (bottom left) steps through earlier questions and guesses with their answers still picked; any of them can be changed until the part is finished. An importance chosen on an earlier visit says so ("Your earlier answer").
+- A guess says whose answer it is in one line ("✦ Guess · What will Judah say?"); your own answer is marked softly in place ("You", dashed), so the guess is the only strong colour.
+- Rank: tap the options in order; each takes the next number and the last is numbered for you. Tap a numbered one to take it out, or Start again.
 - Scale ends are short labels (at most 40 characters, no colon), the same kind of thing at both ends. Picking a point shows one plain line saying what it means, in a bubble sized to its words, pointing at the chosen orb.
 - Every screen opens at the top. Going back (closing a conversation, Back in You) returns to where you were.
 - Never make someone wait on the server to move on. Show the next step at once, then "Saving…", "✓ Saved", or "Try again" if it fails. Never lose an answer.

@@ -15,6 +15,7 @@ const writes = vi.hoisted(() => ({
   writeAnswer: vi.fn(),
   writeGuess: vi.fn(),
   writeImportance: vi.fn(),
+  clearImportance: vi.fn(),
   markLevelDone: vi.fn(),
 }));
 vi.mock("../lib/session", () => writes);
@@ -41,6 +42,7 @@ beforeEach(() => {
   writes.writeAnswer.mockResolvedValue(undefined);
   writes.writeGuess.mockResolvedValue(undefined);
   writes.writeImportance.mockResolvedValue(undefined);
+  writes.clearImportance.mockResolvedValue(undefined);
   writes.markLevelDone.mockResolvedValue(undefined);
 });
 afterEach(cleanup);
@@ -52,7 +54,7 @@ describe("moving on never waits for the server", () => {
     play(find((q) => q.type === "mc" && !!q.guessable && q.depth < 4));
     await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
     await userEvent.click(screen.getByRole("button", { name: /Next/ }));
-    expect(screen.getByText(/what will/)).toBeTruthy();
+    expect(screen.getByText(/what will/i)).toBeTruthy();
     expect(screen.getByRole("status").textContent).toBe("Saving…");
     await act(async () => land());
     expect(screen.getByRole("status").textContent).toBe("✓ Saved");
@@ -64,7 +66,7 @@ describe("moving on never waits for the server", () => {
     await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
     await userEvent.click(screen.getByRole("button", { name: /Next/ }));
     expect(await screen.findByText(/didn’t save/)).toBeTruthy();
-    expect(screen.getByText(/what will/)).toBeTruthy(); // still moving on
+    expect(screen.getByText(/what will/i)).toBeTruthy(); // still moving on
     await userEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(writes.writeAnswer).toHaveBeenCalledTimes(2);
     expect(await screen.findByText("✓ Saved")).toBeTruthy();
@@ -72,15 +74,49 @@ describe("moving on never waits for the server", () => {
 });
 
 describe("rank", () => {
-  it("fixes the order with up and down, without starting over", async () => {
-    play(find((q) => q.type === "rank"));
-    const downs = screen.getAllByRole("button", { name: /^Move .* down$/ });
-    await userEvent.click(downs[0]); // 0 ↓ → order 1,0,2,…
-    const ups = screen.getAllByRole("button", { name: /^Move .* up$/ });
-    await userEvent.click(ups[2]); // the third row up one
-    await userEvent.click(screen.getByRole("button", { name: /This is my order|Finish part/ }));
-    const stored = writes.writeAnswer.mock.calls[0][4] as string;
-    expect(stored.split(",").slice(0, 3)).toEqual(["1", "2", "0"]);
+  it("numbers the options in the order they're tapped; the last is numbered for you", async () => {
+    const at = find((q) => q.type === "rank");
+    play(at);
+    const opts = lvlQs(at.slug, at.level)[0].opts!;
+    const next = () => screen.getByRole("button", { name: /This is my order|Finish part/ });
+    const row = (i: number) => screen.getByRole("button", { name: new RegExp(`^${opts[i]}`) });
+    // Tap the third, then the first: they take 1 and 2.
+    await userEvent.click(row(2));
+    await userEvent.click(row(0));
+    expect(row(2).getAttribute("aria-label")).toMatch(/number 1$/);
+    expect((next() as HTMLButtonElement).disabled).toBe(true);
+    // A mis-tap comes back out and the rest close up.
+    await userEvent.click(row(2));
+    expect(row(0).getAttribute("aria-label")).toMatch(/number 1$/);
+    await userEvent.click(row(2));
+    for (let i = 1; i < opts.length - 1; i++) if (i !== 2) await userEvent.click(row(i));
+    expect((next() as HTMLButtonElement).disabled).toBe(false);
+    await userEvent.click(next());
+    const stored = (writes.writeAnswer.mock.calls[0][4] as string).split(",");
+    expect(stored.slice(0, 2)).toEqual(["0", "2"]);
+    expect([...stored].sort()).toEqual(opts.map((_, i) => String(i)).sort());
+  });
+});
+
+describe("importance can be taken back off", () => {
+  it("clears a saved rating when it's tapped off on a later visit", async () => {
+    const at = find((q) => q.type === "mc" && !q.who && (q.depth >= 4 || q.id.startsWith("DEAL-")));
+    play(at);
+    const back = () => userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
+    await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
+    await userEvent.click(screen.getByRole("button", { name: "A lot" }));
+    await userEvent.click(screen.getByRole("button", { name: /Next|Finish part/ }));
+    // On to the next screen and back again (past the guess, if it has one).
+    if (screen.queryByText(/what will/i)) await userEvent.click(screen.getByRole("button", { name: "Skip" }));
+    await back();
+    if (screen.queryByText(/what will/i)) await back();
+    expect(screen.getByText("Your earlier answer")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "A lot" }).getAttribute("aria-pressed")).toBe("true");
+    await userEvent.click(screen.getByRole("button", { name: "A lot" }));
+    expect(screen.getByText("Optional")).toBeTruthy();
+    await userEvent.click(screen.getByRole("button", { name: /Next|Finish part/ }));
+    await act(async () => {});
+    expect(writes.clearImportance).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -138,11 +174,11 @@ describe("going back (feedback 15)", () => {
 
     // Back lands on the guess with it still chosen…
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
-    expect(screen.getByText(/what will/)).toBeTruthy();
+    expect(screen.getByText(/what will/i)).toBeTruthy();
     expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![2]);
     // …and again on the answer, still chosen.
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
-    expect(screen.queryByText(/what will/)).toBeNull();
+    expect(screen.queryByText(/what will/i)).toBeNull();
     expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![1]);
 
     // Changing it saves the new answer.

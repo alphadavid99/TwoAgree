@@ -5052,28 +5052,6 @@ textarea.input {
   font-weight: 400;
   color: var(--ta-grey);
 }
-.impbtns {
-  display: flex;
-  gap: 8px;
-}
-.impbtn {
-  flex: 1;
-  min-height: 48px;
-  border-radius: 14px;
-  border: 2px solid var(--kit-card-edge);
-  border-bottom-width: 4px;
-  border-bottom-color: var(--kit-card-base);
-  background: var(--ta-white);
-  color: var(--ta-ink);
-  font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.impbtn.on {
-  border-color: var(--ta-claret);
-  background: var(--kit-sel-bg);
-}
 /* Rank: a numbered list with up and down. */
 .rankhelp {
   margin: 6px 0 12px;
@@ -7062,54 +7040,6 @@ a.btn {
   }
 }
 
-.impbtn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  transition: color 0.2s ease, border-color 0.2s ease, transform var(--dur-press) ease;
-}
-.impbtn::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 140%;
-  aspect-ratio: 1;
-  z-index: -1;
-  border-radius: 50%;
-  background: var(--ta-claret);
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform var(--dur-select) var(--ease-glide);
-}
-.impbtn.on {
-  color: var(--ta-white);
-  /* The fill is drawn by ::before; the button's own ground follows once it
-     has grown, so the white label always sits on claret. */
-  background: var(--ta-claret);
-  border-color: var(--ta-claret);
-  border-bottom-color: var(--kit-claret-base);
-  transition: color 0.2s ease, border-color 0.2s ease, transform var(--dur-press) ease,
-    background-color 0s linear var(--dur-select);
-  animation: impPop var(--dur-select) var(--ease-spring);
-}
-.impbtn.on::before {
-  transform: translate(-50%, -50%) scale(1);
-}
-.impbtn:active {
-  transform: translateY(2px);
-}
-@keyframes impPop {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .orbsay-text,
   .orbsay-cell .caret,
@@ -7117,11 +7047,13 @@ a.btn {
   .morebelow svg,
   .impfoot,
   .opt.sel .dot::after,
-  .impbtn.on {
+  .impseg button.on,
+  .rankno.on,
+  .orb.mine {
     animation: none !important;
   }
   .opt::before,
-  .impbtn::before {
+  .impseg button {
     transition: none !important;
   }
 }
@@ -7184,4 +7116,178 @@ a.btn {
    not loose text: a well a shade darker than the ground. */
 .pfix .playfoot-row > .btn[disabled]:not(.ghost) {
   background: var(--app-track);
+}
+
+/* ---- Answering screen, round 3 (feedback 18-22) ---- */
+
+/* Back, bottom left beside the main button: a square white button, so the
+   main button stays the one wide action. */
+.playfoot-row > .btn.backsq {
+  flex: 0 0 52px;
+  width: 52px;
+  min-width: 52px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* "How much does this matter?": a soft segmented control on a light track.
+   The choice is a white segment with a claret edge, never a filled button. */
+.impseg {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--app-track);
+}
+.impseg button {
+  flex: 1;
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.impseg button.on {
+  background: var(--ta-white);
+  color: var(--ta-claret);
+  box-shadow: inset 0 0 0 2px var(--ta-claret), 0 2px 6px rgba(62, 26, 46, 0.1);
+  animation: segPop var(--dur-select) var(--ease-spring);
+}
+@keyframes segPop {
+  0% {
+    transform: scale(0.94);
+  }
+  60% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* The guess: one line saying whose answer you're guessing; your own answer
+   marked softly in place, so the guess (honey) is the only strong thing. */
+.guesshead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.guesshead .badge {
+  margin: 0;
+}
+.orb.mine:not(.sel) {
+  background: var(--kit-close-bg);
+  border: 2px dashed var(--ta-claret-hover);
+  color: var(--ta-claret-hover);
+}
+.orbyou {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+.orbyou > span {
+  flex: 1;
+  max-width: 56px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ta-grey);
+}
+.opt .opt-t {
+  flex: 1;
+  min-width: 0;
+}
+.opt.mine:not(.sel) {
+  background: var(--kit-sel-bg);
+}
+.opt .youtag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1.5px dashed var(--ta-claret-hover);
+  background: var(--kit-close-bg);
+  color: var(--ta-claret-hover);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  vertical-align: 1px;
+}
+
+/* Rank (feedback 19): full-width rows; tap in order and each takes the next
+   number. An empty dashed circle waits for its number. */
+.rankhelp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 4px;
+}
+.rankhelp .helper {
+  margin: 0;
+}
+.rankreset {
+  flex: none;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ta-claret);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.opt.rankpick {
+  gap: 12px;
+  padding: 10px 16px;
+}
+.opt.rankpick .rankno {
+  width: 30px;
+  height: 30px;
+  border: 2px dashed var(--app-orb-line);
+  background: var(--ta-white);
+  font-size: 0.875rem;
+}
+.opt.rankpick .rankno.on {
+  border: 2px solid var(--app-honey);
+  background: var(--app-honey);
+  color: var(--app-honey-ink);
+  animation: orbSpring 0.4s var(--ease-spring);
+}
+.opt.rankpick.ranked {
+  border-color: var(--kit-card-edge);
+  border-bottom-color: var(--kit-card-base);
+}
+
+/* Fades at whichever edge of the answers has more beyond it (feedback 22):
+   the bottom while there's more below, the top once scrolled down. */
+.qframe > .qbody.up {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 40px);
+  mask-image: linear-gradient(to bottom, transparent, black 40px);
+}
+.qframe > .qbody.up.more {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 40px, black calc(100% - 56px), transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 40px, black calc(100% - 56px), transparent);
+}
+
+/* "More below" sits on the card's bottom edge, over the gap to the footer,
+   so it never covers an answer. */
+.qframe > .morebelow {
+  bottom: -22px;
+}
+.pfix > .playfoot {
+  padding-top: 28px;
 }

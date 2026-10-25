@@ -402,7 +402,7 @@ export const FRAMES: FrameDef[] = [
   playFrame('play-save-failed', 'An answer didn’t save', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }], 'Write denied: you can keep going; Try again resends it.', { denyWrites: ['private'] }),
   playFrame('play-guess', 'Guess your partner', playAt((q) => q.type === 'mc' && !!q.guessable && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }, { sel: '.opt', nth: 1 }]),
   playFrame('play-rank', 'Rank question', playAt((q) => q.type === 'rank')),
-  playFrame('play-rank-moved', 'Rank: one moved down', playAt((q) => q.type === 'rank'), [{ click: /^Move .* down$/ }]),
+  playFrame('play-rank-moved', 'Rank: two tapped, numbered in order', playAt((q) => q.type === 'rank'), [{ sel: '.rankpick', nth: 2 }, { sel: '.rankpick', nth: 0 }]),
   playFrame('play-last', 'Last question of a part', playLast((q) => q.type === 'mc' && asksImportance(q)) ?? playLast((q) => q.type === 'mc'), [{ sel: '.opt', nth: 0 }, { click: /^Somewhat$/ }]),
   playFrame('play-open', 'Open question', playAt((q) => q.type === 'open'), [{ sel: 'textarea', nth: 0 }].slice(0, 0)),
   playFrame('play-importance', 'Answer + importance (tier-3 / deal-breaker)', playAt(asksImportance), [{ sel: '.opt', nth: 0 }]),

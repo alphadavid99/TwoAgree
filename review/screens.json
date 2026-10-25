@@ -941,47 +941,71 @@
       {
         "id": "profile-main",
         "num": "101",
-        "title": "Profile & settings",
+        "title": "You: a settings list",
         "note": "",
         "unrenderable": "",
         "png": "screens/101-profile-main.png",
         "full": "full/101-profile-main.png"
       },
       {
-        "id": "profile-leave",
+        "id": "profile-edit",
         "num": "102",
-        "title": "Leave this session? (confirm)",
-        "note": "",
+        "title": "Edit profile, on its own screen",
+        "note": "Says plainly who sees what: Judah sees the name the session started with, never the photo or line.",
         "unrenderable": "",
-        "png": "screens/102-profile-leave.png",
-        "full": "full/102-profile-leave.png"
+        "png": "screens/102-profile-edit.png",
+        "full": "full/102-profile-edit.png"
       },
       {
-        "id": "profile-delete",
+        "id": "profile-sees",
         "num": "103",
-        "title": "Delete account (confirm)",
+        "title": "What Judah sees",
         "note": "",
         "unrenderable": "",
-        "png": "screens/103-profile-delete.png",
-        "full": "full/103-profile-delete.png"
+        "png": "screens/103-profile-sees.png",
+        "full": "full/103-profile-sees.png"
       },
       {
-        "id": "profile-delete-busy",
+        "id": "profile-close",
         "num": "104",
-        "title": "Delete account: deleting…",
+        "title": "Close this session on this device (sheet)",
         "note": "",
         "unrenderable": "",
-        "png": "screens/104-profile-delete-busy.png",
-        "full": "full/104-profile-delete-busy.png"
+        "png": "screens/104-profile-close.png",
+        "full": "full/104-profile-close.png"
+      },
+      {
+        "id": "profile-data",
+        "num": "105",
+        "title": "Download my data",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/105-profile-data.png"
       },
       {
         "id": "profile-export-error",
-        "num": "105",
-        "title": "Data export: offline error",
+        "num": "106",
+        "title": "Download my data: a real error, and Try again",
         "note": "The success state triggers a real file download, so it is not shown.",
         "unrenderable": "",
-        "png": "screens/105-profile-export-error.png",
-        "full": "full/105-profile-export-error.png"
+        "png": "screens/106-profile-export-error.png"
+      },
+      {
+        "id": "profile-delete",
+        "num": "107",
+        "title": "Delete your account and answers?",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/107-profile-delete.png",
+        "full": "full/107-profile-delete.png"
+      },
+      {
+        "id": "profile-delete-busy",
+        "num": "108",
+        "title": "Deleting: no Cancel once it has started",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/108-profile-delete-busy.png"
       }
     ],
     "sheet": "sheets/profile.png"

@@ -163,6 +163,10 @@ const LANDMARKS: Record<string, ReactNode> = {
 
 export const SCENE_KEYS = Object.keys(LANDMARKS);
 
+/** One landmark on its own, drawn around (370, 110) in scene units: the map
+ *  places each one on its stretch of road. */
+export const Landmark = ({ stepKey }: { stepKey: string }) => <>{LANDMARKS[stepKey]}</>;
+
 export function PathScene({
   stepKey,
   lit,

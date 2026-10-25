@@ -102,8 +102,28 @@ export function orderedSteps(session: Session): { index: number; data: PathStepD
 export function currentIndex(session: Session): number {
   const steps = orderedSteps(session);
   for (const { index } of steps) if (!lampLit(session, index)) return index;
-  return steps.length; // all question-steps done → The Lookout
+  // All laid steps walked: the Lookout, or (pathPartial) the Fork, which
+  // opens once the rest of the route is chosen.
+  return steps.length;
 }
+
+/** Only the Trailhead is laid; the rest waits for both sets of path answers. */
+export const pathPartial = (session: Session | null): boolean => session?.path?.partial === true;
+
+// Short themes for the map's labels ("Step 4 · Family"); the full theme shows
+// on the step card and the arrival screen.
+export const SHORT_THEME: Record<string, string> = {
+  trailhead: "Warm-up",
+  fork: "Conflict",
+  storehouse: "Money",
+  table: "Family",
+  garden: "Intimacy",
+  valley: "Past & healing",
+  hilltop: "Faith",
+  horizon: "Dreams & future",
+  summit: "Convictions",
+  lookout: "Journey’s end",
+};
 
 export const pathReady = (session: Session | null): boolean =>
   !!session?.path?.steps && Object.keys(session.path.steps).length > 0;
@@ -144,6 +164,22 @@ function waypointPct(session: Session, step: PathStepData, role: Role): number |
   const qs = jointQuestions(stepQuestions(step), deck);
   const { weight } = weightedStats(qs, deck, role);
   return weight ? overall(qs, deck, role) : null;
+}
+
+/** Every walked step's questions and answers as one deck, for "Review our
+ *  answers" at the Lookout. */
+export function journeyDeck(session: Session): { deck: DeckData; qs: Question[] } {
+  const deck: DeckData = { answers: {}, guesses: {}, importance: {} };
+  const qs: Question[] = [];
+  for (const { index, data } of orderedSteps(session)) {
+    if (!lampLit(session, index)) continue;
+    const d = stepDeckData(session, data);
+    Object.assign(deck.answers!, d.answers);
+    Object.assign(deck.guesses!, d.guesses);
+    Object.assign(deck.importance!, d.importance);
+    qs.push(...stepQuestions(data));
+  }
+  return { deck, qs };
 }
 
 export function journeyStats(session: Session, role: Role): JourneyStats {

@@ -6323,3 +6323,224 @@ a.btn {
 .cv-row-nm .kbadge {
   font-family: var(--font-ui);
 }
+
+/* ---- The Path map (item 14) ---- */
+.pmap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 5px solid var(--kit-card-base);
+}
+.pmap-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pmap-stops {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pmap-stops li {
+  position: absolute;
+  transform: translateY(-50%);
+}
+.pmap-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 48px;
+  max-width: 160px;
+  padding: 6px 12px;
+  text-align: left;
+  border: 2px solid var(--kit-card-edge);
+  border-radius: 14px;
+  background: var(--ta-white);
+  font: inherit;
+  color: var(--ta-ink);
+  cursor: pointer;
+}
+.pmap-stop b {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pmap-stop span {
+  font-size: 0.75rem;
+  color: var(--ta-grey);
+}
+.pmap-stop.ahead {
+  background: var(--kit-sel-bg);
+}
+.pmap-stop.here {
+  background: var(--ta-claret);
+  border-color: var(--ta-claret);
+  color: var(--ta-white);
+}
+.pmap-stop.here span {
+  color: var(--kit-chat-ink);
+}
+.pmap-card {
+  position: sticky;
+  bottom: 96px;
+  z-index: 4;
+  margin-top: 14px;
+  box-shadow: 0 10px 28px rgba(62, 26, 46, 0.14);
+}
+.pmap-card .btn.pill {
+  margin-top: 12px;
+}
+.pmap-card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pmap-card-row > span {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pmap-card-row .btn.pill {
+  width: auto;
+  margin: 0;
+  padding: 0 20px;
+  flex: 0 0 auto;
+}
+.pmap-card-nm {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.25;
+  color: var(--ta-ink);
+}
+
+/* ---- The Path's step screens (item 14): arrival, walked, Lookout ---- */
+.pstep {
+  padding-bottom: 24px;
+}
+.pstep-top {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  margin: 8px 0 6px;
+}
+.pstep-of {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+}
+.pstep-scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 480 / 308;
+  border-radius: 22px;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 5px solid var(--kit-card-base);
+}
+.pstep-eyebrow {
+  margin-top: 18px;
+  color: var(--app-amber);
+}
+.pstep-frame {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ta-ink);
+}
+.pstep-chips {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pstep-chips li {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--kit-card-edge);
+  background: var(--ta-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.pstep-verse {
+  margin: 4px 0 20px;
+  padding: 2px 0 2px 14px;
+  border-left: 4px solid var(--app-honey);
+}
+.pstep-verse p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--ta-ink);
+}
+.pstep-verse cite {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--app-amber);
+}
+.pstep-next {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.pstep-next-scene {
+  flex: 0 0 auto;
+  width: 112px;
+  height: auto;
+  aspect-ratio: 480 / 308;
+  border-radius: 12px;
+}
+.pstep-next > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.pstep-next .eyebrow {
+  color: var(--app-amber);
+}
+.pstep-next-nm {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.25;
+  color: var(--ta-ink);
+}
+.lk-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 8px 0 18px;
+}
+.lk-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lk-card > span:first-child {
+  display: flex;
+  flex-direction: column;
+}
+.lk-card .eyebrow {
+  color: var(--app-amber);
+}
+.lk-card-nm {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--ta-ink);
+}
+.lk-card-pct {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  color: var(--ta-ink);
+}

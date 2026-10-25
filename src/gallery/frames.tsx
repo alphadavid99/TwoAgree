@@ -8,7 +8,7 @@ import App from '../App'
 import Onboarding from '../screens/Onboarding'
 import RevealScreen from '../screens/RevealScreen'
 import PlayScreen from '../screens/PlayScreen'
-import PathStep from '../screens/PathStep'
+import PathStep, { WalkedScreen } from '../screens/PathStep'
 import { PathFlow } from '../screens/PathScreen'
 import SessionApp from '../screens/SessionApp'
 import { ErrorBoundary } from '../components/ErrorBoundary'
@@ -225,6 +225,13 @@ const revealTier = (id: string, title: string, hit: number, note: string, firstE
 // SessionApp on it (fixed in cfad38d; covered by screens.test.tsx).
 const pathSession = (c: Ctx, lamps = 9): Session =>
   sessionOf(seat(c), { path: true, lamps })
+
+// Only the Trailhead laid: the other path questions aren't in yet (item 14).
+const partialSession = (c: Ctx, walked = false): Session => ({
+  ...sessionOf(seat(c)),
+  path: { generatedAt: 1, version: 1, questionCount: 7, partial: true, steps: { 0: { key: 'trailhead', mechanic: 'guess', qids: [] } } },
+  ...(walked ? { pathLamps: { 0: true } } : {}),
+})
 
 const intakeDone = (c: Ctx) => ({ intake: { [c.uid]: { updated: 1, answers: { fixture: 0 } } } })
 
@@ -457,10 +464,12 @@ export const FRAMES: FrameDef[] = [
   inSession({ id: 'path-loading', flow: 'path', title: 'Path: checking your progress', pending: (c) => [`intake/${c.uid}`], tab: 'Path' }),
   inSession({ id: 'path-intro', flow: 'path', title: 'Path: intro', session: (c) => sessionOf(seat(c)), tab: 'Path' }),
   inSession({ id: 'path-intake', flow: 'path', title: 'Path: private intake', session: (c) => sessionOf(seat(c)), tab: 'Path', steps: [{ click: /Begin my part/ }] }),
-  inSession({ id: 'path-waiting', flow: 'path', title: 'Path: waiting for your partner', session: (c) => sessionOf(seat(c)), extraDb: intakeDone, callables: { generatePath: () => ({ status: 'waiting', reason: 'partner-missing' }) }, tab: 'Path' }),
-  inSession({ id: 'path-map', flow: 'path', title: 'Path: the map', session: (c) => pathSession(c, 3), extraDb: intakeDone, tab: 'Path' }),
+  inSession({ id: 'path-waiting', flow: 'path', title: 'Path: laying your path', note: 'Only for a moment: the server lays the Trailhead as soon as your path questions are in.', session: (c) => sessionOf(seat(c)), extraDb: intakeDone, callables: { generatePath: () => ({ status: 'waiting', reason: 'partner-missing' }) }, tab: 'Path' }),
+  inSession({ id: 'path-start', flow: 'path', title: 'Path: start with the Trailhead', note: 'Before Judah has answered the path questions. No dead end.', session: (c) => partialSession(c), extraDb: intakeDone, tab: 'Path' }),
+  inSession({ id: 'path-start-walked', flow: 'path', title: 'Path: Trailhead walked, the rest still being chosen', session: (c) => partialSession(c, true), extraDb: intakeDone, tab: 'Path' }),
+  inSession({ id: 'path-map', flow: 'path', title: 'Path: the map, opened where you are', session: (c) => pathSession(c, 3), extraDb: intakeDone, tab: 'Path' }),
   {
-    id: 'path-step-arrival', flow: 'path', title: 'Path: arriving at a waypoint',
+    id: 'path-step-arrival', flow: 'path', title: 'Path: arriving at a step', note: 'The step’s scene, what it’s about, what to expect, the verse.',
     db: dbWith((c) => pathSession(c, 1)),
     render: (c) => (
       <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-001', 'CONF-002'] }}
@@ -476,7 +485,15 @@ export const FRAMES: FrameDef[] = [
     ),
   },
   {
-    id: 'path-lookout', flow: 'path', title: 'Path: The Lookout (finale)',
+    id: 'path-step-walked', flow: 'path', title: 'Path: “You’ve walked The Table together”', note: 'In place of “Light the lamp”.',
+    db: dbWith((c) => pathSession(c, 4)),
+    render: () => (
+      <WalkedScreen index={3} stepKey="table" name="The Table" lit={4} partnerName="Judah" onDone={() => {}} t={(en) => en}
+        next={{ index: 4, key: 'garden', name: 'The Garden', theme: 'Intimacy & affection', laid: true }} />
+    ),
+  },
+  {
+    id: 'path-lookout', flow: 'path', title: 'Path: The Lookout', note: 'Rings, two highlights, one verse.',
     db: dbWith((c) => pathSession(c)),
     render: (c) => (
       <PathFlow code={c.code} role="host" session={lookoutSession(c)} index={PATH_KEYS.length} myName="Sarah" partnerName="Judah" onExit={() => {}} />

@@ -9,22 +9,28 @@ import {
   stepRevealable,
   deckOf,
   AT_TABLE_SLUG,
+  orderedSteps,
+  lampLit,
+  pathPartial,
 } from "../lib/path";
-import { VERSES } from "../data/path.generated";
 import { writeAnswer, writeGuess, lightLamp } from "../lib/session";
+import { scaleText } from "../lib/answerWords";
+import { PathScene } from "../components/PathScene";
+import { IconClose } from "../components/icons";
+import { PATH_STEPS } from "../data/path.generated";
 import { optValue, withNames, type Names } from "../lib/who";
 import type { AnswerValue } from "../lib/scoring";
-import { seenLamp, markLampSeen } from "../lib/local";
 import { PathGlyph } from "../components/PathGlyph";
 import { TopBar } from "../components/TopBar";
 import RevealScreen from "./RevealScreen";
 import { useT } from "../lib/i18n";
 
-type Phase = "arrival" | "play" | "reveal" | "lamp";
+type Phase = "arrival" | "play" | "reveal" | "walked";
 type T = (en: string, fr: string) => string;
 
 // One waypoint of the Path: arrival → play (the existing answer/guess engine) →
-// reveal (the existing RevealScreen) → light the lamp. A step is a sequencer;
+// reveal (the existing RevealScreen) → "You've walked it together" (item 14,
+// in place of "Light the lamp"). A step is a sequencer;
 // answers are written to each question's real deck, so nothing here is a new
 // scoring path.
 export default function PathStep({
@@ -70,11 +76,16 @@ export default function PathStep({
     return (
       <ArrivalScreen
         index={index}
+        stepKey={step.key}
         name={meta.name}
-        glyph={meta.glyph}
+        theme={meta.theme}
         verse={meta.verse}
         vref={meta.ref}
         frame={meta.frame}
+        count={qs.length}
+        guess={step.mechanic === "guess"}
+        talk={qs.some((q) => q.type === "open")}
+        lit={orderedSteps(session).filter((x) => lampLit(session, x.index)).length}
         onTake={() => setPhase("play")}
         onBack={onExit}
         t={t}
@@ -127,86 +138,93 @@ export default function PathStep({
         myName={myName}
         partnerName={partnerName}
         code={code}
-        onDone={() => setPhase("lamp")}
+        onDone={() => {
+          // Walked together: the step's lamp is the map's quiet marker.
+          void lightLamp(code, index);
+          setPhase("walked");
+        }}
       />
     );
   }
 
-  // lamp
+  // walked
+  const next = PATH_STEPS[index + 1];
+  const nextLaid = orderedSteps(session).some((x) => x.index === index + 1) || (next?.key === "lookout" && !pathPartial(session));
   return (
-    <LampScreen
+    <WalkedScreen
       index={index}
       stepKey={step.key}
       name={meta.name}
-      // The lamp is SHARED state — whoever finishes second used to arrive at a
-      // pre-lit, static screen and never got the moment at all. The shared bit
-      // still drives the map; the lighting ceremony is now per-person, gated on
-      // a local seen-flag, so both partners get to light it.
-      alreadySeen={seenLamp(code, role, index)}
-      onLight={() => {
-        markLampSeen(code, role, index);
-        void lightLamp(code, index);
-      }}
+      lit={orderedSteps(session).filter((x) => lampLit(session, x.index) || x.index === index).length}
+      next={next ? { index: index + 1, key: next.key, name: next.name, theme: next.theme, laid: nextLaid } : null}
+      partnerName={partnerName}
       onDone={onExit}
       t={t}
     />
   );
 }
 
-// ---- Arrival: claret full-bleed waypoint intro -----------------------------
+// ---- Arrival: a light screen with the step's scene (item 14) ----------------
+// What it's about and what to expect, then the verse, then Take the step.
 function ArrivalScreen({
   index,
+  stepKey,
   name,
-  glyph,
+  theme,
   verse,
   vref,
   frame,
+  count,
+  guess,
+  talk,
+  lit,
   onTake,
   onBack,
   t,
 }: {
   index: number;
+  stepKey: string;
   name: string;
-  glyph: string;
+  theme: string;
   verse: string;
   vref: string;
   frame: string;
+  count: number;
+  guess: boolean;
+  talk: boolean;
+  lit: number;
   onTake: () => void;
   onBack: () => void;
   t: T;
 }) {
   return (
-    <section className="path-claret screen-enter">
-      <div className="eyebrow center" style={{ color: "var(--honey)" }}>
-        {t(`Step ${index + 1} of 10`, `Étape ${index + 1} sur 10`)}
-      </div>
-      <div style={{ margin: "22px 0 18px", color: "var(--honey)" }}>
-        <PathGlyph id={glyph} size={78} />
-      </div>
-      <h1 className="h1 center" style={{ color: "#fff", fontSize: 34 }}>
-        {name}
-      </h1>
-      <div className="path-hairline" />
-      <p className="verse serif center" style={{ color: "#fff", maxWidth: 320, fontStyle: "italic" }}>
-        &ldquo;{verse}&rdquo;
-      </p>
-      <p className="vref center" style={{ color: "var(--honey)" }}>{vref}</p>
-      <p className="center" style={{ color: "rgba(255,255,255,.88)", maxWidth: 320, marginTop: 20, lineHeight: 1.55 }}>
-        {frame}
-      </p>
-      <div style={{ marginTop: 32, width: "100%", maxWidth: 340 }}>
-        <button className="btn honey" type="button" onClick={onTake}>
-          {t("Take the step", "Faire ce pas")}
-        </button>
-        <button
-          className="btn ghost"
-          type="button"
-          onClick={onBack}
-          style={{ color: "rgba(255,255,255,.75)" }}
-        >
-          {t("Back to the path", "Retour au chemin")}
+    <section className="screen-enter pstep">
+      <div className="pstep-top">
+        <span />
+        <span className="pstep-of">{t(`Step ${index + 1} of 10`, `Étape ${index + 1} sur 10`)}</span>
+        <button className="iconbtn" type="button" onClick={onBack} aria-label={t("Back to the Path", "Retour au Chemin")}>
+          <IconClose size={22} />
         </button>
       </div>
+      <PathScene stepKey={stepKey} lit={lit} label={`${name}: ${theme}`} className="pstep-scene" />
+      <p className="eyebrow pstep-eyebrow">{theme}</p>
+      <h1 className="h1" style={{ margin: "2px 0 8px" }}>{name}</h1>
+      <p className="pstep-frame">{frame}</p>
+      <ul className="pstep-chips">
+        <li>{t(`${count} question${count === 1 ? "" : "s"}`, `${count} question${count === 1 ? "" : "s"}`)}</li>
+        {guess && <li>{t("A guess after each", "Une intuition après chacune")}</li>}
+        {talk && <li>{t("One to talk about together", "Une à aborder ensemble")}</li>}
+      </ul>
+      <blockquote className="pstep-verse">
+        <p>“{verse}”</p>
+        <cite>{vref}</cite>
+      </blockquote>
+      <button className="btn pill" type="button" onClick={onTake}>
+        {t("Take the step", "Faire ce pas")}
+      </button>
+      <button className="btn ghost" type="button" onClick={onBack}>
+        {t("Back to the Path", "Retour au Chemin")}
+      </button>
     </section>
   );
 }
@@ -359,7 +377,7 @@ function StepPlay({
 
   // Guess step
   if (guessing) {
-    const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
+    const yourText = q.type === "scale" ? scaleText(q, pend, t) : q.opts?.[pend as number];
     return (
       <section className="screen-enter screenfill">
         {header}
@@ -463,8 +481,8 @@ function WaitingForPartner({
             that was a promise the app cannot keep. Say what's true instead. */}
         <p className="sub center" style={{ margin: "10px 24px 0", maxWidth: 320 }}>
           {t(
-            `The lamp lights the moment ${partnerName} has walked it too. Your answers are already saved.`,
-            `La lampe s'allume dès que ${partnerName} l'aura parcourue aussi. Vos réponses sont déjà enregistrées.`,
+            `It opens for you both once ${partnerName} has walked it too. Your answers are saved.`,
+            `Elle s’ouvre pour vous deux dès que ${partnerName} l’aura parcourue aussi. Vos réponses sont enregistrées.`,
           )}
         </p>
         <button className="btn pill" type="button" onClick={onBack} style={{ marginTop: 26 }}>
@@ -475,82 +493,69 @@ function WaitingForPartner({
   );
 }
 
-// ---- The lamp: honesty marked, then the Word for this stretch ---------------
-function LampScreen({
+// ---- After a step: walked together, and what's next (item 14) -------------
+export function WalkedScreen({
   index,
   stepKey,
   name,
-  alreadySeen,
-  onLight,
+  lit,
+  next,
+  partnerName,
   onDone,
   t,
 }: {
   index: number;
   stepKey: string;
   name: string;
-  /** Has THIS person lit it before? Gates the ceremony (the lamp itself is shared). */
-  alreadySeen: boolean;
-  onLight: () => void;
+  lit: number;
+  next: { index: number; key: string; name: string; theme: string; laid: boolean } | null;
+  partnerName: string;
   onDone: () => void;
   t: T;
 }) {
-  const [lit, setLit] = useState(alreadySeen);
-  const verses = VERSES[stepKey] ?? [];
-  const light = () => {
-    setLit(true);
-    onLight(); // idempotent: marks it seen for me, writes the shared lamp once
-  };
+  const them = partnerName.trim().split(/\s+/)[0] || partnerName;
   return (
-    <section className="path-claret screen-enter" style={{ justifyContent: "flex-start", paddingTop: 60 }}>
-      <div className="eyebrow center" style={{ color: "var(--honey)" }}>
-        {t(`Step ${index + 1}`, `Étape ${index + 1}`)} &middot; {name}
+    <section className="screen-enter pstep">
+      <div className="pstep-top">
+        <span />
+        <span />
+        <button className="iconbtn" type="button" onClick={onDone} aria-label={t("Back to the Path", "Retour au Chemin")}>
+          <IconClose size={22} />
+        </button>
       </div>
-      <div style={{ margin: "24px 0 8px", color: lit ? "var(--honey)" : "var(--berry2)", transition: "color .7s ease" }}>
-        <PathGlyph id="g-lamp" size={80} />
-      </div>
-      {lit ? (
-        <>
-          <h1 className="h1 center" style={{ color: "#fff", fontSize: 28 }}>
-            {t("The lamp is lit.", "La lampe est allumée.")}
-          </h1>
-          <p className="center" style={{ color: "rgba(255,255,255,.85)", maxWidth: 320, marginTop: 10 }}>
-            {t("The Word for this part of the road:", "La Parole pour cette partie du chemin :")}
-          </p>
-          <div style={{ marginTop: 10, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {verses.map((v, i) => (
-              <div key={i} className="path-verse-card path-fadein" style={{ animationDelay: `${i * 0.28}s` }}>
-                <p className="verse serif" style={{ color: "#fff", fontStyle: "italic" }}>&ldquo;{v.v}&rdquo;</p>
-                <p className="vref" style={{ color: "var(--honey)" }}>{v.ref}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: 28, width: "100%", maxWidth: 340 }}>
-            <button className="btn honey" type="button" onClick={onDone}>
-              {t("Back to the path", "Retour au chemin")}
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <h1 className="h1 center" style={{ color: "#fff", fontSize: 28 }}>
-            {t("You've walked this stretch honestly.", "Vous avez parcouru cette étape avec sincérité.")}
-          </h1>
-          <p className="center" style={{ color: "rgba(255,255,255,.85)", maxWidth: 320, marginTop: 12, lineHeight: 1.55 }}>
-            {t("Now the Word for this part of the road.", "Maintenant, la Parole pour cette partie du chemin.")}
-          </p>
-          <div style={{ marginTop: 32, width: "100%", maxWidth: 340 }}>
-            <button className="btn honey" type="button" onClick={light}>
-              {t("Light the lamp", "Allumer la lampe")}
-            </button>
-          </div>
-        </>
-      )}
-      <p className="path-inscription">
+      <PathScene stepKey={stepKey} lit={lit} label={name} className="pstep-scene" />
+      <p className="eyebrow center pstep-eyebrow">{t(`Step ${index + 1} complete`, `Étape ${index + 1} terminée`)}</p>
+      <h1 className="h1 center" style={{ margin: "2px 0 8px" }}>
+        {t(`You’ve walked ${name} together`, `Vous avez parcouru ${name} ensemble`)}
+      </h1>
+      <p className="helper center" style={{ margin: "0 12px 18px" }}>
         {t(
-          "“Your word is a lamp to my feet, and a light to my path.” (Psalm 119:105)",
-          "“Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.” (Psaume 119:105)",
+          "Your answers for this step are in Together, whenever you want to look back.",
+          "Vos réponses pour cette étape sont dans Ensemble, quand vous voudrez y revenir.",
         )}
       </p>
+      {next && (
+        <div className="card pstep-next">
+          <PathScene stepKey={next.key} lit={lit} label={next.name} className="pstep-next-scene" />
+          <span>
+            <span className="eyebrow">{t("Next on the path", "Ensuite sur le chemin")}</span>
+            <span className="pstep-next-nm">
+              {t(`Step ${next.index + 1} · ${next.name}`, `Étape ${next.index + 1} · ${next.name}`)}
+            </span>
+            <span className="helper">
+              {next.laid
+                ? next.theme
+                : t(
+                    `Chosen once ${them} has answered the path questions`,
+                    `Choisie quand ${them} aura répondu aux questions du chemin`,
+                  )}
+            </span>
+          </span>
+        </div>
+      )}
+      <button className="btn pill" type="button" onClick={onDone}>
+        {t("Back to the Path", "Retour au Chemin")}
+      </button>
     </section>
   );
 }

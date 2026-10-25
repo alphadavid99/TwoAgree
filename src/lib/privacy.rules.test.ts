@@ -39,6 +39,7 @@ process.env.FIREBASE_CONFIG = JSON.stringify({
 
 type Callable = { run: (req: unknown) => Promise<unknown> };
 let publishPart: Callable;
+let generatePath: Callable;
 let exportMyData: Callable;
 let deleteMyAccount: Callable;
 let env: RulesTestEnvironment;
@@ -58,6 +59,7 @@ beforeAll(async () => {
   });
   const fns = await import("../../functions/src/index");
   publishPart = fns.publishPart as unknown as Callable;
+  generatePath = fns.generatePath as unknown as Callable;
   exportMyData = fns.exportMyData as unknown as Callable;
   deleteMyAccount = fns.deleteMyAccount as unknown as Callable;
 });
@@ -535,5 +537,45 @@ describe("Talk it through: the shared note and the date you talked", () => {
       expect(Object.keys(node.at)).toEqual(["host"]);
       expect(node.pinned).toBeUndefined();
     });
+  });
+});
+
+describe("the Path: the Trailhead opens before you've both answered the path questions", () => {
+  const intake = (uid: string, depth: number) =>
+    set(ref(asUser(uid), `intake/${uid}`), { updated: 1, answers: { depth, talk: [1], avoided: [] } });
+  const path = async () => {
+    let v: { partial?: boolean; steps: Record<string, unknown> } | null = null;
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      v = (await get(ref(ctx.database(), `sessions/${CODE}/path`))).val();
+    });
+    return v as unknown as { partial?: boolean; steps: Record<string, unknown> } | null;
+  };
+
+  it("lays only the Trailhead for the first to answer, then the whole route keeping it", async () => {
+    // Nothing until your own path questions are in.
+    await generatePath.run({ auth: { uid: HOST }, data: { code: CODE }, rawRequest: {} });
+    expect(await path()).toBeNull();
+
+    await assertSucceeds(intake(HOST, 2));
+    const first = (await generatePath.run({ auth: { uid: HOST }, data: { code: CODE }, rawRequest: {} })) as { status: string };
+    expect(first.status).toBe("waiting");
+    const early = (await path())!;
+    expect(early.partial).toBe(true);
+    expect(Object.keys(early.steps)).toEqual(["0"]);
+    // Both of you can see it; the outsider can't.
+    expect((await get(ref(asUser(GUEST), `sessions/${CODE}/path/steps/0`))).val().key).toBe("trailhead");
+    await assertFails(get(ref(asUser(OUTSIDER), `sessions/${CODE}/path`)));
+    // Nobody can lay or change it from the client.
+    await assertFails(set(ref(asUser(HOST), `sessions/${CODE}/path/partial`), false));
+
+    await assertSucceeds(intake(GUEST, 2));
+    const second = (await generatePath.run({ auth: { uid: GUEST }, data: { code: CODE }, rawRequest: {} })) as { status: string };
+    expect(second.status).toBe("ready");
+    const full = (await path())!;
+    expect(full.partial).toBeUndefined();
+    expect(Object.keys(full.steps)).toHaveLength(9);
+    expect(full.steps[0]).toEqual(early.steps[0]);
+    // Your partner's path questions are never readable by you.
+    await assertFails(get(ref(asUser(HOST), `intake/${GUEST}`)));
   });
 });

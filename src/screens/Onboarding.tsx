@@ -42,6 +42,7 @@ import RevealScreen from "./RevealScreen";
 import AuthScreen from "./AuthScreen";
 import type { DeckData } from "../lib/scoring";
 import { useT } from "../lib/i18n";
+import { scaleText } from "../lib/answerWords";
 
 // The onboarding starter: a hand-picked set of warm "Who's more likely to…?"
 // questions (STARTER_QIDS in ../lib/onboarding — chosen so every couple fits an
@@ -824,7 +825,7 @@ function OnbQuestions({
 
   // ---- Guess step: predict the partner's answer ----
   if (guessing) {
-    const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
+    const yourText = q.type === "scale" ? scaleText(q, pend, t) : q.opts?.[pend as number];
     return (
       <section className={enter}>
         <div className="brandhead">

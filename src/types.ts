@@ -37,6 +37,9 @@ export interface SessionPath {
   version?: number;
   questionCount?: number;
   steps?: Record<string, PathStepData>;
+  /** Only the Trailhead is laid so far: the rest is chosen once you've both
+   *  answered the path questions (item 14). */
+  partial?: boolean;
 }
 
 export interface Session {

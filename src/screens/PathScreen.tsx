@@ -6,27 +6,28 @@ import type { Role } from "../lib/scoring";
 import type { Session } from "../types";
 import {
   pathReady,
+  pathPartial,
   orderedSteps,
-  currentIndex,
-  lampLit,
   stepMeta,
-  stepDoneBy,
   journeyStats,
+  journeyDeck,
   type Waypoint as JourneyWaypoint,
 } from "../lib/path";
-import { other } from "../lib/scoring";
-import { INTAKE, PATH_STEPS, VERSES, type IntakeQuestion } from "../data/path.generated";
+import { INTAKE, VERSES, type IntakeQuestion } from "../data/path.generated";
 import { writeIntake } from "../lib/session";
 import { readIntakeDraft, writeIntakeDraft, clearIntakeDraft } from "../lib/local";
 import { generatePath } from "../lib/functions";
 import { Mark } from "../brand/Mark";
-import { Wordmark } from "../brand/Wordmark";
-import { PathGlyph } from "../components/PathGlyph";
-import { PctRing } from "../components/Ring";
 import { ShareCard } from "./CoreScore";
 import { shareTopic } from "../lib/shareTopic";
 import { useLang, useT } from "../lib/i18n";
 import PathStep from "./PathStep";
+import { PathMap } from "./PathMap";
+import RevealScreen from "./RevealScreen";
+import { PathScene } from "../components/PathScene";
+import { ScoreRings } from "../components/ScoreRings";
+import { IconClose } from "../components/icons";
+import { Loading } from "../components/Loading";
 
 type T = (en: string, fr: string) => string;
 
@@ -69,19 +70,17 @@ export default function PathScreen({
     };
   }, [user.uid]);
 
-  // Once my intake is in but the path isn't laid, nudge the generator. It's
-  // generate-once and reads both intakes server-side, so calling it whenever
-  // either partner lands here is safe — whoever finishes second lays the path.
+  // Once my intake is in but the path isn't laid (or only its Trailhead is),
+  // nudge the generator. It's generate-once and reads both intakes
+  // server-side, so calling it whenever either partner lands here is safe:
+  // whoever finishes second lays the rest of the path.
+  const partial = pathPartial(session);
   useEffect(() => {
-    if (intakeDone && !ready) void generatePath({ code }).catch(() => {});
-  }, [intakeDone, ready, code]);
+    if (intakeDone && (!ready || partial)) void generatePath({ code }).catch(() => {});
+  }, [intakeDone, ready, partial, code]);
 
   if (intakeDone === null) {
-    return (
-      <section className="screen-enter">
-        <div className="spin" />
-      </section>
-    );
+    return <Loading label={t("Checking your path", "Vérification de votre chemin")} />;
   }
 
   if (!intakeDone) {
@@ -89,6 +88,8 @@ export default function PathScreen({
       <PathIntake
         uid={user.uid}
         code={code}
+        // Onboarding already asked where you are as a couple (item 14).
+        skipStage={!!session.stage}
         onBrowseDecks={onBrowseDecks}
         onDone={() => setIntakeDone(true)}
         t={t}
@@ -96,8 +97,10 @@ export default function PathScreen({
     );
   }
 
+  // Your path questions are in: the server lays the Trailhead at once (and the
+  // rest once your partner's are in too), so this is only ever a moment.
   if (!ready) {
-    return <PathWaiting partnerName={partnerName} onBrowseDecks={onBrowseDecks} t={t} />;
+    return <Loading label={t("Laying your path", "Votre chemin se trace")} onBack={onBrowseDecks} backLabel={t("Browse the conversations", "Parcourir les conversations")} />;
   }
 
   return (
@@ -148,6 +151,7 @@ export function PathFlow({
   }
   return (
     <Lookout
+      code={code}
       session={session}
       role={role}
       myName={myName}
@@ -278,12 +282,14 @@ export function PathIntro({
 function PathIntake({
   uid,
   code,
+  skipStage,
   onBrowseDecks,
   onDone,
   t,
 }: {
   uid: string;
   code: string;
+  skipStage: boolean;
   onBrowseDecks: () => void;
   onDone: () => void;
   t: T;
@@ -292,11 +298,16 @@ function PathIntake({
   // back silently threw away every answer — eight private questions, gone,
   // with no warning. Draft state is mirrored into sessionStorage so a tab
   // switch (or a reload mid-intake) resumes exactly where they were.
-  const draft = useMemo(() => readIntakeDraft(uid), [uid]);
+  const QS = useMemo(() => (skipStage ? INTAKE.filter((q) => q.id !== "stage") : INTAKE), [skipStage]);
+  const draft = useMemo(() => {
+    const d = readIntakeDraft(uid);
+    // A draft from before the stage question was skipped doesn't line up.
+    return d && d.ans.length === QS.length ? d : null;
+  }, [uid, QS]);
   const [started, setStarted] = useState(draft != null);
   const [idx, setIdx] = useState(draft?.idx ?? 0);
   const [ans, setAns] = useState<(number | number[] | null)[]>(
-    draft?.ans ?? INTAKE.map((q) => (q.type === "multi" ? [] : null)),
+    draft?.ans ?? QS.map((q) => (q.type === "multi" ? [] : null)),
   );
   const [busy, setBusy] = useState(false);
 
@@ -308,7 +319,7 @@ function PathIntake({
     return <PathIntro onBegin={() => setStarted(true)} onBrowseDecks={onBrowseDecks} t={t} />;
   }
 
-  const q: IntakeQuestion = INTAKE[idx];
+  const q: IntakeQuestion = QS[idx];
   const a = ans[idx];
   const canNext = q.type === "multi" ? (a as number[]).length > 0 : a !== null;
 
@@ -337,7 +348,7 @@ function PathIntake({
     if (busy) return;
     setBusy(true);
     const answers: Record<string, number | number[]> = {};
-    INTAKE.forEach((iq, i) => {
+    QS.forEach((iq, i) => {
       const v = ans[i];
       if (v != null) answers[iq.id] = v;
     });
@@ -378,9 +389,9 @@ function PathIntake({
       {/* (idx+1)/, not idx/ — the bar sat at 0% while the label already said
           "1 of 8", so the first question looked like nothing had started. */}
       <div className="qprog" style={{ marginTop: 14 }}>
-        <i style={{ width: `${Math.round(((idx + 1) / INTAKE.length) * 100)}%` }} />
+        <i style={{ width: `${Math.round(((idx + 1) / QS.length) * 100)}%` }} />
       </div>
-      <p className="hint">{t(`${idx + 1} of ${INTAKE.length}`, `${idx + 1} sur ${INTAKE.length}`)}</p>
+      <p className="hint">{t(`${idx + 1} of ${QS.length}`, `${idx + 1} sur ${QS.length}`)}</p>
       <h1 className="h1" style={{ marginTop: 14, fontSize: 24 }}>{q.q}</h1>
       {q.hint && <p className="sub" style={{ marginTop: 6 }}>{q.hint}</p>}
       <div style={{ marginTop: 16 }}>
@@ -404,9 +415,9 @@ function PathIntake({
         className={busy ? "btn busy" : "btn"}
         type="button"
         disabled={!canNext || busy}
-        onClick={() => (idx === INTAKE.length - 1 ? finish() : setIdx((i) => i + 1))}
+        onClick={() => (idx === QS.length - 1 ? finish() : setIdx((i) => i + 1))}
       >
-        {idx === INTAKE.length - 1 ? t("Finish my part", "Terminer ma part") : t("Next →", "Suivant →")}
+        {idx === QS.length - 1 ? t("Finish my part", "Terminer ma part") : t("Next →", "Suivant →")}
       </button>
       {idx > 0 && (
         <button className="btn ghost" type="button" onClick={() => setIdx((i) => i - 1)}>
@@ -417,234 +428,12 @@ function PathIntake({
   );
 }
 
-// ---- Waiting for the partner's intake --------------------------------------
-function PathWaiting({
-  partnerName,
-  onBrowseDecks,
-  t,
-}: {
-  partnerName: string;
-  onBrowseDecks: () => void;
-  t: T;
-}) {
-  return (
-    <section className="screen-enter">
-      <div className="brandhead">
-        <Wordmark size={24} />
-      </div>
-      <div className="center" style={{ minHeight: "60dvh" }}>
-        <h1 className="h1 center">{t("Your part is done.", "Votre part est terminée.")}</h1>
-        <p className="sub center" style={{ margin: "12px 24px 0", maxWidth: 340 }}>
-          {t(
-            `The path is drawn from both of you, so it lays out the moment ${partnerName} finishes their own questions.`,
-            `Le chemin se trace à partir de vous deux : il apparaît dès que ${partnerName} termine ses propres questions.`,
-          )}
-        </p>
-        <button className="btn ghost" type="button" onClick={onBrowseDecks} style={{ marginTop: 24 }}>
-          {t("Browse the conversations meanwhile", "Parcourir les conversations en attendant")}
-        </button>
-      </div>
-    </section>
-  );
-}
-
-// ---- The trail map ---------------------------------------------------------
-export function PathMap({
-  session,
-  role,
-  partnerName,
-  onOpen,
-  t,
-}: {
-  session: Session;
-  role: Role;
-  partnerName: string;
-  onOpen: (index: number) => void;
-  t: T;
-}) {
-  const [toast, setToast] = useState("");
-  const cur = currentIndex(session);
-  const completed = useMemo(
-    () => orderedSteps(session).filter((s) => lampLit(session, s.index)).length,
-    [session],
-  );
-  const nodeCount = PATH_STEPS.length; // 10 (nine steps + The Lookout)
-
-  const W = 390;
-  const dy = 128;
-  const y0 = 92;
-  const H = y0 + dy * (nodeCount - 1) + 120;
-  const px = (i: number) => (i % 2 === 0 ? 118 : 272);
-  const py = (i: number) => y0 + dy * i;
-
-  const tap = (i: number) => {
-    if (i === cur) return onOpen(i);
-    if (i < cur) return onOpen(i); // a lit step reopens to its reveal
-    setToast(t("The path opens one step at a time.", "Le chemin s'ouvre une étape à la fois."));
-    setTimeout(() => setToast(""), 2400);
-  };
-
-  // Who has finished a given waypoint. Only computed for the current node —
-  // behind it both have walked by definition, ahead of it neither has.
-  const steps = orderedSteps(session);
-  const walked = (i: number): { me: boolean; them: boolean } | null => {
-    const s = steps.find((x) => x.index === i);
-    if (!s) return null;
-    return {
-      me: stepDoneBy(session, s.data, role),
-      // Their answers stay private until you've both walked it; their own
-      // "walked" flag is shared, so it says when they have.
-      them:
-        session.pathDone?.[String(i)]?.[other(role)] === true ||
-        stepDoneBy(session, s.data, other(role)),
-    };
-  };
-  const walkLabel = (w: { me: boolean; them: boolean }) =>
-    w.me && w.them
-      ? t("You've both walked it", "Vous l'avez tous deux parcourue")
-      : w.me
-        ? t(`You've walked it: waiting on ${partnerName}`, `Vous l'avez parcourue, en attente de ${partnerName}`)
-        : w.them
-          ? t(`${partnerName} has walked it`, `${partnerName} l'a parcourue`)
-          : t("Neither of you has walked it yet", "Aucun de vous ne l'a encore parcourue");
-  const curWalk = walked(cur);
-
-  const fullPath = () => {
-    let d = `M ${px(0)} ${py(0)}`;
-    for (let i = 1; i < nodeCount; i++) {
-      const my = (py(i - 1) + py(i)) / 2;
-      d += ` C ${px(i - 1)} ${my}, ${px(i)} ${my}, ${px(i)} ${py(i)}`;
-    }
-    return d;
-  };
-  const walkedPath = () => {
-    if (cur < 1) return "";
-    let d = `M ${px(0)} ${py(0)}`;
-    for (let i = 1; i <= cur; i++) {
-      const my = (py(i - 1) + py(i)) / 2;
-      d += ` C ${px(i - 1)} ${my}, ${px(i)} ${my}, ${px(i)} ${py(i)}`;
-    }
-    return d;
-  };
-
-  return (
-    <section className="screen-enter">
-      <p className="eyebrow" style={{ marginTop: 4 }}>{t("The Path", "Le Chemin")}</p>
-      <h1 className="h1" style={{ fontSize: 28, marginTop: 6 }}>
-        {cur >= nodeCount - 1
-          ? t("The Lookout", "Le Belvédère")
-          : t(`Step ${cur + 1} of 10`, `Étape ${cur + 1} sur 10`)}
-      </h1>
-      <p className="sub" style={{ marginTop: 6 }}>
-        {completed === 0
-          ? t("The trail starts here.", "Le sentier commence ici.")
-          : completed === 1
-            ? t("1 lamp lit along the way.", "1 lampe allumée en chemin.")
-            : t(`${completed} lamps lit along the way.`, `${completed} lampes allumées en chemin.`)}
-      </p>
-      {/* The legend for the two dots on the current node — otherwise they're
-          decoration only a screen-reader user gets told about. */}
-      {curWalk && (
-        <p className="pathstate">
-          <span className={`ps-dot me${curWalk.me ? " on" : ""}`} aria-hidden="true" />
-          <span className={`ps-dot them${curWalk.them ? " on" : ""}`} aria-hidden="true" />
-          {walkLabel(curWalk)}
-        </p>
-      )}
-
-      <div style={{ marginTop: 8 }}>
-        <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }} role="group" aria-label={t("Trail map", "Carte du sentier")}>
-          <path d={fullPath()} strokeWidth={3} strokeDasharray="1 10" strokeLinecap="round" style={{ fill: "none", stroke: "var(--app-card-line)" }} />
-          {cur > 0 && (
-            <path d={walkedPath()} strokeWidth={3} strokeLinecap="round" style={{ fill: "none", stroke: "var(--berry)" }} />
-          )}
-          {PATH_STEPS.map((meta, i) => {
-            const x = px(i);
-            const y = py(i);
-            const done = lampLit(session, i) || (i < cur && i < nodeCount - 1);
-            const isCur = i === cur;
-            const r = isCur ? 30 : 26;
-            const fill = done || isCur ? "var(--berry)" : "#fff";
-            const stroke = done || isCur ? "var(--berry)" : "var(--app-card-line)";
-            const gcol = done ? "var(--honey)" : isCur ? "#fff" : "var(--sub)";
-            const lx = i % 2 === 0 ? x + 46 : x - 46;
-            const anchor = i % 2 === 0 ? "start" : "end";
-            const walk = isCur ? walked(i) : null;
-            return (
-              <g
-                key={meta.key}
-                onClick={() => tap(i)}
-                // role="button" without a tabIndex or key handler made the whole
-                // map unreachable by keyboard and switch control.
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    tap(i);
-                  }
-                }}
-                style={{ cursor: "pointer" }}
-                role="button"
-                aria-label={`${meta.name} — ${meta.theme}${done ? t(", walked", ", parcouru") : isCur ? t(", you are here", ", vous êtes ici") : t(", not yet open", ", pas encore ouvert")}${
-                  walk ? `. ${walkLabel(walk)}` : ""
-                }`}
-              >
-                {/* The halo belongs on where you ARE, not on what's behind you.
-                    Done nodes wore it and the current node sat static, so the
-                    map read as "finished" exactly where it should have pulled. */}
-                {isCur && (
-                  <circle cx={x} cy={y} r={r + 16} opacity={0.16} className="path-halo" style={{ fill: "var(--honey)" }} />
-                )}
-                <circle cx={x} cy={y} r={r} strokeWidth={2.2} style={{ fill, stroke }} />
-                {/* Lifted when the walked dots share the disc with it. */}
-                <g transform={`translate(${x - 14},${y - (walk ? 19 : 14)})`}>
-                  <PathGlyph id={meta.glyph} size={28} color={gcol} />
-                </g>
-                {/* Who has walked this stretch — the map was silent on it, so
-                    "why hasn't the lamp lit?" had no answer on screen. Inside
-                    the disc, below the glyph: outside it they fell in the halo
-                    and under the trail line. */}
-                {walk && (
-                  <g>
-                    <circle cx={x - 7} cy={y + 19} r={3.5} style={{ fill: walk.me ? "var(--ce-blush)" : "var(--berry2)" }} />
-                    <circle cx={x + 7} cy={y + 19} r={3.5} style={{ fill: walk.them ? "var(--honey)" : "var(--berry2)" }} />
-                  </g>
-                )}
-                <text x={lx} y={y - 2} textAnchor={anchor} fontSize={14.5} fontWeight={700} style={{ fill: done || isCur ? "var(--ink)" : "var(--sub)" }}>
-                  {meta.name}
-                </text>
-                <text x={lx} y={y + 15} textAnchor={anchor} fontSize={11.5} style={{ fill: "var(--sub)" }}>
-                  {meta.theme}
-                </text>
-                {isCur && (
-                  <g transform={`translate(${lx - (anchor === "end" ? 96 : 0)},${y + 29})`}>
-                    <rect width={96} height={26} rx={13} style={{ fill: "var(--app-honey)" }} />
-                    <text x={48} y={17.5} textAnchor="middle" fontSize={12} fontWeight={700} style={{ fill: "var(--app-honey-ink)" }}>
-                      {done ? t("Revisit", "Revoir") : t("Continue →", "Continuer →")}
-                    </text>
-                  </g>
-                )}
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-
-      {toast && (
-        <div className="path-toast" role="status" aria-live="polite">
-          {toast}
-        </div>
-      )}
-    </section>
-  );
-}
-
-// ---- The Lookout — journey's end -------------------------------------------
-// The intro promises "You arrive at your alignment"; this used to be three
-// verses and a Back button. Now it pays the promise off: the whole road's two
-// numbers, the waypoint where they walk closest, the one most worth a
-// conversation, a keepsake — and only then the verses, as benediction.
+// ---- The Lookout — journey's end (item 14) ---------------------------------
+// The same light scene as every step, the whole road's two rings, where you
+// were closest and what's most worth a conversation, one verse, then Review
+// our answers and the keepsake.
 function Lookout({
+  code,
   session,
   role,
   myName,
@@ -652,6 +441,7 @@ function Lookout({
   onBack,
   t,
 }: {
+  code: string;
   session: Session;
   role: Role;
   myName: string;
@@ -661,104 +451,75 @@ function Lookout({
 }) {
   const lang = useLang();
   const meta = stepMeta("lookout");
-  const verses = VERSES["lookout"] ?? [];
+  const verse = (VERSES["lookout"] ?? [])[0];
   const j = useMemo(() => journeyStats(session, role), [session, role]);
   const [keepsake, setKeepsake] = useState(false);
+  const [review, setReview] = useState(false);
+
+  if (review) {
+    const { deck, qs } = journeyDeck(session);
+    return (
+      <RevealScreen
+        slug="path"
+        level={0}
+        role={role}
+        deck={deck}
+        questions={qs}
+        title={meta?.name ?? "The Lookout"}
+        myName={myName}
+        partnerName={partnerName}
+        code={code}
+        review
+        onDone={() => setReview(false)}
+      />
+    );
+  }
 
   return (
-    <section className="path-claret lookout screen-enter" style={{ justifyContent: "flex-start", paddingTop: 48 }}>
-      <div style={{ color: "var(--honey)", marginBottom: 14 }}>
-        <Mark height={36} title="TwoAgree" colour="var(--honey)" />
+    <section className="screen-enter pstep">
+      <div className="pstep-top">
+        <span />
+        <span />
+        <button className="iconbtn" type="button" onClick={onBack} aria-label={t("Back to the Path", "Retour au Chemin")}>
+          <IconClose size={22} />
+        </button>
       </div>
-      {/* Not "9 of 9 lamps" — the Path is ten steps everywhere else (the
-          Lookout is the tenth and carries no lamp), so a count here reads as a
-          contradiction. Name the state instead. */}
-      <div className="eyebrow center" style={{ color: "var(--honey)" }}>
-        {j.walked >= j.total
-          ? t("Every lamp lit", "Toutes les lampes allumées")
-          : t(
-              `${j.walked} of ${j.total} lamps lit`,
-              `${j.walked} lampes sur ${j.total} allumées`,
-            )}
-      </div>
-      <h1 className="h1 center" style={{ color: "#fff", fontSize: 32, marginTop: 8 }}>
+      <PathScene stepKey="lookout" lit={j.walked} label={meta?.name ?? "The Lookout"} className="pstep-scene" />
+      <p className="eyebrow center pstep-eyebrow">
+        {t("Step 10 · Journey’s end", "Étape 10 · Fin du voyage")}
+      </p>
+      <h1 className="h1 center" style={{ margin: "2px 0 6px" }}>
         {meta?.name ?? "The Lookout"}
       </h1>
-      <p className="center" style={{ color: "rgba(255,255,255,.88)", maxWidth: 320, marginTop: 10, lineHeight: 1.55 }}>
-        {meta?.frame ??
-          t("Turn around. The whole road behind you is lit.", "Retournez-vous. Toute la route derrière vous est éclairée.")}
+      <p className="helper center" style={{ margin: "0 12px" }}>
+        {t(
+          "You’ve walked the whole path together. Here’s where it brought you.",
+          "Vous avez parcouru tout le chemin ensemble. Voici où il vous a menés.",
+        )}
       </p>
 
-      {/* The whole road's two numbers. Known leads (Agreed has a ceiling
-          problem — 100% means two identical people; knowing each other doesn't). */}
-      <div className="lk-rings">
-        <div className="lk-ring">
-          <PctRing
-            pct={j.known ?? 0}
-            size={128}
-            color="var(--ce-blush)"
-            label={t("known", "connus")}
-            drawMs={1500}
-          />
-          <span className="lk-denom">
-            {j.guesses
-              ? t(`${j.right} of ${j.guesses} guesses`, `${j.right} intuitions sur ${j.guesses}`)
-              : t("no guesses yet", "aucune intuition")}
-          </span>
-        </div>
-        <div className="lk-ring">
-          <PctRing
-            pct={j.agreed ?? 0}
-            size={128}
-            color="var(--ce-gold)"
-            label={t("agreed", "d’accord")}
-            drawMs={1500}
-            delayMs={320}
-          />
-          <span className="lk-denom">
-            {t(
-              `over ${j.scored} question${j.scored === 1 ? "" : "s"}`,
-              `sur ${j.scored} question${j.scored === 1 ? "" : "s"}`,
-            )}
-          </span>
-        </div>
-      </div>
+      <ScoreRings agree={j.agreed} basis={j.scored} known={j.known} right={j.right} made={j.guesses} />
 
-      {/* Two waypoints, named. The whole point of the app is the conversation
-          after the number, so the harder one is stated as plainly as the bright
-          one — never buried, never framed as a failure. */}
       {j.brightest && j.hardest && (
-        <div className="lk-marks">
-          <Waypoint
-            wp={j.brightest}
-            lb={t("Where you walk closest", "Là où vous marchez au plus près")}
-            tone="bright"
-          />
-          <Waypoint
-            wp={j.hardest}
-            lb={t("Most worth a conversation", "À aborder en priorité")}
-            tone="talk"
-          />
+        <div className="lk-cards">
+          <Waypoint wp={j.brightest} lb={t("Where you were closest", "Là où vous étiez le plus proches")} />
+          <Waypoint wp={j.hardest} lb={t("Most worth a conversation", "À aborder en priorité")} />
         </div>
       )}
 
-      <div className="lk-verses">
-        {verses.map((v, i) => (
-          <div key={i} className="path-verse-card path-fadein" style={{ animationDelay: `${0.5 + i * 0.28}s` }}>
-            <p className="verse serif" style={{ color: "#fff", fontStyle: "italic" }}>&ldquo;{v.v}&rdquo;</p>
-            <p className="vref" style={{ color: "var(--honey)" }}>{v.ref}</p>
-          </div>
-        ))}
-      </div>
+      {verse && (
+        <blockquote className="pstep-verse">
+          <p>“{verse.v}”</p>
+          <cite>{verse.ref}</cite>
+        </blockquote>
+      )}
 
-      <div style={{ marginTop: 26, width: "100%", maxWidth: 340 }}>
-        <button className="btn honey" type="button" onClick={() => setKeepsake(true)}>
-          {t("Take a keepsake", "Emporter un souvenir")}
-        </button>
-        <button className="btn ghost" type="button" onClick={onBack} style={{ color: "rgba(255,255,255,.75)" }}>
-          {t("Back to the path", "Retour au chemin")}
-        </button>
-      </div>
+      <button className="btn pill" type="button" onClick={() => setReview(true)}>
+        {t("Review our answers", "Revoir nos réponses")}
+      </button>
+      <button className="btn out" type="button" onClick={() => setKeepsake(true)}>
+        {t("Take a keepsake", "Emporter un souvenir")}
+      </button>
 
       {keepsake && (
         <ShareCard
@@ -767,10 +528,7 @@ function Lookout({
           myName={myName}
           partnerName={partnerName}
           conversations={{ done: j.walked, total: j.total }}
-          story={t(
-            "have walked the whole Path together",
-            "ont parcouru tout le Chemin ensemble",
-          )}
+          story={t("have walked the whole Path together", "ont parcouru tout le Chemin ensemble")}
           // A shared card never names a sensitive step (lib/shareTopic.ts).
           closest={j.brightest ? shareTopic(j.brightest.key, lang) : undefined}
           t={t}
@@ -781,25 +539,14 @@ function Lookout({
   );
 }
 
-function Waypoint({
-  wp,
-  lb,
-  tone,
-}: {
-  wp: JourneyWaypoint;
-  lb: string;
-  tone: "bright" | "talk";
-}) {
+function Waypoint({ wp, lb }: { wp: JourneyWaypoint; lb: string }) {
   return (
-    <div className={`lk-mark ${tone}`}>
-      <span className="lk-glyph">
-        <PathGlyph id={wp.glyph} size={26} />
+    <div className="card lk-card">
+      <span>
+        <span className="eyebrow">{lb}</span>
+        <span className="lk-card-nm">{wp.name}</span>
       </span>
-      <span className="lk-txt">
-        <b>{wp.name}</b>
-        <i>{lb}</i>
-      </span>
-      <span className="lk-pct">{wp.pct}%</span>
+      <span className="lk-card-pct">{wp.pct}%</span>
     </div>
   );
 }

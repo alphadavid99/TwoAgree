@@ -1,7 +1,7 @@
 // Invariants for the Path composition. Excluded from the deploy build
 // (tsconfig "exclude"); run with `npm test` in functions/.
 import { describe, it, expect } from "vitest";
-import { composePath, TOPICS, type Intake } from "./composePath.js";
+import { composePath, composeTrailhead, TOPICS, type Intake } from "./composePath.js";
 
 // Intake fixtures keyed the way the client writes them (answers.{qid}).
 const empty: Intake = { answers: {} };
@@ -115,5 +115,33 @@ describe("composePath — tier ramp", () => {
     const gentle = composePath(flag({ depth: 0 }), flag({ depth: 0 }));
     const deep = composePath(flag({ depth: 2 }), flag({ depth: 2 }));
     expect(gentle.steps[0].qids).not.toEqual(deep.steps[0].qids);
+  });
+});
+
+describe("composePath — the Trailhead opens before the second intake (item 14)", () => {
+  it("lays only the Trailhead, at the gentle start, the same for every couple", () => {
+    const early = composeTrailhead();
+    expect(early.partial).toBe(true);
+    expect(Object.keys(early.steps)).toEqual(["0"]);
+    expect(early.steps[0].key).toBe("trailhead");
+    expect(early.steps[0].qids.length).toBeGreaterThan(0);
+    expect(composeTrailhead()).toEqual(early);
+    // The gentle start: what two "ease in" intakes would have produced.
+    expect(early.steps[0].qids).toEqual(composePath(flag({ depth: 0 }), flag({ depth: 0 })).steps[0].qids);
+  });
+
+  it("keeps a Trailhead walked before the second intake, and never repeats its questions", () => {
+    const early = composeTrailhead().steps[0];
+    // Both want depth: on their own they'd start further in.
+    const deep = flag({ depth: 2, avoided: ["money"] });
+    const fresh = composePath(deep, deep);
+    expect(fresh.steps[0].qids).not.toEqual(early.qids);
+    const p = composePath(deep, deep, early);
+    expect(p.partial).toBeUndefined();
+    expect(p.steps[0]).toEqual(early);
+    expect(Object.keys(p.steps)).toHaveLength(9);
+    const ids = allQids(p);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(p.questionCount).toBe(ids.length);
   });
 });

@@ -15,7 +15,7 @@ import { initializeApp } from "firebase-admin/app";
 import { getDatabase } from "firebase-admin/database";
 import { getAuth } from "firebase-admin/auth";
 import { randomUUID } from "node:crypto";
-import { composePath, type Intake } from "./composePath.js";
+import { composePath, composeTrailhead, type Intake, type PathStep } from "./composePath.js";
 import { redactSessionForSubject, withUnpublished, type RawSession } from "./redact.js";
 import { shouldNotify, revealReadyEmail, type Role as NotifyRole } from "./notify.js";
 import {
@@ -285,7 +285,8 @@ export const redeemInvite = onCall(async (request) => {
  * spine + weighted list of existing question ids and writes the result to
  * sessions/{code}/path. Generate-once: refuses to overwrite an existing path
  * unless { regenerate: true } (the Settings-only re-lay action). Until both
- * intakes are in, it reports "waiting" and writes nothing.
+ * intakes are in, it reports "waiting" and lays only the Trailhead, once the
+ * caller's own intake is in (design refresh, item 14).
  */
 export const generatePath = onCall(async (request) => {
   const uid = requireUid(request.auth);
@@ -303,21 +304,34 @@ export const generatePath = onCall(async (request) => {
     throw new HttpsError("permission-denied", "You are not in this session.");
   }
   // Generate-once — the path is a stable curriculum, re-laid only on request.
-  if (s.path && data.regenerate !== true) return { status: "ready" as const };
+  // A path holding only the early Trailhead is not finished: it's completed
+  // below once both intakes are in.
+  const partial = (s.path as { partial?: boolean } | undefined)?.partial === true;
+  if (s.path && !partial && data.regenerate !== true) return { status: "ready" as const };
 
   const hostUid = s.members?.host?.uid;
   const guestUid = s.members?.guest?.uid;
-  if (!hostUid || !guestUid) {
-    return { status: "waiting" as const, reason: "partner-missing" as const };
-  }
-  const hostIntake = (await db.ref(`intake/${hostUid}`).once("value")).val() as Intake | null;
-  const guestIntake = (await db.ref(`intake/${guestUid}`).once("value")).val() as Intake | null;
-  // The path is drawn from BOTH intakes — it only lays once both are in.
+  const hostIntake = hostUid ? ((await db.ref(`intake/${hostUid}`).once("value")).val() as Intake | null) : null;
+  const guestIntake = guestUid ? ((await db.ref(`intake/${guestUid}`).once("value")).val() as Intake | null) : null;
+
+  // The rest of the path is drawn from BOTH intakes. Until then, the Trailhead
+  // opens as soon as the caller has answered theirs (item 14): it's the same
+  // for every couple, so nobody waits on a dead end.
   if (!hostIntake || !guestIntake) {
-    return { status: "waiting" as const, reason: "intake-missing" as const };
+    const mine = s.members?.host?.uid === uid ? hostIntake : guestIntake;
+    if (mine && !s.path) {
+      await db.ref(`sessions/${code}/path`).set({ generatedAt: Date.now(), ...composeTrailhead() });
+      logger.info("trailhead laid early", { code, uid });
+    }
+    return {
+      status: "waiting" as const,
+      reason: !hostUid || !guestUid ? ("partner-missing" as const) : ("intake-missing" as const),
+    };
   }
 
-  const path = composePath(hostIntake, guestIntake);
+  // Keep an early Trailhead exactly as laid: one of you may have walked it.
+  const early = partial ? (s.path as { steps?: Record<string, PathStep> }).steps?.["0"] : undefined;
+  const path = composePath(hostIntake, guestIntake, early);
   await db.ref(`sessions/${code}/path`).set({ generatedAt: Date.now(), ...path });
   logger.info("path generated", { code, uid, questionCount: path.questionCount });
   return { status: "ready" as const };

@@ -12,6 +12,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { ORDER } from "../lib/questions";
 import { lvlQs, nLevels, stageOf } from "../lib/leveling";
+import { readyReveals } from "../lib/progress";
 import type { DeckData } from "../lib/scoring";
 import type { Session } from "../types";
 import HomeScreen from "./HomeScreen";
@@ -125,6 +126,35 @@ describe("HomeScreen", () => {
       />,
     );
     expect(screen.getByRole("button", { name: "WXYZ" })).toBeTruthy();
+  });
+
+  it("loads with both partners' Path at-the-table answers in the session", () => {
+    // The at-table deck is synthetic (not in the bank). readyReveals once
+    // crashed SessionApp on it; Home and its reveal list must just skip it.
+    const withTable = {
+      ...session,
+      decks: {
+        ...session.decks,
+        "at-table": { answers: { table: { host: "Something honest.", guest: "Mine too." } } },
+      },
+    } as unknown as Session;
+    const pending = readyReveals(withTable.decks, "host");
+    expect(pending.every((r) => r.slug !== "at-table")).toBe(true);
+    render(
+      <HomeScreen
+        code="ABCD"
+        session={withTable}
+        role="host"
+        slug={slugA}
+        pending={pending}
+        onOpenReveal={noop}
+        onPlay={noop}
+        onBrowse={noop}
+        onReview={noop}
+        onProfile={noop}
+      />,
+    );
+    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
   });
 
   it("omits the Path card when the Path is behind its flag", () => {

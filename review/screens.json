@@ -858,45 +858,70 @@
       {
         "id": "path-waiting",
         "num": "92",
-        "title": "Path: waiting for your partner",
-        "note": "",
+        "title": "Path: laying your path",
+        "note": "Only for a moment: the server lays the Trailhead as soon as your path questions are in.",
         "unrenderable": "",
         "png": "screens/92-path-waiting.png"
       },
       {
-        "id": "path-map",
+        "id": "path-start",
         "num": "93",
-        "title": "Path: the map",
+        "title": "Path: start with the Trailhead",
+        "note": "Before Judah has answered the path questions. No dead end.",
+        "unrenderable": "",
+        "png": "screens/93-path-start.png",
+        "full": "full/93-path-start.png"
+      },
+      {
+        "id": "path-start-walked",
+        "num": "94",
+        "title": "Path: Trailhead walked, the rest still being chosen",
         "note": "",
         "unrenderable": "",
-        "png": "screens/93-path-map.png",
-        "full": "full/93-path-map.png"
+        "png": "screens/94-path-start-walked.png",
+        "full": "full/94-path-start-walked.png"
+      },
+      {
+        "id": "path-map",
+        "num": "95",
+        "title": "Path: the map, opened where you are",
+        "note": "",
+        "unrenderable": "",
+        "png": "screens/95-path-map.png",
+        "full": "full/95-path-map.png"
       },
       {
         "id": "path-step-arrival",
-        "num": "94",
-        "title": "Path: arriving at a waypoint",
-        "note": "",
+        "num": "96",
+        "title": "Path: arriving at a step",
+        "note": "The step’s scene, what it’s about, what to expect, the verse.",
         "unrenderable": "",
-        "png": "screens/94-path-step-arrival.png",
-        "full": "full/94-path-step-arrival.png"
+        "png": "screens/96-path-step-arrival.png"
       },
       {
         "id": "path-step-play",
-        "num": "95",
+        "num": "97",
         "title": "Path: a waypoint question",
         "note": "",
         "unrenderable": "",
-        "png": "screens/95-path-step-play.png"
+        "png": "screens/97-path-step-play.png"
+      },
+      {
+        "id": "path-step-walked",
+        "num": "98",
+        "title": "Path: “You’ve walked The Table together”",
+        "note": "In place of “Light the lamp”.",
+        "unrenderable": "",
+        "png": "screens/98-path-step-walked.png"
       },
       {
         "id": "path-lookout",
-        "num": "96",
-        "title": "Path: The Lookout (finale)",
-        "note": "",
+        "num": "99",
+        "title": "Path: The Lookout",
+        "note": "Rings, two highlights, one verse.",
         "unrenderable": "",
-        "png": "screens/96-path-lookout.png",
-        "full": "full/96-path-lookout.png"
+        "png": "screens/99-path-lookout.png",
+        "full": "full/99-path-lookout.png"
       }
     ],
     "sheet": "sheets/path.png"
@@ -907,56 +932,56 @@
     "frames": [
       {
         "id": "profile-loading",
-        "num": "97",
+        "num": "100",
         "title": "Profile: loading",
         "note": "Profile reads stall after the app shell has loaded.",
         "unrenderable": "",
-        "png": "screens/97-profile-loading.png"
+        "png": "screens/100-profile-loading.png"
       },
       {
         "id": "profile-main",
-        "num": "98",
+        "num": "101",
         "title": "Profile & settings",
         "note": "",
         "unrenderable": "",
-        "png": "screens/98-profile-main.png",
-        "full": "full/98-profile-main.png"
+        "png": "screens/101-profile-main.png",
+        "full": "full/101-profile-main.png"
       },
       {
         "id": "profile-leave",
-        "num": "99",
+        "num": "102",
         "title": "Leave this session? (confirm)",
         "note": "",
         "unrenderable": "",
-        "png": "screens/99-profile-leave.png",
-        "full": "full/99-profile-leave.png"
+        "png": "screens/102-profile-leave.png",
+        "full": "full/102-profile-leave.png"
       },
       {
         "id": "profile-delete",
-        "num": "100",
+        "num": "103",
         "title": "Delete account (confirm)",
         "note": "",
         "unrenderable": "",
-        "png": "screens/100-profile-delete.png",
-        "full": "full/100-profile-delete.png"
+        "png": "screens/103-profile-delete.png",
+        "full": "full/103-profile-delete.png"
       },
       {
         "id": "profile-delete-busy",
-        "num": "101",
+        "num": "104",
         "title": "Delete account: deleting…",
         "note": "",
         "unrenderable": "",
-        "png": "screens/101-profile-delete-busy.png",
-        "full": "full/101-profile-delete-busy.png"
+        "png": "screens/104-profile-delete-busy.png",
+        "full": "full/104-profile-delete-busy.png"
       },
       {
         "id": "profile-export-error",
-        "num": "102",
+        "num": "105",
         "title": "Data export: offline error",
         "note": "The success state triggers a real file download, so it is not shown.",
         "unrenderable": "",
-        "png": "screens/102-profile-export-error.png",
-        "full": "full/102-profile-export-error.png"
+        "png": "screens/105-profile-export-error.png",
+        "full": "full/105-profile-export-error.png"
       }
     ],
     "sheet": "sheets/profile.png"

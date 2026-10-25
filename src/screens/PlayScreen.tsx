@@ -7,8 +7,8 @@ import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang } from "../lib/i18n";
-import { scalePoint, shortEnd } from "../lib/scaleLabels";
-import { glideBy, scrollerOf, useScrollMemory } from "../lib/scroll";
+import { scaleSay } from "../lib/scaleLabels";
+import { glideBy, useScrollMemory } from "../lib/scroll";
 
 // Importance is asked only where a gap would actually cost the couple: the
 // tier-3 questions and the deal-breaker set. Everything else silently rides the
@@ -66,10 +66,12 @@ function useSaveQueue() {
   return { state, run, retry, flush };
 }
 
-// The answering flow for one part (item 12): a calm header with the part's
-// name, "3 of 6" and the save state; the question; and the main button pinned
-// in the same place at the bottom, with room kept for Skip or Not yet so it
-// never moves. Guessable questions get a guess on their own screen.
+// The answering flow for one part (items 12, 15, 17): the top of the screen
+// (bar, stones, "3 of 6", the question) and the bottom (importance, the main
+// button) stay put; only the answers scroll between them. Guessable questions
+// get a guess on their own screen. Back steps through earlier questions with
+// your answers filled in, so any of them can be changed before the part is
+// finished.
 export default function PlayScreen({
   code,
   slug,
@@ -127,10 +129,34 @@ export default function PlayScreen({
   const [pendGuess, setPendGuess] = useState<AnswerValue | null>(null);
   const [finishing, setFinishing] = useState(false);
 
-  // Questions already answered in this visit, so advancing never depends on
-  // the save having landed yet.
-  const done = useRef(new Set<string>());
-  const answered = (q: Question) => done.current.has(q.id) || deck?.answers?.[q.id]?.[role] != null;
+  // What was given in this visit, so stepping back and forth never depends on
+  // a save having landed yet. Falls back to what's already in the session.
+  const given = useRef(new Map<string, { a?: AnswerValue; imp?: number | null; g?: AnswerValue }>());
+  const was = (q: Question) => {
+    const v = given.current.get(q.id) ?? {};
+    return {
+      a: v.a ?? deck?.answers?.[q.id]?.[role] ?? null,
+      imp: v.imp !== undefined ? v.imp : (deck?.importance?.[q.id]?.[role] ?? null),
+      g: v.g ?? deck?.guesses?.[q.id]?.[role] ?? null,
+    };
+  };
+  const remember = (q: Question, v: { a?: AnswerValue; imp?: number | null; g?: AnswerValue }) =>
+    given.current.set(q.id, { ...given.current.get(q.id), ...v });
+  // A stored answer as the screen holds it: an mc pick by position, "Not yet"
+  // as nothing picked.
+  const asPick = (q: Question, v: AnswerValue | null): AnswerValue | null =>
+    v == null || isNotYet(v) ? null : q.type === "mc" ? (optIndex(q, v) ?? null) : v;
+
+  // Open question `i`, on its answer or its guess, with what was given before.
+  const open = (i: number, guess: boolean) => {
+    const q = qs[i];
+    const w = was(q);
+    setIdx(i);
+    setGuessPhase(guess);
+    setPendAns(asPick(q, w.a));
+    setPendImp(w.imp);
+    setPendGuess(asPick(q, w.g));
+  };
 
   const finish = async () => {
     setFinishing(true);
@@ -150,39 +176,47 @@ export default function PlayScreen({
   };
 
   const advance = (fromIdx: number) => {
-    setGuessPhase(false);
-    setPendAns(null);
-    setPendImp(null);
-    setPendGuess(null);
-    let n = fromIdx + 1;
-    while (n < qs.length && answered(qs[n])) n++;
-    if (n >= qs.length) {
+    if (fromIdx + 1 >= qs.length) {
       void finish();
       return;
     }
-    setIdx(n);
+    open(fromIdx + 1, false);
   };
 
-  // Each question opens at the top of the screen.
+  // Back: from a guess to its own answer; from an answer to the screen before
+  // it, which is the previous question's guess when it had one.
+  const canBack = guessPhase || idx > 0;
+  const back = () => {
+    if (guessPhase) {
+      setGuessPhase(false);
+      return;
+    }
+    if (idx === 0) return;
+    const p = qs[idx - 1];
+    const a = was(p).a;
+    open(idx - 1, !!p.guessable && p.type !== "open" && a != null && !isNotYet(a));
+  };
+
   const screen = useRef<HTMLElement>(null);
-  const card = useRef<HTMLDivElement>(null);
-  const foot = useRef<HTMLDivElement>(null);
-  useScrollMemory(`${idx}:${guessPhase}`, undefined, screen);
-  const below = useMoreBelow(card, foot, `${idx}:${guessPhase}`);
-  // Choosing an answer opens "How much does this matter?" under it. If that
-  // lands behind the pinned button, bring it up into view.
+  const body = useRef<HTMLDivElement>(null);
+  const view = `${idx}:${guessPhase}`;
+  // If the screen is ever taller than the phone (very large text), each
+  // question still opens at the top.
+  useScrollMemory(view, undefined, screen);
+  const below = useMoreBelow(body, view);
+
+  // Choosing an answer opens "How much does this matter?" above the button,
+  // which shortens the answer area: keep the answer just chosen in view.
   const cur = qs[idx];
   const impOpen = !!cur && !guessPhase && pendAns != null && asksImportance(cur);
-  const imp = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!impOpen) return;
     const id = requestAnimationFrame(() => {
-      const el = imp.current;
-      const f = foot.current;
-      if (!el || !f) return;
-      const ft = f.getBoundingClientRect();
-      const hidden = el.getBoundingClientRect().bottom + 16 - ft.top;
-      if (hidden > 0 && ft.height > 0) glideBy(scrollerOf(el), hidden);
+      const b = body.current;
+      const sel = b?.querySelector(".sel, .orbsay-text");
+      if (!b || !sel) return;
+      const hidden = sel.getBoundingClientRect().bottom + 8 - b.getBoundingClientRect().bottom;
+      if (hidden > 0 && b.clientHeight > 0) glideBy(b, hidden);
     });
     return () => cancelAnimationFrame(id);
   }, [impOpen, idx]);
@@ -193,11 +227,7 @@ export default function PlayScreen({
   // An mc pick is held as its position; it's stored as who was picked on a
   // "which of you" question (lib/who.ts).
   const stored = (v: AnswerValue): AnswerValue => (q.type === "mc" ? optValue(q, v as number) : v);
-  const last = (() => {
-    let n = idx + 1;
-    while (n < qs.length && answered(qs[n])) n++;
-    return n >= qs.length;
-  })();
+  const last = idx === qs.length - 1;
 
   const submitAnswer = () => {
     if (pendAns == null || finishing) return;
@@ -207,20 +237,20 @@ export default function PlayScreen({
       await writeAnswer(code, slug, q.id, role, value);
       if (imp != null) await writeImportance(code, slug, q.id, role, imp);
     });
-    done.current.add(q.id);
+    remember(q, { a: value, ...(imp != null ? { imp } : {}) });
     if (q.guessable && q.type !== "open") {
       setGuessPhase(true);
-      setPendGuess(null);
+      setPendGuess(asPick(q, was(q).g));
     } else {
       advance(idx);
     }
   };
 
-  // "Not yet" — a deliberate, unscored answer (only on flagged questions). It
+  // "Not yet": a deliberate, unscored answer (only on flagged questions). It
   // banks a sentinel and moves on: there's nothing to weight or predict.
   const answerNotYet = () => {
     saves.run(() => writeAnswer(code, slug, q.id, role, NOT_YET));
-    done.current.add(q.id);
+    remember(q, { a: NOT_YET });
     advance(idx);
   };
 
@@ -228,16 +258,17 @@ export default function PlayScreen({
     if (pendGuess == null) return;
     const value = stored(pendGuess);
     saves.run(() => writeGuess(code, slug, q.id, role, value));
+    remember(q, { g: value });
     advance(idx);
   };
 
   const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ").toUpperCase();
 
-  // The calm header: one stone per question, "3 of 6", and what happened to
-  // the last answer.
+  // The calm header: back and close, one stone per question, "3 of 6", and
+  // what happened to the last answer.
   const header = (
-    <>
-      <TopBar onExit={onExit} />
+    <div className="phead">
+      <TopBar onExit={onExit} onBack={canBack ? back : undefined} />
       <div className="qstones" aria-hidden="true">
         {qs.map((_, i) => (
           <i
@@ -271,47 +302,51 @@ export default function PlayScreen({
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 
   if (guessPhase) {
     // Say the answer the way it reads, not as a number.
-    const yourText = q.type === "scale" ? scaleSaid(q, Number(pendAns), lang) : q.opts?.[pendAns as number];
+    const yourText = q.type === "scale" ? scaleSay(q, Number(pendAns), lang) : q.opts?.[pendAns as number];
     return (
-      <section ref={screen} className="screenfill playscreen">
+      <section ref={screen} className="playscreen pfix">
         {header}
-        <div key={`${q.id}-guess`} ref={card} className="qcard pane-in guesscard">
-          <div className="qrow">
-            <div className="eyebrow">{eyebrow}</div>
-            <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
-          </div>
-          <div className={qtextClass(q.q)}>{q.q}</div>
-          {/* Not shared until the part opens, so a mis-tap can still be put
-              right here. */}
-          <div className="yousaid yousaid-edit">
-            <div>
-              <div className="eyebrow">{t("YOU SAID", "VOUS AVEZ DIT")}</div>
-              <div className="yousaid-val">{yourText}</div>
+        <div key={`${q.id}-guess`} className="qcard qframe pane-in guesscard">
+          <div className="qhead">
+            <div className="qrow">
+              <div className="eyebrow">{eyebrow}</div>
+              <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
             </div>
-            <button type="button" className="yousaid-change" onClick={() => setGuessPhase(false)}>
-              {t("change", "modifier")}
-            </button>
+            <div className={qtextClass(q.q)}>{q.q}</div>
+            <p className="guessask">
+              {t("Now: what will ", "Maintenant : que va répondre ")}
+              <span className="guessname">{partnerFirst}</span>
+              {t(" say?", " ?")}
+            </p>
           </div>
-          <p className="guessask">
-            {t("Now: what will ", "Maintenant : que va répondre ")}
-            <span className="guessname">{partnerFirst}</span>
-            {t(" say?", " ?")}
-          </p>
-          <QuestionInput q={q} value={pendGuess} guess onPick={setPendGuess} />
-        </div>
-        <div ref={foot} className={`playfoot${below.hidden ? " covering" : ""}`}>
+          <div ref={body} className={`qbody${below.hidden ? " more" : ""}`}>
+            {/* Not shared until the part opens, so a mis-tap can still be put
+                right here. */}
+            <div className="yousaid yousaid-edit">
+              <div>
+                <div className="eyebrow">{t("YOU SAID", "VOUS AVEZ DIT")}</div>
+                <div className="yousaid-val">{yourText}</div>
+              </div>
+              <button type="button" className="yousaid-change" onClick={() => setGuessPhase(false)}>
+                {t("change", "modifier")}
+              </button>
+            </div>
+            <QuestionInput q={q} value={pendGuess} guess onPick={setPendGuess} />
+          </div>
           <MoreBelow below={below} />
-          <button className="btn pill" type="button" disabled={pendGuess == null} onClick={lockGuess}>
-            {t("That’s my guess →", "Je valide →")}
-          </button>
-          <div className="playfoot-slot">
+        </div>
+        <div className="playfoot">
+          <div className="playfoot-row">
             <button className="btn ghost" type="button" onClick={() => advance(idx)}>
               {t("Skip", "Passer")}
+            </button>
+            <button className="btn pill" type="button" disabled={pendGuess == null} onClick={lockGuess}>
+              {t("That’s my guess →", "Je valide →")}
             </button>
           </div>
         </div>
@@ -320,17 +355,23 @@ export default function PlayScreen({
   }
 
   return (
-    <section ref={screen} className="screenfill playscreen">
+    <section ref={screen} className="playscreen pfix">
       {header}
-      <div key={q.id} ref={card} className="qcard glide-in">
-        <div className="eyebrow">{eyebrow}</div>
-        <div className={qtextClass(q.q)}>{q.q}</div>
-        <QuestionInput q={q} value={pendAns} onPick={setPendAns} />
-
-        {/* Importance, on the same card as the answer it weights; it opens
+      <div key={q.id} className="qcard qframe glide-in">
+        <div className="qhead">
+          <div className="eyebrow">{eyebrow}</div>
+          <div className={qtextClass(q.q)}>{q.q}</div>
+        </div>
+        <div ref={body} className={`qbody${below.hidden ? " more" : ""}`}>
+          <QuestionInput q={q} value={pendAns} onPick={setPendAns} />
+        </div>
+        <MoreBelow below={below} />
+      </div>
+      <div className="playfoot">
+        {/* Importance sits with the button, so it's always in view; it opens
             once they've chosen. Leaving it is a valid skip. */}
-        {asksImportance(q) && pendAns != null && (
-          <div ref={imp} className="impinline">
+        {impOpen && (
+          <div className="impfoot">
             <div className="impinline-head">
               <span>{t("How much does this matter to you?", "À quel point est-ce important pour vous ?")}</span>
               <span className="impinline-opt">{t("Optional", "Facultatif")}</span>
@@ -350,9 +391,6 @@ export default function PlayScreen({
             </div>
           </div>
         )}
-      </div>
-      <div ref={foot} className={`playfoot${below.hidden ? " covering" : ""}`}>
-        <MoreBelow below={below} />
         {last && (
           <p className="lastline">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -370,23 +408,7 @@ export default function PlayScreen({
             )}
           </p>
         )}
-        <button
-          className={finishing ? "btn busy" : "btn"}
-          type="button"
-          disabled={pendAns == null || finishing}
-          onClick={submitAnswer}
-        >
-          {finishing
-            ? t("Saving your answers…", "Enregistrement de vos réponses…")
-            : last
-              ? t("Finish part →", "Terminer la partie →")
-              : q.type === "rank"
-                ? t("This is my order →", "C’est mon ordre →")
-                : t("Next →", "Suivant →")}
-        </button>
-        {/* Always the same height, so the main button never moves when a
-            question offers Skip or Not yet. */}
-        <div className="playfoot-slot">
+        <div className="playfoot-row">
           {q.notYet ? (
             <button className="btn ghost" type="button" onClick={answerNotYet} disabled={finishing}>
               {t("Not yet", "Pas encore")}
@@ -398,6 +420,20 @@ export default function PlayScreen({
               {t("Skip for now", "Passer pour l’instant")}
             </button>
           ) : null}
+          <button
+            className={finishing ? "btn busy" : "btn"}
+            type="button"
+            disabled={pendAns == null || finishing}
+            onClick={submitAnswer}
+          >
+            {finishing
+              ? t("Saving your answers…", "Enregistrement de vos réponses…")
+              : last
+                ? t("Finish part →", "Terminer la partie →")
+                : q.type === "rank"
+                  ? t("This is my order →", "C’est mon ordre →")
+                  : t("Next →", "Suivant →")}
+          </button>
         </div>
       </div>
     </section>
@@ -418,13 +454,12 @@ function QuestionInput({
   const t = useT();
   const lang = useLang();
   if (q.type === "scale") {
-    const said = value != null ? scalePoint(q, Number(value), lang) : null;
-    const side = value == null ? "" : Number(value) < 3 ? " lo" : Number(value) > 3 ? " hi" : " mid";
+    const n = value == null ? null : Number(value);
     return (
       <>
         <div className="slabels">
-          <span>{shortEnd(q.lo)}</span>
-          <span style={{ textAlign: "right" }}>{shortEnd(q.hi)}</span>
+          <span>{q.lo}</span>
+          <span style={{ textAlign: "right" }}>{q.hi}</span>
         </div>
         <div className="scale" role="group" aria-label={q.q}>
           {[1, 2, 3, 4, 5].map((i) => (
@@ -434,15 +469,14 @@ function QuestionInput({
               className={`orb ${value === i ? "sel" : ""}`}
               onClick={() => onPick(i)}
               aria-pressed={value === i}
-              aria-label={`${i}: ${i >= 4 ? q.hi : i <= 2 ? q.lo : t("in the middle", "au milieu")}`}
+              aria-label={`${i}: ${scaleSay(q, i, lang)}`}
             >
               {i}
             </button>
           ))}
         </div>
-        {/* What the chosen point means, pointing up at its orb: the
-            question's own words for it, or how strongly plus the end's full
-            sentence. It leans to the side that was picked. */}
+        {/* What the chosen point means, in one line, in a bubble sized to its
+            words that points up at its orb. */}
         <div className="orbsay" aria-live="polite">
           <div className="orbsay-carets" aria-hidden="true">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -451,10 +485,9 @@ function QuestionInput({
               </span>
             ))}
           </div>
-          {said && (
-            <p key={String(value)} className={`orbsay-text${side}`}>
-              <b>{said.word}</b>
-              {said.detail && <span>{said.detail}</span>}
+          {n != null && (
+            <p key={n} className={`orbsay-text p${n}`}>
+              {scaleSay(q, n, lang)}
             </p>
           )}
         </div>
@@ -475,10 +508,10 @@ function QuestionInput({
       />
     );
   }
-  if (q.type === "rank") return <RankInput q={q} onPick={onPick} />;
+  if (q.type === "rank") return <RankInput q={q} initial={value as string | null} onPick={onPick} />;
   // mc
   return (
-    <div style={{ marginTop: 4 }} role="group" aria-label={q.q}>
+    <div role="group" aria-label={q.q}>
       {q.opts?.map((o, i) => (
         <button
           key={i}
@@ -497,11 +530,24 @@ function QuestionInput({
 
 // Rank (item 12): a numbered list moved with up and down, confirmed with
 // "This is my order". Fixing one item never means starting over. Stored as the
-// option positions in order, most important first ("2,0,1,3").
-function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => void }) {
+// option positions in order, most important first ("2,0,1,3"); coming back to
+// it shows the order given before.
+function RankInput({
+  q,
+  initial,
+  onPick,
+}: {
+  q: Question;
+  initial: string | null;
+  onPick: (v: AnswerValue) => void;
+}) {
   const t = useT();
   const n = q.opts?.length ?? 0;
-  const [order, setOrder] = useState(() => Array.from({ length: n }, (_, i) => i));
+  const [order, setOrder] = useState(() => {
+    const prev = (initial ?? "").split(",").map(Number);
+    const ok = prev.length === n && [...prev].sort((a, b) => a - b).every((v, i) => v === i);
+    return ok ? prev : Array.from({ length: n }, (_, i) => i);
+  });
   const [moved, setMoved] = useState<number | null>(null);
   useEffect(() => {
     onPick(order.join(","));
@@ -563,44 +609,29 @@ function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => voi
   );
 }
 
-// Long questions step down a size so the answers still fit on the screen.
+// Longer questions step down a size so the answers keep most of the screen.
 function qtextClass(text: string): string {
-  return text.length > 120 ? "qtext qtext-longer" : text.length > 90 ? "qtext qtext-long" : "qtext";
-}
-
-// A scale answer read back the way it reads on the scale, not as a number.
-function scaleSaid(q: Question, i: number, lang: string): string {
-  const { word, detail } = scalePoint(q, i, lang);
-  if (q.steps?.length === 5 && lang === "en") return detail ? `${word}: ${detail}` : word;
-  const end = detail ?? (i < 3 ? q.lo : i > 3 ? q.hi : "");
-  return end ? `${word} — ${end}` : word;
+  return text.length > 90 ? "qtext qtext-long" : "qtext";
 }
 
 type Below = { hidden: boolean; reveal: () => void };
 
-// Is part of the question card hidden behind the pinned button? Checked as the
-// screen scrolls, resizes, or the card grows (the importance row opening).
-function useMoreBelow(
-  card: RefObject<HTMLElement | null>,
-  foot: RefObject<HTMLElement | null>,
-  key: string,
-): Below {
+// Do the answers run on below the bottom of their scrolling area? Checked as
+// it scrolls, resizes, or its contents change.
+function useMoreBelow(body: RefObject<HTMLElement | null>, key: string): Below {
   const [hidden, setHidden] = useState(false);
-  const overlap = () => {
-    const c = card.current;
-    const f = foot.current;
-    if (!c || !f) return 0;
-    return c.getBoundingClientRect().bottom - f.getBoundingClientRect().top;
-  };
   useLayoutEffect(() => {
-    const check = () => setHidden(overlap() > 8);
+    const b = body.current;
+    if (!b) return;
+    const check = () => setHidden(b.scrollHeight - b.scrollTop - b.clientHeight > 8);
     check();
-    document.addEventListener("scroll", check, { capture: true, passive: true });
+    b.addEventListener("scroll", check, { passive: true });
     window.addEventListener("resize", check);
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(check) : null;
-    if (card.current) ro?.observe(card.current);
+    ro?.observe(b);
+    for (const c of Array.from(b.children)) ro?.observe(c);
     return () => {
-      document.removeEventListener("scroll", check, { capture: true });
+      b.removeEventListener("scroll", check);
       window.removeEventListener("resize", check);
       ro?.disconnect();
     };
@@ -609,8 +640,8 @@ function useMoreBelow(
   return {
     hidden,
     reveal: () => {
-      const d = overlap();
-      if (d > 0 && card.current) glideBy(scrollerOf(card.current), d + 16);
+      const b = body.current;
+      if (b) glideBy(b, Math.round(b.clientHeight * 0.7));
     },
   };
 }

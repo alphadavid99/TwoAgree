@@ -1,5 +1,5 @@
 {
-  "screens": 111,
+  "screens": 114,
   "results": [
     {
       "id": "kit-sheet",
@@ -411,6 +411,24 @@
     },
     {
       "id": "play-more-below",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-scale-end",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-scale-say",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-back",
       "small": [],
       "taps": [],
       "contrast": []

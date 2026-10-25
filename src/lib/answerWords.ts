@@ -26,9 +26,12 @@ export function scaleWord(v: AnswerValue | null | undefined, t: T): string {
 // speaking: "I'd rather keep my past private").
 const tail = (s: string) => (/^I\b|^I['’]/.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1));
 
-/** "Leaning: spender at heart" (or "Right in the middle"). */
+/** The question's own words for the point (English), else "Leaning: spender
+ *  at heart" (or "Right in the middle"). */
 export function scaleText(q: Question, v: AnswerValue | null | undefined, t: T): string {
   const n = Number(v);
+  if (t("en", "fr") === "en" && q.steps?.length === 5 && Number.isInteger(n) && n >= 1 && n <= 5)
+    return q.steps[n - 1];
   if (n === 3) return scaleWord(n, t);
   const end = n >= 4 ? q.hi : n <= 2 ? q.lo : undefined;
   return end ? `${scaleWord(n, t)}: ${tail(end)}` : scaleWord(n, t);

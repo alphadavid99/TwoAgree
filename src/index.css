@@ -5157,3 +5157,31 @@ textarea.input {
   font-size: 1rem;
   line-height: 1.5rem;
 }
+/* Names and stage on one screen: the three stages in a row. */
+.stagerow {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 6px;
+}
+.stagerow .stagechip {
+  min-height: 52px;
+  padding: 8px 6px;
+  font-size: 0.875rem;
+}
+.fieldlabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 24px;
+}
+/* A label sits 6px from its own field and 24px from the group above
+   (design system: Gestalt proximity). */
+label {
+  font-size: 0.875rem;
+  margin: 24px 4px 6px;
+}
+.fieldlabel {
+  margin: 24px 4px 6px;
+}
+.consent {
+  margin-top: 16px;
+}

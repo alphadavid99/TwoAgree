@@ -132,7 +132,6 @@ const toConsent: Step[] = [
   { click: /^Start$/ },
   { type: '#me', value: 'Sarah' },
   { type: '#them', value: 'Judah' },
-  { click: /^Continue/ },
   { click: /In a relationship/ },
   { click: /^Continue/ },
 ]
@@ -264,8 +263,8 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 2 · Welcome & onboarding (initiator) ============
   onboarding(false, { id: 'onb-welcome', title: 'Welcome', user: null }),
-  onboarding(false, { id: 'onb-names', title: 'Names', steps: [{ click: /^Start$/ }] }),
-  onboarding(false, { id: 'onb-stage', title: 'Relationship stage', steps: [{ click: /^Start$/ }, { type: '#me', value: 'Sarah' }, { type: '#them', value: 'Judah' }, { click: /^Continue/ }] }),
+  onboarding(false, { id: 'onb-names', title: 'Names and stage, one screen', steps: [{ click: /^Start$/ }] }),
+  onboarding(false, { id: 'onb-stage', title: 'Names and stage, filled in', steps: [{ click: /^Start$/ }, { type: '#me', value: 'Sarah' }, { type: '#them', value: 'Judah' }, { click: /In a relationship/ }] }),
   onboarding(false, { id: 'onb-consent', title: 'Consent (two ticks)', steps: toConsent }),
   onboarding(false, { id: 'onb-consent-ticked', title: 'Consent, both ticked', steps: [...toConsent, ...tick] }),
   onboarding(false, {

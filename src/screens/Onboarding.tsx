@@ -29,7 +29,6 @@ import {
   setActiveCode,
 } from "../lib/local";
 import { prettyError } from "../lib/errors";
-import { fileToAvatarDataUrl } from "../lib/device/photo";
 import { DECKS, type Question } from "../lib/questions";
 import { ONB_STAGES, STARTER_QIDS, type OnbStage } from "../lib/onboarding";
 import type { Stage } from "../types";
@@ -76,7 +75,6 @@ type T = (en: string, fr: string) => string;
 type AStep =
   | "welcome"
   | "names"
-  | "stage"
   | "consent"
   | "questions"
   | "profile"
@@ -136,7 +134,7 @@ export default function Onboarding({
   const [signIn, setSignIn] = useState(false);
 
   const [stepA, setStepA] = useState<AStep>(
-    saved?.flow === "a" ? (saved.step as AStep) : "welcome",
+    saved?.flow === "a" ? (saved.step === "stage" ? "names" : (saved.step as AStep)) : "welcome",
   );
   const [stepB, setStepB] = useState<BStep>(
     saved?.flow === "b" ? (saved.step as BStep) : "arrive",
@@ -495,13 +493,22 @@ export default function Onboarding({
     return shell(
       <>
         <h1 className="h1 center" style={{ marginTop: 22 }}>
-          {t("What should we call you?", "Comment doit-on vous appeler ?")}
+          {t("Let’s begin", "Commençons")}
         </h1>
+        {/* Names and stage on one screen (item 8): three facts, one tap. */}
         <label htmlFor="me">{t("Your name", "Votre nom")}</label>
         <input className="input" id="me" maxLength={20} value={myName} onChange={(e) => setMyName(e.target.value)} placeholder={t("e.g. Sarah", "p. ex. Sarah")} />
         <label htmlFor="them">{t("And who are you doing this with?", "Et avec qui faites-vous ceci ?")}</label>
         <input className="input" id="them" maxLength={20} value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder={t("e.g. Judah", "p. ex. Judah")} />
-        <button className="btn pill" type="button" disabled={!myName.trim() || !partnerName.trim()} onClick={() => setStepA("stage")}>
+        <div className="fieldlabel" id="stage-l">{t("Where are you two right now?", "Où en êtes-vous tous les deux ?")}</div>
+        <div className="stagegrid stagerow" role="group" aria-labelledby="stage-l">
+          {ONB_STAGES.map((s) => (
+            <button key={s.key} type="button" className={`stagechip ${stage === s.key ? "on" : ""}`} onClick={() => setStage(s.key)} aria-pressed={stage === s.key}>
+              {t(s.en, s.fr)}
+            </button>
+          ))}
+        </div>
+        <button className="btn pill" type="button" disabled={!myName.trim() || !partnerName.trim() || !stage} onClick={() => setStepA("consent")}>
           {t("Continue →", "Continuer →")}
         </button>
       </>,
@@ -509,31 +516,10 @@ export default function Onboarding({
     );
   }
 
-  if (stepA === "stage") {
-    return shell(
-      <>
-        <h1 className="h1 center" style={{ marginTop: 24 }}>
-          {t("Where are you two right now?", "Où en êtes-vous tous les deux ?")}
-        </h1>
-        <div className="stagegrid" style={{ marginTop: 20, gridTemplateColumns: "1fr" }}>
-          {ONB_STAGES.map((s) => (
-            <button key={s.key} type="button" className={`stagechip ${stage === s.key ? "on" : ""}`} onClick={() => setStage(s.key)} aria-pressed={stage === s.key}>
-              {t(s.en, s.fr)}
-            </button>
-          ))}
-        </div>
-        <button className="btn pill" type="button" disabled={!stage} onClick={() => setStepA("consent")}>
-          {t("Continue →", "Continuer →")}
-        </button>
-      </>,
-      () => setStepA("names"),
-    );
-  }
-
   if (stepA === "consent") {
     return shell(
       <ConsentBody partner={partner} busy={busy} onStart={startFlowA} t={t} />,
-      () => setStepA("stage"),
+      () => setStepA("names"),
     );
   }
 
@@ -992,13 +978,14 @@ function ProfileStep({
 }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [photo, setPhoto] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
+  // No photo at sign-up (item 8): it slowed the account step for no gain. It
+  // lives in Edit profile instead.
   const finish = async (emailUsed?: string) => {
     const u = auth.currentUser;
-    if (u) await writeProfile(u.uid, { name, email: emailUsed, photo: photo ?? undefined });
+    if (u) await writeProfile(u.uid, { name, email: emailUsed });
     onDone();
   };
 
@@ -1038,17 +1025,6 @@ function ProfileStep({
   const withGoogle = () => withProvider(linkWithGoogleSmart);
   const withApple = () => withProvider(linkWithAppleSmart);
 
-  const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      setPhoto(await fileToAvatarDataUrl(file));
-    } catch {
-      /* ignore — photo is optional */
-    }
-  };
-
-  const initial = (name || "?").trim().charAt(0).toUpperCase() || "?";
   void code;
   return (
     <section className="pane-in">
@@ -1069,16 +1045,6 @@ function ProfileStep({
             "Il garde vos réponses en sécurité et vous permet de reprendre sur n’importe quel appareil.",
           )}
       </p>
-
-      <div className="avatarwrap" style={{ marginTop: 6 }}>
-        <div className="avatar" style={{ width: 76, height: 76 }}>
-          {photo ? <img src={photo} alt="" /> : initial}
-        </div>
-        <label className="photobtn" style={{ cursor: "pointer" }}>
-          {photo ? t("Change photo", "Changer la photo") : t("Add a photo (optional)", "Ajouter une photo (facultatif)")}
-          <input type="file" accept="image/*" hidden onChange={onPhoto} />
-        </label>
-      </div>
 
       <button className="btn out google" type="button" onClick={withGoogle} disabled={busy} style={{ marginTop: 14 }}>
         {t("Continue with Google", "Continuer avec Google")}

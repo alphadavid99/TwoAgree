@@ -19,8 +19,12 @@ import { fileURLToPath } from "node:url";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
-const QUESTIONS_PATH = path.join(ROOT, "data", "questions.json");
-const DECKS_PATH = path.join(ROOT, "data", "decks.json");
+// --data <dir> validates another copy of the bank and writes nothing (tests).
+const DATA_AT = process.argv.indexOf("--data");
+const DATA_DIR = DATA_AT >= 0 ? path.resolve(process.argv[DATA_AT + 1]) : path.join(ROOT, "data");
+const VALIDATE_ONLY = DATA_AT >= 0;
+const QUESTIONS_PATH = path.join(DATA_DIR, "questions.json");
+const DECKS_PATH = path.join(DATA_DIR, "decks.json");
 const OUT_PATH = path.join(ROOT, "src", "data", "questions.generated.ts");
 
 const CHECK = process.argv.includes("--check");
@@ -68,7 +72,7 @@ if (errors.length) fail(`deck metadata problems:\n  - ${errors.join("\n  - ")}`)
 // A question may arrive with a `deck` but no `id` — assign the next free number
 // for that deck's prefix so a hand-pasted block can never collide with the bank.
 // (--check refuses to mutate; a missing id there is a validation error below.)
-if (!CHECK) {
+if (!CHECK && !VALIDATE_ONLY) {
   const nextNum = new Map(); // prefix -> next free integer
   for (const q of questions) {
     if (typeof q.id === "string") {
@@ -127,6 +131,34 @@ for (const q of questions) {
   }
 }
 
+// --- validate parts ----------------------------------------------------------
+// Each deck's parts are fixed in data/decks.json: a name plus its question ids
+// (design refresh, item 11). A name must never drift away from its questions,
+// so every question sits in exactly one part of its own deck.
+const deckOfId = new Map(questions.map((q) => [q.id, q.deck]));
+const partOf = new Map();
+for (const d of decks) {
+  const where = `deck "${d.slug}"`;
+  if (!Array.isArray(d.parts) || !d.parts.length) {
+    errors.push(`${where}: needs a "parts" list (each { name, qids })`);
+    continue;
+  }
+  d.parts.forEach((p, i) => {
+    const at = `${where} part ${i + 1}`;
+    if (typeof p.name !== "string" || !p.name.trim()) errors.push(`${at}: needs a name`);
+    if (!Array.isArray(p.qids) || !p.qids.length) errors.push(`${at} ("${p.name}"): needs question ids`);
+    for (const id of p.qids ?? []) {
+      if (!deckOfId.has(id)) errors.push(`${id}: in ${at} but not in the question bank`);
+      else if (deckOfId.get(id) !== d.slug) errors.push(`${id}: in ${at} but belongs to deck "${deckOfId.get(id)}"`);
+      if (partOf.has(id)) errors.push(`${id}: in two parts (${partOf.get(id)} and ${at})`);
+      else partOf.set(id, at);
+    }
+  });
+}
+for (const q of questions) {
+  if (!partOf.has(q.id)) errors.push(`${q.id}: in no part — add it to a part of "${q.deck}" in data/decks.json`);
+}
+
 if (errors.length) {
   fail(`${errors.length} problem(s) in the question bank:\n  - ${errors.join("\n  - ")}`);
 }
@@ -134,13 +166,14 @@ if (errors.length) {
 // --- render generated TS ------------------------------------------------------
 // Runtime carries only the fields the app renders; authoring-only columns
 // (level, subcat, status, source, dateAdded) live in the JSON source only.
+const byId = new Map(questions.map((q) => [q.id, q]));
 const order = decks.map((d) => d.slug);
-const byDeck = new Map(order.map((s) => [s, []]));
-for (const q of questions) byDeck.get(q.deck).push(q);
-// Sort every deck by depth ascending (stable — ties keep bank order). This is
-// what turns the existing ~7-per-chunk grouping into a real difficulty ramp:
-// Part 1 is a deck's lightest questions, Part N its heaviest (brief §A7b).
-for (const arr of byDeck.values()) arr.sort((a, b) => a.depth - b.depth);
+// A deck's questions run in part order, as fixed in data/decks.json. (The parts
+// were cut from the old depth-sorted ~7-per-part split, so Part 1 is still a
+// deck's lightest questions and Part N its heaviest — brief §A7b.)
+const byDeck = new Map(
+  decks.map((d) => [d.slug, d.parts.flatMap((p) => p.qids.map((id) => byId.get(id)))]),
+);
 
 function runtimeQuestion(q) {
   const o = { id: q.id, q: q.q, type: q.type, depth: q.depth };
@@ -160,7 +193,6 @@ function runtimeQuestion(q) {
 
 // Resolve each conversation's A7 hook (brief 2 §A7) from a question id to live
 // text at build time, so rewording the question moves the hook with it.
-const byId = new Map(questions.map((q) => [q.id, q]));
 const decksLiteral = {};
 for (const d of decks) {
   if (d.hook && !byId.has(d.hook)) {
@@ -171,6 +203,7 @@ for (const d of decks) {
     color: d.color,
     icon: d.icon,
     ...(d.hook ? { hook: { id: d.hook, q: byId.get(d.hook).q } } : {}),
+    parts: d.parts.map((p) => ({ name: p.name, qids: p.qids })),
     questions: byDeck.get(d.slug).map(runtimeQuestion),
   };
 }
@@ -216,6 +249,8 @@ export interface Deck {
   icon: string;
   /** A7 onboarding hook — a real question from inside, resolved at build time. */
   hook?: { id: string; q: string };
+  /** The deck's fixed parts, in order: a name and its question ids. */
+  parts: { name: string; qids: string[] }[];
   questions: Question[];
 }
 
@@ -240,25 +275,10 @@ for (const q of questions) {
   if (q.complement === true) e.complement = true;
   bank[q.id] = e;
 }
-// The parts of each deck, as question ids. The publish function copies exactly
-// one part's answers into the shared session once both partners have finished
-// it, so it must cut parts the same way the app does — the same ~7-question
-// split as src/lib/leveling.ts (levelsOf), computed from the same ordered bank.
-const levels = {};
-for (const slug of Object.keys(decksLiteral)) {
-  const ids = decksLiteral[slug].questions.map((q) => q.id);
-  const L = Math.max(1, Math.round(ids.length / 7));
-  const base = Math.floor(ids.length / L);
-  const rem = ids.length % L;
-  const out = [];
-  let i = 0;
-  for (let k = 0; k < L; k++) {
-    const n = base + (k < rem ? 1 : 0);
-    out.push(ids.slice(i, i + n));
-    i += n;
-  }
-  levels[slug] = out;
-}
+// The parts of each deck, as question ids (data/decks.json). The publish
+// function copies exactly one part's answers into the shared session once both
+// partners have finished it, so it reads the same fixed parts as the app.
+const levels = Object.fromEntries(decks.map((d) => [d.slug, d.parts.map((p) => p.qids)]));
 const fnBody = `${header}
 // Compact question metadata for the Path generation Cloud Function.
 export type QuestionType = "scale" | "mc" | "rank" | "open";
@@ -287,7 +307,9 @@ function checkFile(outPath, expected, label) {
   void label;
 }
 
-if (CHECK) {
+if (VALIDATE_ONLY) {
+  console.log(`✓ question bank valid (${questions.length} questions, ${decks.length} decks).`);
+} else if (CHECK) {
   checkFile(OUT_PATH, body);
   checkFile(FN_OUT_PATH, fnBody);
   console.log(`✓ question bank valid and up to date (${questions.length} questions, ${decks.length} decks).`);

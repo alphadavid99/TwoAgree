@@ -37,6 +37,8 @@ export interface Deck {
   icon: string;
   /** A7 onboarding hook — a real question from inside, resolved at build time. */
   hook?: { id: string; q: string };
+  /** The deck's fixed parts, in order: a name and its question ids. */
+  parts: { name: string; qids: string[] }[];
   questions: Question[];
 }
 
@@ -75,6 +77,29 @@ export const DECKS: Record<string, Deck> = {
       "id": "HOME-006",
       "q": "How tidy do you need our home to be?"
     },
+    "parts": [
+      {
+        "name": "Who does what",
+        "qids": [
+          "HOME-001",
+          "HOME-002",
+          "HOME-003",
+          "HOME-006",
+          "HOME-008",
+          "HOME-010"
+        ]
+      },
+      {
+        "name": "Putting down roots",
+        "qids": [
+          "HOME-004",
+          "HOME-005",
+          "HOME-007",
+          "HOME-009",
+          "HOME-011"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "HOME-001",
@@ -228,6 +253,35 @@ export const DECKS: Record<string, Deck> = {
       "id": "FIN-009",
       "q": "Be honest - are you more of a saver or a spender?"
     },
+    "parts": [
+      {
+        "name": "Sharing money",
+        "qids": [
+          "FIN-009",
+          "FIN-001",
+          "FIN-002",
+          "FIN-003",
+          "FIN-004",
+          "FIN-005",
+          "FIN-006",
+          "FIN-008",
+          "FIN-010"
+        ]
+      },
+      {
+        "name": "Debt and safety nets",
+        "qids": [
+          "FIN-011",
+          "FIN-012",
+          "FIN-013",
+          "FIN-014",
+          "FIN-015",
+          "FIN-016",
+          "FIN-017",
+          "FIN-007"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "FIN-009",
@@ -450,6 +504,68 @@ export const DECKS: Record<string, Deck> = {
       "id": "FAITH-019",
       "q": "When your time with God and time with your partner compete for the same hour, which usually wins?"
     },
+    "parts": [
+      {
+        "name": "Faith in everyday life",
+        "qids": [
+          "FAITH-001",
+          "FAITH-007",
+          "FAITH-010",
+          "FAITH-012",
+          "FAITH-020",
+          "FAITH-032",
+          "FAITH-002"
+        ]
+      },
+      {
+        "name": "Growing in faith together",
+        "qids": [
+          "FAITH-003",
+          "FAITH-004",
+          "FAITH-005",
+          "FAITH-006",
+          "FAITH-008",
+          "FAITH-009",
+          "FAITH-011"
+        ]
+      },
+      {
+        "name": "Drawing closer to God",
+        "qids": [
+          "FAITH-013",
+          "FAITH-014",
+          "FAITH-015",
+          "FAITH-016",
+          "FAITH-017",
+          "FAITH-021",
+          "FAITH-022"
+        ]
+      },
+      {
+        "name": "Your walk with God",
+        "qids": [
+          "FAITH-024",
+          "FAITH-025",
+          "FAITH-026",
+          "FAITH-027",
+          "FAITH-028",
+          "FAITH-029",
+          "FAITH-031"
+        ]
+      },
+      {
+        "name": "God first",
+        "qids": [
+          "FAITH-033",
+          "FAITH-034",
+          "FAITH-035",
+          "FAITH-018",
+          "FAITH-019",
+          "FAITH-023",
+          "FAITH-030"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "FAITH-001",
@@ -870,6 +986,30 @@ export const DECKS: Record<string, Deck> = {
       "id": "ROLE-011",
       "q": "Bins, spiders and the car, whose job?"
     },
+    "parts": [
+      {
+        "name": "Leading and providing",
+        "qids": [
+          "ROLE-011",
+          "ROLE-012",
+          "ROLE-001",
+          "ROLE-002",
+          "ROLE-003",
+          "ROLE-004"
+        ]
+      },
+      {
+        "name": "Who has the final call",
+        "qids": [
+          "ROLE-009",
+          "ROLE-010",
+          "ROLE-005",
+          "ROLE-006",
+          "ROLE-007",
+          "ROLE-008"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "ROLE-011",
@@ -1047,6 +1187,30 @@ export const DECKS: Record<string, Deck> = {
     "name": "Theology",
     "color": "#5C2E45",
     "icon": "book",
+    "parts": [
+      {
+        "name": "Where you land",
+        "qids": [
+          "THEO-011",
+          "THEO-012",
+          "THEO-001",
+          "THEO-002",
+          "THEO-008",
+          "THEO-010"
+        ]
+      },
+      {
+        "name": "The debated questions",
+        "qids": [
+          "THEO-003",
+          "THEO-004",
+          "THEO-005",
+          "THEO-006",
+          "THEO-007",
+          "THEO-009"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "THEO-011",
@@ -1210,6 +1374,30 @@ export const DECKS: Record<string, Deck> = {
     "name": "The Future",
     "color": "#9C4A6E",
     "icon": "star",
+    "parts": [
+      {
+        "name": "Dreaming together",
+        "qids": [
+          "DREAM-002",
+          "DREAM-006",
+          "DREAM-001",
+          "DREAM-003",
+          "DREAM-004",
+          "DREAM-005"
+        ]
+      },
+      {
+        "name": "Building a life",
+        "qids": [
+          "DREAM-007",
+          "DREAM-008",
+          "DREAM-010",
+          "DREAM-011",
+          "DREAM-012",
+          "DREAM-009"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "DREAM-002",
@@ -1359,6 +1547,30 @@ export const DECKS: Record<string, Deck> = {
     "name": "Children",
     "color": "#9C7A4A",
     "icon": "family",
+    "parts": [
+      {
+        "name": "Hoping for children",
+        "qids": [
+          "FAM-011",
+          "FAM-012",
+          "FAM-001",
+          "FAM-003",
+          "FAM-004",
+          "FAM-005"
+        ]
+      },
+      {
+        "name": "Family, faith and fertility",
+        "qids": [
+          "FAM-006",
+          "FAM-007",
+          "FAM-009",
+          "FAM-010",
+          "FAM-002",
+          "FAM-008"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "FAM-011",
@@ -1523,6 +1735,22 @@ export const DECKS: Record<string, Deck> = {
     "name": "Parenting",
     "color": "#9C7A4A",
     "icon": "family",
+    "parts": [
+      {
+        "name": "Raising them well",
+        "qids": [
+          "PAR-008",
+          "PAR-009",
+          "PAR-001",
+          "PAR-002",
+          "PAR-004",
+          "PAR-005",
+          "PAR-006",
+          "PAR-007",
+          "PAR-003"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "PAR-008",
@@ -1662,6 +1890,42 @@ export const DECKS: Record<string, Deck> = {
       "id": "INT-019",
       "q": "How much does feeling emotionally close affect wanting to be physically close?"
     },
+    "parts": [
+      {
+        "name": "Affection and attraction",
+        "qids": [
+          "INT-012",
+          "INT-003",
+          "INT-016",
+          "INT-022",
+          "INT-019",
+          "INT-001",
+          "INT-002"
+        ]
+      },
+      {
+        "name": "Before marriage",
+        "qids": [
+          "INT-005",
+          "INT-007",
+          "INT-008",
+          "INT-009",
+          "INT-010",
+          "INT-013"
+        ]
+      },
+      {
+        "name": "Intimacy in marriage",
+        "qids": [
+          "INT-014",
+          "INT-015",
+          "INT-017",
+          "INT-018",
+          "INT-020",
+          "INT-021"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "INT-012",
@@ -1911,6 +2175,66 @@ export const DECKS: Record<string, Deck> = {
       "id": "CONF-021",
       "q": "When someone interrupts you, how do you usually react?"
     },
+    "parts": [
+      {
+        "name": "Love, stress and respect",
+        "qids": [
+          "CONF-001",
+          "CONF-009",
+          "CONF-020",
+          "CONF-002",
+          "CONF-003",
+          "CONF-004",
+          "CONF-008"
+        ]
+      },
+      {
+        "name": "In the heat of it",
+        "qids": [
+          "CONF-011",
+          "CONF-012",
+          "CONF-013",
+          "CONF-014",
+          "CONF-016",
+          "CONF-017",
+          "CONF-018"
+        ]
+      },
+      {
+        "name": "Fighting fair",
+        "qids": [
+          "CONF-019",
+          "CONF-021",
+          "CONF-022",
+          "CONF-023",
+          "CONF-024",
+          "CONF-025",
+          "CONF-026"
+        ]
+      },
+      {
+        "name": "Blind spots and feelings",
+        "qids": [
+          "CONF-027",
+          "CONF-028",
+          "CONF-029",
+          "CONF-030",
+          "CONF-031",
+          "CONF-032"
+        ]
+      },
+      {
+        "name": "Safe to talk",
+        "qids": [
+          "CONF-033",
+          "CONF-034",
+          "CONF-036",
+          "CONF-037",
+          "CONF-015",
+          "CONF-035"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "CONF-001",
@@ -2352,6 +2676,32 @@ export const DECKS: Record<string, Deck> = {
       "id": "INLAW-013",
       "q": "What do you call your partner's parents?"
     },
+    "parts": [
+      {
+        "name": "Leaving and cleaving",
+        "qids": [
+          "INLAW-013",
+          "INLAW-014",
+          "INLAW-001",
+          "INLAW-002",
+          "INLAW-005",
+          "INLAW-006",
+          "INLAW-007"
+        ]
+      },
+      {
+        "name": "Family at the door",
+        "qids": [
+          "INLAW-010",
+          "INLAW-011",
+          "INLAW-012",
+          "INLAW-003",
+          "INLAW-004",
+          "INLAW-008",
+          "INLAW-009"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "INLAW-013",
@@ -2544,6 +2894,46 @@ export const DECKS: Record<string, Deck> = {
       "id": "FUN-011",
       "q": "Who's more likely to fall asleep during the sermon?"
     },
+    "parts": [
+      {
+        "name": "Who’s more likely…",
+        "qids": [
+          "FUN-010",
+          "FUN-008",
+          "FUN-023",
+          "FUN-009",
+          "FUN-011",
+          "FUN-002",
+          "FUN-003",
+          "FUN-004"
+        ]
+      },
+      {
+        "name": "Lazy Sundays",
+        "qids": [
+          "FUN-005",
+          "FUN-006",
+          "FUN-001",
+          "FUN-007",
+          "FUN-016",
+          "FUN-017",
+          "FUN-020",
+          "FUN-022"
+        ]
+      },
+      {
+        "name": "The cheeky round",
+        "qids": [
+          "FUN-012",
+          "FUN-013",
+          "FUN-014",
+          "FUN-015",
+          "FUN-018",
+          "FUN-019",
+          "FUN-021"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "FUN-010",
@@ -2880,6 +3270,46 @@ export const DECKS: Record<string, Deck> = {
       "id": "DEAL-021",
       "q": "Have you ever stayed in a relationship past a line you'd set for yourself?"
     },
+    "parts": [
+      {
+        "name": "Your must-haves",
+        "qids": [
+          "DEAL-022",
+          "DEAL-023",
+          "DEAL-003",
+          "DEAL-013",
+          "DEAL-018",
+          "DEAL-001",
+          "DEAL-002",
+          "DEAL-004"
+        ]
+      },
+      {
+        "name": "Lines you won’t cross",
+        "qids": [
+          "DEAL-005",
+          "DEAL-006",
+          "DEAL-007",
+          "DEAL-008",
+          "DEAL-009",
+          "DEAL-010",
+          "DEAL-011",
+          "DEAL-012"
+        ]
+      },
+      {
+        "name": "When life changes",
+        "qids": [
+          "DEAL-014",
+          "DEAL-015",
+          "DEAL-016",
+          "DEAL-017",
+          "DEAL-019",
+          "DEAL-020",
+          "DEAL-021"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "DEAL-022",
@@ -3213,6 +3643,23 @@ export const DECKS: Record<string, Deck> = {
     "name": "Health",
     "color": "#5E7A4E",
     "icon": "leaf",
+    "parts": [
+      {
+        "name": "Habits and health",
+        "qids": [
+          "HEALTH-001",
+          "HEALTH-002",
+          "HEALTH-003",
+          "HEALTH-008",
+          "HEALTH-009",
+          "HEALTH-010",
+          "HEALTH-004",
+          "HEALTH-007",
+          "HEALTH-005",
+          "HEALTH-006"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "HEALTH-001",
@@ -3332,6 +3779,23 @@ export const DECKS: Record<string, Deck> = {
     "name": "The Past",
     "color": "#7C4B72",
     "icon": "leaf",
+    "parts": [
+      {
+        "name": "Where you’ve come from",
+        "qids": [
+          "PAST-004",
+          "PAST-003",
+          "PAST-006",
+          "PAST-008",
+          "PAST-010",
+          "PAST-011",
+          "PAST-001",
+          "PAST-002",
+          "PAST-007",
+          "PAST-009"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "PAST-004",
@@ -3432,6 +3896,23 @@ export const DECKS: Record<string, Deck> = {
     "name": "Work",
     "color": "#8F5A12",
     "icon": "star",
+    "parts": [
+      {
+        "name": "Work and calling",
+        "qids": [
+          "CAREER-010",
+          "CAREER-001",
+          "CAREER-002",
+          "CAREER-003",
+          "CAREER-005",
+          "CAREER-006",
+          "CAREER-007",
+          "CAREER-008",
+          "CAREER-009",
+          "CAREER-004"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "CAREER-010",
@@ -3554,6 +4035,57 @@ export const DECKS: Record<string, Deck> = {
       "id": "SELF-019",
       "q": "How do you feel about small 'white lies'?"
     },
+    "parts": [
+      {
+        "name": "Who you really are",
+        "qids": [
+          "SELF-013",
+          "SELF-001",
+          "SELF-002",
+          "SELF-004",
+          "SELF-005",
+          "SELF-008",
+          "SELF-009",
+          "SELF-010"
+        ]
+      },
+      {
+        "name": "What shaped you",
+        "qids": [
+          "SELF-011",
+          "SELF-014",
+          "SELF-015",
+          "SELF-016",
+          "SELF-017",
+          "SELF-018",
+          "SELF-019"
+        ]
+      },
+      {
+        "name": "Growth and integrity",
+        "qids": [
+          "SELF-020",
+          "SELF-021",
+          "SELF-022",
+          "SELF-023",
+          "SELF-024",
+          "SELF-025",
+          "SELF-026"
+        ]
+      },
+      {
+        "name": "Fears and forgiveness",
+        "qids": [
+          "SELF-027",
+          "SELF-029",
+          "SELF-028",
+          "SELF-003",
+          "SELF-006",
+          "SELF-007",
+          "SELF-012"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "SELF-013",
@@ -3874,6 +4406,93 @@ export const DECKS: Record<string, Deck> = {
       "id": "US-024",
       "q": "How much are you counting on me changing after we marry?"
     },
+    "parts": [
+      {
+        "name": "Why us",
+        "qids": [
+          "US-008",
+          "US-010",
+          "US-014",
+          "US-034",
+          "US-050",
+          "US-001",
+          "US-003",
+          "US-005"
+        ]
+      },
+      {
+        "name": "The pace we’re going",
+        "qids": [
+          "US-006",
+          "US-009",
+          "US-013",
+          "US-017",
+          "US-027",
+          "US-029",
+          "US-030"
+        ]
+      },
+      {
+        "name": "Love, not just feelings",
+        "qids": [
+          "US-031",
+          "US-033",
+          "US-035",
+          "US-039",
+          "US-048",
+          "US-002",
+          "US-004"
+        ]
+      },
+      {
+        "name": "Counsel and blessing",
+        "qids": [
+          "US-015",
+          "US-016",
+          "US-019",
+          "US-020",
+          "US-021",
+          "US-022",
+          "US-023"
+        ]
+      },
+      {
+        "name": "Through hard seasons",
+        "qids": [
+          "US-025",
+          "US-026",
+          "US-032",
+          "US-036",
+          "US-037",
+          "US-038",
+          "US-040"
+        ]
+      },
+      {
+        "name": "Covenant and cost",
+        "qids": [
+          "US-043",
+          "US-047",
+          "US-007",
+          "US-012",
+          "US-018",
+          "US-028",
+          "US-041"
+        ]
+      },
+      {
+        "name": "Making room for us",
+        "qids": [
+          "US-042",
+          "US-044",
+          "US-045",
+          "US-046",
+          "US-049",
+          "US-011",
+          "US-024"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "US-008",
@@ -4438,6 +5057,32 @@ export const DECKS: Record<string, Deck> = {
     "name": "Convictions",
     "color": "#5C2E45",
     "icon": "compass",
+    "parts": [
+      {
+        "name": "Politics, science and society",
+        "qids": [
+          "VAL-013",
+          "VAL-014",
+          "VAL-005",
+          "VAL-006",
+          "VAL-007",
+          "VAL-009",
+          "VAL-010"
+        ]
+      },
+      {
+        "name": "Life, death and marriage",
+        "qids": [
+          "VAL-001",
+          "VAL-002",
+          "VAL-003",
+          "VAL-004",
+          "VAL-008",
+          "VAL-011",
+          "VAL-012"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "VAL-013",
@@ -4637,6 +5282,35 @@ export const DECKS: Record<string, Deck> = {
     "name": "Faithfulness",
     "color": "#7C4B72",
     "icon": "shield",
+    "parts": [
+      {
+        "name": "Phones, friends and trust",
+        "qids": [
+          "LOYAL-009",
+          "LOYAL-010",
+          "LOYAL-004",
+          "LOYAL-005",
+          "LOYAL-006",
+          "LOYAL-007",
+          "LOYAL-011",
+          "LOYAL-016",
+          "LOYAL-008"
+        ]
+      },
+      {
+        "name": "Guarding the line",
+        "qids": [
+          "LOYAL-012",
+          "LOYAL-013",
+          "LOYAL-014",
+          "LOYAL-015",
+          "LOYAL-017",
+          "LOYAL-001",
+          "LOYAL-002",
+          "LOYAL-003"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "LOYAL-009",
@@ -4862,6 +5536,55 @@ export const DECKS: Record<string, Deck> = {
       "id": "NOW-025",
       "q": "When did we last properly laugh together?"
     },
+    "parts": [
+      {
+        "name": "How we’re doing",
+        "qids": [
+          "NOW-025",
+          "NOW-026",
+          "NOW-027",
+          "NOW-008",
+          "NOW-001",
+          "NOW-002",
+          "NOW-009"
+        ]
+      },
+      {
+        "name": "Seen and understood",
+        "qids": [
+          "NOW-012",
+          "NOW-019",
+          "NOW-021",
+          "NOW-022",
+          "NOW-003",
+          "NOW-004",
+          "NOW-005"
+        ]
+      },
+      {
+        "name": "Trust and presence",
+        "qids": [
+          "NOW-006",
+          "NOW-007",
+          "NOW-010",
+          "NOW-011",
+          "NOW-014",
+          "NOW-015",
+          "NOW-017"
+        ]
+      },
+      {
+        "name": "The honest questions",
+        "qids": [
+          "NOW-023",
+          "NOW-013",
+          "NOW-016",
+          "NOW-018",
+          "NOW-020",
+          "NOW-024"
+        ]
+      }
+    ],
     "questions": [
       {
         "id": "NOW-025",

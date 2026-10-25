@@ -1,26 +1,24 @@
-// Deck leveling — PORTED VERBATIM from legacy/index.html (levelsOf / nLevels /
-// lvlQs / stageOf). Splits a deck into ~7-question levels. Pure + cached.
+// Deck leveling (levelsOf / nLevels / lvlQs / stageOf, first ported from
+// legacy/index.html). A deck's parts ("levels" in code) used to be cut on the
+// fly into ~7-question slices, so adding one question shifted every later part.
+// They are now fixed in the bank: each part is a name plus its question ids in
+// data/decks.json (design refresh, item 11), cut exactly where the old split
+// fell, so nobody's progress moved. Pure + cached.
 import { DECKS, type Question } from "./questions";
 
 const cache: Record<string, Question[][]> = {};
 
 export function levelsOf(slug: string): Question[][] {
   if (cache[slug]) return cache[slug];
-  const qs = DECKS[slug].questions;
-  const total = qs.length;
-  const L = Math.max(1, Math.round(total / 7));
-  const base = Math.floor(total / L);
-  const rem = total % L;
-  const out: Question[][] = [];
-  let i = 0;
-  for (let k = 0; k < L; k++) {
-    const n = base + (k < rem ? 1 : 0);
-    out.push(qs.slice(i, i + n));
-    i += n;
-  }
+  const byId = new Map(DECKS[slug].questions.map((q) => [q.id, q]));
+  const out = DECKS[slug].parts.map((p) => p.qids.map((id) => byId.get(id)!));
   cache[slug] = out;
   return out;
 }
+
+/** A part's approved name ("Who does what"), never "Part 2". */
+export const partName = (slug: string, lvl: number): string =>
+  DECKS[slug]?.parts[lvl]?.name ?? "";
 
 export const nLevels = (slug: string): number => levelsOf(slug).length;
 

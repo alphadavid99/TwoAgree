@@ -1,0 +1,42 @@
+name: Fresh start (new question bank)
+
+# One-off, run by hand: Actions → "Fresh start (new question bank)" → Run
+# workflow. Clears every couple's answers, progress and laid Path so everyone
+# starts the Oct 2026 bank from the beginning. Couples, names, join codes and
+# Path intake answers are kept. The plan is functions/src/migrateFresh.ts,
+# emulator-tested in src/lib/privacy.rules.test.ts.
+#
+# Leave "apply" unticked first: that's a dry run that only lists the sessions
+# it would clear (see the run's log). Run it again with "apply" ticked to clear
+# them. Run it after the deploy that carries the new bank has finished.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Clear the answers for real (unticked = dry run)"
+        type: boolean
+        default: false
+
+jobs:
+  fresh-start:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Build the migration
+        run: |
+          npm --prefix functions ci
+          npm --prefix functions run build
+      - name: Run it against twoagreeapp
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          APPLY: ${{ inputs.apply && '--apply' || '' }}
+        run: |
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          node scripts/migrate-fresh-start.mjs --live --project twoagreeapp $APPLY | tee "$RUNNER_TEMP/out.txt"
+          rm -f "$RUNNER_TEMP/sa.json"
+          { echo "### Fresh start"; echo ""; echo '```'; tail -n 1 "$RUNNER_TEMP/out.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

@@ -68,4 +68,5 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
 This branch sits on `claude/design-refresh`, so that has to land first.
 1. `firebase deploy --only functions` (they carry the new bank and parts).
 2. Merge to `main`; Hosting deploys itself.
-3. Straight after: `npm --prefix functions run build`, then `node scripts/migrate-fresh-start.mjs --live --project twoagreeapp` (dry run, lists sessions), then the same with `--apply`.
+3. Straight after: GitHub → Actions → "Fresh start (new question bank)" → Run workflow. Run it once unticked (a dry run that lists sessions), then again with "apply" ticked. (Or by hand: `npm --prefix functions run build`, then `node scripts/migrate-fresh-start.mjs --live --project twoagreeapp [--apply]`.)
+- Release, as done (Dave asked for it to go live, 25 Oct): one PR from this branch to `main`, carrying the design refresh and the bank. The deploy workflow ships Functions, then Hosting and rules, on merge, so steps 1 and 2 happen together.

@@ -30,3 +30,20 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
 
 ## Build rules (CLAUDE.md §9)
 `data/questions.json` + `data/decks.json` are the only source. Run `npm run build:questions`; every question must be in exactly one named part. Redeploy Functions with the bank. All gates green before committing.
+
+## Session 2 (25 Oct): grouping proposed, waiting on Dave
+- Branch `ccr-e0c32ad1-ujx8p9`, cut from `claude/design-refresh`.
+- `grouping.json` places all **561** (456 reviewed + 105 July) into the 21 conversations as **79 named parts**, every part 6 to 8 with follow-ups counted. `tools/` rebuilds and checks it (see `tools/README.md`).
+- 20 moves proposed (politics → Convictions, sexuality/gender doctrine → Convictions, IVF/donor/surrogate → Children, privacy → Faithfulness, careers → Work, the "right now" Us questions → Where We Are Now, PAST-005 back to The Past). Each needs Dave's yes.
+- 4 possible duplicates *inside the reviewed set* (Dave's July pass never compared these): NEW-muvhvx1v/INT-009, NEW-muvhwocj/VAL-002, NEW-muvhufuw/VAL-007, NEW-muwlyt9p/FAM-002.
+- Approval page: https://claude.ai/artifact/9i8cYDtFYmdRqC5jzU96uu. Verdicts land in its `verdicts` collection (one doc per part / move / pair: `verdict`, `note`, `rename`). Read them with ArtifactData, apply to `grouping.json`, re-run `tools/check.py`.
+
+## Build notes (found while mapping; act on them at build)
+- **Draft hides nothing.** `status` is stripped by `scripts/build-questions.mjs` and never reaches the app; 394 of today's 399 are Draft and all are live. Still to put to Dave.
+- **Scales:** the review writes most SCALE questions with 5 labelled steps; the app's scale takes only `lo`/`hi` (5 orbs, generic intensity words). Either keep the endpoints only or add optional per-step labels to the schema.
+- **Him/her:** HHB options ("Mostly him / Mostly her") must become `{A}`/`{B}` with `who: true`, as the app already does (`src/lib/who.ts`).
+- **Levels → `depth`:** the review's Level 1–5 maps straight onto the app's `depth` 1–5.
+- **IDs:** with everyone starting fresh, keep IDs for unchanged and KEEP-ID questions (French overlay and hooks keyed on them survive); mint new ones for everything else, with the deck's own prefix. Check `decks.json` `hook` ids, `data/path.json`, `data/reveal-library.json`, `src/lib/questions.fr.ts`, onboarding picks and tests for ids that change.
+- **Functions** carry their own copy (`functions/src/questionBank.generated.ts`): regenerate and redeploy with the bank.
+- **Mirrored scoring** (US-018, FIN-005#fu1) and the "never serve HEALTH-005/006 with NEW-muvmkn7r/NEW-muvmjt5v" rule: in this grouping the four sit in two different conversations, never one part.
+- **Typo to fix on build:** `SELF-005#fu1` reads "rank these areas of your life in terms of importance to you" (lower-case, no question form).

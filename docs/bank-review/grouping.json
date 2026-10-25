@@ -1,0 +1,154 @@
+{
+  "_about": "Proposed placement of the overhauled bank (456 reviewed + 105 July = 561) into the app's 21 conversations and named parts. Keys are change-set IDs (follow-ups as PARENT#fuN, new questions as NEW-xxxx); real IDs are minted at build. Each part lists its main questions in order; follow-ups are attached straight after their main question automatically. PROPOSAL: awaiting Dave's approval.",
+  "moves": {
+    "THEO-007": ["theology-beliefs", "values-convictions", "Politics belongs with the other politics questions."],
+    "NEW-muvhskf6": ["theology-beliefs", "values-convictions", "Joins the same-sex marriage and gender identity questions in one part on sex, gender and marriage."],
+    "NEW-muvhufuw": ["theology-beliefs", "values-convictions", "Same."],
+    "NEW-muvhuudp": ["theology-beliefs", "values-convictions", "Same."],
+    "NEW-muvhwocj": ["theology-beliefs", "values-convictions", "Same."],
+    "NEW-muvhvx1v": ["theology-beliefs", "intimacy-physical", "Sits next to the sex-before-marriage question."],
+    "NEW-muwlyt9p": ["values-convictions", "family-children", "Joins the fertility-treatment question in one fertility part."],
+    "NEW-muwlzsgd": ["values-convictions", "family-children", "Same."],
+    "NEW-muwm1euz": ["values-convictions", "family-children", "Same."],
+    "PAST-005": ["faithfulness-loyalty", "past-baggage", "Its new wording asks how you feel about past relationships, not about boundaries now."],
+    "CONF-015": ["conflict-communication", "faithfulness-loyalty", "Privacy in marriage sits with phones and openness."],
+    "CONF-035": ["conflict-communication", "faithfulness-loyalty", "Same."],
+    "NEW-muvgry18": ["roles-responsibilities", "career-ambition", "Whose career steps back: a work question. Also lifts Work from 10 to 12, so it splits into two parts of 6."],
+    "ROLE-007": ["roles-responsibilities", "career-ambition", "Same."],
+    "US-018": ["us-compatibility", "where-we-are-now", "Asks how the give-and-take feels right now."],
+    "US-042": ["us-compatibility", "where-we-are-now", "The July 'room for us right now' questions: a present-tense check-in."],
+    "US-043": ["us-compatibility", "where-we-are-now", "Same."],
+    "US-044": ["us-compatibility", "where-we-are-now", "Same."],
+    "US-045": ["us-compatibility", "where-we-are-now", "Same."],
+    "US-046": ["us-compatibility", "where-we-are-now", "Same."]
+  },
+  "possibleDuplicates": [
+    ["NEW-muvhvx1v", "INT-009", "Both ask whether sex belongs only inside marriage."],
+    ["NEW-muvhwocj", "VAL-002", "Marriage only between a man and a woman, vs your conviction on same-sex marriage."],
+    ["NEW-muvhufuw", "VAL-007", "Affirming a different gender identity, vs what you believe about gender identity."],
+    ["NEW-muwlyt9p", "FAM-002", "IVF if we struggled to conceive, vs fertility treatment if we struggled to conceive."]
+  ],
+  "decks": {
+    "in-the-home": [
+      { "name": "Who does what", "keys": ["HOME-001", "HOME-002", "HOME-008", "HOME-006", "HOME-010", "HOME-011"] },
+      { "name": "Putting down roots", "keys": ["HOME-003", "HOME-004", "HOME-007", "NEW-muocv7bg", "HOME-009", "HOME-005"] }
+    ],
+    "finances-money": [
+      { "name": "Sharing money", "keys": ["FIN-009", "FIN-001", "FIN-005", "FIN-003", "FIN-004"] },
+      { "name": "Spending and saving", "keys": ["FIN-011", "FIN-006", "FIN-014", "FIN-012", "FIN-017", "FIN-010"] },
+      { "name": "Debt, family and giving", "keys": ["FIN-002", "FIN-013", "FIN-014#fu1", "FIN-015", "FIN-008", "FIN-016", "FIN-007"] }
+    ],
+    "faith-worship-practice": [
+      { "name": "Church life", "keys": ["FAITH-007", "FAITH-010", "FAITH-032", "FAITH-031", "FAITH-026", "FAITH-003", "FAITH-033"] },
+      { "name": "Faith at home", "keys": ["FAITH-001", "FAITH-004", "FAITH-017", "FAITH-021", "FAITH-023", "FAITH-034"] },
+      { "name": "Your walk with God", "keys": ["FAITH-020", "FAITH-015", "FAITH-027", "FAITH-028", "FAITH-029", "FAITH-002", "FAITH-009"] },
+      { "name": "Honest about faith", "keys": ["FAITH-012", "FAITH-011", "FAITH-025", "FAITH-030", "FAITH-024", "FAITH-005"] },
+      { "name": "God first", "keys": ["FAITH-018", "FAITH-019", "FAITH-022", "FAITH-008", "FAITH-016", "FAITH-014", "FAITH-006", "FAITH-013"] }
+    ],
+    "roles-responsibilities": [
+      { "name": "Everyday roles", "keys": ["ROLE-011", "ROLE-012", "NEW-muvgvq1q", "NEW-muvguf5h", "NEW-muvgsfe4", "NEW-muvgszs9"] },
+      { "name": "Leading and headship", "keys": ["NEW-muvguwkz", "ROLE-001", "NEW-muvgozuu", "ROLE-005", "NEW-muvgwa3o", "ROLE-003"] },
+      { "name": "Providing, home and children", "keys": ["NEW-muvgxb0d", "ROLE-002", "NEW-muvgrkol", "NEW-muvgvagk", "NEW-muvgwv73"] }
+    ],
+    "theology-beliefs": [
+      { "name": "Where you stand", "keys": ["THEO-011", "THEO-012", "THEO-002", "NEW-muvhp18s", "THEO-010", "THEO-003"] },
+      { "name": "Communion, baptism and leadership", "keys": ["NEW-muviovr7", "NEW-muviq6iv", "THEO-009", "THEO-001"] },
+      { "name": "The debated questions", "keys": ["NEW-muvi2zu9", "NEW-muvi50d4", "THEO-005", "NEW-muvi9ve1", "THEO-004", "THEO-006"] }
+    ],
+    "dreams-future": [
+      { "name": "Dreaming together", "keys": ["DREAM-006", "NEW-muwnb1mz", "NEW-muwnbdjk", "DREAM-002", "DREAM-008", "DREAM-003", "DREAM-005"] },
+      { "name": "Building a life", "keys": ["DREAM-001", "DREAM-004", "NEW-muwnakva", "NEW-muwnc3p5", "NEW-muwncem8", "DREAM-010", "DREAM-011", "NEW-muwnen5a"] }
+    ],
+    "family-children": [
+      { "name": "Hoping for children", "keys": ["FAM-011", "FAM-012", "FAM-001", "FAM-005", "FAM-006"] },
+      { "name": "If it isn’t easy", "keys": ["FAM-002", "NEW-muwlyt9p", "NEW-muwlzsgd", "NEW-muwm1euz", "FAM-003"] },
+      { "name": "Faith and family around them", "keys": ["FAM-004", "FAM-008", "FAM-009", "FAM-007", "FAM-010"] }
+    ],
+    "parenting-style": [
+      { "name": "Raising them well", "keys": ["PAR-008", "PAR-009", "PAR-001", "PAR-002", "PAR-004"] },
+      { "name": "Discipline, school and culture", "keys": ["PAR-005", "NEW-muvjhbdp", "PAR-006", "PAR-007"] },
+      { "name": "Teenagers, faith and identity", "keys": ["NEW-muvjhpaw", "NEW-muvjhw4w", "PAR-003", "NEW-muvjiu11", "NEW-muvjmpje"] }
+    ],
+    "intimacy-physical": [
+      { "name": "Affection and attraction", "keys": ["INT-012", "INT-003", "INT-016", "INT-019", "INT-018", "INT-017"] },
+      { "name": "Before marriage", "keys": ["NEW-muvhvx1v", "INT-009", "INT-002", "NEW-muvl4int", "NEW-muvl54df", "NEW-muvl6yb0"] },
+      { "name": "Being honest about sex", "keys": ["INT-005", "INT-008", "INT-010", "INT-013", "INT-014"] },
+      { "name": "Intimacy in marriage", "keys": ["INT-001", "INT-007", "INT-020", "INT-021"] }
+    ],
+    "conflict-communication": [
+      { "name": "Love, time and respect", "keys": ["CONF-001", "CONF-020", "CONF-025", "CONF-008", "CONF-017", "CONF-037"] },
+      { "name": "Under stress", "keys": ["CONF-011", "CONF-003", "CONF-018", "CONF-024", "CONF-021", "CONF-014", "CONF-036"] },
+      { "name": "In the heat of it", "keys": ["CONF-016", "CONF-002", "CONF-013", "CONF-019", "CONF-026"] },
+      { "name": "Making it right", "keys": ["CONF-022", "CONF-029", "CONF-012", "CONF-033", "CONF-034", "CONF-004"] },
+      { "name": "Saying what you feel", "keys": ["CONF-030", "CONF-031", "CONF-032", "CONF-027", "CONF-023"] }
+    ],
+    "in-laws-extended-family": [
+      { "name": "Family at the door", "keys": ["INLAW-013", "INLAW-014", "INLAW-001", "INLAW-011", "INLAW-010", "INLAW-012"] },
+      { "name": "Holidays, help and care", "keys": ["INLAW-002", "INLAW-009", "NEW-muvlpdyp", "INLAW-003"] },
+      { "name": "Leaving and cleaving", "keys": ["INLAW-005", "INLAW-006", "INLAW-004", "NEW-muvloeop", "NEW-muvlsli2"] }
+    ],
+    "fun-icebreakers": [
+      { "name": "Date nights and laughs", "keys": ["FUN-001", "FUN-005", "FUN-002", "FUN-003"] },
+      { "name": "Who’s more likely…", "keys": ["FUN-008", "FUN-009", "FUN-010", "FUN-011", "FUN-012", "FUN-013", "FUN-014", "FUN-015"] },
+      { "name": "Lazy Sundays", "keys": ["FUN-004", "FUN-006"] },
+      { "name": "The cheeky round", "keys": ["FUN-007", "FUN-016", "FUN-020", "FUN-023", "FUN-018", "FUN-019", "FUN-021"] }
+    ],
+    "deal-breakers": [
+      { "name": "Your must-haves", "keys": ["DEAL-022", "DEAL-023", "DEAL-003", "DEAL-002", "DEAL-001", "DEAL-020"] },
+      { "name": "Lines you won’t cross", "keys": ["DEAL-004", "DEAL-007", "DEAL-006", "DEAL-008", "DEAL-009", "DEAL-005", "DEAL-012"] },
+      { "name": "When life changes", "keys": ["DEAL-010", "DEAL-017", "DEAL-019", "DEAL-014", "DEAL-013", "DEAL-021"] }
+    ],
+    "health-lifestyle": [
+      { "name": "Habits and rhythms", "keys": ["HEALTH-001", "HEALTH-003", "HEALTH-003#fu2", "HEALTH-009", "HEALTH-010", "HEALTH-002"] },
+      { "name": "Screens, drink and health", "keys": ["HEALTH-008", "HEALTH-004", "HEALTH-007", "HEALTH-005", "HEALTH-006"] }
+    ],
+    "past-baggage": [
+      { "name": "Where you’ve come from", "keys": ["PAST-008", "PAST-006", "NEW-muvm9ka6", "PAST-010", "NEW-muvma6en"] },
+      { "name": "Past relationships", "keys": ["PAST-003", "PAST-005", "PAST-002", "NEW-muvminyx", "NEW-muvmhvvj"] },
+      { "name": "Hard seasons and healing", "keys": ["PAST-007", "PAST-009", "PAST-011"] },
+      { "name": "What I should know", "keys": ["PAST-004", "PAST-001", "NEW-muvmk6or", "NEW-muvmjt5v", "NEW-muvmkn7r"] }
+    ],
+    "career-ambition": [
+      { "name": "Work and calling", "keys": ["CAREER-001", "CAREER-002", "CAREER-006", "CAREER-008", "CAREER-003", "CAREER-010"] },
+      { "name": "Work and family", "keys": ["CAREER-005", "CAREER-007", "CAREER-009", "CAREER-004", "NEW-muvgry18", "ROLE-007"] }
+    ],
+    "character-self-awareness": [
+      { "name": "Who you really are", "keys": ["SELF-013", "SELF-001", "SELF-004", "SELF-028", "SELF-010", "SELF-002"] },
+      { "name": "What shaped you", "keys": ["SELF-011", "SELF-008", "SELF-023", "SELF-024", "SELF-029", "SELF-016"] },
+      { "name": "Growing on purpose", "keys": ["SELF-020", "SELF-015", "SELF-014", "SELF-005", "SELF-022", "SELF-018"] },
+      { "name": "Integrity and honesty", "keys": ["SELF-009", "SELF-021", "SELF-019", "SELF-025", "SELF-026", "SELF-027", "SELF-017"] },
+      { "name": "Fears and forgiveness", "keys": ["SELF-003", "SELF-006", "SELF-007", "SELF-012"] }
+    ],
+    "us-compatibility": [
+      { "name": "Why us", "keys": ["NEW-muwo39l1", "US-008", "NEW-muwo2oxh", "NEW-muwo43bb", "US-050", "US-016", "US-035"] },
+      { "name": "Choosing each other", "keys": ["US-048", "US-001", "US-003", "US-021", "US-049"] },
+      { "name": "The pace we’re going", "keys": ["US-029", "US-033", "US-034", "NEW-muyctgpj", "NEW-muycxb21"] },
+      { "name": "Towards engagement", "keys": ["US-031", "NEW-muyctwfk", "NEW-muycuhc8", "NEW-muycvodl", "US-036"] },
+      { "name": "Getting ready for marriage", "keys": ["US-014", "US-010", "US-013", "US-027"] },
+      { "name": "Friends and our own lives", "keys": ["US-030", "US-039", "NEW-muydvpmp", "US-017"] },
+      { "name": "Counsel and blessing", "keys": ["US-019", "US-020", "US-037"] },
+      { "name": "Love, not just feelings", "keys": ["US-002", "US-004", "NEW-muwovpk0", "US-015", "US-023"] },
+      { "name": "What makes it last", "keys": ["US-005", "US-006", "US-009", "NEW-muwowe7q"] },
+      { "name": "Through hard seasons", "keys": ["US-026", "NEW-muwoxkz6", "NEW-muyccw9l", "NEW-muycddq3", "NEW-muycdmpy", "NEW-muycdoov", "NEW-muycdrpx"] },
+      { "name": "Covenant and cost", "keys": ["US-032", "US-040", "US-041", "US-028", "US-007"] },
+      { "name": "Honest about us", "keys": ["US-038", "US-022", "US-025", "US-011", "US-024"] }
+    ],
+    "values-convictions": [
+      { "name": "Politics and culture", "keys": ["VAL-013", "VAL-014", "THEO-007", "VAL-011", "VAL-006", "NEW-muwm1vc0"] },
+      { "name": "Life, death and medicine", "keys": ["VAL-005", "VAL-001", "VAL-008", "VAL-010"] },
+      { "name": "Sex, gender and marriage", "keys": ["VAL-002", "NEW-muvhwocj", "NEW-muvhuudp", "VAL-007", "NEW-muvhufuw", "NEW-muvhskf6"] },
+      { "name": "Marriage, divorce and living together", "keys": ["VAL-003", "VAL-004", "NEW-muwli61l", "NEW-muwli831", "VAL-012"] }
+    ],
+    "faithfulness-loyalty": [
+      { "name": "Phones, privacy and trust", "keys": ["LOYAL-009", "LOYAL-016", "CONF-006", "CONF-015", "CONF-035", "CONF-007"] },
+      { "name": "Attention from others", "keys": ["LOYAL-010", "CONF-010", "LOYAL-012", "LOYAL-013", "LOYAL-015", "LOYAL-011", "LOYAL-017"] },
+      { "name": "Guarding the line", "keys": ["INT-004", "INT-006", "INT-011"] }
+    ],
+    "where-we-are-now": [
+      { "name": "How we’re doing", "keys": ["NOW-025", "NOW-026", "NOW-027", "NOW-022", "NOW-002", "NOW-001", "NOW-019"] },
+      { "name": "Seen and understood", "keys": ["NOW-003", "NOW-005", "US-018", "NOW-009", "NOW-013", "NOW-012", "NOW-021"] },
+      { "name": "Making room for us", "keys": ["US-043", "US-042", "US-044", "US-045", "US-046", "NOW-010", "NOW-011"] },
+      { "name": "The honest questions", "keys": ["NOW-006", "NOW-007", "NOW-015", "NOW-017", "NOW-023", "NOW-020", "NOW-024"] }
+    ]
+  }
+}

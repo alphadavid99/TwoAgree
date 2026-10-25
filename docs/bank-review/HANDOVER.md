@@ -19,11 +19,14 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
   - The other 77 July questions had no match: keep.
 - Final bank ≈ **456 reviewed + 105 July = ~561**.
 
+## Decided by Dave (25 Oct)
+1. **Grouping:** keep the app's 21 conversations. Place every question in the one that fits its topic. Show Dave the list to approve before building.
+2. **Follow-ups:** always asked straight after their main question. No answer-based rules.
+3. **Rounds (parts):** rebuild each conversation's parts at **about 7 questions each, follow-ups counted**. A main question and its follow-ups always stay together in one part, so a part may be 6 to 8. Give every part a short name, as before (Dave approves the names with the grouping list).
+
 ## Still to decide with Dave (plain English, one at a time)
-1. **Grouping.** The review uses the old workbook's 19 categories; the app has 21 conversations (incl. Faithfulness and Where We Are Now) split into named parts. Proposal: keep the app's 21 conversations, place every question by its topic, rebuild the named parts, and show Dave the list to approve.
-2. **Follow-ups.** The bank says which question each follow-up belongs to, but not *when* it appears. Simplest: always ask it straight after its parent, in the same part. The alternative (only show it for certain answers) needs Dave to say the rule per follow-up.
-3. The 7 Draft questions: Draft does not hide a question today (check `status` handling before claiming otherwise).
-4. Scoring changes from `alignment-note.md` (mirrored scoring flag, weighting).
+1. The 7 Draft questions: Draft does not hide a question today (check `status` handling before claiming otherwise).
+2. Scoring changes from `alignment-note.md` (mirrored scoring flag, weighting).
 
 ## Build rules (CLAUDE.md §9)
 `data/questions.json` + `data/decks.json` are the only source. Run `npm run build:questions`; every question must be in exactly one named part. Redeploy Functions with the bank. All gates green before committing.

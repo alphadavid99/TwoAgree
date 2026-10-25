@@ -91,6 +91,9 @@ function guardWrite(r: Ref) {
     throw Object.assign(new Error('PERMISSION_DENIED'), { code: 'PERMISSION_DENIED' })
 }
 
+// The server's clock, as the fake database's: now.
+export const serverTimestamp = (): Json => Date.now()
+
 export async function update(r: Ref, patch: Record<string, Json>): Promise<void> {
   guardWrite(r)
   // A multi-path update is denied if any path in it is (as in RTDB, where the

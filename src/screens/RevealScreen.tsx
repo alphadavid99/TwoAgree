@@ -801,7 +801,7 @@ function AnswerTrack({
         <span>{q.hi}</span>
       </div>
       {same ? (
-        <div className="arow both">
+        <div className="ansrow both">
           <span className="atrack-pair">
             <Avatar name={me.name} tone={me.tone} size={30} ring={false} />
             <Avatar name={them.name} tone={them.tone} size={30} ring={false} />
@@ -822,7 +822,7 @@ function AnswerTrack({
 
 function AnswerRow({ who, text }: { who: Who; text: string }) {
   return (
-    <div className="arow">
+    <div className="ansrow">
       <Avatar name={who.name} tone={who.tone} size={30} ring={false} />
       <span>{text}</span>
     </div>
@@ -847,7 +847,7 @@ function McBody({
   const text = (v: AnswerValue | undefined) => (v == null ? "—" : (optText(q, v) ?? "—"));
   if (r.me === r.th) {
     return (
-      <div className="arow both">
+      <div className="ansrow both">
         <span className="atrack-pair">
           <Avatar name={me.name} tone={me.tone} size={30} ring={false} />
           <Avatar name={them.name} tone={them.tone} size={30} ring={false} />

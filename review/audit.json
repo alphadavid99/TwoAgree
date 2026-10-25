@@ -1,5 +1,5 @@
 {
-  "screens": 97,
+  "screens": 100,
   "results": [
     {
       "id": "kit-sheet",
@@ -482,6 +482,12 @@
       "contrast": []
     },
     {
+      "id": "together-guide",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
       "id": "together-sharecard",
       "small": [],
       "taps": [],
@@ -495,6 +501,18 @@
     },
     {
       "id": "together-talk",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-ticked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-talked",
       "small": [],
       "taps": [],
       "contrast": []

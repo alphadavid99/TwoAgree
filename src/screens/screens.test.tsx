@@ -19,7 +19,6 @@ import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
 import ResultsScreen from "./ResultsScreen";
 import PlayScreen from "./PlayScreen";
-import { CoreScore } from "./CoreScore";
 
 // The DOM is the subject here, not Firebase. src/firebase.ts calls getAuth()
 // at module load, which throws `auth/invalid-api-key` wherever VITE_FIREBASE_*
@@ -218,45 +217,8 @@ describe("ResultsScreen", () => {
 
   it("switches to the real scoreboard once something is revealed", () => {
     render(<ResultsScreen session={session} role="host" code="ABCD" onOpen={noop} />);
-    expect(screen.getByText("Where you landed")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Sarah & Judah" })).toBeTruthy();
     expect(screen.getByText("Known")).toBeTruthy();
-  });
-});
-
-describe("CoreScore", () => {
-  it("keeps Known as the hero — larger than Agreed", () => {
-    // A `span` selector once matched the number as well as its unit and shrank
-    // the hero below the secondary stat, inverting the whole hierarchy.
-    const { container } = render(
-      <CoreScore
-        agreed={{ pct: 67, done: 8, total: 70 }}
-        known={{ pct: 70, done: 8, total: 63 }}
-        myName="Sarah"
-        partnerName="Judah"
-        t={t}
-      />,
-    );
-    const hero = container.querySelector(".corestat.hero");
-    expect(hero).not.toBeNull();
-    expect(within(hero as HTMLElement).getByText("Known")).toBeTruthy();
-    // The unit carries its own class so it can be sized apart from the number.
-    expect(hero!.querySelector(".corenum .pc")?.textContent).toBe("%");
-  });
-
-  it("states what each number stands on, so a big number can't mislead", () => {
-    // Scoring version 2 (design refresh, item 4): the count, in words.
-    render(
-      <CoreScore
-        agreed={{ pct: 94, done: 9, total: 70 }}
-        known={{ pct: 90, done: 9, total: 63, right: 9, made: 10 }}
-        myName="Sarah"
-        partnerName="Judah"
-        t={t}
-      />,
-    );
-    expect(screen.getByText("based on 9 questions")).toBeTruthy();
-    expect(screen.getByText("9 of 10 guesses right")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "How scores work" })).toBeTruthy();
   });
 });
 

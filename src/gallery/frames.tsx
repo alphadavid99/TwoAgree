@@ -435,10 +435,13 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 12 · Together ============
   inSession({ id: 'together-empty', flow: 'together', title: 'Nothing revealed yet', session: (c) => sessionOf(seat(c)), tab: 'Together' }),
-  inSession({ id: 'together-results', flow: 'together', title: 'Where you agree', tab: 'Together' }),
-  inSession({ id: 'together-sharecard', flow: 'together', title: 'Progress card, with Agree ticked', note: 'The wordmark; the range line and verse ride only with the Agree score.', tab: 'Together', steps: [{ wait: 200 }, { click: /Share your card/ }, { wait: 300 }, { click: /We agree|agree/i }, { wait: 800 }] }),
+  inSession({ id: 'together-results', flow: 'together', title: 'Four sections: who, where you stand, talk about next, your conversations', note: 'Nothing on the list yet, so Talk about next suggests where you were furthest apart.', tab: 'Together' }),
+  inSession({ id: 'together-guide', flow: 'together', title: 'Talk it through: the guide', tab: 'Together', steps: [{ wait: 200 }, { click: 'Talk it through' }] }),
+  inSession({ id: 'together-sharecard', flow: 'together', title: 'Progress card, with Agree ticked', note: 'Opened from the share icon. The wordmark; the range line and verse ride only with the Agree score.', tab: 'Together', steps: [{ wait: 200 }, { click: 'Share your card' }, { wait: 300 }, { click: /We agree|agree/i }, { wait: 800 }] }),
   inSession({ id: 'together-howscores', flow: 'together', title: 'How scores work', note: 'Opened from the scores; the same sheet opens from every reveal.', tab: 'Together', steps: [{ wait: 200 }, { click: /How scores work/ }] }),
-  inSession({ id: 'together-talk', flow: 'together', title: 'Your agenda & discoveries', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
+  inSession({ id: 'together-talk', flow: 'together', title: '“Have you talked this through yet?”', note: 'Judah ticked it first. Sarah is asked, never told who ticked.', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
+  inSession({ id: 'together-ticked', flow: 'together', title: 'After you tick it', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL, 'ticked'), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
+  inSession({ id: 'together-talked', flow: 'together', title: 'Talked about together, with the date and the note', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together', steps: [{ wait: 300 }, { scrollToText: /Talked about together/ }] }),
 
   // ============ 13 · The Path ============
   inSession({ id: 'path-loading', flow: 'path', title: 'Path: checking your progress', pending: (c) => [`intake/${c.uid}`], tab: 'Path' }),

@@ -173,20 +173,23 @@ export function starterDeck(): DeckData {
 }
 
 /** A deck with the talk loop populated (one open, one half-closed, one closed). */
-export function talkDeck(slug: string): DeckData {
+// The talk list: one question you pinned, one your partner has ticked (so you're
+// asked, "Have you talked this through yet?"), one you've both ticked, with the
+// dates and a note. `ticked`: you've ticked the first one and are waiting.
+export function talkDeck(slug: string, mode: 'asked' | 'ticked' = 'asked'): DeckData {
   const d = fakeDeck(slug, nLevels(slug))
   const mcs = DECKS[slug].questions.filter((q) => q.type === 'mc').slice(0, 3)
-  const guesses = { ...(d.guesses ?? {}) }
-  mcs.forEach((q) => {
-    if (d.answers?.[q.id]?.guest != null) guesses[q.id] = { ...guesses[q.id], host: 99 }
-  })
   return {
     ...d,
-    guesses,
     talks: {
-      [mcs[0].id]: { pinned: { host: true } },
-      [mcs[1].id]: { pinned: { guest: true }, talked: { guest: true } },
-      [mcs[2].id]: { pinned: { host: true }, talked: { host: true, guest: true } },
+      [mcs[0].id]: { pinned: { host: true }, ...(mode === 'ticked' ? { talked: { host: true }, at: { host: Date.UTC(2026, 9, 20) } } : {}) },
+      ...(mode === 'ticked' ? {} : { [mcs[1].id]: { pinned: { guest: true }, talked: { guest: true }, at: { guest: Date.UTC(2026, 9, 20) } } }),
+      [mcs[2].id]: {
+        pinned: { host: true },
+        talked: { host: true, guest: true },
+        at: { host: Date.UTC(2026, 9, 12), guest: Date.UTC(2026, 9, 14) },
+        note: { host: 'One joint account for bills, our own for the rest' },
+      },
     },
   }
 }

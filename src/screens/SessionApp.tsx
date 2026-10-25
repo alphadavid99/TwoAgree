@@ -506,6 +506,7 @@ export default function SessionApp({
               role={role}
               code={code}
               onOpen={openReview}
+              onBrowse={() => setTab("decks")}
             />
           )}
           {tab === "profile" && (

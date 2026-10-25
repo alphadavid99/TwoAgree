@@ -17,6 +17,7 @@ export function ScoreRings({
   label,
   claret = false,
   sticky,
+  foot,
   children,
 }: {
   agree: number | null;
@@ -30,6 +31,8 @@ export function ScoreRings({
   claret?: boolean;
   /** Rides in the sticky bar under the slim scores (the filters). */
   sticky?: ReactNode;
+  /** Sits beside "How scores work" at the foot (Together's counts). */
+  foot?: ReactNode;
   children?: ReactNode;
 }) {
   const t = useT();
@@ -64,6 +67,12 @@ export function ScoreRings({
     </div>
   );
 
+  const howBtn = (
+    <button className={`howlink${claret ? " on-claret" : ""}`} type="button" onClick={() => setHow(true)}>
+      {t("How scores work", "Comment fonctionnent les scores")}
+    </button>
+  );
+
   return (
     <>
       <div ref={rings} className={`srings${claret ? " on-claret" : ""}`}>
@@ -76,9 +85,14 @@ export function ScoreRings({
         )}
       </div>
       {children}
-      <button className={`howlink${claret ? " on-claret" : ""}`} type="button" onClick={() => setHow(true)}>
-        {t("How scores work", "Comment fonctionnent les scores")}
-      </button>
+      {foot ? (
+        <div className="srings-foot">
+          {foot}
+          {howBtn}
+        </div>
+      ) : (
+        howBtn
+      )}
       {how && <HowScores agree={{ pct: agree, basis }} known={{ pct: known, right, made }} onClose={() => setHow(false)} />}
       {(sticky || slim) && (
         <div className="sbarwrap">

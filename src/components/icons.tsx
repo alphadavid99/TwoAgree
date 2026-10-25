@@ -70,6 +70,15 @@ export const IconClose = ({ size = 24 }: P) =>
     </>
   ));
 
+export const IconShare = ({ size = 24 }: P) =>
+  svg(size, (
+    <>
+      <path d="M12 15V3.5" />
+      <path d="M7.5 8 12 3.5 16.5 8" />
+      <path d="M5 12.5V20h14v-7.5" />
+    </>
+  ));
+
 // Deck category glyphs, keyed by the `icon` field in the question bank.
 // Rendered inside DecksScreen's category tile; stroke inherits the deck colour.
 const DECK_GLYPHS: Record<string, React.ReactNode> = {

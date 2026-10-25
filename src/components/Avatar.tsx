@@ -4,6 +4,10 @@
 // on shared screens this falls back to the initial — the app's real fallback.
 type Tone = "berry" | "honey";
 
+// Each person keeps their colour on both phones (Dave, 24 Oct): the host is
+// always claret, the guest always honey — never "me" vs "them".
+export const toneFor = (role: "host" | "guest"): Tone => (role === "host" ? "berry" : "honey");
+
 const TONE_BG: Record<Tone, string> = {
   berry: "var(--berry)",
   honey: "var(--honeyD)",
@@ -15,15 +19,31 @@ export function Avatar({
   size = 46,
   tone = "berry",
   ring = true,
+  done = false,
+  pending = false,
 }: {
   name?: string;
   photo?: string | null;
   size?: number;
   tone?: Tone;
   ring?: boolean;
+  /** A small tick: this person has finished. */
+  done?: boolean;
+  /** A dashed outline: this person hasn't finished yet. */
+  pending?: boolean;
 }) {
   const initial = (name ?? "?").trim().charAt(0).toUpperCase() || "?";
-  return (
+  if (pending) {
+    return (
+      <div
+        className="avatar-disc avatar-wait"
+        style={{ width: size, height: size, fontSize: Math.round(size * 0.42), boxShadow: "none" }}
+      >
+        {initial}
+      </div>
+    );
+  }
+  const disc = (
     <div
       className="avatar-disc"
       style={{
@@ -35,6 +55,17 @@ export function Avatar({
       }}
     >
       {photo ? <img src={photo} alt="" /> : initial}
+    </div>
+  );
+  if (!done) return disc;
+  return (
+    <div className="avatar-done" style={{ width: size, height: size }}>
+      {disc}
+      <span className="avatar-tick" aria-hidden="true">
+        <svg viewBox="0 0 12 12" width="12" height="12">
+          <path d="M2.5 6.2 5 8.6l4.5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
     </div>
   );
 }

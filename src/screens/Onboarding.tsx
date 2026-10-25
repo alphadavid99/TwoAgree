@@ -20,7 +20,7 @@ import {
   writeProfile,
 } from "../lib/session";
 import { redeemInvite, joinByCode, createInvite } from "../lib/functions";
-import type { Invite } from "../lib/invite";
+import { inviteLink, type Invite } from "../lib/invite";
 import {
   getOnbCheckpoint,
   setOnbCheckpoint,
@@ -35,6 +35,7 @@ import type { Stage } from "../types";
 import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { TopBar } from "../components/TopBar";
+import { ScriptureNotice } from "../components/ScriptureNotice";
 import StartMenu from "./StartMenu";
 import RevealScreen from "./RevealScreen";
 import AuthScreen from "./AuthScreen";
@@ -82,6 +83,7 @@ type AStep =
   | "menu";
 type BStep =
   | "arrive"
+  | "about"
   | "name"
   | "consent"
   | "questions"
@@ -138,7 +140,10 @@ export default function Onboarding({
   const [stepB, setStepB] = useState<BStep>(
     saved?.flow === "b" ? (saved.step as BStep) : "arrive",
   );
-  const [initiatorName, setInitiatorName] = useState(saved?.initiatorName ?? "");
+  // Known before joining when the invite link carries the inviter's first name.
+  const [initiatorName, setInitiatorName] = useState(
+    saved?.initiatorName ?? invite?.from ?? "",
+  );
   const [bankedCount, setBankedCount] = useState(0);
 
   const partner = partnerName.trim() || t("your partner", "votre partenaire");
@@ -300,25 +305,53 @@ export default function Onboarding({
   // FLOW B — the joiner: arrive → name → consent → answer → reveal
   // =========================================================================
   if (joining) {
+    // The invitation (item 1): named, warm, and with a way to find out more
+    // before joining. "Catch up" read as being behind; this is a beginning.
+    const inviter = initiatorName.trim();
+    const joinLabel = inviter
+      ? t(`Join ${inviter} →`, `Rejoindre ${inviter} →`)
+      : t("Join →", "Rejoindre →");
     if (stepB === "arrive") {
       return shell(
         <>
           <div className="eyebrow center" style={{ marginTop: 30 }}>
-            {t("You've been invited", "Vous êtes invité·e")}
+            {inviter
+              ? t(`${inviter} invited you`, `${inviter} vous a invité·e`)
+              : t("You've been invited", "Vous êtes invité·e")}
           </div>
           <h1 className="h1 center" style={{ margin: "10px 24px 6px" }}>
-            {t("Someone has started something.", "Quelqu'un a commencé quelque chose.")}
+            {t("Begin your walk together.", "Commencez votre marche ensemble.")}
           </h1>
           <p className="sub serif center" style={{ fontStyle: "italic", margin: "10px 24px 26px" }}>
-            {t(
-              "It doesn't work without you. Answer the same questions and you'll see where you two land.",
-              "Ça ne marche pas sans vous. Répondez aux mêmes questions et vous verrez où vous en êtes.",
-            )}
+            {inviter
+              ? t(
+                  `This journey is meant for two. Answer the same questions as ${inviter} to see where you align and spark the conversations that matter most.`,
+                  `Ce chemin se fait à deux. Répondez aux mêmes questions que ${inviter} pour voir où vous vous rejoignez et ouvrir les conversations qui comptent le plus.`,
+                )
+              : t(
+                  "This journey is meant for two. Answer the same questions to see where you align and spark the conversations that matter most.",
+                  "Ce chemin se fait à deux. Répondez aux mêmes questions pour voir où vous vous rejoignez et ouvrir les conversations qui comptent le plus.",
+                )}
           </p>
           <button className="btn pill" type="button" onClick={() => setStepB("name")}>
-            {t("Catch up →", "Rattraper →")}
+            {joinLabel}
+          </button>
+          <button className="btn ghost" type="button" onClick={() => setStepB("about")}>
+            {t("What is TwoAgree?", "Qu’est-ce que TwoAgree ?")}
           </button>
         </>,
+      );
+    }
+    if (stepB === "about") {
+      return shell(
+        <AboutBody
+          onJoin={() => setStepB("name")}
+          joinLabel={joinLabel}
+          onBack={() => setStepB("arrive")}
+          t={t}
+        />,
+        undefined,
+        "obwel",
       );
     }
     if (stepB === "name") {
@@ -609,6 +642,70 @@ function ConsentBody({
       >
         {busy ? t("One moment…", "Un instant…") : t("Start →", "Commencer →")}
       </button>
+    </>
+  );
+}
+
+// ---- "What is TwoAgree?" (item 1) ------------------------------------------
+// Opened from the invitation, so an invitee can find out what this is before
+// joining. Reuses the welcome screen's verse and list styling. The privacy
+// line is literally true: answers are published only once both partners have
+// finished a part (server-side, recommendation 5).
+function AboutBody({
+  onJoin,
+  joinLabel,
+  onBack,
+  t,
+}: {
+  onJoin: () => void;
+  joinLabel: string;
+  onBack: () => void;
+  t: T;
+}) {
+  return (
+    <>
+      <div className="eyebrow center" style={{ marginTop: 22 }}>
+        {t("About TwoAgree", "À propos de TwoAgree")}
+      </div>
+      <h1 className="h1 center" style={{ margin: "8px 24px 0" }}>
+        {t("Two people, the same questions.", "Deux personnes, les mêmes questions.")}
+      </h1>
+      <div className="obwelcome">
+        <p className="verse serif center" style={{ marginTop: 24 }}>
+          {t(
+            "“Can two walk together, unless they are agreed?”",
+            "« Deux hommes marchent-ils ensemble, sans s'être concertés ? »",
+          )}
+          <span className="verse-ref">Amos 3:3</span>
+        </p>
+        <ul className="obfacts">
+          <li>
+            {t(
+              "You each answer the same questions about faith, values and life together.",
+              "Vous répondez chacun aux mêmes questions sur la foi, les valeurs et la vie à deux.",
+            )}
+          </li>
+          <li>
+            {t(
+              "Your answers stay private until you’ve both finished a part.",
+              "Vos réponses restent privées jusqu’à ce que vous ayez tous deux terminé une partie.",
+            )}
+          </li>
+          <li>
+            {t(
+              "Then you see where you agree, where you differ, and what’s worth talking about, with Christ at the centre.",
+              "Puis vous voyez où vous êtes d’accord, où vous différez, et ce qui mérite d’en parler, avec le Christ au centre.",
+            )}
+          </li>
+        </ul>
+      </div>
+      <button className="btn pill" type="button" onClick={onJoin}>
+        {joinLabel}
+      </button>
+      <button className="btn ghost" type="button" onClick={onBack}>
+        {t("Back to the invitation", "Retour à l’invitation")}
+      </button>
+      <ScriptureNotice />
     </>
   );
 }
@@ -1029,12 +1126,12 @@ function InviteStep({
     let link = "";
     try {
       const res = await createInvite({ code });
-      link = `${window.location.origin}/?t=${res.data.token}`;
+      link = inviteLink(window.location.origin, { token: res.data.token }, myName);
     } catch {
       // Fallback: the bare-code link. This used to be a dead URL — nothing in
       // the app read `c`, so the partner landed on the front door with no join
       // context and could start a SECOND session. invite.ts reads it now.
-      link = `${window.location.origin}/?c=${code}`;
+      link = inviteLink(window.location.origin, { code }, myName);
     }
     const text = `${msg}${link}`;
     try {

@@ -112,7 +112,7 @@ const cp = (o: Partial<OnbCheckpoint> & Pick<OnbCheckpoint, 'flow' | 'step'>) =>
     ...o,
   })
 
-const INVITE = { kind: 'token', value: 'FIXTURE-TOKEN' } as const
+const INVITE = { kind: 'token', value: 'FIXTURE-TOKEN', from: 'Sarah' } as const
 const starterDb = (c: Ctx) => ({
   users: people(c),
   sessions: {
@@ -180,6 +180,8 @@ const playFrame = (
 const partnerFinishes = (slug: string) => (rt: FrameRuntime) => {
   const s = (rt.db.sessions as Record<string, Session>)[CODE]
   const d = fakeDeck(slug, nLevels(slug))
+  // ...and the server publishes it (functions/src/publish.ts).
+  d.published = Object.fromEntries(Array.from({ length: nLevels(slug) }, (_, l) => [l, true]))
   s.decks![slug] = d
   rt.listeners.forEach((fn) => fn())
 }
@@ -263,8 +265,9 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 3 · Joining by invite ============
   onboarding(true, { id: 'join-arrive', title: 'You’ve been invited' }),
-  onboarding(true, { id: 'join-name', title: 'Your name', steps: [{ click: /Catch up/ }] }),
-  onboarding(true, { id: 'join-consent', title: 'Consent', steps: [{ click: /Catch up/ }, { type: '#nm', value: 'Judah' }, { click: /^Continue/ }] }),
+  onboarding(true, { id: 'join-about', title: 'What is TwoAgree?', note: 'Opened from the invitation; Back returns to it.', steps: [{ click: /What is TwoAgree/ }] }),
+  onboarding(true, { id: 'join-name', title: 'Your name', steps: [{ click: /^Join Sarah/ }] }),
+  onboarding(true, { id: 'join-consent', title: 'Consent', steps: [{ click: /^Join Sarah/ }, { type: '#nm', value: 'Judah' }, { click: /^Continue/ }] }),
   onboarding(true, { id: 'join-questions', title: 'Their turn to answer', seed: cp({ flow: 'b', step: 'questions' }) }),
   onboarding(true, { id: 'join-reveal', title: 'First reveal', note: 'The warm-up reveal the invitee sees before making an account.', seed: cp({ flow: 'b', step: 'reveal' }), steps: [{ wait: 3800 }] }),
   onboarding(true, { id: 'join-account', title: 'Make it yours (account)', seed: cp({ flow: 'b', step: 'account' }) }),
@@ -357,11 +360,11 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 10 · Waiting & unlocking ============
   inSession({
-    id: 'wait-partner', flow: 'wait', title: 'All yours are in (waiting on partner)',
+    id: 'wait-partner', flow: 'wait', title: 'Your answers are saved (waiting on partner)',
     session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }), openSlug: SINGLE,
   }),
   inSession({
-    id: 'wait-unlock', flow: 'wait', title: 'Ready to open (partner just finished)',
+    id: 'wait-unlock', flow: 'wait', title: 'Ready to open (you’ve both finished)',
     note: 'Scripted: open the deck, wait, then the fixture partner finishes live.',
     session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }),
     steps: [{ click: 'Talk' }, { wait: 200 }, { click: deckLabel(SINGLE) }, { wait: 200 }, { run: partnerFinishes(SINGLE) }, { wait: 300 }],

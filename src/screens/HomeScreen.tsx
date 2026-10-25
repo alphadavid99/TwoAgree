@@ -3,6 +3,7 @@ import { ORDER } from "../lib/questions";
 import { nLevels, lvlQs } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
+import { inviteLink } from "../lib/invite";
 import { revealedRows, answersWaiting } from "../lib/results";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
@@ -141,7 +142,7 @@ export default function HomeScreen({
     setInviteMsg("");
     try {
       const res = await createInvite({ code });
-      const link = `${window.location.origin}/?t=${res.data.token}`;
+      const link = inviteLink(window.location.origin, { token: res.data.token }, myName);
       const txt = t(
         `Come do this with me on TwoAgree, we each answer the same questions, then see where the two of us land: ${link}`,
         `Fais-le avec moi sur TwoAgree, on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
@@ -333,13 +334,13 @@ export default function HomeScreen({
           <span className="readycard-sub">
             {joined
               ? t(
-                  `You and ${partnerName} have both answered. Best opened side by side.`,
-                  `${partnerName} et vous avez tous deux répondu. Mieux vaut l’ouvrir côte à côte.`,
+                  `You and ${partnerName} have both finished. It’s best opened together, whenever suits you both.`,
+                  `${partnerName} et vous avez tous deux terminé. Mieux vaut l’ouvrir ensemble, quand cela vous convient.`,
                 )
               : t("You've both answered.", "Vous avez tous les deux répondu.")}
           </span>
           <span className="readycard-cta">
-            {t("Open your reveal →", "Ouvrir votre révélation →")}
+            {t("Open the reveal →", "Ouvrir la révélation →")}
           </span>
         </button>
       )}

@@ -13,15 +13,43 @@
 // capacitor://localhost — so the invitation arrives later via a universal link
 // (see device/deeplinks.ts), which calls setInviteToken(). Components read it
 // through a tiny subscription so one that lands AFTER mount still routes.
-export type Invite = { kind: "token" | "code"; value: string };
+//
+// Either link may carry `n`, the inviter's first name, so the invitation can
+// say who it's from ("Sarah invited you") before the guest has joined and can
+// read the session. It's only a display hint the inviter chose to send.
+export type Invite = { kind: "token" | "code"; value: string; from?: string };
+
+// A first name only, letters and simple punctuation, at most 20 characters.
+export function cleanFirstName(raw: string | null | undefined): string | undefined {
+  const first = (raw ?? "").trim().split(/\s+/)[0] ?? "";
+  const clean = first.replace(/[^\p{L}\p{M}'’-]/gu, "").slice(0, 20);
+  return clean || undefined;
+}
+
+export function parseInvite(search: string): Invite | null {
+  const p = new URLSearchParams(search);
+  const from = cleanFirstName(p.get("n"));
+  const t = p.get("t")?.trim();
+  if (t) return { kind: "token", value: t, ...(from ? { from } : {}) };
+  const c = p.get("c")?.trim().toUpperCase();
+  if (c) return { kind: "code", value: c, ...(from ? { from } : {}) };
+  return null;
+}
+
+/** The link the inviter shares: a token (or the bare-code fallback) plus their first name. */
+export function inviteLink(
+  origin: string,
+  key: { token: string } | { code: string },
+  fromName?: string,
+): string {
+  const p = new URLSearchParams("token" in key ? { t: key.token } : { c: key.code });
+  const from = cleanFirstName(fromName);
+  if (from) p.set("n", from);
+  return `${origin}/?${p.toString()}`;
+}
 
 function fromUrl(): Invite | null {
-  const p = new URLSearchParams(window.location.search);
-  const t = p.get("t")?.trim();
-  if (t) return { kind: "token", value: t };
-  const c = p.get("c")?.trim().toUpperCase();
-  if (c) return { kind: "code", value: c };
-  return null;
+  return typeof window === "undefined" ? null : parseInvite(window.location.search);
 }
 
 let current: Invite | null = fromUrl();

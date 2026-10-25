@@ -11,7 +11,6 @@ import {
   readyReveals,
   revealKey,
 } from "../lib/progress";
-import { startedLevel } from "../lib/privacy";
 import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
 import {
@@ -30,13 +29,15 @@ import RevealScreen from "./RevealScreen";
 import PathScreen, { PathFlow } from "./PathScreen";
 import { TopBar } from "../components/TopBar";
 import { Mark } from "../brand/Mark";
-import { Avatar } from "../components/Avatar";
+import { Avatar, toneFor } from "../components/Avatar";
+import { deckName } from "../lib/questions.fr";
+import { talkEventIcs, icsHref } from "../lib/calendar";
 import { Wordmark } from "../brand/Wordmark";
 import { PillNav } from "../components/PillNav";
 import type { Session } from "../types";
 import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
 import { Route } from "lucide-react";
-import { useT } from "../lib/i18n";
+import { useLang, useT } from "../lib/i18n";
 import { track } from "../lib/observability";
 
 type Tab = "home" | "decks" | "path" | "results" | "profile";
@@ -99,6 +100,7 @@ export default function SessionApp({
   openSlug?: string;
 }) {
   const t = useT();
+  const lang = useLang();
   const { session, role, loading, denied } = useSession(code, user.uid);
   const [tab, setTab] = useState<Tab>("home");
   // Where the couple actually is, remembered across app opens. Defaulting to
@@ -326,18 +328,18 @@ export default function SessionApp({
           <section className="screen-enter">
             <TopBar onExit={exitFlow} />
             <div className="unlock">
-              <div className="unlock-pair">
-                <Avatar name={myName} tone="berry" size={46} />
-                <Avatar name={partnerName} tone="honey" size={46} />
+              <div className="pair-apart">
+                <Avatar name={session.members?.host?.name} tone="berry" size={46} />
+                <Avatar name={session.members?.guest?.name} tone="honey" size={46} />
               </div>
               <div className="eyebrow center">{t("READY TO OPEN", "PRÊT À OUVRIR")}</div>
               <h2 className="h1 center" style={{ fontSize: 26, marginTop: 6 }}>
-                {t(`${partnerName} just finished.`, `${partnerName} vient de terminer.`)}
+                {t("You’ve both finished this part.", "Vous avez tous deux terminé cette partie.")}
               </h2>
               <p className="sub center" style={{ margin: "10px 24px 0" }}>
                 {t(
-                  "Your reveal is waiting: it's best opened side by side.",
-                  "Votre révélation vous attend, mieux vaut l’ouvrir côte à côte.",
+                  "Your reveal is ready. It’s best opened together, whenever suits you both.",
+                  "Votre révélation est prête. Mieux vaut l’ouvrir ensemble, quand cela vous convient à tous les deux.",
                 )}
               </p>
               <button
@@ -345,10 +347,10 @@ export default function SessionApp({
                 type="button"
                 onClick={() => setOpenReveal(true)}
               >
-                {t("Open it together →", "Ouvrir ensemble →")}
+                {t("Open the reveal →", "Ouvrir la révélation →")}
               </button>
               <button className="btn ghost" type="button" onClick={exitFlow}>
-                {t("In a moment", "Dans un instant")}
+                {t("Later", "Plus tard")}
               </button>
             </div>
           </section>
@@ -368,51 +370,78 @@ export default function SessionApp({
         />
       );
     }
+    // You've finished, they haven't (item 1): both of you, one quiet line, two
+    // ways on, and an optional calendar link. No counts, no blame.
+    const partLabel =
+      nLevels(slug) > 1
+        ? t(
+            `${deckName(slug, lang)} · Part ${level + 1}`,
+            `${deckName(slug, lang)} · Partie ${level + 1}`,
+          )
+        : deckName(slug, lang);
+    const ics = talkEventIcs(
+      t(`TwoAgree: ${partLabel}`, `TwoAgree : ${partLabel}`),
+      t(
+        `Open the reveal for ${partLabel} together, in person or on a call. https://twoagree.app`,
+        `Ouvrez ensemble la révélation de ${partLabel}, en personne ou par appel. https://twoagree.app`,
+      ),
+    );
     return (
-      <section>
+      <section className="screen-enter">
         <TopBar onExit={exitFlow} />
-        {/* Waiting on the partner: a breathing caret, not an error-ish spinner. */}
-        <div className="bwrap">
-          <span className="bring" />
-          <span className="bring b2" />
-          <Mark height={42} title="TwoAgree" colour="var(--berry)" />
-        </div>
-        <h2 className="h1 center" style={{ fontSize: 24 }}>
-          {t("All yours are in.", "Les vôtres sont enregistrées.")}
-        </h2>
-        {/* The wait reads better as something SEALED than as something missing:
-            the answers already exist, they're just closed until you've both
-            finished. Same constraint, told as anticipation. */}
-        <p className="sub center" style={{ margin: "10px 24px 20px" }}>
-          {startedLevel(deck, level, other(role))
-            ? t(
-                `${partnerName}'s answers are sealed until you've both finished, then you'll see the same score, together.`,
-                `Les réponses de ${partnerName} restent scellées jusqu’à ce que vous ayez tous deux terminé, vous verrez alors le même score, ensemble.`,
-              )
-            : t(
-                `Sealed until ${partnerName} has answered too, then you'll both see the same score.`,
-                `Scellé jusqu’à ce que ${partnerName} ait répondu aussi, vous verrez alors le même score tous les deux.`,
-              )}
-        </p>
-        {/* Two counts side by side in team colours read as a scoreboard — the
-            one framing the design values forbid. Stack them as statuses. */}
-        <div className="waitstat">
-          <p>
-            <b>{t("Yours", "Les vôtres")}</b>
-            <span>{t("all in ✓", "toutes enregistrées ✓")}</span>
+        <div className="unlock">
+          <div className="pair-apart">
+            {(["host", "guest"] as const).map((r) =>
+              r === role ? (
+                <Avatar key={r} name={session.members?.[r]?.name} tone={toneFor(r)} size={56} done />
+              ) : (
+                <Avatar key={r} name={session.members?.[r]?.name ?? partnerName} tone={toneFor(r)} size={56} pending />
+              ),
+            )}
+          </div>
+          <h2 className="h1 center" style={{ fontSize: 26 }}>
+            {t("Your answers are saved.", "Vos réponses sont enregistrées.")}
+          </h2>
+          <p className="sub center" style={{ margin: "10px 24px 0" }}>
+            {t(
+              `${partLabel} opens when ${partnerName.trim().split(/\s+/)[0]} has answered too.`,
+              `${partLabel} s’ouvrira quand ${partnerName.trim().split(/\s+/)[0]} aura répondu aussi.`,
+            )}
           </p>
-          <p>
-            <b>{partnerName}</b>
-            <span>
-              {startedLevel(deck, level, other(role))
-                ? t("started", "commencé")
-                : t("not started yet", "pas encore commencé")}
-            </span>
+          <p className="sub serif center" style={{ fontStyle: "italic", margin: "14px 24px 6px", color: "var(--ink)" }}>
+            {t(
+              "It’s a journey for two. Open it together when you can.",
+              "C’est un chemin à deux. Ouvrez-la ensemble quand vous pourrez.",
+            )}
           </p>
+          <button
+            className="btn pill"
+            type="button"
+            onClick={() => {
+              setFlow(null);
+              setTab("home");
+            }}
+          >
+            {t("Back to Home", "Retour à l’accueil")}
+          </button>
+          <button
+            className="btn out"
+            type="button"
+            onClick={() => {
+              setFlow(null);
+              setTab("decks");
+            }}
+          >
+            {t("Try another conversation", "Essayer une autre conversation")}
+          </button>
+          <a
+            className="btn ghost callink"
+            href={icsHref(ics)}
+            download="twoagree-conversation.ics"
+          >
+            {t("Add a time to your calendar", "Ajouter un moment à votre agenda")}
+          </a>
         </div>
-        <button className="btn out" type="button" onClick={exitFlow}>
-          {t("Keep exploring", "Continuer d’explorer")}
-        </button>
       </section>
     );
   }

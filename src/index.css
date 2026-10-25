@@ -4450,3 +4450,52 @@ textarea.input {
   white-space: nowrap;
   border: 0;
 }
+
+/* The Bible copyright notice under the About page (ESV + NKJV). Helper size,
+   grey: present and legible, never competing with the page. */
+.scripture-notice {
+  margin: 28px 24px 8px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ta-grey);
+  text-align: center;
+}
+
+/* A person who has finished: a small honey tick on their avatar. */
+.avatar-done {
+  position: relative;
+  flex: 0 0 auto;
+}
+.avatar-tick {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--app-honey);
+  color: var(--ta-ink);
+  border: 2px solid var(--ta-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Two people, kept apart (design system: side by side, never overlapping). */
+.pair-apart {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+/* "Add a time to your calendar": optional, so small grey text, still a full
+   48px to tap. */
+.btn.ghost.callink {
+  display: block;
+  min-height: 48px;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+  margin-top: 8px;
+}

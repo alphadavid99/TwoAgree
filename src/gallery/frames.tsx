@@ -63,6 +63,9 @@ const couple = (c: Ctx, o: Parameters<typeof sessionOf>[1] = {}) =>
     ...o,
   })
 
+// A multi-part conversation neither of the couple has started.
+const FRESH = ORDER.find((x) => nLevels(x) > 1 && ![MULTI, FULL, FIRST, SINGLE].includes(x))!
+
 // ---- App-hosted frames (signed in, in a session) ----------------------------
 type AppOpts = Partial<Omit<FrameDef, 'render' | 'bare' | 'db'>> & {
   id: string
@@ -393,6 +396,34 @@ export const FRAMES: FrameDef[] = [
     id: 'talk-picker', flow: 'talk', title: 'Choose a part: named parts, both of you on each', note: 'Known and what surprised you sit underneath once a part is open.',
     session: (c) => sessionOf(seat(c), { decks: { [MULTI]: { ...fakeDeck(MULTI, 1), done: { 0: { host: true, guest: true }, 1: { host: true } } } } }),
     openSlug: MULTI,
+  }),
+
+  // Doing a part together, now (feedback 23).
+  inSession({
+    id: 'live-choose', flow: 'talk', title: 'Starting a part: with Judah now, or on my own',
+    session: (c) => couple(c), openSlug: FRESH,
+    steps: [{ wait: 300 }, { sel: '.pp-row', nth: 0 }, { wait: 400 }],
+  }),
+  inSession({
+    id: 'live-asking', flow: 'talk', title: 'Asking Judah to start it now',
+    note: 'Judah gets the request in the app; the link is for when the app isn’t open.',
+    session: (c) => couple(c), openSlug: FRESH,
+    steps: [{ wait: 300 }, { sel: '.pp-row', nth: 0 }, { wait: 300 }, { click: /Do it with Judah now/ }, { wait: 500 }],
+  }),
+  inSession({
+    id: 'live-request', flow: 'talk', title: 'Judah’s request, as Sarah sees it',
+    note: 'Over whatever screen is open. Start now goes straight into the part.',
+    session: (c) => ({ ...couple(c), live: { from: 'guest', slug: FRESH, level: 0, status: 'asked', at: Date.now() } }),
+    steps: [{ wait: 500 }],
+  }),
+  inSession({
+    id: 'live-declined', flow: 'talk', title: 'Judah can’t right now',
+    session: (c) => couple(c), openSlug: FRESH,
+    steps: [
+      { wait: 300 }, { sel: '.pp-row', nth: 0 }, { wait: 300 }, { click: /Do it with Judah now/ }, { wait: 300 },
+      { run: (rt) => { const s = (rt.db.sessions as Record<string, Session>)[CODE]; if (s.live) s.live = { ...s.live, status: 'declined' }; rt.listeners.forEach((fn) => fn()) } },
+      { wait: 400 },
+    ],
   }),
 
   // ============ 9 · Answering ============

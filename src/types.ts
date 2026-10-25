@@ -1,5 +1,6 @@
 // Shared data-model types. Mirrors the RTDB shape in CLAUDE.md §6.
 import type { DeckData, Role } from "./lib/scoring";
+import type { LiveRequest } from "./lib/live";
 
 export interface Profile {
   name: string;
@@ -56,4 +57,6 @@ export interface Session {
   pathPublished?: Record<string, boolean>;
   /** Each published step's reveal line and verse (lib/reveal.ts). */
   pathPick?: Record<string, { line: number; verse: number }>;
+  /** One partner asking the other to start a part now (lib/live.ts). */
+  live?: LiveRequest;
 }

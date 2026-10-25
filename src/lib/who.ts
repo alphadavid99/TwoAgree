@@ -7,8 +7,8 @@
 // Those two options are STORED as who was picked ("host" / "guest"), not as
 // a position; every other option keeps its position (its text never changed).
 // A stored 0 or 1 on one of these questions is an answer to the old Him/Her
-// wording, which can't be mapped to a person; it reads as unknown, and the
-// one-off migration (functions/src/migrateWho.ts) clears it to be asked again.
+// wording, which can't be mapped to a person; it reads as unknown. (The Oct
+// 2026 fresh start, functions/src/migrateFresh.ts, cleared every old answer.)
 import type { Question } from "./questions";
 import type { AnswerValue, Role } from "./scoring";
 

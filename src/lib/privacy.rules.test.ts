@@ -417,44 +417,55 @@ describe("the one-off migration of existing sessions", () => {
   });
 });
 
-describe("the one-off re-ask of the 18 which-of-you questions", () => {
-  it("clears old Him/Her answers so the question is asked again, by name, and the part reopens", async () => {
-    const { migrateWhoAll } = await import("../../functions/src/migrateWho");
+describe("the one-off fresh start for the Oct 2026 bank", () => {
+  it("clears every answer, the Path and both private spaces, keeps the couple, and they start again", async () => {
+    const { migrateFreshAll } = await import("../../functions/src/migrateFresh");
     const { getDatabase } = await import("../../functions/node_modules/firebase-admin/lib/database/index.js");
-    // The starter part holds "Who's more likely…?" questions. Sarah answered
-    // FUN-010 the old way (0 = Him) and finished; it was published.
-    const who = part0.find((q) => q.who)!;
-    const plain = part0.find((q) => !q.who && q.type === "mc")!;
+    // Mid-way through the old bank: part 1 published, Sarah half-way through
+    // part 2 in her private space, a Path laid, and a date set to meet.
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    expect(await call(GUEST, { code: CODE, slug: SLUG, level: 0 })).toEqual({ status: "published" });
+    await playPart(HOST, "host", 1, false);
     await env.withSecurityRulesDisabled(async (ctx) => {
-      await update(ref(ctx.database(), `sessions/${CODE}/decks/${SLUG}`), {
-        [`answers/${who.id}`]: { host: 0, guest: 2 },
-        [`answers/${plain.id}`]: { host: 0, guest: 1 },
-        "done/0": { host: true, guest: true },
-        "published/0": true,
+      await update(ref(ctx.database(), `sessions/${CODE}`), {
+        path: { generatedAt: 1, steps: { 0: { key: "trailhead", qids: [part0[0].id] } } },
+        "pathDone/0": { host: true },
+        "pathLamps/0": true,
+        meetAt: 1234,
       });
-      await set(ref(ctx.database(), `private/${HOST}/${CODE}/decks/${SLUG}/answers/${who.id}`), 0);
+      await set(ref(ctx.database(), `intake/${HOST}/stage`), 1);
     });
 
-    const dry = await migrateWhoAll(getDatabase() as never, { apply: false });
-    expect(dry.find((r) => r.code === CODE)!.cleared).toBe(1);
-    await migrateWhoAll(getDatabase() as never, { apply: true });
+    const dry = await migrateFreshAll(getDatabase() as never, { apply: false });
+    expect(dry.find((r) => r.code === CODE)!.writes).toBeGreaterThan(0);
+    // A dry run writes nothing.
+    expect((await get(ref(asUser(HOST), `private/${HOST}/${CODE}`))).val()).not.toBeNull();
 
-    const deck = (await get(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}`))).val();
-    expect(deck.answers[who.id]).toEqual({ guest: 2 }); // "Both of us" stays
-    expect(deck.answers[plain.id]).toEqual({ host: 0, guest: 1 }); // not a who question
-    expect(deck.done[0]).toEqual({ guest: true }); // reopened for Sarah
-    expect(deck.published).toBeUndefined();
+    await migrateFreshAll(getDatabase() as never, { apply: true });
 
-    // Sarah answers it again, by name, and finishes; the part opens again.
-    await assertSucceeds(set(ref(asUser(HOST), `private/${HOST}/${CODE}/decks/${SLUG}/answers/${who.id}`), "guest"));
-    await assertSucceeds(set(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/done/0/host`), true));
-    expect(await call(HOST, { code: CODE, slug: SLUG, level: 0 })).toEqual({ status: "published" });
-    const after = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/answers/${who.id}`))).val();
-    expect(after).toEqual({ host: "guest", guest: 2 });
+    const s = (await get(ref(asUser(GUEST), `sessions/${CODE}`))).val();
+    expect(s.decks).toBeUndefined();
+    expect(s.path).toBeUndefined();
+    expect(s.pathDone).toBeUndefined();
+    expect(s.pathLamps).toBeUndefined();
+    expect(s.members.host).toEqual({ name: "Sarah", uid: HOST });
+    expect(s.uids).toEqual({ [HOST]: true, [GUEST]: true });
+    expect(s.meetAt).toBe(1234);
+    expect((await get(ref(asUser(HOST), `private/${HOST}/${CODE}`))).val()).toBeNull();
+    expect((await get(ref(asUser(GUEST), `private/${GUEST}/${CODE}`))).val()).toBeNull();
+    expect((await get(ref(asUser(HOST), `intake/${HOST}/stage`))).val()).toBe(1);
 
-    // A second run changes nothing.
-    const again = await migrateWhoAll(getDatabase() as never, { apply: true });
+    // Running it again changes nothing.
+    const again = await migrateFreshAll(getDatabase() as never, { apply: true });
     expect(again.find((r) => r.code === CODE)!.writes).toBe(0);
+
+    // They start the new bank from part 1, and it opens as normal.
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    expect(await call(HOST, { code: CODE, slug: SLUG, level: 0 })).toEqual({ status: "published" });
+    const after = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/answers`))).val();
+    part0.forEach((q, i) => expect(after[q.id].host).toBe(q.type === "open" ? `Written by host ${i}` : answerOf("host", i)));
   });
 });
 

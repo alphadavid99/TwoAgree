@@ -63,8 +63,18 @@ for k, x in cur.items():
 bykey = {e["key"]: e for e in items}
 for e in items:
     if e["kind"] == "fu":
-        p = bykey[e["parent"]]
-        e["deck"] = p["deck"]
+        e["deck"] = bykey[e["parent"]]["deck"]
+# Dave's decisions from the approval round (grouping.json "decisions")
+DEC = json.load(open(os.path.join(HERE, "..", "grouping.json"))).get("decisions", {})
+items = [e for e in items if e["key"] not in DEC.get("drop", {})]
+bykey = {e["key"]: e for e in items}
+for k, parent in DEC.get("reparent", {}).items():
+    bykey[k]["parent"] = parent
+for k in DEC.get("standalone", []):
+    e = bykey[k]; e["kind"] = "new"; e["wasFollowUp"] = e.pop("parent"); e.pop("reparented", None)
+for k, r in DEC.get("reword", {}).items():
+    bykey[k]["q"] = r["q"]
+    if "opts" in r: bykey[k]["opts"] = r["opts"]
 # FUN-001: review references it? check presence
 missing = [k for k in ["FUN-001"] if k not in bykey]
 print("missing", missing)

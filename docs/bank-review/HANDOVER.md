@@ -47,3 +47,9 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
 - **Functions** carry their own copy (`functions/src/questionBank.generated.ts`): regenerate and redeploy with the bank.
 - **Mirrored scoring** (US-018, FIN-005#fu1) and the "never serve HEALTH-005/006 with NEW-muvmkn7r/NEW-muvmjt5v" rule: in this grouping the four sit in two different conversations, never one part.
 - **Typo to fix on build:** `SELF-005#fu1` reads "rank these areas of your life in terms of importance to you" (lower-case, no question form).
+
+## Session 2, round two (25 Oct): Dave's verdicts applied
+- Dave approved all 79 parts and all 20 moves. Duplicates: dropped `VAL-007`, `VAL-002` and `NEW-muwlyt9p` (IVF); kept both of `NEW-muvhvx1v`/`INT-009`. The two dropped questions' follow-ups now follow their replacements (`VAL-007#fu1` → `NEW-muvhufuw`, `VAL-002#fu1` → `NEW-muvhwocj`).
+- His comments, applied: modesty joins "Sex, gender and marriage"; `ROLE-012` → Fun; surnames (`NEW-muvgvq1q`) → Us "Getting ready for marriage"; `SELF-005#fu1` is standalone after `SELF-008`; `NOW-006` reworded. Everything is recorded under `decisions` in `grouping.json`, and `tools/merge.py` applies it.
+- Knock-on changes he hasn't seen yet: Roles became two parts of 8 ("Who does what", "Leading and headship"), and `PAR-009` moves to Children so each Children part has 6. Those verdicts were cleared on the page so he can look at them again.
+- **Now: 558 questions, 78 parts, all 6 to 8.** The comment threads stay open on the page because none was sent to Claude. Dave can resolve them himself.

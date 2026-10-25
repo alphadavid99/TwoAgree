@@ -1,5 +1,5 @@
 {
-  "screens": 114,
+  "screens": 118,
   "results": [
     {
       "id": "kit-sheet",
@@ -339,6 +339,30 @@
     },
     {
       "id": "talk-picker",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "live-choose",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "live-asking",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "live-request",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "live-declined",
       "small": [],
       "taps": [],
       "contrast": []

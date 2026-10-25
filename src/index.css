@@ -7291,3 +7291,85 @@ a.btn {
 .pfix > .playfoot {
   padding-top: 28px;
 }
+
+/* ---- Doing a part together, now (feedback 23) ---- */
+/* Choosing how to start a part: together (the highlighted choice) or alone. */
+.livechoice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 16px;
+  text-align: left;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 5px solid var(--kit-card-base);
+  border-radius: 20px;
+  background: var(--ta-white);
+  font: inherit;
+  color: var(--ta-ink);
+  cursor: pointer;
+  transition: transform var(--dur-press) ease, border-bottom-width var(--dur-press) ease;
+}
+.livechoice:active {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+.livechoice.live {
+  border-color: var(--app-honey);
+  border-bottom-color: var(--kit-honey-base);
+  background: linear-gradient(180deg, var(--ta-white), var(--app-honey-bg));
+}
+.livechoice b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+}
+.livechoice b + span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--ta-grey);
+}
+.livechoice-avs {
+  flex: none;
+  display: flex;
+  gap: 4px;
+}
+.livechoice-note {
+  margin: 16px 0 0;
+}
+.livereq-text {
+  margin: 0 0 4px;
+}
+/* Asking: the two of you, with a slow glow behind while the request is open. */
+.liveglow {
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  margin: 8px auto 36px;
+  border-radius: 50%;
+  background: var(--app-honey-bg);
+  animation: liveBreathe var(--dur-breathe) ease-in-out infinite;
+}
+.liveglow .pair-apart {
+  margin: 0;
+}
+@keyframes liveBreathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 10px rgba(229, 169, 60, 0.12), 0 0 0 22px rgba(229, 169, 60, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 0 16px rgba(229, 169, 60, 0.16), 0 0 0 32px rgba(229, 169, 60, 0.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .liveglow {
+    animation: none !important;
+  }
+}

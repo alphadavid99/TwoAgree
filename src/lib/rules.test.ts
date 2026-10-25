@@ -200,6 +200,58 @@ describe("sessions/{code} — membership gating", () => {
   });
 });
 
+describe("sessions/{code}/live — asking your partner to start a part now", () => {
+  const seedPair = async () =>
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await set(ref(ctx.database(), `sessions/${CODE}`), {
+        created: 1,
+        members: { host: { name: "Sarah", uid: HOST }, guest: { name: "Judah", uid: GUEST } },
+        uids: { [HOST]: true, [GUEST]: true },
+      });
+    });
+  const ask = { from: "host", slug: "home", level: 0, status: "asked", at: 1 };
+  const live = (uid: string) => ref(env.authenticatedContext(uid).database(), `sessions/${CODE}/live`);
+
+  it("lets a partner ask, and the other partner say yes", async () => {
+    await seedPair();
+    await assertSucceeds(set(live(HOST), ask));
+    await assertSucceeds(set(live(GUEST), { ...ask, status: "accepted" }));
+  });
+
+  it("lets the other partner say not now, and the asker cancel their own", async () => {
+    await seedPair();
+    await assertSucceeds(set(live(HOST), ask));
+    await assertSucceeds(set(live(GUEST), { ...ask, status: "declined" }));
+    await assertSucceeds(set(live(HOST), ask));
+    await assertSucceeds(set(live(HOST), { ...ask, status: "cancelled" }));
+  });
+
+  it("forbids asking in your partner's name, or answering your own request", async () => {
+    await seedPair();
+    await assertFails(set(live(GUEST), ask)); // guest posing as host
+    await assertSucceeds(set(live(HOST), ask));
+    await assertFails(set(live(HOST), { ...ask, status: "accepted" }));
+  });
+
+  it("forbids saying yes to a different part than was asked", async () => {
+    await seedPair();
+    await assertSucceeds(set(live(HOST), ask));
+    await assertFails(set(live(GUEST), { ...ask, status: "accepted", slug: "faith" }));
+    await assertFails(set(live(GUEST), { ...ask, status: "accepted", level: 1 }));
+  });
+
+  it("denies a stranger, a request before the partner has joined, and stray fields", async () => {
+    await seedPair();
+    await assertFails(set(live(STRANGER), ask));
+    await assertFails(set(live(HOST), { ...ask, note: "hi" }));
+    await assertFails(set(live(HOST), { ...ask, at: Date.now() + 3_600_000 }));
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await set(ref(ctx.database(), `sessions/${CODE}/members/guest`), null);
+    });
+    await assertFails(set(live(HOST), ask));
+  });
+});
+
 describe("invites — server-only", () => {
   it("denies all client access", async () => {
     const db = env.authenticatedContext(HOST).database();

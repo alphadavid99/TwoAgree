@@ -159,6 +159,12 @@ export function writeImportance(
   return writePrivate(code, slug, "importance", qid, role, value);
 }
 
+// Take an importance rating back off, so a cleared choice is really gone
+// rather than lingering from an earlier visit.
+export function clearImportance(code: string, slug: string, qid: string): Promise<void> {
+  return update(ref(db), { [`private/${myUid()}/${code}/decks/${slug}/importance/${qid}`]: null });
+}
+
 // Ask the server to publish a part (or Path step) both of you have finished.
 // Safe to call any time: it publishes only when both "done" flags are in, and
 // re-publishing is a no-op. Never throws — a failure leaves the part

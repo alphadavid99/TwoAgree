@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { lvlQs, partName } from "../lib/leveling";
-import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
+import { writeAnswer, writeGuess, writeImportance, clearImportance, markLevelDone } from "../lib/session";
 import { optIndex, optValue, withNames, type Names } from "../lib/who";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
@@ -98,7 +98,11 @@ export default function PlayScreen({
   const lang = useLang();
   const qs = useMemo(() => lvlQs(slug, level), [slug, level]);
   const saves = useSaveQueue();
-  const partnerFirst = partnerName.trim().split(/\s+/)[0] || partnerName;
+  // "Judah", or the whole fallback ("your partner") before they've joined:
+  // its first word alone read "what will your say?".
+  const partnerFirst = /^(your partner|votre partenaire)$/i.test(partnerName.trim())
+    ? partnerName.trim()
+    : partnerName.trim().split(/\s+/)[0] || partnerName;
 
   // Start at the first question this role hasn't answered.
   const firstUnanswered = useMemo(() => {
@@ -126,6 +130,8 @@ export default function PlayScreen({
   const [guessPhase, setGuessPhase] = useState(!!resumeGuess);
   const [pendAns, setPendAns] = useState<AnswerValue | null>(resumeGuess?.answer ?? null);
   const [pendImp, setPendImp] = useState<number | null>(null);
+  // The importance shown came from an earlier visit, not a tap just now.
+  const [impEarlier, setImpEarlier] = useState(false);
   const [pendGuess, setPendGuess] = useState<AnswerValue | null>(null);
   const [finishing, setFinishing] = useState(false);
 
@@ -155,6 +161,7 @@ export default function PlayScreen({
     setGuessPhase(guess);
     setPendAns(asPick(q, w.a));
     setPendImp(w.imp);
+    setImpEarlier(w.imp != null);
     setPendGuess(asPick(q, w.g));
   };
 
@@ -233,11 +240,13 @@ export default function PlayScreen({
     if (pendAns == null || finishing) return;
     const value = stored(pendAns);
     const imp = asksImportance(q) ? pendImp : null;
+    const hadImp = was(q).imp != null;
     saves.run(async () => {
       await writeAnswer(code, slug, q.id, role, value);
       if (imp != null) await writeImportance(code, slug, q.id, role, imp);
+      else if (hadImp) await clearImportance(code, slug, q.id);
     });
-    remember(q, { a: value, ...(imp != null ? { imp } : {}) });
+    remember(q, { a: value, imp });
     if (q.guessable && q.type !== "open") {
       setGuessPhase(true);
       setPendGuess(asPick(q, was(q).g));
@@ -262,13 +271,22 @@ export default function PlayScreen({
     advance(idx);
   };
 
+  // Back sits at the bottom left, beside the main button, where the thumb is.
+  const backBtn = canBack ? (
+    <button className="btn out backsq" type="button" onClick={back} aria-label={t("Back to the previous question", "Revenir à la question précédente")}>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M14.5 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  ) : null;
+
   const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ").toUpperCase();
 
   // The calm header: back and close, one stone per question, "3 of 6", and
   // what happened to the last answer.
   const header = (
     <div className="phead">
-      <TopBar onExit={onExit} onBack={canBack ? back : undefined} />
+      <TopBar onExit={onExit} />
       <div className="qstones" aria-hidden="true">
         {qs.map((_, i) => (
           <i
@@ -306,42 +324,31 @@ export default function PlayScreen({
   );
 
   if (guessPhase) {
-    // Say the answer the way it reads, not as a number.
-    const yourText = q.type === "scale" ? scaleSay(q, Number(pendAns), lang) : q.opts?.[pendAns as number];
     return (
       <section ref={screen} className="playscreen pfix">
         {header}
         <div key={`${q.id}-guess`} className="qcard qframe pane-in guesscard">
           <div className="qhead">
-            <div className="qrow">
-              <div className="eyebrow">{eyebrow}</div>
+            <div className="guesshead">
               <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+              <span>
+                {t("What will ", "Que va répondre ")}
+                <span className="guessname">{partnerFirst}</span>
+                {t(" say?", " ?")}
+              </span>
             </div>
             <div className={qtextClass(q.q)}>{q.q}</div>
-            <p className="guessask">
-              {t("Now: what will ", "Maintenant : que va répondre ")}
-              <span className="guessname">{partnerFirst}</span>
-              {t(" say?", " ?")}
-            </p>
           </div>
-          <div ref={body} className={`qbody${below.hidden ? " more" : ""}`}>
-            {/* Not shared until the part opens, so a mis-tap can still be put
-                right here. */}
-            <div className="yousaid yousaid-edit">
-              <div>
-                <div className="eyebrow">{t("YOU SAID", "VOUS AVEZ DIT")}</div>
-                <div className="yousaid-val">{yourText}</div>
-              </div>
-              <button type="button" className="yousaid-change" onClick={() => setGuessPhase(false)}>
-                {t("change", "modifier")}
-              </button>
-            </div>
-            <QuestionInput q={q} value={pendGuess} guess onPick={setPendGuess} />
+          {/* Your own answer is marked in place ("You"), so the guess is made
+              beside it; Back changes it. */}
+          <div ref={body} className={bodyClass(below)}>
+            <QuestionInput q={q} value={pendGuess} guess mine={pendAns} onPick={setPendGuess} />
           </div>
           <MoreBelow below={below} />
         </div>
         <div className="playfoot">
           <div className="playfoot-row">
+            {backBtn}
             <button className="btn ghost" type="button" onClick={() => advance(idx)}>
               {t("Skip", "Passer")}
             </button>
@@ -362,7 +369,7 @@ export default function PlayScreen({
           <div className="eyebrow">{eyebrow}</div>
           <div className={qtextClass(q.q)}>{q.q}</div>
         </div>
-        <div ref={body} className={`qbody${below.hidden ? " more" : ""}`}>
+        <div ref={body} className={bodyClass(below)}>
           <QuestionInput q={q} value={pendAns} onPick={setPendAns} />
         </div>
         <MoreBelow below={below} />
@@ -374,16 +381,25 @@ export default function PlayScreen({
           <div className="impfoot">
             <div className="impinline-head">
               <span>{t("How much does this matter to you?", "À quel point est-ce important pour vous ?")}</span>
-              <span className="impinline-opt">{t("Optional", "Facultatif")}</span>
+              <span className="impinline-opt">
+                {pendImp != null && impEarlier
+                  ? t("Your earlier answer", "Votre réponse précédente")
+                  : t("Optional", "Facultatif")}
+              </span>
             </div>
-            <div className="impbtns" role="group">
+            {/* A soft segmented control, so it never reads as a second main
+                button. Tapping the chosen one clears it. */}
+            <div className="impseg" role="group">
               {IMPORTANCE.map(([v, en, fr]) => (
                 <button
                   key={v}
                   type="button"
-                  className={`impbtn${pendImp === v ? " on" : ""}`}
+                  className={pendImp === v ? "on" : ""}
                   aria-pressed={pendImp === v}
-                  onClick={() => setPendImp(pendImp === v ? null : v)}
+                  onClick={() => {
+                    setImpEarlier(false);
+                    setPendImp(pendImp === v ? null : v);
+                  }}
                 >
                   {t(en, fr)}
                 </button>
@@ -409,6 +425,7 @@ export default function PlayScreen({
           </p>
         )}
         <div className="playfoot-row">
+          {backBtn}
           {q.notYet ? (
             <button className="btn ghost" type="button" onClick={answerNotYet} disabled={finishing}>
               {t("Not yet", "Pas encore")}
@@ -444,17 +461,22 @@ function QuestionInput({
   q,
   value,
   guess,
+  mine,
   onPick,
 }: {
   q: Question;
   value: AnswerValue | null;
   guess?: boolean;
+  /** On a guess: your own answer, marked "You" in place. */
+  mine?: AnswerValue | null;
   onPick: (v: AnswerValue | null) => void;
 }) {
   const t = useT();
   const lang = useLang();
+  const you = t("You", "Vous");
   if (q.type === "scale") {
     const n = value == null ? null : Number(value);
+    const m = mine == null ? null : Number(mine);
     return (
       <>
         <div className="slabels">
@@ -466,15 +488,22 @@ function QuestionInput({
             <button
               key={i}
               type="button"
-              className={`orb ${value === i ? "sel" : ""}`}
+              className={`orb${value === i ? " sel" : ""}${m === i ? " mine" : ""}`}
               onClick={() => onPick(i)}
               aria-pressed={value === i}
-              aria-label={`${i}: ${scaleSay(q, i, lang)}`}
+              aria-label={`${i}: ${scaleSay(q, i, lang)}${m === i ? ` (${you})` : ""}`}
             >
               {i}
             </button>
           ))}
         </div>
+        {m != null && (
+          <div className="orbyou" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <span key={i}>{m === i ? you : ""}</span>
+            ))}
+          </div>
+        )}
         {/* What the chosen point means, in one line, in a bubble sized to its
             words that points up at its orb. */}
         <div className="orbsay" aria-live="polite">
@@ -516,11 +545,14 @@ function QuestionInput({
         <button
           key={i}
           type="button"
-          className={`opt ${guess ? "guess" : ""} ${value === i ? "sel" : ""}`}
+          className={`opt${guess ? " guess" : ""}${value === i ? " sel" : ""}${mine === i ? " mine" : ""}`}
           onClick={() => onPick(i)}
           aria-pressed={value === i}
         >
-          {o}
+          <span className="opt-t">
+            {o}
+            {mine === i && <span className="youtag">{you}</span>}
+          </span>
           <span className="dot" />
         </button>
       ))}
@@ -528,10 +560,10 @@ function QuestionInput({
   );
 }
 
-// Rank (item 12): a numbered list moved with up and down, confirmed with
-// "This is my order". Fixing one item never means starting over. Stored as the
-// option positions in order, most important first ("2,0,1,3"); coming back to
-// it shows the order given before.
+// Rank (feedback 19): tap the options in order and each takes the next
+// number; the last one left is numbered for you. Tap a numbered one to take it
+// out (the rest close up), or start again. Stored as the option positions in
+// order, most important first ("2,0,1,3"); coming back shows the order given.
 function RankInput({
   q,
   initial,
@@ -539,72 +571,63 @@ function RankInput({
 }: {
   q: Question;
   initial: string | null;
-  onPick: (v: AnswerValue) => void;
+  onPick: (v: AnswerValue | null) => void;
 }) {
   const t = useT();
   const n = q.opts?.length ?? 0;
-  const [order, setOrder] = useState(() => {
+  const [order, setOrder] = useState<number[]>(() => {
     const prev = (initial ?? "").split(",").map(Number);
     const ok = prev.length === n && [...prev].sort((a, b) => a - b).every((v, i) => v === i);
-    return ok ? prev : Array.from({ length: n }, (_, i) => i);
+    return ok ? prev : [];
   });
-  const [moved, setMoved] = useState<number | null>(null);
   useEffect(() => {
-    onPick(order.join(","));
+    onPick(order.length === n ? order.join(",") : null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
-  const move = (at: number, by: -1 | 1) => {
-    const to = at + by;
-    if (to < 0 || to >= n) return;
-    const next = [...order];
-    [next[at], next[to]] = [next[to], next[at]];
-    setOrder(next);
-    setMoved(next[to]);
-  };
+  const tap = (oi: number) =>
+    setOrder((o) => {
+      if (o.includes(oi)) return o.filter((x) => x !== oi);
+      const next = [...o, oi];
+      if (next.length === n - 1) next.push(...Array.from({ length: n }, (_, i) => i).filter((i) => !next.includes(i)));
+      return next;
+    });
+  // A question that sets its own order ("Put your least favourite first")
+  // isn't contradicted by the usual one.
+  const ownOrder = q.q.endsWith(" first.");
   return (
     <>
-      {/* A question that sets its own order ("Put your least favourite
-          first") isn't contradicted by the usual one. */}
-      {!/ first\.$/.test(q.q) && (
-        <p className="helper rankhelp">
-          {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
+      <div className="rankhelp">
+        <p className="helper">
+          {ownOrder
+            ? t("Tap them in order.", "Touchez-les dans l’ordre.")
+            : t("Tap them in order, most important first.", "Touchez-les dans l’ordre, le plus important en premier.")}
         </p>
-      )}
-      <ol className="ranklist">
-        {order.map((oi, pos) => {
-          const label = q.opts![oi];
+        {order.length > 0 && (
+          <button type="button" className="rankreset" onClick={() => setOrder([])}>
+            {t("Start again", "Recommencer")}
+          </button>
+        )}
+      </div>
+      <div role="group" aria-label={q.q}>
+        {q.opts?.map((label, oi) => {
+          const pos = order.indexOf(oi);
           return (
-            <li key={oi} className={`opt rankrow${moved === oi ? " moved" : ""}`}>
-              <span className="rankno on" aria-hidden="true">
-                {pos + 1}
+            <button
+              key={oi}
+              type="button"
+              className={`opt rankpick${pos >= 0 ? " ranked" : ""}`}
+              onClick={() => tap(oi)}
+              aria-pressed={pos >= 0}
+              aria-label={pos >= 0 ? t(`${label}: number ${pos + 1}`, `${label} : numéro ${pos + 1}`) : label}
+            >
+              <span key={pos} className={`rankno${pos >= 0 ? " on" : ""}`} aria-hidden="true">
+                {pos >= 0 ? pos + 1 : ""}
               </span>
-              <span className="rankrow-t">{label}</span>
-              <button
-                type="button"
-                className="rankmove"
-                disabled={pos === 0}
-                onClick={() => move(pos, -1)}
-                aria-label={t(`Move ${label} up`, `Monter ${label}`)}
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                  <path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="rankmove"
-                disabled={pos === n - 1}
-                onClick={() => move(pos, 1)}
-                aria-label={t(`Move ${label} down`, `Descendre ${label}`)}
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </li>
+              <span className="opt-t">{label}</span>
+            </button>
           );
         })}
-      </ol>
+      </div>
     </>
   );
 }
@@ -614,16 +637,25 @@ function qtextClass(text: string): string {
   return text.length > 90 ? "qtext qtext-long" : "qtext";
 }
 
-type Below = { hidden: boolean; reveal: () => void };
+type Below = { hidden: boolean; up: boolean; reveal: () => void };
 
-// Do the answers run on below the bottom of their scrolling area? Checked as
-// it scrolls, resizes, or its contents change.
+// The answers' scrolling area fades at whichever edge has more beyond it:
+// the bottom while there's more below (with "More below"), the top once
+// you've scrolled down.
+const bodyClass = (b: Below) => `qbody${b.hidden ? " more" : ""}${b.up ? " up" : ""}`;
+
+// Do the answers run on past the edges of their scrolling area? Checked as it
+// scrolls, resizes, or its contents change.
 function useMoreBelow(body: RefObject<HTMLElement | null>, key: string): Below {
   const [hidden, setHidden] = useState(false);
+  const [up, setUp] = useState(false);
   useLayoutEffect(() => {
     const b = body.current;
     if (!b) return;
-    const check = () => setHidden(b.scrollHeight - b.scrollTop - b.clientHeight > 8);
+    const check = () => {
+      setHidden(b.scrollHeight - b.scrollTop - b.clientHeight > 8);
+      setUp(b.scrollTop > 8);
+    };
     check();
     b.addEventListener("scroll", check, { passive: true });
     window.addEventListener("resize", check);
@@ -639,6 +671,7 @@ function useMoreBelow(body: RefObject<HTMLElement | null>, key: string): Below {
   }, [key]);
   return {
     hidden,
+    up,
     reveal: () => {
       const b = body.current;
       if (b) glideBy(b, Math.round(b.clientHeight * 0.7));

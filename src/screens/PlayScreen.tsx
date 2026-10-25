@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { lvlQs, nLevels } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
+import { optIndex, optValue, withNames, type Names } from "../lib/who";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
@@ -42,6 +43,7 @@ export default function PlayScreen({
   role,
   deck,
   partnerName,
+  names,
   onFinish,
   onExit,
 }: {
@@ -51,6 +53,8 @@ export default function PlayScreen({
   role: Role;
   deck: DeckData | undefined;
   partnerName: string;
+  /** Both first names by role, for "which of you" questions. */
+  names?: Names;
   onFinish: () => void;
   onExit: () => void;
 }) {
@@ -77,7 +81,8 @@ export default function PlayScreen({
     const mine = deck?.answers?.[q.id]?.[role];
     if (mine == null || isNotYet(mine)) return null;
     if (deck?.guesses?.[q.id]?.[role] != null) return null;
-    return { at: firstUnanswered - 1, answer: mine };
+    // Recap state holds the option position, so map a stored who-answer back.
+    return { at: firstUnanswered - 1, answer: q.type === "mc" ? (optIndex(q, mine) ?? mine) : mine };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, level]);
 
@@ -108,7 +113,11 @@ export default function PlayScreen({
   };
 
   if (idx >= qs.length) return null;
-  const q = localizeQuestion(qs[idx], lang);
+  const localized = localizeQuestion(qs[idx], lang);
+  const q = names ? withNames(localized, names) : localized;
+  // An mc pick is held as its position; it's stored as who was picked on a
+  // "which of you" question (lib/who.ts).
+  const stored = (v: AnswerValue): AnswerValue => (q.type === "mc" ? optValue(q, v as number) : v);
 
   // After the answer is banked: qualifying questions get the importance ask
   // first, then (if guessable) the guess step, then advance. Non-qualifying
@@ -125,7 +134,7 @@ export default function PlayScreen({
   const submitAnswer = async () => {
     if (pendAns == null || busy) return;
     setBusy(true);
-    await writeAnswer(code, slug, q.id, role, pendAns);
+    await writeAnswer(code, slug, q.id, role, stored(pendAns));
     // Importance used to be its own screen, shown AFTER the answer with no
     // reference to the question — on Deal-breakers all 23 questions produced
     // the same context-free card, so people rated on muscle memory, and those
@@ -152,7 +161,7 @@ export default function PlayScreen({
   const lockGuess = async () => {
     if (pendGuess == null || busy) return;
     setBusy(true);
-    await writeGuess(code, slug, q.id, role, pendGuess);
+    await writeGuess(code, slug, q.id, role, stored(pendGuess));
     setBusy(false);
     advance(idx);
   };

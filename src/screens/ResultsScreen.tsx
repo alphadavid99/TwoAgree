@@ -9,6 +9,7 @@ import { ORDER } from "../lib/questions";
 import { DeckIcon } from "../components/icons";
 import { collectFlagRows } from "../lib/flags";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
+import { namesFor, optText } from "../lib/who";
 import { useT, useLang } from "../lib/i18n";
 
 // Overall alignment across every mutually-revealed level — a deck counts as
@@ -53,13 +54,13 @@ export default function ResultsScreen({
   // The two or three questions behind "most worth a conversation".
   const gaps = showSynth
     ? revealedQs(lowest.slug, session.decks?.[lowest.slug], role)
-        .map((q) => ({ q: localizeQuestion(q, lang), r: scoreQ(q, session.decks?.[lowest.slug] ?? {}, role) }))
+        .map((q) => ({ q: localizeQuestion(q, lang, namesFor(session.members, role, myName, partnerName)), r: scoreQ(q, session.decks?.[lowest.slug] ?? {}, role) }))
         .filter(({ q, r }) => r.verdict === "Worth a chat" && q.type === "mc")
         .slice(0, 2)
         .map(({ q, r }) => ({
           q,
-          a: q.opts?.[Number(r.me)] ?? "—",
-          b: q.opts?.[Number(r.th)] ?? "—",
+          a: optText(q, r.me) ?? "—",
+          b: optText(q, r.th) ?? "—",
         }))
     : [];
 

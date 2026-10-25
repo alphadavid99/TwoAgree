@@ -395,3 +395,44 @@ describe("the one-off migration of existing sessions", () => {
     part1.forEach((q, i) => expect(after[q.id].host).toBe(answerOf("host", i)));
   });
 });
+
+describe("the one-off re-ask of the 18 which-of-you questions", () => {
+  it("clears old Him/Her answers so the question is asked again, by name, and the part reopens", async () => {
+    const { migrateWhoAll } = await import("../../functions/src/migrateWho");
+    const { getDatabase } = await import("../../functions/node_modules/firebase-admin/lib/database/index.js");
+    // The starter part holds "Who's more likely…?" questions. Sarah answered
+    // FUN-010 the old way (0 = Him) and finished; it was published.
+    const who = part0.find((q) => q.who)!;
+    const plain = part0.find((q) => !q.who && q.type === "mc")!;
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await update(ref(ctx.database(), `sessions/${CODE}/decks/${SLUG}`), {
+        [`answers/${who.id}`]: { host: 0, guest: 2 },
+        [`answers/${plain.id}`]: { host: 0, guest: 1 },
+        "done/0": { host: true, guest: true },
+        "published/0": true,
+      });
+      await set(ref(ctx.database(), `private/${HOST}/${CODE}/decks/${SLUG}/answers/${who.id}`), 0);
+    });
+
+    const dry = await migrateWhoAll(getDatabase() as never, { apply: false });
+    expect(dry.find((r) => r.code === CODE)!.cleared).toBe(1);
+    await migrateWhoAll(getDatabase() as never, { apply: true });
+
+    const deck = (await get(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}`))).val();
+    expect(deck.answers[who.id]).toEqual({ guest: 2 }); // "Both of us" stays
+    expect(deck.answers[plain.id]).toEqual({ host: 0, guest: 1 }); // not a who question
+    expect(deck.done[0]).toEqual({ guest: true }); // reopened for Sarah
+    expect(deck.published).toBeUndefined();
+
+    // Sarah answers it again, by name, and finishes; the part opens again.
+    await assertSucceeds(set(ref(asUser(HOST), `private/${HOST}/${CODE}/decks/${SLUG}/answers/${who.id}`), "guest"));
+    await assertSucceeds(set(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/done/0/host`), true));
+    expect(await call(HOST, { code: CODE, slug: SLUG, level: 0 })).toEqual({ status: "published" });
+    const after = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/answers/${who.id}`))).val();
+    expect(after).toEqual({ host: "guest", guest: 2 });
+
+    // A second run changes nothing.
+    const again = await migrateWhoAll(getDatabase() as never, { apply: true });
+    expect(again.find((r) => r.code === CODE)!.writes).toBe(0);
+  });
+});

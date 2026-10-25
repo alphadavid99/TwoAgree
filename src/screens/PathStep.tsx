@@ -12,6 +12,8 @@ import {
 } from "../lib/path";
 import { VERSES } from "../data/path.generated";
 import { writeAnswer, writeGuess, lightLamp } from "../lib/session";
+import { optValue, withNames, type Names } from "../lib/who";
+import type { AnswerValue } from "../lib/scoring";
 import { seenLamp, markLampSeen } from "../lib/local";
 import { PathGlyph } from "../components/PathGlyph";
 import { TopBar } from "../components/TopBar";
@@ -90,6 +92,10 @@ export default function PathStep({
         guessLayer={step.mechanic === "guess"}
         todo={todo}
         partnerName={partnerName}
+        names={{
+          host: role === "host" ? myName : partnerName,
+          guest: role === "guest" ? myName : partnerName,
+        }}
         onDone={() => setPhase("reveal")}
         onExit={onExit}
         t={t}
@@ -212,6 +218,7 @@ function StepPlay({
   guessLayer,
   todo,
   partnerName,
+  names,
   onDone,
   onExit,
   t,
@@ -223,6 +230,7 @@ function StepPlay({
   guessLayer: boolean;
   todo: Question[];
   partnerName: string;
+  names: Names;
   onDone: () => void;
   onExit: () => void;
   t: T;
@@ -234,7 +242,9 @@ function StepPlay({
   const [guessing, setGuessing] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const q = todo[idx];
+  // "Which of you" options carry both names; picks are stored as who (lib/who.ts).
+  const q = todo[idx] ? withNames(todo[idx], names) : undefined;
+  const stored = (v: number): AnswerValue => (q && q.type === "mc" ? optValue(q, v) : v);
   const last = idx + 1 >= todo.length;
   const isOpen = q?.type === "open";
   const guessable = !!q && guessLayer && q.guessable === true && !isOpen;
@@ -264,7 +274,7 @@ function StepPlay({
     if (pend == null) return;
     setBusy(true);
     const slug = deckOf(q.id)!;
-    await writeAnswer(code, slug, q.id, role, pend);
+    await writeAnswer(code, slug, q.id, role, stored(pend));
     setBusy(false);
     if (guessable) {
       setPendGuess(null);
@@ -277,7 +287,7 @@ function StepPlay({
   const lockGuess = async () => {
     if (pendGuess == null || busy || !q) return;
     setBusy(true);
-    await writeGuess(code, deckOf(q.id)!, q.id, role, pendGuess);
+    await writeGuess(code, deckOf(q.id)!, q.id, role, stored(pendGuess));
     setBusy(false);
     advance();
   };

@@ -5,12 +5,13 @@
     "type": "mc",
     "q": "Who does most of the cooking in your home?",
     "opts": [
-      "Mostly him",
-      "Mostly her",
+      "Mostly {A}",
+      "Mostly {B}",
       "Both equally",
       "We share by meal or day"
     ],
     "guessable": true,
+    "who": true,
     "note": "Surfaces day-to-day domestic expectations early — a common silent assumption.",
     "status": "Approved",
     "source": "Self",
@@ -24,12 +25,13 @@
     "type": "mc",
     "q": "Who would own most of the household chores?",
     "opts": [
-      "Mostly him",
-      "Mostly her",
+      "Mostly {A}",
+      "Mostly {B}",
       "Split evenly",
       "We'll trade off"
     ],
     "guessable": true,
+    "who": true,
     "note": "Extends the cooking question to the whole chore map.",
     "status": "Draft",
     "source": "Self",
@@ -127,12 +129,13 @@
     "type": "mc",
     "q": "Who should handle home repairs and maintenance?",
     "opts": [
-      "Mostly him",
-      "Mostly her",
+      "Mostly {A}",
+      "Mostly {B}",
       "Both of us",
       "We'd hire it out"
     ],
     "guessable": true,
+    "who": true,
     "note": "Division of labour for upkeep, distinct from cooking/chores.",
     "status": "Draft",
     "source": "Thin-category fill",
@@ -2480,13 +2483,14 @@
     "depth": 1,
     "q": "Who's more likely to be running late?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Light, concrete, and the source of more real friction than most couples admit before living together.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -2498,13 +2502,14 @@
     "depth": 1,
     "q": "Who's more likely to cry at a film?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "A pure warm-up. Costs nothing, wrong answers are charming, and it teaches the guess mechanic before anything is at stake.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -2515,12 +2520,13 @@
     "type": "mc",
     "q": "Who's more likely to overthink a text?",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ],
     "guessable": true,
+    "who": true,
     "note": "Warm-up hook — modern and instantly relatable; universal options.",
     "status": "Draft",
     "source": "Self",
@@ -2535,13 +2541,14 @@
     "depth": 1,
     "q": "Who's more likely to apologise first after a row?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Plays as a laugh and lands as a finding. If both say the same name, that person is doing the repair work — and now they've both seen it.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -2553,13 +2560,14 @@
     "depth": 1,
     "q": "Who's more likely to fall asleep during the sermon?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Faith-culture humour that only works inside the niche. This is the kind of question a secular competitor structurally cannot write.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5709,13 +5717,14 @@
     "depth": 2,
     "q": "Who's more likely to pray out loud first?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Funny on the surface, and quietly the same axis as FAITH-023 (who leads spiritually) — asked in a way nobody gets defensive about.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5727,13 +5736,14 @@
     "depth": 2,
     "q": "Who's more likely to spend a couple of hundred without mentioning it?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "The money-secrecy question wearing a party hat. Pairs with FIN-003 (financial openness) and gets a more honest answer than it does.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5745,13 +5755,14 @@
     "depth": 2,
     "q": "Who's more likely to hold a grudge?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Reads as banter, sits directly on SELF-012 (how easily do you forgive). If they disagree about the answer, that's the conversation.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5763,13 +5774,14 @@
     "depth": 2,
     "q": "Who's more likely to start the argument?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "The last of the light-but-loaded set. Both naming the same person is useful; naming each other is more useful.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5781,13 +5793,14 @@
     "depth": 1,
     "q": "Who gets the remote?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Replaces the open-ended half of FUN-004 with something that actually plays.",
     "status": "Draft",
     "source": "Nectar lovePrint",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, equally",
       "Neither of us"
     ]
@@ -5987,13 +6000,14 @@
     "depth": 3,
     "q": "Who should handle the money day to day?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "FIN-005 offers 'mostly one of us manages it' without ever asking which one. Uses the HHB shape to close that gap.",
     "status": "Draft",
     "source": "Aligned",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us together",
       "Whoever's better with numbers"
     ]
@@ -6539,13 +6553,14 @@
     "depth": 1,
     "q": "Who's more likely to spoil them?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "HHB warm-up. Plays as a laugh, sits on the same axis as the discipline questions further down the deck.",
     "status": "Draft",
     "source": "Aligned",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Both of us, hopeless",
       "Neither of us"
     ],
@@ -6558,13 +6573,14 @@
     "depth": 1,
     "q": "Bins, spiders and the car, whose job?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Roles opens with headship theology. This opens it with spiders. Same deck, and the answers to both are more related than anyone admits.",
     "status": "Draft",
     "source": "Aligned",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "Whoever's nearest",
       "We'd argue about every one of them"
     ],
@@ -6577,13 +6593,14 @@
     "depth": 1,
     "q": "Who's quicker at making a decision?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "Light HHB entry that sits directly upstream of the tiebreak question later in the deck.",
     "status": "Draft",
     "source": "Aligned",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "About the same",
       "Neither of us: it's painful"
     ]
@@ -6734,13 +6751,14 @@
     "depth": 1,
     "q": "Who'd get more attention in a room full of strangers?",
     "guessable": true,
+    "who": true,
     "ref": "",
     "note": "HHB warm-up with a real edge under it — this is the deck about attention, after all.",
     "status": "Draft",
     "source": "Aligned",
     "opts": [
-      "Him",
-      "Her",
+      "{A}",
+      "{B}",
       "About the same",
       "Neither of us, thankfully"
     ]

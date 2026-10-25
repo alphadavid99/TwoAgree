@@ -8,6 +8,7 @@
 // Option order MUST match the English exactly — answers are stored by index.
 // Tone rule (CLAUDE.md §1): stay honest and direct on contentious topics — do
 // not soften. Translations mirror the plain, unhedged English.
+import { withNames, type Names } from "./who";
 import { DECKS, type Question } from "./questions";
 import type { Lang } from "./i18n";
 
@@ -40,14 +41,14 @@ export type QFr = { q: string; opts?: string[]; lo?: string; hi?: string };
 
 export const Q_FR: Record<string, QFr> = {
   // --- In the Home ---
-  "HOME-001": { q: "Qui cuisine le plus à la maison ?", opts: ["Surtout lui", "Surtout elle", "Autant l’un que l’autre", "On partage selon le repas ou le jour"] },
-  "HOME-002": { q: "Qui s’occuperait de la plupart des tâches ménagères ?", opts: ["Surtout lui", "Surtout elle", "À parts égales", "On alterne"] },
+  "HOME-001": { q: "Qui cuisine le plus à la maison ?", opts: ["Surtout {A}", "Surtout {B}", "Autant l’un que l’autre", "On partage selon le repas ou le jour"] },
+  "HOME-002": { q: "Qui s’occuperait de la plupart des tâches ménagères ?", opts: ["Surtout {A}", "Surtout {B}", "À parts égales", "On alterne"] },
   "HOME-003": { q: "Que penses-tu des animaux à la maison, plutôt chien ou chat ?", opts: ["Les chiens", "Les chats", "Les deux", "Aucun", "Ça dépend de l’animal"] },
   "HOME-004": { q: "Où nous imagines-tu poser nos racines, en ville, en banlieue, ou dans un endroit plus calme ?", opts: ["En ville", "En banlieue", "À la campagne / petite ville", "Ouvert à n’importe où"] },
   "HOME-005": { q: "À quel point veux-tu que notre foyer soit ouvert et accueillant envers les autres ?", lo: "Notre foyer est notre espace privé", hi: "Toujours ouvert aux autres" },
   "HOME-006": { q: "À quel point as-tu besoin que notre foyer soit rangé ?", lo: "Détendu face au désordre", hi: "Chaque chose à sa place" },
   "HOME-007": { q: "À quel point est-ce important pour toi d’être propriétaire plutôt que locataire ?", lo: "Louer me convient", hi: "Être propriétaire compte beaucoup" },
-  "HOME-008": { q: "Qui devrait s’occuper des réparations et de l’entretien de la maison ?", opts: ["Surtout lui", "Surtout elle", "Nous deux", "On ferait appel à un pro"] },
+  "HOME-008": { q: "Qui devrait s’occuper des réparations et de l’entretien de la maison ?", opts: ["Surtout {A}", "Surtout {B}", "Nous deux", "On ferait appel à un pro"] },
   "HOME-009": { q: "À quel point est-ce important d’avoir un espace à toi seul à la maison ?", lo: "Tout partager me convient", hi: "J’ai besoin de mon propre espace" },
 
   // --- Finances & Money ---
@@ -350,16 +351,12 @@ export function deckName(slug: string, lang: Lang): string {
   return lang === "fr" ? DECK_NAMES_FR[slug] ?? en : en;
 }
 
-/** A question with its user-facing text swapped to the active language. */
-export function localizeQuestion(q: Question, lang: Lang): Question {
-  if (lang !== "fr") return q;
-  const f = Q_FR[q.id];
-  if (!f) return q;
-  return {
-    ...q,
-    q: f.q,
-    opts: f.opts ?? q.opts,
-    lo: f.lo ?? q.lo,
-    hi: f.hi ?? q.hi,
-  };
+/** A question with its user-facing text swapped to the active language, and
+ *  — given the two names — "which of you" options filled in (lib/who.ts). */
+export function localizeQuestion(q: Question, lang: Lang, names?: Names): Question {
+  const f = lang === "fr" ? Q_FR[q.id] : undefined;
+  const out = f
+    ? { ...q, q: f.q, opts: f.opts ?? q.opts, lo: f.lo ?? q.lo, hi: f.hi ?? q.hi }
+    : q;
+  return names ? withNames(out, names) : out;
 }

@@ -4,7 +4,7 @@ import { DECKS } from "./questions";
 import { AT_TABLE_SLUG } from "./path";
 
 const SLUG = "in-the-home";
-const mc = DECKS[SLUG].questions.find((q) => q.type === "mc")!;
+const mc = DECKS[SLUG].questions.find((q) => q.type === "mc" && !q.who)!;
 const scale = DECKS[SLUG].questions.find((q) => q.type === "scale")!;
 
 const payload: ExportPayload = {

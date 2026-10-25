@@ -7,6 +7,7 @@ import { DECKS, ORDER, type Question } from '../lib/questions'
 import { lvlQs, nLevels } from '../lib/leveling'
 import type { DeckData, AnswerValue } from '../lib/scoring'
 import { STARTER_QIDS } from '../lib/onboarding'
+import { optValue } from '../lib/who'
 import type { Profile, Session, Stage } from '../types'
 
 export const HOST_NAME = 'Sarah Placeholder'
@@ -47,14 +48,19 @@ const SAMPLE_OPEN: Record<'host' | 'guest', string> = {
   guest: 'Sample answer (fixture): I want us to keep a weekly habit of reading together.',
 }
 
+// An mc pick stored the way the app stores it: positions, except the two
+// people in a "which of you" question, stored as "host" / "guest" (lib/who.ts).
+const mcValue = (q: Pick<Question, 'type' | 'opts' | 'who'>, i: number): AnswerValue =>
+  optValue(q as Question, i)
+
 export function answerFor(
-  q: Pick<Question, 'type' | 'opts'>,
+  q: Pick<Question, 'type' | 'opts' | 'who'>,
   who: 'host' | 'guest',
   i: number,
 ): AnswerValue {
   if (q.type === 'scale') return who === 'host' ? 4 : i % 3 === 0 ? 4 : 5
   if (q.type === 'mc')
-    return who === 'host' ? 0 : i % 2 === 0 ? 0 : Math.min(1, (q.opts?.length ?? 1) - 1)
+    return mcValue(q, who === 'host' ? 0 : i % 2 === 0 ? 0 : Math.min(1, (q.opts?.length ?? 1) - 1))
   if (q.type === 'rank') {
     const n = q.opts?.length ?? 3
     const base = Array.from({ length: n }, (_, k) => k)
@@ -122,16 +128,18 @@ export function flagDeck(slug: string): DeckData {
     importance[scaleqs[0].id] = { host: 5, guest: 1 }
   }
   if (mcqs[0]) {
-    answers[mcqs[0].id] = { host: 0, guest: 1 }
-    guesses[mcqs[0].id] = { host: 0, guest: 1 }
+    const [a, b] = [mcValue(mcqs[0], 0), mcValue(mcqs[0], 1)]
+    answers[mcqs[0].id] = { host: a, guest: b }
+    guesses[mcqs[0].id] = { host: a, guest: b }
   }
   if (mcqs[1]) {
-    answers[mcqs[1].id] = { host: 0, guest: 1 }
-    guesses[mcqs[1].id] = { host: 0 }
+    const [a, b] = [mcValue(mcqs[1], 0), mcValue(mcqs[1], 1)]
+    answers[mcqs[1].id] = { host: a, guest: b }
+    guesses[mcqs[1].id] = { host: a }
   }
   qs0.forEach((q) => {
     if (answers[q.id]) return
-    const v = q.type === 'scale' ? 3 : q.type === 'rank' ? q.opts!.map((_, i) => i).join(',') : 0
+    const v = q.type === 'scale' ? 3 : q.type === 'rank' ? q.opts!.map((_, i) => i).join(',') : mcValue(q, 0)
     answers[q.id] = { host: v, guest: v }
   })
   return { answers, guesses, importance, done: { 0: { host: true, guest: true } } }
@@ -144,7 +152,7 @@ export function tunedReveal(slug: string, hit: number): { deck: DeckData; qs: Qu
   qs.forEach((q, i) => {
     const last = (q.opts?.length ?? 2) - 1
     const match = i < Math.round((hit / 100) * qs.length)
-    answers[q.id] = { host: 0, guest: match ? 0 : Math.min(1, last) }
+    answers[q.id] = { host: mcValue(q, 0), guest: mcValue(q, match ? 0 : Math.min(1, last)) }
   })
   return { deck: { answers, done: { 0: { host: true, guest: true } } }, qs }
 }

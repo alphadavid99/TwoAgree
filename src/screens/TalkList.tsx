@@ -4,6 +4,7 @@ import { writeTalked, writeTalkPin } from "../lib/session";
 import type { Session } from "../types";
 import type { Role } from "../lib/scoring";
 import { localizeQuestion } from "../lib/questions.fr";
+import { namesFor } from "../lib/who";
 import { useLang } from "../lib/i18n";
 
 type T = (en: string, fr: string) => string;
@@ -53,7 +54,7 @@ export function TalkList({
       </div>
 
       {open.map((s) => {
-        const q = localizeQuestion(s.q, lang);
+        const q = localizeQuestion(s.q, lang, namesFor(session.members, role, "", partnerName));
         return (
           <div key={s.q.id} className="talkrow">
             <div className="talkrow-q">{q.q}</div>

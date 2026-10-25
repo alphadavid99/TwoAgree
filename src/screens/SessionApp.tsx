@@ -183,6 +183,12 @@ export default function SessionApp({
   const myName = session.members?.[role]?.name ?? t("You", "Vous");
   const partnerName =
     session.members?.[other(role)]?.name ?? t("your partner", "votre partenaire");
+  // Both names by role, for "which of you" questions: the same order on both
+  // phones, whoever is looking (lib/who.ts).
+  const names = {
+    host: role === "host" ? myName : partnerName,
+    guest: role === "guest" ? myName : partnerName,
+  };
 
   // Leave the play/reveal flow, returning to whichever tab it was opened from.
   const exitFlow = () => {
@@ -284,6 +290,7 @@ export default function SessionApp({
         role={role}
         deck={deck}
         partnerName={partnerName}
+        names={names}
         onFinish={() => {
           lockedOnEntry.current = !revealReady(slug, level);
           setOpenReveal(false);

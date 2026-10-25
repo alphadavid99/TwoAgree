@@ -10,6 +10,7 @@ export interface BankEntry {
   depth: number;
   guessable?: boolean;
   complement?: boolean;
+  who?: boolean;
 }
 
 /** Every question's selection metadata, keyed by id. */
@@ -18,13 +19,15 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "in-the-home",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "HOME-002": {
     "deck": "in-the-home",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "HOME-003": {
     "deck": "in-the-home",
@@ -60,7 +63,8 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "in-the-home",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "HOME-009": {
     "deck": "in-the-home",
@@ -879,31 +883,36 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-008": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-023": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-009": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-011": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-002": {
     "deck": "fun-icebreakers",
@@ -1962,31 +1971,36 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 2,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-013": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 2,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-014": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 2,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-015": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 2,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-016": {
     "deck": "fun-icebreakers",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "FUN-017": {
     "deck": "fun-icebreakers",
@@ -2052,7 +2066,8 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "roles-responsibilities",
     "type": "mc",
     "depth": 3,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "DREAM-007": {
     "deck": "dreams-future",
@@ -2236,19 +2251,22 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "parenting-style",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "ROLE-011": {
     "deck": "roles-responsibilities",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "ROLE-012": {
     "deck": "roles-responsibilities",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "THEO-011": {
     "deck": "theology-beliefs",
@@ -2302,7 +2320,8 @@ export const BANK: Record<string, BankEntry> = {
     "deck": "faithfulness-loyalty",
     "type": "mc",
     "depth": 1,
-    "guessable": true
+    "guessable": true,
+    "who": true
   },
   "LOYAL-011": {
     "deck": "faithfulness-loyalty",

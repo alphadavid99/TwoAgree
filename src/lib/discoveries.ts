@@ -5,6 +5,7 @@
 // the person you may marry. That's the product's actual yield, and it was
 // only ever expressed as a percentage going down. Nothing new is stored — this
 // is a re-projection of guesses already in RTDB.
+import { optText } from "./who";
 import { DECKS, type Question } from "./questions";
 import { revealedQs } from "./progress";
 import { scoreQ, type AnswerValue, type Role } from "./scoring";
@@ -50,7 +51,7 @@ function renderable(q: Question, v: AnswerValue): boolean {
     const n = Number(v);
     return Number.isFinite(n) && n >= 1 && n <= 5;
   }
-  return q.opts?.[Number(v)] != null;
+  return optText(q, v) != null;
 }
 
 /** Human text for an answer value, matching how the reveal renders it. */
@@ -62,5 +63,5 @@ export function answerText(q: Question, v: AnswerValue): string {
     if (n <= 2) return q.lo ?? String(v);
     return "somewhere in the middle";
   }
-  return q.opts?.[Number(v)] ?? String(v);
+  return optText(q, v) ?? "—";
 }

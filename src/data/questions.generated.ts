@@ -16,6 +16,8 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** "Which of you": opts[0]/[1] are {A} (host) and {B} (guest); answered as "host"/"guest". */
+  who?: boolean;
   /** Offers a first-class, unscored "Not yet" answer (brief §7). */
   notYet?: boolean;
   /** Part of the fixed Core scoring instrument (brief 2 §C). */
@@ -108,9 +110,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Surfaces day-to-day domestic expectations early — a common silent assumption.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Mostly him",
-          "Mostly her",
+          "Mostly {A}",
+          "Mostly {B}",
           "Both equally",
           "We share by meal or day"
         ]
@@ -122,9 +125,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Extends the cooking question to the whole chore map.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Mostly him",
-          "Mostly her",
+          "Mostly {A}",
+          "Mostly {B}",
           "Split evenly",
           "We'll trade off"
         ]
@@ -161,9 +165,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Division of labour for upkeep, distinct from cooking/chores.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Mostly him",
-          "Mostly her",
+          "Mostly {A}",
+          "Mostly {B}",
           "Both of us",
           "We'd hire it out"
         ]
@@ -1018,10 +1023,11 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Roles opens with headship theology. This opens it with spiders. Same deck, and the answers to both are more related than anyone admits.",
         "guessable": true,
+        "who": true,
         "core": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Whoever's nearest",
           "We'd argue about every one of them"
         ]
@@ -1033,9 +1039,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Light HHB entry that sits directly upstream of the tiebreak question later in the deck.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "About the same",
           "Neither of us: it's painful"
         ]
@@ -1113,9 +1120,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "note": "FIN-005 offers 'mostly one of us manages it' without ever asking which one. Uses the HHB shape to close that gap.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us together",
           "Whoever's better with numbers"
         ]
@@ -1775,10 +1783,11 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "HHB warm-up. Plays as a laugh, sits on the same axis as the discipline questions further down the deck.",
         "guessable": true,
+        "who": true,
         "notYet": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, hopeless",
           "Neither of us"
         ]
@@ -2942,9 +2951,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Light, concrete, and the source of more real friction than most couples admit before living together.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -2956,9 +2966,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "A pure warm-up. Costs nothing, wrong answers are charming, and it teaches the guess mechanic before anything is at stake.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -2970,9 +2981,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Warm-up hook — modern and instantly relatable; universal options.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -2984,9 +2996,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Plays as a laugh and lands as a finding. If both say the same name, that person is doing the repair work — and now they've both seen it.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -2998,9 +3011,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Faith-culture humour that only works inside the niche. This is the kind of question a secular competitor structurally cannot write.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -3110,9 +3124,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "Replaces the open-ended half of FUN-004 with something that actually plays.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -3168,9 +3183,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "note": "Funny on the surface, and quietly the same axis as FAITH-023 (who leads spiritually) — asked in a way nobody gets defensive about.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -3182,9 +3198,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "note": "The money-secrecy question wearing a party hat. Pairs with FIN-003 (financial openness) and gets a more honest answer than it does.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -3196,9 +3213,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "note": "Reads as banter, sits directly on SELF-012 (how easily do you forgive). If they disagree about the answer, that's the conversation.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -3210,9 +3228,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "note": "The last of the light-but-loaded set. Both naming the same person is useful; naming each other is more useful.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "Both of us, equally",
           "Neither of us"
         ]
@@ -5330,9 +5349,10 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "note": "HHB warm-up with a real edge under it — this is the deck about attention, after all.",
         "guessable": true,
+        "who": true,
         "opts": [
-          "Him",
-          "Her",
+          "{A}",
+          "{B}",
           "About the same",
           "Neither of us, thankfully"
         ]

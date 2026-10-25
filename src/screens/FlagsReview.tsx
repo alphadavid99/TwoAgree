@@ -4,6 +4,7 @@ import type { AnswerValue } from "../lib/scoring";
 import type { FlagRow } from "../lib/flags";
 import { groupFlagRows } from "../lib/flags";
 import { localizeQuestion } from "../lib/questions.fr";
+import { optText, type Names } from "../lib/who";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang, type Lang } from "../lib/i18n";
 
@@ -13,7 +14,7 @@ function optLabel(q: Question, v: AnswerValue | undefined): string {
   if (v == null) return "—";
   if (q.type === "scale") return `${v} / 5`;
   if (q.type === "open") return String(v);
-  return q.opts?.[Number(v)] ?? String(v);
+  return optText(q, v) ?? "—";
 }
 
 // --- copy layer (verbatim from brief §4c; only the fill-ins vary) ------------
@@ -117,14 +118,16 @@ function IndexRow({
   t,
   myName,
   partnerName,
+  names,
 }: {
   row: FlagRow;
   lang: Lang;
   t: T;
   myName: string;
   partnerName: string;
+  names?: Names;
 }) {
-  const q = localizeQuestion(row.q, lang);
+  const q = localizeQuestion(row.q, lang, names);
   return (
     <div className="flagrow">
       <div className="flagrow-k">{kickerOf(row, t, partnerName)}</div>
@@ -149,14 +152,16 @@ function WalkCard({
   t,
   myName,
   partnerName,
+  names,
 }: {
   row: FlagRow;
   lang: Lang;
   t: T;
   myName: string;
   partnerName: string;
+  names?: Names;
 }) {
-  const q = localizeQuestion(row.q, lang);
+  const q = localizeQuestion(row.q, lang, names);
   const r = row.r;
   return (
     <div className="walkcard">
@@ -222,11 +227,14 @@ export default function FlagsReview({
   rows,
   myName,
   partnerName,
+  names,
   onClose,
 }: {
   rows: FlagRow[];
   myName: string;
   partnerName: string;
+  /** Both names by role, for "which of you" questions. */
+  names?: Names;
   onClose: () => void;
 }) {
   const t = useT();
@@ -245,7 +253,7 @@ export default function FlagsReview({
           {t(`${idx + 1} OF ${rows.length}`, `${idx + 1} SUR ${rows.length}`)}
         </div>
         <div key={idx} className="pane-in">
-          <WalkCard row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} />
+          <WalkCard row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} names={names} />
         </div>
         <button
           className="btn pill"
@@ -284,7 +292,7 @@ export default function FlagsReview({
             {t("Didn’t know", "Ce qu’on ignorait")} · {groups.blindSpot.length}
           </div>
           {groups.blindSpot.map((row) => (
-            <IndexRow key={`b-${row.q.id}`} row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} />
+            <IndexRow key={`b-${row.q.id}`} row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} names={names} />
           ))}
         </>
       )}
@@ -295,7 +303,7 @@ export default function FlagsReview({
             {t("Matters more", "Compte davantage")} · {groups.unevenStakes.length}
           </div>
           {groups.unevenStakes.map((row) => (
-            <IndexRow key={`u-${row.q.id}`} row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} />
+            <IndexRow key={`u-${row.q.id}`} row={row} lang={lang} t={t} myName={myName} partnerName={partnerName} names={names} />
           ))}
         </>
       )}

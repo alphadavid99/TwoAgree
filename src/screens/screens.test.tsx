@@ -298,3 +298,33 @@ describe("PlayScreen", () => {
     expect(cta.disabled).toBe(true);
   });
 });
+
+describe("which-of-you questions show names, in the same order for both", () => {
+  // HOME-001 opens part 1 of Home: "Who does most of the cooking?"
+  const names = { host: "Sarah Placeholder", guest: "Judah Placeholder" };
+  const optionsFor = (role: "host" | "guest") => {
+    const { container, unmount } = render(
+      <PlayScreen
+        code="ABCD"
+        slug="in-the-home"
+        level={0}
+        role={role}
+        deck={undefined}
+        partnerName={role === "host" ? "Judah" : "Sarah"}
+        names={names}
+        onFinish={noop}
+        onExit={noop}
+      />,
+    );
+    const texts = [...container.querySelectorAll("button.opt")].map((b) => b.textContent?.trim());
+    unmount();
+    return texts;
+  };
+  it("lists Sarah then Judah on both phones, never Him / Her", () => {
+    const host = optionsFor("host");
+    const guest = optionsFor("guest");
+    expect(host.slice(0, 2)).toEqual(["Mostly Sarah", "Mostly Judah"]);
+    expect(guest).toEqual(host);
+    expect(host.join(" ")).not.toMatch(/\b(him|her)\b/i);
+  });
+});

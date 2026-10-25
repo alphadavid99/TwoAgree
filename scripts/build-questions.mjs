@@ -119,6 +119,16 @@ for (const q of questions) {
   if (typeof q.q !== "string" || !q.q.trim()) bad("question text (q) is empty");
   if (q.guessable !== true && q.guessable !== false) bad("guessable must be true or false");
 
+  // "Which of you" questions (design refresh, item 12): the first two options
+  // are the two of you, {A} the host and {B} the guest, shown as your names in
+  // the same order on both phones. Nowhere else may carry a placeholder.
+  if (q.who === true) {
+    if (q.type !== "mc") bad("who questions must be mc");
+    else if (!q.opts?.[0]?.includes("{A}") || !q.opts?.[1]?.includes("{B}")) bad("who: opts[0] needs {A} and opts[1] needs {B}");
+    else if (q.opts.slice(2).some((o) => /\{[AB]\}/.test(o)) || q.opts[0].includes("{B}") || q.opts[1].includes("{A}")) bad("who: {A}/{B} only in the first two options");
+  } else if ("who" in q) bad("who must be true or absent");
+  else if ([q.q, ...(q.opts ?? [])].some((o) => /\{[AB]\}/.test(o ?? ""))) bad("{A}/{B} placeholders need who: true");
+
   if (q.type === "mc" || q.type === "rank") {
     if (!Array.isArray(q.opts) || q.opts.length < 2) bad(`${q.type} needs at least 2 options`);
     if (q.lo || q.hi) bad(`${q.type} must not have lo/hi`);
@@ -181,6 +191,7 @@ function runtimeQuestion(q) {
   if (q.note) o.note = q.note;
   if (q.guessable === true) o.guessable = true;
   if (q.complement === true) o.complement = true;
+  if (q.who === true) o.who = true;
   if (q.notYet === true) o.notYet = true;
   if (q.core === true) o.core = true;
   if (q.showIf) o.showIf = q.showIf;
@@ -228,6 +239,8 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** "Which of you": opts[0]/[1] are {A} (host) and {B} (guest); answered as "host"/"guest". */
+  who?: boolean;
   /** Offers a first-class, unscored "Not yet" answer (brief §7). */
   notYet?: boolean;
   /** Part of the fixed Core scoring instrument (brief 2 §C). */
@@ -273,6 +286,7 @@ for (const q of questions) {
   const e = { deck: q.deck, type: q.type, depth: q.depth };
   if (q.guessable === true) e.guessable = true;
   if (q.complement === true) e.complement = true;
+  if (q.who === true) e.who = true;
   bank[q.id] = e;
 }
 // The parts of each deck, as question ids (data/decks.json). The publish
@@ -288,6 +302,7 @@ export interface BankEntry {
   depth: number;
   guessable?: boolean;
   complement?: boolean;
+  who?: boolean;
 }
 
 /** Every question's selection metadata, keyed by id. */

@@ -20,6 +20,7 @@ import { talkStateOf, type TalkState } from "../lib/talks";
 import { deckOf } from "../lib/path";
 import { writeTalkPin } from "../lib/session";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
+import { optText, withNames } from "../lib/who";
 import { ScorePair } from "../components/ScorePair";
 import FlagsReview, { FlagBox } from "./FlagsReview";
 import { TopBar } from "../components/TopBar";
@@ -57,7 +58,9 @@ function optLabel(q: Question, v: AnswerValue | undefined): string {
   if (v == null) return "—";
   if (q.type === "scale") return `${v} / 5`;
   if (q.type === "open") return String(v);
-  return q.opts?.[Number(v)] ?? String(v);
+  // Never show a bare position: an unreadable value (an old Him/Her answer
+  // waiting to be asked again) reads as a dash.
+  return optText(q, v) ?? "—";
 }
 
 // Tiered copy for the guess-accuracy capsule. Always encouraging (no guilt
@@ -137,6 +140,11 @@ export default function RevealScreen({
   const data = deck ?? {};
   const pct = overall(qs, data, role);
   const basis = agreeBasis(qs, data);
+  // Both names by role for "which of you" questions (same order on both phones).
+  const names = {
+    host: role === "host" ? myName : partnerName,
+    guest: role === "guest" ? myName : partnerName,
+  };
   const know = knowScore(qs, data, role);
   const jointRaw = jointQuestions(qs, data);
   const VERDICT_ORDER: Record<Verdict, number> = {
@@ -231,6 +239,7 @@ export default function RevealScreen({
         rows={flagRows}
         myName={myName}
         partnerName={partnerName}
+        names={names}
         onClose={() => setShowFlags(false)}
       />
     );
@@ -398,7 +407,7 @@ export default function RevealScreen({
       <div className="qbreak" style={{ marginTop: 20 }}>
         {joint.map((q, i) => {
           const r = scoreQ(q, data, role);
-          const lq = localizeQuestion(q, lang);
+          const lq = withNames(localizeQuestion(q, lang), names);
           // Talks live on the question's real deck — for the Path, that isn't
           // the slug this screen was opened with.
           const talkSlug = deckOf(q.id) ?? slug;

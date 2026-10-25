@@ -6,7 +6,7 @@ import type { DeckData } from "./scoring";
 
 const SLUG = "in-the-home";
 const L0 = lvlQs(SLUG, 0);
-const mc = L0.find((q) => q.type === "mc" && q.guessable)!;
+const mc = L0.find((q) => q.type === "mc" && q.guessable && !q.who)!;
 const scale = DECKS[SLUG].questions.find((q) => q.type === "scale")!;
 
 // A revealed level: both finished, so its questions are scoreable.

@@ -21,6 +21,7 @@ import {
 } from "../lib/session";
 import { redeemInvite, joinByCode, createInvite } from "../lib/functions";
 import { inviteLink, type Invite } from "../lib/invite";
+import { optValue, withNames } from "../lib/who";
 import {
   getOnbCheckpoint,
   setOnbCheckpoint,
@@ -390,6 +391,7 @@ export default function Onboarding({
           role={role}
           t={t}
           partnerName={initiatorName || partner}
+          myName={myName.trim() || t("You", "Vous")}
           heading={
             bankedCount > 0
               ? t(
@@ -542,6 +544,7 @@ export default function Onboarding({
         role={role}
         t={t}
         partnerName={partner}
+        myName={myName.trim() || t("You", "Vous")}
         heading={t("A few to start with.", "Quelques-unes pour commencer.")}
         onDone={() => (setStepA("profile"), checkpoint("a", "profile"))}
       />
@@ -716,6 +719,7 @@ function OnbQuestions({
   role,
   heading,
   partnerName,
+  myName,
   onDone,
   t,
 }: {
@@ -723,6 +727,7 @@ function OnbQuestions({
   role: "host" | "guest";
   heading: string;
   partnerName: string;
+  myName: string;
   onDone: () => void;
   t: T;
 }) {
@@ -731,7 +736,14 @@ function OnbQuestions({
   const [pendGuess, setPendGuess] = useState<number | null>(null);
   const [guessing, setGuessing] = useState(false);
   const [busy, setBusy] = useState(false);
-  const q = STARTER_QS[idx];
+  // "Who's more likely…?" options are the two of you by name, in the same
+  // order on both phones (host first), stored as who was picked (lib/who.ts).
+  const names = {
+    host: role === "host" ? myName : partnerName,
+    guest: role === "guest" ? myName : partnerName,
+  };
+  const q = STARTER_QS[idx] ? withNames(STARTER_QS[idx], names) : undefined;
+  const stored = (v: number) => (q ? optValue(q, v) : v);
   const last = idx + 1 >= STARTER_QS.length;
   const guessable = !!q && q.guessable && q.type !== "open";
   // Arrival on the first question only; the other ~9 answer/guess screens are
@@ -756,7 +768,7 @@ function OnbQuestions({
   const submitAnswer = async () => {
     if (pend == null || busy || !q) return;
     setBusy(true);
-    await writeAnswer(code, STARTER_SLUG, q.id, role, pend);
+    await writeAnswer(code, STARTER_SLUG, q.id, role, q.type === "mc" ? stored(pend) : pend);
     setBusy(false);
     // Guessable → predict the partner before advancing; otherwise move on.
     if (guessable) {
@@ -770,7 +782,7 @@ function OnbQuestions({
   const lockGuess = async () => {
     if (pendGuess == null || busy || !q) return;
     setBusy(true);
-    await writeGuess(code, STARTER_SLUG, q.id, role, pendGuess);
+    await writeGuess(code, STARTER_SLUG, q.id, role, q.type === "mc" ? stored(pendGuess) : pendGuess);
     setBusy(false);
     await advance();
   };

@@ -33,6 +33,8 @@ export interface Question {
   /** Scale endpoint labels (type === "scale"). */
   lo?: string;
   hi?: string;
+  /** Scale only: what each of the five points means, lo to hi (English). */
+  steps?: string[];
 }
 
 export interface Deck {
@@ -140,7 +142,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "HOME-014",
-        "q": "Which household jobs would you least want to be responsible for? Rank them from least favourite to most manageable.",
+        "q": "Which household jobs would you least like to do? Put your least favourite first.",
         "type": "rank",
         "depth": 1,
         "opts": [
@@ -252,7 +254,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Very little: as long as it's comfortable and functional",
-        "hi": "A lot: creating a beautiful home would be a real priority"
+        "hi": "A lot: creating a beautiful home would be a real priority",
+        "steps": [
+          "Very little: as long as it's comfortable and functional",
+          "A little",
+          "A reasonable amount",
+          "Quite a lot: our home environment would matter to me",
+          "A lot: creating a beautiful home would be a real priority"
+        ]
       },
       {
         "id": "HOME-009",
@@ -286,7 +295,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Romans 12:13",
         "guessable": true,
         "lo": "Mostly private: home would mainly be our space",
-        "hi": "Very open: I'd love our home to be a place people regularly gather"
+        "hi": "Very open: I'd love our home to be a place people regularly gather",
+        "steps": [
+          "Mostly private: home would mainly be our space",
+          "Occasionally welcoming people in",
+          "A balance of privacy and hospitality",
+          "Regularly having people over",
+          "Very open: I'd love our home to be a place people regularly gather"
+        ]
       },
       {
         "id": "HOME-020",
@@ -295,7 +311,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Very uncomfortable",
-        "hi": "Completely comfortable"
+        "hi": "Completely comfortable",
+        "steps": [
+          "Very uncomfortable",
+          "Slightly uncomfortable",
+          "It depends",
+          "Mostly comfortable",
+          "Completely comfortable"
+        ]
       }
     ]
   },
@@ -357,7 +380,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Strong spender",
-        "hi": "Strong saver"
+        "hi": "Strong saver",
+        "steps": [
+          "Strong spender",
+          "Mostly a spender",
+          "A balance of saving and spending",
+          "Mostly a saver",
+          "Strong saver"
+        ]
       },
       {
         "id": "FIN-019",
@@ -449,7 +479,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "lo": "Very flexible: I wouldn't want much of a budget",
-        "hi": "Very structured: I'd want us to plan and track our money closely"
+        "hi": "Very structured: I'd want us to plan and track our money closely",
+        "steps": [
+          "Very flexible: I wouldn't want much of a budget",
+          "Mostly flexible",
+          "Some structure, with room to adapt",
+          "Quite structured",
+          "Very structured: I'd want us to plan and track our money closely"
+        ]
       },
       {
         "id": "FIN-011",
@@ -482,7 +519,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "lo": "Mostly enjoy it now",
-        "hi": "Strongly prioritise the future"
+        "hi": "Strongly prioritise the future",
+        "steps": [
+          "Mostly enjoy it now",
+          "Lean towards enjoying it now",
+          "Balance both equally",
+          "Lean towards saving for the future",
+          "Strongly prioritise the future"
+        ]
       },
       {
         "id": "FIN-027",
@@ -491,11 +535,18 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "lo": "Very little: I'd rather keep life simple and use the extra elsewhere",
-        "hi": "A lot: I'd want our lifestyle to reflect what we can comfortably afford"
+        "hi": "A lot: I'd want our lifestyle to reflect what we can comfortably afford",
+        "steps": [
+          "Very little: I'd rather keep life simple and use the extra elsewhere",
+          "A little",
+          "A balance",
+          "Quite a lot: I'd want us to enjoy more as we earn more",
+          "A lot: I'd want our lifestyle to reflect what we can comfortably afford"
+        ]
       },
       {
         "id": "FIN-028",
-        "q": "If we regularly had money left after our main commitments, what would you most want us to do with it? Rank these from highest to lowest priority.",
+        "q": "If we had money left over each month, what would you most want us to do with it?",
         "type": "rank",
         "depth": 3,
         "opts": [
@@ -514,7 +565,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Proverbs 21:20",
         "guessable": true,
         "lo": "Not very important: we can deal with problems as they come",
-        "hi": "Essential: I'd want us to build a strong financial safety net"
+        "hi": "Essential: I'd want us to build a strong financial safety net",
+        "steps": [
+          "Not very important: we can deal with problems as they come",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: I'd want us to build a strong financial safety net"
+        ]
       },
       {
         "id": "FIN-030",
@@ -535,7 +593,14 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "lo": "Not important: we can differ freely on money",
-        "hi": "Essential: we need to agree on how we handle money"
+        "hi": "Essential: we need to agree on how we handle money",
+        "steps": [
+          "Not important: we can differ freely on money",
+          "Slightly important",
+          "Moderately important: I'd want to agree on the big things",
+          "Very important",
+          "Essential: we need to agree on how we handle money"
+        ]
       },
       {
         "id": "FIN-032",
@@ -555,7 +620,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FIN-033",
-        "q": "What financial commitments, debts or money pressures are you currently carrying that you think I should understand?",
+        "q": "What debts, payments or money worries do you have right now that I should know about?",
         "type": "open",
         "depth": 3,
         "ref": "Proverbs 22:7"
@@ -582,35 +647,42 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Not a deciding factor",
-        "hi": "Essential to me"
+        "hi": "Essential to me",
+        "steps": [
+          "Not a deciding factor",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential to me"
+        ]
       },
       {
         "id": "FIN-036",
-        "q": "How much responsibility do you think we should have to financially help parents or close family when they are struggling?",
+        "q": "How much should we help our parents or close family with money when they are struggling?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Our own household should come first: helping would be rare",
-          "Help occasionally when we comfortably can",
-          "Try to help when there is a genuine need",
-          "Make supporting family an important responsibility",
-          "We should make significant sacrifices to help family when needed"
+          "Our own home comes first: we would rarely help",
+          "Help now and then, when we easily can",
+          "Help when there is a real need",
+          "Helping family is an important duty",
+          "Make big sacrifices to help family when needed"
         ]
       },
       {
         "id": "FIN-037",
-        "q": "Which parts of Christian stewardship would you most want us to be intentional about? Rank them from most important to least important.",
+        "q": "As Christians, which parts of handling money well matter most to you?",
         "type": "rank",
         "depth": 3,
         "ref": "1 Peter 4:10",
         "core": true,
         "opts": [
           "Giving generously",
-          "Living within our means",
+          "Not spending more than we have",
           "Planning wisely for the future",
-          "Being content rather than always wanting more",
-          "Enjoying what God provides with gratitude"
+          "Being content, not always wanting more",
+          "Enjoying what God gives us with thanks"
         ]
       },
       {
@@ -641,7 +713,7 @@ export const DECKS: Record<string, Deck> = {
     "icon": "faith",
     "hook": {
       "id": "FAITH-047",
-      "q": "When your relationship and your time with God compete for your attention, which would you usually prioritise?"
+      "q": "When time with your partner and time with God compete, which usually comes first for you?"
     },
     "parts": [
       {
@@ -866,15 +938,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-039",
-        "q": "Which parts of a faith-centred home would matter most to you? Rank them from most important to least important.",
+        "q": "What matters most to you in a home with faith at the centre?",
         "type": "rank",
         "depth": 2,
         "ref": "Psalm 127:1",
         "opts": [
           "Praying together",
-          "Reading and discussing Scripture together",
+          "Reading and talking about the Bible together",
           "Making decisions based on our faith",
-          "Talking openly about God and our spiritual lives",
+          "Talking openly about God and our faith",
           "Serving and helping others together",
           "Making church an active part of family life"
         ]
@@ -965,17 +1037,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-043",
-        "q": "How willing are you to make choices based on your faith when they go against what is normal in society?",
+        "q": "Would you follow your faith even when it goes against what most people do?",
         "type": "mc",
         "depth": 2,
         "ref": "Romans 12:2",
         "guessable": true,
         "opts": [
-          "I would usually follow what feels normal",
-          "I would consider my faith, but it wouldn't always decide",
+          "I would usually do what most people do",
+          "I would think about my faith, but it wouldn't always decide",
           "It would depend on the situation",
           "I would usually follow my faith",
-          "My faith would come first, even when it goes against the norm"
+          "My faith would come first, every time"
         ]
       },
       {
@@ -1070,7 +1142,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-018",
-        "q": "How important is it that your partner's relationship with God comes before their relationship with you?",
+        "q": "How important is it that your partner puts God before you?",
         "type": "scale",
         "depth": 4,
         "ref": "Matthew 6:33",
@@ -1082,12 +1154,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-047",
-        "q": "When your relationship and your time with God compete for your attention, which would you usually prioritise?",
+        "q": "When time with your partner and time with God compete, which usually comes first for you?",
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "My relationship: I'd usually prioritise time with my partner",
-        "hi": "My time with God: I'd prioritise time with God even when my relationship needs attention"
+        "lo": "My partner: I'd usually choose time with my partner",
+        "hi": "Time with God: even when my relationship needs attention",
+        "steps": [
+          "My partner: I'd usually choose time with my partner",
+          "Mostly my partner: I'd usually choose my partner, but it depends",
+          "It depends: I'd decide each time",
+          "Mostly time with God: I'd usually make space for God first",
+          "Time with God: even when my relationship needs attention"
+        ]
       },
       {
         "id": "FAITH-022",
@@ -1107,7 +1186,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "1 Thessalonians 5:11",
         "guessable": true,
         "lo": "Not involved: my faith is mainly personal",
-        "hi": "Highly involved: actively help me grow in my faith"
+        "hi": "Highly involved: actively help me grow in my faith",
+        "steps": [
+          "Not involved: my faith is mainly personal",
+          "A little involved: support me when I need it",
+          "Moderately involved: encourage and pray with me",
+          "Very involved: regularly encourage and challenge me",
+          "Highly involved: actively help me grow in my faith"
+        ]
       },
       {
         "id": "FAITH-016",
@@ -1127,7 +1213,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Not important: we can have quite different views",
-        "hi": "Essential: we need to share the same core beliefs"
+        "hi": "Essential: we need to share the same core beliefs",
+        "steps": [
+          "Not important: we can have quite different views",
+          "Slightly important: some differences are fine",
+          "Moderately important: I'd want to agree on the main things",
+          "Very important: I'd want us to share most of our beliefs",
+          "Essential: we need to share the same core beliefs"
+        ]
       },
       {
         "id": "FAITH-050",
@@ -1146,7 +1239,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-051",
-        "q": "What do you see as the most important purposes of marriage? Rank these from most important to least important.",
+        "q": "What do you see as the main purposes of marriage?",
         "type": "rank",
         "depth": 2,
         "opts": [
@@ -1214,7 +1307,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "ROLE-013",
-        "q": "Who would you naturally expect to carry most of the planning and organising of family life? Things like appointments, school dates, birthdays, forms, plans and things that need doing.",
+        "q": "Who would you expect to organise most of family life, like appointments, school and birthdays?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
@@ -1228,12 +1321,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "ROLE-014",
-        "q": "If one of us works significantly more hours than the other, how should household responsibilities change?",
+        "q": "If one of us works a lot more hours, how should we share the jobs at home?",
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "They should still be divided equally",
-        "hi": "Responsibilities should largely reflect each person's available time"
+        "lo": "Still share them equally",
+        "hi": "Share them by how much free time each of us has",
+        "steps": [
+          "Still share them equally",
+          "Mostly equal, with some changes",
+          "The one with more time does a bit more",
+          "The one with more time does a lot more",
+          "Share them by how much free time each of us has"
+        ]
       },
       {
         "id": "ROLE-015",
@@ -1242,19 +1342,26 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "No: income should never determine authority",
-        "hi": "Providing financially should come with greater decision-making responsibility"
+        "hi": "Providing financially should come with greater decision-making responsibility",
+        "steps": [
+          "No: income should never determine authority",
+          "Very little",
+          "Sometimes, especially on financial matters",
+          "The main provider should usually have greater say financially",
+          "Providing financially should come with greater decision-making responsibility"
+        ]
       },
       {
         "id": "ROLE-016",
-        "q": "If the husband earns the income and the wife stays home to raise the children, how should we view their contributions to the family?",
+        "q": "If the husband works and the wife stays home with the children, how do you value their roles?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "His financial contribution carries more responsibility",
-          "His contribution carries slightly more weight",
-          "Their contributions are different but equally valuable",
-          "Her role at home deserves particular honour because of the sacrifice involved",
+          "His income carries more responsibility",
+          "His role carries slightly more weight",
+          "Their roles are different but equally valuable",
+          "Her role at home deserves special honour, because of what she gives up",
           "I'm not sure"
         ]
       },
@@ -1274,7 +1381,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "ROLE-018",
-        "q": "If we could comfortably live on the husband's income while our children were young, what would you ideally want the wife to do?",
+        "q": "If his income was enough while our children were young, what would you want the wife to do?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
@@ -1282,8 +1389,8 @@ export const DECKS: Record<string, Deck> = {
           "Stay home full-time",
           "Mostly stay home, with some work if she wants",
           "Work part-time",
-          "Continue working normally",
-          "Whatever she personally prefers"
+          "Keep working as normal",
+          "Whatever she prefers"
         ]
       },
       {
@@ -1293,7 +1400,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "Not at all: parenting should be equally shared",
-        "hi": "I believe caring for young children is primarily the mother's role"
+        "hi": "I believe caring for young children is primarily the mother's role",
+        "steps": [
+          "Not at all: parenting should be equally shared",
+          "Slight preference for the mother taking more responsibility",
+          "Ideally the mother would take the larger role if possible",
+          "I strongly believe the mother should be the primary caregiver",
+          "I believe caring for young children is primarily the mother's role"
+        ]
       },
       {
         "id": "ROLE-020",
@@ -1302,7 +1416,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "I don't believe their roles should differ because of gender",
-        "hi": "I strongly believe God designed distinct roles for husbands and wives"
+        "hi": "I strongly believe God designed distinct roles for husbands and wives",
+        "steps": [
+          "I don't believe their roles should differ because of gender",
+          "Mostly the same roles, with a few differences",
+          "Some distinct roles, but much is shared",
+          "Husbands and wives have clearly different responsibilities",
+          "I strongly believe God designed distinct roles for husbands and wives"
+        ]
       },
       {
         "id": "ROLE-021",
@@ -1322,7 +1443,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "ROLE-022",
-        "q": "What responsibilities matter most when you think about leadership in marriage? Rank them from most important to least important.",
+        "q": "What matters most to you about leadership in marriage?",
         "type": "rank",
         "depth": 3,
         "opts": [
@@ -1367,7 +1488,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "ROLE-025",
-        "q": "If we faced an important decision, prayed about it, sought wise counsel and still genuinely disagreed, what should happen?",
+        "q": "If we prayed, got wise advice and still disagreed on a big decision, what should happen?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
@@ -1375,7 +1496,7 @@ export const DECKS: Record<string, Deck> = {
         "opts": [
           "The husband should make the final decision",
           "We should wait until we both agree",
-          "The person with greater knowledge or responsibility in that area should decide",
+          "Whoever knows most about it, or is responsible for it, should decide",
           "It depends on the decision",
           "I'm not sure"
         ]
@@ -1388,7 +1509,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "I don't: those responsibilities should be equally shared",
-        "hi": "Very strongly: I see providing and protecting as central responsibilities of the husband"
+        "hi": "Very strongly: I see providing and protecting as central responsibilities of the husband",
+        "steps": [
+          "I don't: those responsibilities should be equally shared",
+          "Slightly: I naturally see the husband doing somewhat more",
+          "It depends on the couple and circumstances",
+          "Strongly: I believe the husband should normally carry primary responsibility",
+          "Very strongly: I see providing and protecting as central responsibilities of the husband"
+        ]
       },
       {
         "id": "ROLE-027",
@@ -1397,7 +1525,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "I don't: responsibility should be shared without gender expectations",
-        "hi": "Very strongly: I see caring for the home and family as a central responsibility of the wife"
+        "hi": "Very strongly: I see caring for the home and family as a central responsibility of the wife",
+        "steps": [
+          "I don't: responsibility should be shared without gender expectations",
+          "Slightly: I naturally see the wife doing somewhat more",
+          "It depends on the couple and circumstances",
+          "Strongly: I believe the wife should normally take primary responsibility",
+          "Very strongly: I see caring for the home and family as a central responsibility of the wife"
+        ]
       }
     ]
   },
@@ -1487,32 +1622,32 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "THEO-014",
-        "q": "When Christians disagree about what the Bible teaches, what would you rely on most to work out what is true?",
+        "q": "When Christians disagree about what the Bible teaches, how would you decide what is true?",
         "type": "mc",
         "depth": 3,
         "opts": [
-          "Study the passage and wider Bible carefully",
-          "Look at how Christians throughout history have understood it",
-          "Seek teaching from trusted pastors or church leaders",
+          "Study the passage and the rest of the Bible carefully",
+          "Look at how Christians through history have understood it",
+          "Listen to trusted pastors or church leaders",
           "Pray and follow my conscience before God",
-          "Use a combination of these",
+          "A mix of these",
           "I'm not sure"
         ]
       },
       {
         "id": "THEO-015",
-        "q": "Which theological issues would matter most for us to agree on? Rank them from most important to least important.",
+        "q": "Which beliefs would matter most for us to agree on?",
         "type": "rank",
         "depth": 3,
         "opts": [
-          "Biblical authority",
+          "The authority of the Bible",
           "Salvation",
           "Baptism",
           "Spiritual gifts",
           "Church leadership and women in ministry",
           "Marriage and gender roles",
           "Creation",
-          "End times"
+          "The end times"
         ]
       },
       {
@@ -1522,7 +1657,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I'd want us firmly within the same tradition"
+        "hi": "Essential: I'd want us firmly within the same tradition",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "I'd prefer some theological similarity",
+          "Very important",
+          "Essential: I'd want us firmly within the same tradition"
+        ]
       },
       {
         "id": "THEO-017",
@@ -1654,30 +1796,30 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "THEO-026",
-        "q": "Do you believe miraculous spiritual gifts such as tongues, prophecy and healing are still active today?",
+        "q": "Do you believe miraculous gifts like tongues, prophecy and healing still happen today?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
-          "Yes: all the gifts described in the New Testament continue today",
-          "Yes: but they should be practised carefully and tested",
-          "Some may continue, but I'm cautious about them",
-          "No: miraculous sign gifts ceased after the apostolic era",
+          "Yes: all the gifts in the New Testament continue today",
+          "Yes: but they should be used carefully and tested",
+          "Some may continue, but I'm careful about them",
+          "No: these miraculous gifts ended with the apostles",
           "I'm still working it out"
         ]
       },
       {
         "id": "THEO-027",
-        "q": "How comfortable would you be attending a church where tongues or prophecy regularly happened publicly?",
+        "q": "How comfortable would you be at a church where tongues or prophecy happen openly in services?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
           "Very comfortable",
-          "Comfortable if it is orderly and biblically tested",
+          "Comfortable if it is orderly and tested against the Bible",
           "Unsure or cautious",
           "Uncomfortable",
-          "I wouldn't want us attending that kind of church"
+          "I wouldn't want us at that kind of church"
         ]
       },
       {
@@ -1729,7 +1871,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential"
+        "hi": "Essential",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Nice to agree, but not necessary",
+          "Very important",
+          "Essential"
+        ]
       }
     ]
   },
@@ -1768,7 +1917,7 @@ export const DECKS: Record<string, Deck> = {
     "questions": [
       {
         "id": "DREAM-006",
-        "q": "If we get married, I would love for us to… Complete the sentence with a few things you would love for us to experience, build or do together.",
+        "q": "If we get married, what would you love us to experience, build or do together?",
         "type": "open",
         "depth": 1,
         "note": "A dreaming game that reveals hopes for married life."
@@ -1824,7 +1973,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Not open at all",
-        "hi": "I'd actively love for us to live abroad"
+        "hi": "I'd actively love for us to live abroad",
+        "steps": [
+          "Not open at all",
+          "Possibly for a short period",
+          "I'd seriously consider it",
+          "Very open",
+          "I'd actively love for us to live abroad"
+        ]
       },
       {
         "id": "DREAM-008",
@@ -1891,30 +2047,30 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DREAM-018",
-        "q": "Which parts of married life would you most want us to get right? Rank them from most important to least important.",
+        "q": "Which parts of married life would you most want us to get right?",
         "type": "rank",
         "depth": 2,
         "opts": [
           "Our relationship with God",
           "Friendship and enjoying each other",
-          "Communication and conflict",
+          "How we talk and handle conflict",
           "Raising a family",
-          "Financial stability",
-          "Supporting each other's individual goals"
+          "Money being stable",
+          "Supporting each other's personal goals"
         ]
       },
       {
         "id": "DREAM-019",
-        "q": "What kind of legacy would you most want us to leave? Rank these from most important to least important.",
+        "q": "What legacy would you most want us to leave?",
         "type": "rank",
         "depth": 2,
         "opts": [
           "Children and family who know they were deeply loved",
-          "A strong Christian faith passed to the next generation",
-          "People whose lives were better because we helped them",
-          "Financial security or opportunities for future generations",
+          "A strong faith passed on to the next generation",
+          "People whose lives are better because we helped",
+          "Money or opportunities for future generations",
           "Meaningful work or something we built",
-          "Memories of a life well enjoyed together"
+          "Memories of a happy life together"
         ]
       },
       {
@@ -1924,7 +2080,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Very little: I'd strongly prefer stability",
-        "hi": "A lot: I'd rather take the chance than wonder what could have been"
+        "hi": "A lot: I'd rather take the chance than wonder what could have been",
+        "steps": [
+          "Very little: I'd strongly prefer stability",
+          "Only small, calculated risks",
+          "A balance of security and risk",
+          "I'd be willing to take significant risks for the right dream",
+          "A lot: I'd rather take the chance than wonder what could have been"
+        ]
       },
       {
         "id": "DREAM-010",
@@ -1948,12 +2111,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DREAM-021",
-        "q": "How much of your personal dreams would you be willing to give up if they conflicted with what was best for our marriage or family?",
+        "q": "How much of your own dreams would you give up for the good of our marriage and family?",
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Very little: I wouldn't want marriage to cost me my individual dreams",
-        "hi": "Whatever was necessary: marriage and family would take priority"
+        "lo": "Very little: I don't want marriage to cost me my dreams",
+        "hi": "Whatever it takes: marriage and family come first",
+        "steps": [
+          "Very little: I don't want marriage to cost me my dreams",
+          "Some, but I'd protect my main goals",
+          "We'd need to find a balance",
+          "Quite a lot, for the good of our family",
+          "Whatever it takes: marriage and family come first"
+        ]
       }
     ]
   },
@@ -2073,15 +2243,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAM-015",
-        "q": "What would most influence when you feel ready to have children? Rank these from most important to least important.",
+        "q": "What would most affect when you feel ready to have children?",
         "type": "rank",
         "depth": 2,
         "opts": [
           "Our relationship feeling ready",
-          "Financial stability",
-          "Having the right home or living situation",
-          "Career or work circumstances",
-          "Age or fertility considerations"
+          "Money being stable",
+          "Having the right home",
+          "Career or work",
+          "Age or fertility"
         ]
       },
       {
@@ -2092,7 +2262,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "lo": "Not important: I'm equally open to other ways of building a family",
-        "hi": "Essential to me"
+        "hi": "Essential to me",
+        "steps": [
+          "Not important: I'm equally open to other ways of building a family",
+          "Slightly important",
+          "I would prefer biological children, but I'm flexible",
+          "Very important",
+          "Essential to me"
+        ]
       },
       {
         "id": "FAM-017",
@@ -2146,7 +2323,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "lo": "Not open to it",
-        "hi": "I would actively want to adopt"
+        "hi": "I would actively want to adopt",
+        "steps": [
+          "Not open to it",
+          "Slightly open",
+          "I would consider it",
+          "Very open",
+          "I would actively want to adopt"
+        ]
       },
       {
         "id": "FAM-021",
@@ -2214,7 +2398,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "lo": "Not important: we could live wherever works for us",
-        "hi": "A major priority: I'd want family nearby"
+        "hi": "A major priority: I'd want family nearby",
+        "steps": [
+          "Not important: we could live wherever works for us",
+          "Slightly important",
+          "Nice to have, but not a deciding factor",
+          "Very important",
+          "A major priority: I'd want family nearby"
+        ]
       },
       {
         "id": "FAM-025",
@@ -2329,11 +2520,18 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "notYet": true,
         "lo": "Very differently",
-        "hi": "Very similarly"
+        "hi": "Very similarly",
+        "steps": [
+          "Very differently",
+          "Mostly differently",
+          "Some things the same, some different",
+          "Mostly the same",
+          "Very similarly"
+        ]
       },
       {
         "id": "PAR-012",
-        "q": "What's one thing from the way you were raised that you'd definitely want us to repeat, and one thing you'd want us to do differently?",
+        "q": "What would you repeat from how you were raised, and what would you do differently?",
         "type": "open",
         "depth": 2
       },
@@ -2359,7 +2557,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not very important: understanding and discussion matter more",
-        "hi": "Extremely important: children should normally obey their parents promptly"
+        "hi": "Extremely important: children should normally obey their parents promptly",
+        "steps": [
+          "Not very important: understanding and discussion matter more",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Extremely important: children should normally obey their parents promptly"
+        ]
       },
       {
         "id": "PAR-015",
@@ -2379,12 +2584,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAR-016",
-        "q": "If you personally disagreed with physical discipline, how comfortable would you be with your partner using it?",
+        "q": "If you were against physical discipline, how comfortable would you be with your partner using it?",
         "type": "scale",
         "depth": 2,
         "guessable": true,
         "lo": "Not comfortable at all",
-        "hi": "Comfortable trusting their judgement"
+        "hi": "Comfortable trusting their judgement",
+        "steps": [
+          "Not comfortable at all",
+          "Mostly uncomfortable",
+          "We'd need to agree clear limits first",
+          "Mostly comfortable",
+          "Comfortable trusting their judgement"
+        ]
       },
       {
         "id": "PAR-017",
@@ -2393,7 +2605,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Mostly let them choose for themselves",
-        "hi": "Very careful: actively restrict content that conflicts with our faith and values"
+        "hi": "Very careful: actively restrict content that conflicts with our faith and values",
+        "steps": [
+          "Mostly let them choose for themselves",
+          "Light boundaries",
+          "Age-appropriate limits and some monitoring",
+          "Strong boundaries around content",
+          "Very careful: actively restrict content that conflicts with our faith and values"
+        ]
       },
       {
         "id": "PAR-018",
@@ -2418,31 +2637,45 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not important: faith can mainly be taught at home and church",
-        "hi": "Essential: I'd want their education to actively support our faith"
+        "hi": "Essential: I'd want their education to actively support our faith",
+        "steps": [
+          "Not important: faith can mainly be taught at home and church",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: I'd want their education to actively support our faith"
+        ]
       },
       {
         "id": "PAR-020",
-        "q": "If our child's school regularly taught beliefs about sex, gender or morality that we believed contradicted Scripture, what would you want us to do?",
+        "q": "If our child's school kept teaching against the Bible on sex, gender or morality, what should we do?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
         "opts": [
           "Keep them there and teach our beliefs clearly at home",
-          "Challenge or opt out of particular teaching where possible",
+          "Challenge it, or take them out of those lessons where we can",
           "Move them to another school",
-          "Homeschool or choose explicitly Christian education",
-          "Decide based on the child's age and circumstances"
+          "Homeschool or choose a Christian school",
+          "Decide based on the child's age and situation"
         ]
       },
       {
         "id": "PAR-021",
-        "q": "How much should we intentionally protect our children from parts of mainstream culture that conflict with our Christian beliefs?",
+        "q": "How much should we protect our children from parts of mainstream culture that go against our faith?",
         "type": "scale",
         "depth": 2,
         "guessable": true,
         "notYet": true,
-        "lo": "Very little: teach discernment while allowing broad exposure",
-        "hi": "Very strong boundaries: deliberately keep them separate from many mainstream influences"
+        "lo": "Very little: teach them to judge wisely, and let them see most things",
+        "hi": "Very strongly: keep them away from many mainstream influences",
+        "steps": [
+          "Very little: teach them to judge wisely, and let them see most things",
+          "Some limits",
+          "A balance of protection and freedom",
+          "Strong limits on things that go against our faith",
+          "Very strongly: keep them away from many mainstream influences"
+        ]
       },
       {
         "id": "PAR-022",
@@ -2488,17 +2721,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAR-025",
-        "q": "If one of our children seriously questioned or rejected the Christian faith, how strongly should we continue directing them towards it?",
+        "q": "If our child seriously doubted or rejected the faith, how much should we keep guiding them?",
         "type": "mc",
         "depth": 4,
         "ref": "Deuteronomy 6:6-7",
         "guessable": true,
         "opts": [
-          "Give them freedom to decide what they believe without pressure",
-          "Mostly give them space, but remain available",
-          "Keep discussing and encouraging faith without forcing it",
+          "Let them decide for themselves, without pressure",
+          "Mostly give them space, but stay available",
+          "Keep talking about faith and encouraging it, without forcing it",
           "Actively guide them and involve trusted Christian mentors",
-          "Continue clear Christian expectations in our home while actively discipling them"
+          "Keep clear Christian rules at home and actively teach them the faith"
         ]
       },
       {
@@ -2517,27 +2750,27 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAR-027",
-        "q": "If one of our teenage children told us they were in a same-sex relationship, how would you want us to respond?",
+        "q": "If our teenage child told us they were in a same-sex relationship, how would you want us to respond?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
           "Fully affirm and support the relationship",
-          "Love and support our child while being clear we don't believe the relationship is right",
-          "Tell them we don't permit the relationship while they're living under our authority",
+          "Love and support our child, while being clear we don't believe the relationship is right",
+          "Tell them we don't allow the relationship while they live in our home",
           "I'm not sure"
         ]
       },
       {
         "id": "PAR-028",
-        "q": "If one of our children said they identified as a different gender, non-binary etc. how would you want us to respond?",
+        "q": "If our child identified as another gender or as non-binary, how should we respond?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
-          "Fully affirm their gender identity, including their chosen name and pronouns",
-          "Use their chosen name and pronouns while taking time to understand what they're experiencing",
-          "Love and support them, but continue affirming their biological sex",
+          "Fully affirm their gender identity, including their new name and pronouns",
+          "Use their new name and pronouns while we take time to understand",
+          "Love and support them, but keep affirming their biological sex",
           "Try to help them change their mind",
           "I'm not sure"
         ]
@@ -2641,16 +2874,30 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Not particularly important",
-        "hi": "Essential: I need strong physical attraction to my spouse"
+        "hi": "Essential: I need strong physical attraction to my spouse",
+        "steps": [
+          "Not particularly important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: I need strong physical attraction to my spouse"
+        ]
       },
       {
         "id": "INT-025",
-        "q": "How important is it to you that we both continue making an effort with our physical appearance after marriage?",
+        "q": "How important is it that we both keep making an effort with how we look after marriage?",
         "type": "scale",
         "depth": 3,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Extremely important"
+        "hi": "Extremely important",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Extremely important"
+        ]
       },
       {
         "id": "INT-016",
@@ -2823,7 +3070,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "guessable": true,
         "lo": "I'd find those conversations very difficult",
-        "hi": "Completely open: nothing about our sex life should be difficult to discuss"
+        "hi": "Completely open: nothing about our sex life should be difficult to discuss",
+        "steps": [
+          "I'd find those conversations very difficult",
+          "Somewhat uncomfortable",
+          "Comfortable discussing the important things",
+          "Very comfortable",
+          "Completely open: nothing about our sex life should be difficult to discuss"
+        ]
       },
       {
         "id": "INT-035",
@@ -3134,7 +3388,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not important: we'll spend time together naturally",
-        "hi": "Essential: we should make time even when we're busy"
+        "hi": "Essential: we should make time even when we're busy",
+        "steps": [
+          "Not important: we'll spend time together naturally",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: we should make time even when we're busy"
+        ]
       },
       {
         "id": "CONF-042",
@@ -3170,7 +3431,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Calm and quiet",
-        "hi": "Lively and energetic"
+        "hi": "Lively and energetic",
+        "steps": [
+          "Calm and quiet",
+          "Mostly calm",
+          "A balance of calm and lively",
+          "Mostly lively",
+          "Lively and energetic"
+        ]
       },
       {
         "id": "CONF-037",
@@ -3200,7 +3468,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CONF-046",
-        "q": "When you're under stress, which of these are you most likely to do? Rank them from most to least likely.",
+        "q": "When you're stressed, what are you most likely to do? Put the most likely first.",
         "type": "rank",
         "depth": 2,
         "ref": "Philippians 4:6-7",
@@ -3209,7 +3477,7 @@ export const DECKS: Record<string, Deck> = {
           "Talk it through with someone",
           "Take time alone",
           "Keep going and deal with it myself",
-          "Become more easily frustrated"
+          "Get frustrated more easily"
         ]
       },
       {
@@ -3220,7 +3488,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Almost never",
-        "hi": "Very easily"
+        "hi": "Very easily",
+        "steps": [
+          "Almost never",
+          "Not very easily",
+          "It depends on the situation",
+          "Fairly easily",
+          "Very easily"
+        ]
       },
       {
         "id": "CONF-048",
@@ -3230,7 +3505,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Proverbs 15:1",
         "guessable": true,
         "lo": "Very gentle and careful",
-        "hi": "Very direct and blunt"
+        "hi": "Very direct and blunt",
+        "steps": [
+          "Very gentle and careful",
+          "Usually gentle",
+          "It depends on the situation",
+          "Usually direct",
+          "Very direct and blunt"
+        ]
       },
       {
         "id": "CONF-021",
@@ -3254,7 +3536,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "I find it very difficult",
-        "hi": "I accept it easily"
+        "hi": "I accept it easily",
+        "steps": [
+          "I find it very difficult",
+          "I find it somewhat difficult",
+          "It depends on the situation",
+          "I usually handle it well",
+          "I accept it easily"
+        ]
       },
       {
         "id": "CONF-036",
@@ -3326,7 +3615,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not important at all",
-        "hi": "Extremely important"
+        "hi": "Extremely important",
+        "steps": [
+          "Not important at all",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Extremely important"
+        ]
       },
       {
         "id": "CONF-053",
@@ -3365,7 +3661,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Very unlikely",
-        "hi": "Very likely"
+        "hi": "Very likely",
+        "steps": [
+          "Very unlikely",
+          "Somewhat unlikely",
+          "It depends on the situation",
+          "Usually likely",
+          "Very likely"
+        ]
       },
       {
         "id": "CONF-056",
@@ -3447,7 +3750,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not confident at all",
-        "hi": "Completely confident"
+        "hi": "Completely confident",
+        "steps": [
+          "Not confident at all",
+          "Slightly confident",
+          "Moderately confident",
+          "Very confident",
+          "Completely confident"
+        ]
       },
       {
         "id": "CONF-030",
@@ -3496,17 +3806,24 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CONF-058",
-        "q": "How important is it to you that your partner tells you when they notice something you may not see about yourself?",
+        "q": "How important is it that your partner points out things about you that you may not see?",
         "type": "scale",
         "depth": 2,
         "ref": "Ephesians 4:15",
         "guessable": true,
         "lo": "Not important: I'd rather work things out myself",
-        "hi": "Extremely important: I want my partner to challenge me when needed"
+        "hi": "Extremely important: I want my partner to challenge me when needed",
+        "steps": [
+          "Not important: I'd rather work things out myself",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Extremely important: I want my partner to challenge me when needed"
+        ]
       },
       {
         "id": "CONF-059",
-        "q": "When your partner notices something about you that you may not see yourself, how would you prefer them to raise it?",
+        "q": "When your partner notices something about you that you can't see, how should they tell you?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
@@ -3526,7 +3843,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Proverbs 11:13",
         "guessable": true,
         "lo": "Not comfortable at all: I'd keep it between us",
-        "hi": "Completely comfortable: I'd have no issue talking it through with others"
+        "hi": "Completely comfortable: I'd have no issue talking it through with others",
+        "steps": [
+          "Not comfortable at all: I'd keep it between us",
+          "Slightly comfortable: only with someone very close to us",
+          "It depends on the situation",
+          "Mostly comfortable: I'd talk to someone I trust",
+          "Completely comfortable: I'd have no issue talking it through with others"
+        ]
       },
       {
         "id": "CONF-061",
@@ -3627,20 +3951,27 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Quite separate: our married life would mainly be our own",
-        "hi": "Deeply involved: I'd want family to be a major part of our everyday life"
+        "hi": "Deeply involved: I'd want family to be a major part of our everyday life",
+        "steps": [
+          "Quite separate: our married life would mainly be our own",
+          "Some involvement, but with plenty of space",
+          "A balance of family involvement and independence",
+          "Very involved in our regular lives",
+          "Deeply involved: I'd want family to be a major part of our everyday life"
+        ]
       },
       {
         "id": "INLAW-016",
-        "q": "How comfortable would you be with our parents or close family dropping by our home without arranging it first?",
+        "q": "How would you feel about our parents or close family visiting our home without asking first?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
         "opts": [
-          "Very uncomfortable: I'd want visits arranged",
+          "Very uncomfortable: I'd want visits planned",
           "Mostly uncomfortable",
           "It depends who it is",
           "Mostly comfortable",
-          "Completely comfortable: close family should feel welcome anytime"
+          "Completely comfortable: close family are welcome anytime"
         ]
       },
       {
@@ -3701,16 +4032,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "INLAW-018",
-        "q": "If both families strongly expected us to spend the same major holiday with them, how should we decide?",
+        "q": "If both families expected us for the same big holiday, how should we decide?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
         "opts": [
-          "Alternate fairly",
-          "Prioritise whichever family we saw less",
-          "Prioritise the family for whom that tradition matters most",
-          "Celebrate mainly as our own household and see both families separately",
-          "The husband and wife should decide case by case together"
+          "Take turns fairly",
+          "Choose the family we see less",
+          "Choose the family for whom that tradition matters most",
+          "Celebrate mainly as our own home, and see both families another time",
+          "Decide together, case by case"
         ]
       },
       {
@@ -3729,7 +4060,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "INLAW-019",
-        "q": "If our families have different cultural or family traditions, how should we decide which ones become part of our home?",
+        "q": "If our families have different traditions, how should we choose which ones to keep in our home?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
@@ -3738,7 +4069,7 @@ export const DECKS: Record<string, Deck> = {
           "Mainly follow the wife's family traditions",
           "Blend traditions from both families",
           "Create mostly new traditions of our own",
-          "Decide tradition by tradition"
+          "Decide one tradition at a time"
         ]
       },
       {
@@ -3763,7 +4094,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "Not willing",
-        "hi": "I would see it as our responsibility if needed"
+        "hi": "I would see it as our responsibility if needed",
+        "steps": [
+          "Not willing",
+          "Reluctant, except in extreme circumstances",
+          "Open to considering it",
+          "Very willing",
+          "I would see it as our responsibility if needed"
+        ]
       },
       {
         "id": "INLAW-022",
@@ -3772,7 +4110,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "Very little: our household has to come first",
-        "hi": "Whatever is reasonably necessary to honour and care for them"
+        "hi": "Whatever is reasonably necessary to honour and care for them",
+        "steps": [
+          "Very little: our household has to come first",
+          "Some adjustment",
+          "A meaningful amount where necessary",
+          "Major sacrifices if genuinely needed",
+          "Whatever is reasonably necessary to honour and care for them"
+        ]
       },
       {
         "id": "INLAW-023",
@@ -3781,20 +4126,27 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not important: respect is enough",
-        "hi": "Extremely important: I'd want my spouse to feel like part of my family"
+        "hi": "Extremely important: I'd want my spouse to feel like part of my family",
+        "steps": [
+          "Not important: respect is enough",
+          "Slightly important",
+          "I'd like them to get along",
+          "Very important: I'd want genuine closeness",
+          "Extremely important: I'd want my spouse to feel like part of my family"
+        ]
       },
       {
         "id": "INLAW-024",
-        "q": "If you loved your family but your spouse never became particularly close to them, how would you feel?",
+        "q": "If you loved your family but your spouse never became close to them, how would you feel?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
         "opts": [
-          "Completely fine as long as everyone is respectful",
-          "Slightly disappointed, but I could accept it",
-          "It would bother me quite a lot",
-          "I would see it as a significant relationship problem",
-          "It would depend on why they weren't close"
+          "Completely fine, as long as everyone is respectful",
+          "A little disappointed, but I could accept it",
+          "It would bother me a lot",
+          "I would see it as a serious problem in our relationship",
+          "It would depend on why"
         ]
       },
       {
@@ -3837,18 +4189,18 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "INLAW-027",
-        "q": "When what your spouse wants and what your parents want genuinely conflict, whose wishes should normally come first?",
+        "q": "When your spouse and your parents want different things, whose wishes should usually come first?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "notYet": true,
         "core": true,
         "opts": [
-          "My spouse should normally come first",
-          "My spouse should come first unless I believe they're clearly wrong",
-          "Both should carry roughly equal weight",
-          "My responsibilities to my parents may sometimes come first",
-          "We should do as our parents say and honour their decisions even if we don't agree",
+          "My spouse should usually come first",
+          "My spouse, unless I believe they're clearly wrong",
+          "Both should count about the same",
+          "My duty to my parents may sometimes come first",
+          "We should honour our parents' decisions, even if we don't agree",
           "I'm not sure"
         ]
       },
@@ -3868,18 +4220,18 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "INLAW-029",
-        "q": "If one of your parents repeatedly disrespected your spouse, how far should you be willing to go to protect your marriage?",
+        "q": "If one of your parents kept disrespecting your spouse, how far would you go to protect our marriage?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "core": true,
         "opts": [
-          "Speak privately to my parent and ask them to stop",
+          "Speak to my parent privately and ask them to stop",
           "Set clear boundaries with my parent",
-          "Reduce how much contact we have if it continues",
-          "Cut contact for a period if necessary",
-          "My spouse should try to tolerate it because they're still my parent",
-          "It depends on how serious the behaviour is"
+          "See them less if it continues",
+          "Stop contact for a time if needed",
+          "My spouse should accept it, because they're still my parent",
+          "It depends on how serious it is"
         ]
       }
     ]
@@ -3981,7 +4333,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "I love having things planned well in advance",
-        "hi": "I love deciding what to do in the moment"
+        "hi": "I love deciding what to do in the moment",
+        "steps": [
+          "I love having things planned well in advance",
+          "Mostly planned",
+          "A mixture of both",
+          "Mostly spontaneous",
+          "I love deciding what to do in the moment"
+        ]
       },
       {
         "id": "FUN-027",
@@ -4018,7 +4377,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "I really don't care who wins",
-        "hi": "I really want to win"
+        "hi": "I really want to win",
+        "steps": [
+          "I really don't care who wins",
+          "I enjoy winning, but it's mostly just fun",
+          "Somewhere in the middle",
+          "I get pretty competitive",
+          "I really want to win"
+        ]
       },
       {
         "id": "FUN-030",
@@ -4036,7 +4402,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-031",
-        "q": "When we're having fun together, what matters most to you? Rank these from most important to least important.",
+        "q": "When we're having fun together, what matters most to you?",
         "type": "rank",
         "depth": 1,
         "opts": [
@@ -4175,7 +4541,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "I'd love us to do most things together",
-        "hi": "I'd want us both to have lots of our own hobbies"
+        "hi": "I'd want us both to have lots of our own hobbies",
+        "steps": [
+          "I'd love us to do most things together",
+          "Mostly together",
+          "A balance of both",
+          "Plenty of separate interests",
+          "I'd want us both to have lots of our own hobbies"
+        ]
       },
       {
         "id": "FUN-033",
@@ -4207,7 +4580,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-035",
-        "q": "Which kinds of memories would you most want us to create together? Rank them from most important to least important.",
+        "q": "What kinds of memories would you most want us to make together?",
         "type": "rank",
         "depth": 1,
         "opts": [
@@ -4215,7 +4588,7 @@ export const DECKS: Record<string, Deck> = {
           "Celebrations and traditions",
           "Food and experiences",
           "Shared hobbies or projects",
-          "Serving or helping other people together",
+          "Serving or helping others together",
           "Quiet everyday moments together"
         ]
       },
@@ -4714,7 +5087,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Very relaxed: enjoyment and convenience matter most",
-        "hi": "Very health-conscious: nutrition would be a major priority"
+        "hi": "Very health-conscious: nutrition would be a major priority",
+        "steps": [
+          "Very relaxed: enjoyment and convenience matter most",
+          "Mostly relaxed",
+          "A balance of health and enjoyment",
+          "Quite health-conscious",
+          "Very health-conscious: nutrition would be a major priority"
+        ]
       },
       {
         "id": "HEALTH-012",
@@ -4723,7 +5103,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Mostly relaxed: exercise wouldn't be a big part of our lifestyle",
-        "hi": "Fitness and physical activity would be a major part of our lifestyle"
+        "hi": "Fitness and physical activity would be a major part of our lifestyle",
+        "steps": [
+          "Mostly relaxed: exercise wouldn't be a big part of our lifestyle",
+          "Lightly active",
+          "A balance of activity and relaxation",
+          "Very active",
+          "Fitness and physical activity would be a major part of our lifestyle"
+        ]
       },
       {
         "id": "HEALTH-013",
@@ -4747,7 +5134,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Not much: I like life busy and full",
-        "hi": "A lot: regular rest should be a real priority"
+        "hi": "A lot: regular rest should be a real priority",
+        "steps": [
+          "Not much: I like life busy and full",
+          "A little",
+          "A healthy balance",
+          "Quite a lot",
+          "A lot: regular rest should be a real priority"
+        ]
       },
       {
         "id": "HEALTH-009",
@@ -4790,12 +5184,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "HEALTH-017",
-        "q": "How important would it be to you that we regularly put our phones away when we're spending time together?",
+        "q": "How important is it that we put our phones away when we spend time together?",
         "type": "scale",
         "depth": 1,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I'd want regular phone-free time together"
+        "hi": "Essential: I'd want regular time together without phones",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: I'd want regular time together without phones"
+        ]
       },
       {
         "id": "HEALTH-018",
@@ -4833,7 +5234,14 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "lo": "Not important",
-        "hi": "Essential"
+        "hi": "Essential",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential"
+        ]
       },
       {
         "id": "HEALTH-021",
@@ -4865,14 +5273,14 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "HEALTH-005",
-        "q": "Is there anything about your physical or mental health, past or present, that you think I should understand?",
+        "q": "Is there anything about your physical or mental health, past or present, that I should know?",
         "type": "open",
         "depth": 4,
         "note": "A gentle prompt for important health disclosure."
       },
       {
         "id": "HEALTH-006",
-        "q": "Is there anything in your past or present relationship with substances or addictive habits that you think I should understand?",
+        "q": "Is there anything about alcohol, drugs or addictive habits, past or present, that I should know?",
         "type": "open",
         "depth": 4,
         "note": "Surfaces substance history honestly and without shame."
@@ -5027,7 +5435,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-018",
-        "q": "What about your relationship with your parents or the people who raised you would you most want me to understand?",
+        "q": "What would you most want me to understand about you and the people who raised you?",
         "type": "open",
         "depth": 3
       },
@@ -5071,28 +5479,28 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-022",
-        "q": "Are you currently in contact with anyone you previously dated or had a romantic or sexual relationship with?",
+        "q": "Are you in contact with anyone you dated or had a sexual relationship with before?",
         "type": "mc",
         "depth": 4,
         "opts": [
           "No contact",
-          "Only unavoidable contact, such as work, family or church",
-          "Occasional friendly contact",
+          "Only contact I can't avoid, like work, family or church",
+          "Sometimes, as friends",
           "Regular contact or friendship",
           "A close friendship",
-          "There is a situation I think my partner should understand"
+          "There is a situation my partner should understand"
         ]
       },
       {
         "id": "PAST-023",
-        "q": "Once we're married, what contact with previous romantic or sexual partners do you think is appropriate?",
+        "q": "Once we're married, what contact with past partners do you think is OK?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "No contact unless absolutely unavoidable",
+          "No contact unless it can't be avoided",
           "Only polite or necessary contact",
-          "Occasional friendship is fine if completely open with each other",
+          "Some friendship is fine if we're fully open with each other",
           "Regular friendship is fine with clear boundaries",
           "Close friendship is fine as long as there is trust"
         ]
@@ -5129,16 +5537,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-026",
-        "q": "If your parents or caregivers seriously hurt you in the past, where do you feel you are with it today?",
+        "q": "If your parents or carers seriously hurt you in the past, where are you with it today?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "I don't have significant hurt from them",
-          "I've worked through it and feel largely at peace",
-          "I've forgiven them, but what happened still affects me",
-          "I'm actively trying to work through it",
-          "There is significant hurt I haven't resolved",
+          "I don't carry serious hurt from them",
+          "I've worked through it and mostly feel at peace",
+          "I've forgiven them, but it still affects me",
+          "I'm working through it now",
+          "There is deep hurt I haven't resolved",
           "I'm not ready to talk about it yet"
         ]
       },
@@ -5196,7 +5604,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-030",
-        "q": "If something from your past began seriously affecting our marriage, who would you be most willing to involve?",
+        "q": "If your past began to seriously affect our marriage, who would you be most willing to ask for help?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
@@ -5205,22 +5613,29 @@ export const DECKS: Record<string, Deck> = {
           "A Christian counsellor",
           "A counsellor or therapist",
           "A mature Christian couple or mentor",
-          "Work through it privately together",
-          "I would strongly prefer not to involve anyone outside the marriage"
+          "Work through it privately, just us",
+          "I'd strongly prefer not to involve anyone else"
         ]
       },
       {
         "id": "PAST-031",
-        "q": "How much do you think experiences from your past still influence how you behave in relationships today?",
+        "q": "How much does your past still affect how you act in relationships today?",
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "Very little: I see most of it as behind me",
-        "hi": "A lot: I'm very aware that my past still shapes my reactions"
+        "lo": "Very little: most of it is behind me",
+        "hi": "A lot: I know my past still shapes how I react",
+        "steps": [
+          "Very little: most of it is behind me",
+          "A little",
+          "Some old patterns still affect me",
+          "Quite a lot",
+          "A lot: I know my past still shapes how I react"
+        ]
       },
       {
         "id": "PAST-001",
-        "q": "Is there anything from your past that still affects how you trust, communicate, handle conflict, intimacy, family or faith today?",
+        "q": "Does your past still affect your trust, communication, conflict, intimacy, family or faith?",
         "type": "open",
         "depth": 4,
         "ref": "Psalm 147:3",
@@ -5259,13 +5674,13 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-034",
-        "q": "Is there anything from your past that you're afraid could change how I see you if I knew the full story?",
+        "q": "Is there anything in your past you fear would change how I see you, if I knew everything?",
         "type": "open",
         "depth": 5
       },
       {
         "id": "PAST-035",
-        "q": "Is there anything involving abuse, violence, serious addiction or major trauma in your past that you believe I should understand before marriage?",
+        "q": "Is there any abuse, violence, serious addiction or major trauma in your past I should know about?",
         "type": "open",
         "depth": 5
       }
@@ -5420,7 +5835,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CAREER-012",
-        "q": "If having children meant one career needed to take a back seat, whose would you normally expect it to be?",
+        "q": "If we had children and one career had to slow down, whose would you expect it to be?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
@@ -5428,9 +5843,9 @@ export const DECKS: Record<string, Deck> = {
           "The wife's",
           "The husband's",
           "Whoever earns less",
-          "Whoever has the more flexible career",
-          "Whoever most wants to focus on raising the children",
-          "Decide entirely case by case"
+          "Whoever has the more flexible job",
+          "Whoever most wants to focus on the children",
+          "Decide when the time comes"
         ]
       },
       {
@@ -5845,7 +6260,14 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Proverbs 3:5",
         "guessable": true,
         "lo": "My feelings almost always",
-        "hi": "My values almost always"
+        "hi": "My values almost always",
+        "steps": [
+          "My feelings almost always",
+          "My feelings more often",
+          "It depends",
+          "My values more often",
+          "My values almost always"
+        ]
       },
       {
         "id": "SELF-040",
@@ -6166,7 +6588,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-054",
-        "q": "Which parts of our connection would you most want to remain strong throughout our marriage? Rank them.",
+        "q": "Which parts of our connection would you most want to stay strong through our marriage?",
         "type": "rank",
         "depth": 2,
         "opts": [
@@ -6191,17 +6613,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-055",
-        "q": "What matters most to you for two people to feel truly compatible? Rank these from most important to least important.",
+        "q": "What matters most to you for two people to be truly compatible?",
         "type": "rank",
         "depth": 2,
         "opts": [
-          "How we communicate day to day",
-          "Our energy levels and how much time we need alone",
+          "How we talk day to day",
+          "Our energy levels and how much time alone we need",
           "Our sense of humour",
-          "The pace of life and routines we each like",
-          "How we each handle money in practice",
+          "The pace of life and routines we like",
+          "How we each handle money day to day",
           "How we like to spend free time",
-          "How tidy and organised we each are"
+          "How tidy and organised we are"
         ]
       },
       {
@@ -6237,7 +6659,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-058",
-        "q": "What's one difference between us that you genuinely love, and one difference you think could be difficult for us?",
+        "q": "What is one difference between us that you love, and one that could be hard for us?",
         "type": "open",
         "depth": 2
       },
@@ -6260,16 +6682,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-060",
-        "q": "If the emotional “spark” faded for a season but everything else in the relationship was strong, how would that affect your commitment?",
+        "q": "If romantic feelings faded for a while but the rest was strong, how would it affect your commitment?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
           "It would not change my commitment",
-          "I would be concerned, but intentionally work to rebuild it",
-          "I would question whether something important was missing",
-          "I would seriously reconsider the relationship",
-          "I believe strong romantic feelings are necessary for a marriage to continue"
+          "I'd be concerned, but I'd work to rebuild it",
+          "I'd wonder whether something important was missing",
+          "I'd seriously rethink the relationship",
+          "I believe strong romantic feelings are needed for a marriage to continue"
         ]
       },
       {
@@ -6380,16 +6802,23 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-066",
-        "q": "How comfortable would you be ending a good relationship if, after enough time, it wasn't clearly moving towards marriage?",
+        "q": "How comfortable would you be ending a good relationship that still wasn't heading towards marriage?",
         "type": "scale",
         "depth": 4,
         "guessable": true,
         "lo": "Very uncomfortable: I'd keep giving it time",
-        "hi": "Very comfortable: if marriage is the goal and we're not moving towards it, I wouldn't want to waste either person's time"
+        "hi": "Very comfortable: if we're not moving towards marriage, I wouldn't want to waste our time",
+        "steps": [
+          "Very uncomfortable: I'd keep giving it time",
+          "I'd find it hard to walk away",
+          "It would depend on how much hope I still saw",
+          "I'd be ready to end it rather than wait forever",
+          "Very comfortable: if we're not moving towards marriage, I wouldn't want to waste our time"
+        ]
       },
       {
         "id": "US-067",
-        "q": "If you were confident this was the person you wanted to marry, how long would you ideally want to wait before getting engaged?",
+        "q": "If you were sure you wanted to marry me, how long would you want to wait before getting engaged?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
@@ -6476,16 +6905,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-073",
-        "q": "When do you think it is appropriate to start speaking about each other as part of your long-term future?",
+        "q": "When is it right to start talking about each other as part of your future?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
           "Only after engagement",
           "Once we've clearly agreed we're dating towards marriage",
-          "Once the relationship becomes exclusive",
-          "Whenever we both feel serious about each other",
-          "Very early: talking about the future is part of finding out whether we're compatible"
+          "Once we're exclusive",
+          "Whenever we both feel serious",
+          "Very early: talking about the future helps us see if we're compatible"
         ]
       },
       {
@@ -6642,12 +7071,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-083",
-        "q": "How much would you want our married life to be surrounded by close friendships and Christian community?",
+        "q": "How much would you want close friends and Christian community to be part of our married life?",
         "type": "scale",
         "depth": 2,
         "guessable": true,
         "lo": "Mostly just us",
-        "hi": "Deeply connected: I would want community to be a major part of our life"
+        "hi": "Very connected: community would be a big part of our life",
+        "steps": [
+          "Mostly just us",
+          "A small circle, with plenty of privacy",
+          "A balance of time as a couple and with others",
+          "Often with close friends and our church",
+          "Very connected: community would be a big part of our life"
+        ]
       },
       {
         "id": "US-084",
@@ -6693,7 +7129,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-087",
-        "q": "Whose opinion about our relationship would carry the most weight for you? Rank these from most to least.",
+        "q": "Whose opinion about our relationship would matter most to you?",
         "type": "rank",
         "depth": 3,
         "ref": "Proverbs 15:22",
@@ -6802,7 +7238,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-004",
-        "q": "What do you hope marriage would give or allow us to build that you don't think you could have in the same way while single?",
+        "q": "What do you hope marriage would let us build that we couldn't build the same way while single?",
         "type": "open",
         "depth": 3,
         "note": "Surfaces the 'why marriage' for each."
@@ -6814,7 +7250,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Very little: I expect most of my life to stay much the same",
-        "hi": "Completely: becoming one household should fundamentally change how I make decisions and live"
+        "hi": "Completely: becoming one household should fundamentally change how I make decisions and live",
+        "steps": [
+          "Very little: I expect most of my life to stay much the same",
+          "Some adjustments",
+          "A meaningful balance of continuity and change",
+          "A lot: marriage should reshape many of my priorities",
+          "Completely: becoming one household should fundamentally change how I make decisions and live"
+        ]
       },
       {
         "id": "US-095",
@@ -6823,7 +7266,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "lo": "Very independent: I think each person should handle most of their own needs and responsibilities",
-        "hi": "Deeply interdependent: I would want us to function as one team across almost every area of life"
+        "hi": "Deeply interdependent: I would want us to function as one team across almost every area of life",
+        "steps": [
+          "Very independent: I think each person should handle most of their own needs and responsibilities",
+          "Mostly independent: support each other, but keep plenty separate",
+          "Balanced: rely on each other for major things while still handling plenty individually",
+          "Highly interdependent: I would want us involved in most important parts of each other's lives",
+          "Deeply interdependent: I would want us to function as one team across almost every area of life"
+        ]
       },
       {
         "id": "US-096",
@@ -6833,25 +7283,32 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Very little: we should assume the person we marry is largely the person we'll live with",
-        "hi": "I expect marriage to change people significantly"
+        "hi": "I expect marriage to change people significantly",
+        "steps": [
+          "Very little: we should assume the person we marry is largely the person we'll live with",
+          "Some small changes",
+          "People can mature gradually",
+          "Marriage can lead to major personal growth",
+          "I expect marriage to change people significantly"
+        ]
       },
       {
         "id": "US-097",
-        "q": "If your partner had a habit you strongly disliked before marriage, what would be your default assumption?",
+        "q": "If your partner had a habit you really disliked before marriage, what would you expect?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Assume it may never change and decide whether I can live with it",
-          "Hope it changes, but don't make marriage depend on it",
-          "Expect them to seriously work on changing it",
-          "Expect marriage and responsibility to naturally change it",
-          "I would struggle to marry unless they changed it first"
+          "It may never change, so I'd decide if I can live with it",
+          "Hope it changes, but not make marriage depend on it",
+          "Expect them to work hard on changing it",
+          "Expect marriage and responsibility to change it",
+          "I'd struggle to marry them unless it changed first"
         ]
       },
       {
         "id": "US-098",
-        "q": "What would make you feel that we had built a genuinely great marriage? Rank these from most important to least important.",
+        "q": "What would make you feel we had built a really great marriage?",
         "type": "rank",
         "depth": 2,
         "opts": [
@@ -6862,12 +7319,12 @@ export const DECKS: Record<string, Deck> = {
           "A strong sex life and physical connection",
           "Raising a strong family",
           "Growing, achieving and building things together",
-          "Having fun and genuinely enjoying life together"
+          "Having fun and really enjoying life together"
         ]
       },
       {
         "id": "US-099",
-        "q": "If our marriage was strong in most areas but one of these was consistently weak, which would concern you most?",
+        "q": "If our marriage was strong in most areas but weak in one of these, which would worry you most?",
         "type": "mc",
         "depth": 2,
         "guessable": true,
@@ -6879,7 +7336,7 @@ export const DECKS: Record<string, Deck> = {
           "A strong sex life and physical connection",
           "Raising a strong family",
           "Growing, achieving and building things together",
-          "Having fun and genuinely enjoying life together"
+          "Having fun and really enjoying life together"
         ]
       },
       {
@@ -6917,7 +7374,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-101",
-        "q": "What would make you feel like we're still dating each other years into marriage? Rank these from most important to least important.",
+        "q": "What would make you feel we're still dating, years into marriage?",
         "type": "rank",
         "depth": 2,
         "opts": [
@@ -6975,85 +7432,85 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-105",
-        "q": "If our marriage was happy and loving but never achieved the lifestyle, career or financial success we'd hoped for, would you still consider it a successful marriage?",
+        "q": "Would a happy, loving marriage be a success if we never reached our career, money or life goals?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Yes: the quality and faithfulness of the marriage matters far more than external success",
-          "Yes, although I would still feel disappointed about what we hadn't achieved",
-          "Partly: I need both a strong marriage and meaningful progress in life",
-          "I would struggle to feel successful if we hadn't built the life we'd planned",
-          "No: achieving our wider goals is an important part of what marriage success means to me"
+          "Yes: a faithful, loving marriage matters far more than outward success",
+          "Yes, but I'd still feel let down about what we didn't achieve",
+          "Partly: I need both a strong marriage and real progress in life",
+          "I'd struggle to feel successful if we hadn't built the life we planned",
+          "No: reaching our wider goals is an important part of a successful marriage to me"
         ]
       },
       {
         "id": "US-106",
-        "q": "If caring for our children consistently started pushing our marriage relationship into the background, what should we do?",
+        "q": "If caring for our children kept pushing our marriage into the background, what should we do?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "Our marriage should be intentionally restored as the priority under God",
-          "Children should remain the main practical priority while they're young",
-          "Accept that marriage naturally takes a back seat during some parenting seasons",
-          "Protect both equally even if other areas of life have to suffer",
+          "Make our marriage the priority again, under God",
+          "Keep the children as the main priority while they're young",
+          "Accept that marriage comes second in some parenting seasons",
+          "Protect both equally, even if other parts of life suffer",
           "I haven't thought about it"
         ]
       },
       {
         "id": "US-107",
-        "q": "If our marriage went through a long season where you were unhappy, what would commitment mean to you?",
+        "q": "If you were unhappy in our marriage for a long time, what would commitment mean to you?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "Stay and keep working on the marriage regardless of how long the season lasts",
-          "Stay unless there is a biblically valid reason to end the marriage",
-          "Stay while both people are genuinely trying to improve things",
-          "Give it a serious period of effort, but leave if nothing changes",
-          "Personal happiness is important enough that a persistently unhappy marriage may need to end"
+          "Stay and keep working on it, however long it lasts",
+          "Stay unless there is a biblical reason to end the marriage",
+          "Stay while we are both really trying to improve things",
+          "Try hard for a set time, but leave if nothing changes",
+          "Being happy matters enough that a long unhappy marriage may need to end"
         ]
       },
       {
         "id": "US-108",
-        "q": "If your spouse changed significantly after marriage and became very different from the person you married, what would you believe commitment requires?",
+        "q": "If your spouse changed a lot after marriage, what would commitment mean to you?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "Remain committed because marriage is a lifelong covenant regardless of how much they change",
-          "Remain committed unless they break the marriage covenant in a biblically serious way",
-          "Work hard to adapt and rebuild the relationship, but recognise there may be a limit",
-          "Stay only if the new version of the relationship remained healthy",
-          "If we became fundamentally incompatible, ending the marriage could be right"
+          "Stay committed: marriage is a lifelong promise before God, however much they change",
+          "Stay committed, unless they break our vows in a way the Bible treats as serious",
+          "Work hard to adapt and rebuild, but accept there may be a limit",
+          "Stay only if the new relationship is still healthy",
+          "If we became deeply incompatible, ending the marriage could be right"
         ]
       },
       {
         "id": "US-109",
-        "q": "If one of us developed a serious long-term illness or disability that radically changed our life together, what would you believe marriage requires?",
+        "q": "If one of us became seriously ill or disabled for the long term, what would marriage require of you?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "Stay fully committed and personally carry whatever responsibility marriage requires",
-          "Stay committed while bringing in as much family or professional support as necessary",
-          "Remain married, but recognise that caregiving may need to be largely handled by others",
-          "I don't know how much caregiving I could realistically take on",
-          "I would see some circumstances as potentially changing what could reasonably be expected of the marriage"
+          "Stay fully committed and carry whatever care is needed myself",
+          "Stay committed, and bring in as much family or professional help as needed",
+          "Stay married, but accept that others may need to do most of the caring",
+          "I don't know how much caring I could realistically do",
+          "Some situations could change what can fairly be expected of the marriage"
         ]
       },
       {
         "id": "US-110",
-        "q": "If we had a major marriage problem and one of us wanted counselling but the other refused, what should happen?",
+        "q": "If one of us wanted counselling for a big problem and the other refused, what should happen?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "The refusing spouse should still be expected to attend for the sake of the marriage",
-          "Keep asking and involve trusted church leadership or mentors",
-          "The willing spouse should seek help alone first",
-          "Counselling should never be forced; both must choose it",
+          "The one refusing should still be expected to go, for the marriage",
+          "Keep asking, and involve trusted church leaders or mentors",
+          "The willing one should get help alone first",
+          "Counselling should never be forced; we both have to choose it",
           "Refusing all help for a serious problem would make me question the marriage"
         ]
       },
@@ -7118,26 +7575,33 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-113",
-        "q": "If you no longer felt “in love” with your spouse, but there was no abuse, adultery or abandonment, what would you believe you should do?",
+        "q": "If you no longer felt in love, and there was no abuse, adultery or abandonment, what should you do?",
         "type": "mc",
         "depth": 4,
         "guessable": true,
         "opts": [
-          "Remain married and actively work to rebuild love",
-          "Remain married because the covenant does not depend on feelings",
-          "Seek counselling and make every serious effort before considering separation",
-          "Separate if the relationship remained emotionally dead for long enough",
-          "Divorce should be an option if love is genuinely gone"
+          "Stay married and work to rebuild love",
+          "Stay married, because our vows don't depend on feelings",
+          "Get counselling and try everything before thinking of separating",
+          "Separate if the relationship stayed emotionally dead long enough",
+          "Divorce should be an option if love is really gone"
         ]
       },
       {
         "id": "US-114",
-        "q": "How confident are you right now that you would want to marry me and remain committed to our marriage for life?",
+        "q": "How sure are you right now that you'd want to marry me and stay committed for life?",
         "type": "scale",
         "depth": 4,
         "guessable": true,
         "lo": "I have serious doubts",
-        "hi": "I'm fully confident in choosing you for life"
+        "hi": "I'm completely sure: I'd choose you for life",
+        "steps": [
+          "I have serious doubts",
+          "I have some real doubts",
+          "I'm hopeful, but still deciding",
+          "I'm very sure",
+          "I'm completely sure: I'd choose you for life"
+        ]
       },
       {
         "id": "US-115",
@@ -7158,16 +7622,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-116",
-        "q": "If we discovered a major disagreement before marriage that neither of us was willing to change, what should we do?",
+        "q": "If we found a big disagreement before marriage that neither of us would change, what should we do?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Do not marry until we genuinely agree",
-          "Decide whether the issue is important enough to prevent marriage",
-          "Marry if our core faith and commitment are strong and keep working on it",
-          "Accept that spouses can hold major differences and move forward",
-          "I would expect one person eventually to yield for the sake of unity"
+          "Don't marry until we really agree",
+          "Decide whether it's serious enough to stop us marrying",
+          "Marry if our faith and commitment are strong, and keep working on it",
+          "Accept that spouses can disagree on big things, and go ahead",
+          "Expect one of us to give way in the end, for the sake of unity"
         ]
       },
       {
@@ -7202,16 +7666,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-119",
-        "q": "How serious would a recurring unresolved problem need to become before you would postpone or reconsider marriage?",
+        "q": "How serious would an ongoing problem need to be before you'd delay or rethink marriage?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Any major recurring problem should be resolved first",
+          "Any big ongoing problem should be fixed first",
           "If it affected trust, faithfulness, safety or core values",
           "Only if it made me seriously doubt the relationship",
-          "I would usually prefer to marry and work through problems together",
-          "I would be very reluctant to postpone marriage once committed"
+          "I'd usually rather marry and work through problems together",
+          "I'd be very unwilling to delay marriage once committed"
         ]
       },
       {
@@ -7349,7 +7813,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-017",
-        "q": "Which public issues would matter most to you for us to broadly agree on? Rank them from most important to least important.",
+        "q": "Which public issues would matter most for us to broadly agree on?",
         "type": "rank",
         "depth": 5,
         "opts": [
@@ -7438,13 +7902,13 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-023",
-        "q": "If one of us became terminally ill and wanted medically assisted death, what would you believe the other spouse should do?",
+        "q": "If one of us was terminally ill and wanted medically assisted death, what should the other do?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
           "Strongly oppose it",
-          "Encourage other forms of care and relief, but ultimately respect their legal choice",
+          "Encourage other care and pain relief, but in the end respect their legal choice",
           "Support their choice if suffering was severe and death was near",
           "Fully support their right to decide",
           "I'm unsure"
@@ -7467,15 +7931,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-025",
-        "q": "If we strongly disagreed about whether our child should receive a particular vaccine, how should we decide?",
+        "q": "If we strongly disagreed about giving our child a vaccine, how should we decide?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "Follow the advice of our child's doctor",
-          "Seek several medical opinions before deciding",
-          "The more cautious parent should be able to say no",
-          "Both parents must agree before the child receives it",
+          "Follow our child's doctor's advice",
+          "Get several medical opinions first",
+          "The more cautious parent can say no",
+          "We both must agree before the child has it",
           "I'm unsure"
         ]
       },
@@ -7494,15 +7958,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-027",
-        "q": "If a close friend or family member invited us to their same-sex wedding, what would you want us to do?",
+        "q": "If a close friend or relative invited us to their same-sex wedding, what would you want us to do?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
-          "Decline because attending would feel like affirming something we believe is wrong",
-          "Attend because loving the person doesn't mean agreeing with the marriage",
-          "Attend and fully celebrate the marriage",
-          "Decide individually rather than expecting us both to make the same choice",
+          "Say no, because going would feel like approving of something we believe is wrong",
+          "Go, because loving the person doesn't mean agreeing with the marriage",
+          "Go and fully celebrate the marriage",
+          "Each decide for ourselves, rather than both making the same choice",
           "I'm unsure"
         ]
       },
@@ -7522,28 +7986,28 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-029",
-        "q": "Do you believe a Christian should affirm someone identifying as a gender different from their biological sex?",
+        "q": "Should a Christian affirm someone who identifies as a different gender from their biological sex?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
-          "No: Christians should affirm biological sex as God-given",
-          "Treat the person with love and respect, but don't affirm the changed identity",
-          "It depends on the individual situation",
-          "Yes: affirming their gender identity is compatible with Christian faith",
+          "No: Christians should affirm biological sex as given by God",
+          "Treat them with love and respect, but don't affirm the new identity",
+          "It depends on the situation",
+          "Yes: affirming their gender identity fits with Christian faith",
           "I'm still working it out"
         ]
       },
       {
         "id": "VAL-030",
-        "q": "If someone close to us transitioned and asked us to use a new name or pronouns, what would you want us to do?",
+        "q": "If someone close to us transitioned and asked us to use a new name or pronouns, what would you do?",
         "type": "mc",
         "depth": 3,
         "guessable": true,
         "opts": [
-          "I would not use language that I believed affirmed a false gender identity",
-          "I would use their chosen name but not language I believed denied biological sex",
-          "I would use their requested name and pronouns as an act of respect, even if I disagreed",
+          "I would not use words I believe affirm a false gender identity",
+          "I would use their new name, but not words I believe deny their biological sex",
+          "I would use their new name and pronouns out of respect, even if I disagreed",
           "I would fully affirm their gender identity",
           "I'm unsure"
         ]
@@ -7569,7 +8033,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "lo": "Not particularly important",
-        "hi": "Extremely important: I believe Christians should have clear standards of modesty"
+        "hi": "Extremely important: I believe Christians should have clear standards of modesty",
+        "steps": [
+          "Not particularly important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Extremely important: I believe Christians should have clear standards of modesty"
+        ]
       },
       {
         "id": "VAL-033",
@@ -7602,12 +8073,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-035",
-        "q": "How important would it be to you that we agree on the specific method of contraception or family planning we use?",
+        "q": "How important is it that we agree on the exact method of contraception or family planning we use?",
         "type": "scale",
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I could not comfortably use a method that conflicted with my convictions"
+        "hi": "Essential: I couldn't comfortably use a method that goes against my beliefs",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Moderately important",
+          "Very important",
+          "Essential: I couldn't comfortably use a method that goes against my beliefs"
+        ]
       },
       {
         "id": "VAL-036",
@@ -7673,15 +8151,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "VAL-040",
-        "q": "Would you be comfortable with us regularly sleeping overnight at each other's homes before marriage, even if we slept separately?",
+        "q": "Before marriage, is it OK for us to often stay overnight at each other's place, sleeping separately?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
         "opts": [
           "No: I would avoid overnight stays",
-          "Only occasionally where there was a practical reason",
-          "Yes, if we slept separately and maintained physical boundaries",
-          "Yes: I don't see overnight stays themselves as a problem",
+          "Only now and then, for a practical reason",
+          "Yes, if we slept separately and kept physical boundaries",
+          "Yes: I don't see overnight stays as a problem in themselves",
           "I'm unsure"
         ]
       }
@@ -7804,7 +8282,14 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Not comfortable at all",
-        "hi": "Completely comfortable"
+        "hi": "Completely comfortable",
+        "steps": [
+          "Not comfortable at all",
+          "Slightly uncomfortable",
+          "It depends on the trip",
+          "Mostly comfortable",
+          "Completely comfortable"
+        ]
       },
       {
         "id": "LOYAL-010",
@@ -7829,7 +8314,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "core": true,
         "lo": "Not comfortable at all",
-        "hi": "Completely comfortable"
+        "hi": "Completely comfortable",
+        "steps": [
+          "Not comfortable at all",
+          "Slightly uncomfortable",
+          "It depends on the friendship",
+          "Mostly comfortable",
+          "Completely comfortable"
+        ]
       },
       {
         "id": "LOYAL-012",
@@ -7918,7 +8410,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "LOYAL-024",
-        "q": "Would you consider a secret emotional relationship with someone else to be cheating even if nothing physical happened?",
+        "q": "Is a secret emotional relationship with someone else cheating, even if nothing physical happens?",
         "type": "mc",
         "depth": 5,
         "guessable": true,
@@ -7990,12 +8482,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "LOYAL-029",
-        "q": "How important is it to you that we each have someone outside the marriage who can hold us accountable sexually?",
+        "q": "How important is it that we each have someone outside the marriage to keep us accountable sexually?",
         "type": "scale",
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential"
+        "hi": "Essential",
+        "steps": [
+          "Not important",
+          "Slightly important",
+          "Helpful but not necessary",
+          "Very important",
+          "Essential"
+        ]
       }
     ]
   },
@@ -8194,7 +8693,14 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "mirror": true,
         "lo": "I feel like I give significantly more",
-        "hi": "I feel like you give significantly more"
+        "hi": "I feel like you give significantly more",
+        "steps": [
+          "I feel like I give significantly more",
+          "I feel like I give somewhat more",
+          "It feels fairly balanced",
+          "I feel like you give somewhat more",
+          "I feel like you give significantly more"
+        ]
       },
       {
         "id": "NOW-029",

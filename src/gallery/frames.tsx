@@ -406,6 +406,9 @@ export const FRAMES: FrameDef[] = [
   playFrame('play-last', 'Last question of a part', playLast((q) => q.type === 'mc' && asksImportance(q)) ?? playLast((q) => q.type === 'mc'), [{ sel: '.opt', nth: 0 }, { click: /^Somewhat$/ }]),
   playFrame('play-open', 'Open question', playAt((q) => q.type === 'open'), [{ sel: 'textarea', nth: 0 }].slice(0, 0)),
   playFrame('play-importance', 'Answer + importance (tier-3 / deal-breaker)', playAt(asksImportance), [{ sel: '.opt', nth: 0 }]),
+  playFrame('play-long-scale', 'A long question: short ends, the full words under the pick', playAt((q) => q.id === 'FAITH-047'), [{ sel: '.orb', nth: 3 }], 'The ends show the part before the colon; picking shows what that point means. Importance glides up into view.'),
+  playFrame('play-more-below', 'More answers below the button', playAt((q) => q.type === 'mc' && (q.opts?.length ?? 0) >= 5 && q.q.length > 90), [], '“More below” says the card runs on under the pinned button.'),
+  playFrame('play-importance-on', 'Importance chosen', playAt(asksImportance), [{ sel: '.opt', nth: 0 }, { wait: 500 }, { click: /^Somewhat$/ }, { wait: 500 }]),
 
   // ============ 10 · Waiting & unlocking ============
   inSession({

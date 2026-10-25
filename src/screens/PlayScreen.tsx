@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { lvlQs, partName } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
 import { optIndex, optValue, withNames, type Names } from "../lib/who";
@@ -7,24 +7,8 @@ import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
 import { TopBar } from "../components/TopBar";
 import { useT, useLang } from "../lib/i18n";
-
-// Intensity words for the 1–5 scale. The endpoints are already labelled per
-// question (q.lo / q.hi); these name the position so the middle is never
-// ambiguous. Direction is carried by which orb the label sits under.
-const SCALE_WORDS = [
-  "Strongly",
-  "Leaning",
-  "Right in the middle",
-  "Leaning",
-  "Strongly",
-];
-const SCALE_WORDS_FR = [
-  "Fortement",
-  "Plutôt",
-  "Pile au milieu",
-  "Plutôt",
-  "Fortement",
-];
+import { scalePoint, shortEnd } from "../lib/scaleLabels";
+import { glideBy, scrollerOf, useScrollMemory } from "../lib/scroll";
 
 // Importance is asked only where a gap would actually cost the couple: the
 // tier-3 questions and the deal-breaker set. Everything else silently rides the
@@ -179,6 +163,30 @@ export default function PlayScreen({
     setIdx(n);
   };
 
+  // Each question opens at the top of the screen.
+  const screen = useRef<HTMLElement>(null);
+  const card = useRef<HTMLDivElement>(null);
+  const foot = useRef<HTMLDivElement>(null);
+  useScrollMemory(`${idx}:${guessPhase}`, undefined, screen);
+  const below = useMoreBelow(card, foot, `${idx}:${guessPhase}`);
+  // Choosing an answer opens "How much does this matter?" under it. If that
+  // lands behind the pinned button, bring it up into view.
+  const cur = qs[idx];
+  const impOpen = !!cur && !guessPhase && pendAns != null && asksImportance(cur);
+  const imp = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!impOpen) return;
+    const id = requestAnimationFrame(() => {
+      const el = imp.current;
+      const f = foot.current;
+      if (!el || !f) return;
+      const ft = f.getBoundingClientRect();
+      const hidden = el.getBoundingClientRect().bottom + 16 - ft.top;
+      if (hidden > 0 && ft.height > 0) glideBy(scrollerOf(el), hidden);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [impOpen, idx]);
+
   if (idx >= qs.length) return null;
   const localized = localizeQuestion(qs[idx], lang);
   const q = names ? withNames(localized, names) : localized;
@@ -268,21 +276,16 @@ export default function PlayScreen({
 
   if (guessPhase) {
     // Say the answer the way it reads, not as a number.
-    const yourText =
-      q.type === "scale"
-        ? `${t(SCALE_WORDS[Number(pendAns) - 1], SCALE_WORDS_FR[Number(pendAns) - 1])} — ${
-            Number(pendAns) >= 4 ? q.hi : Number(pendAns) <= 2 ? q.lo : ""
-          }`.replace(/ — $/, "")
-        : q.opts?.[pendAns as number];
+    const yourText = q.type === "scale" ? scaleSaid(q, Number(pendAns), lang) : q.opts?.[pendAns as number];
     return (
-      <section className="screenfill playscreen">
+      <section ref={screen} className="screenfill playscreen">
         {header}
-        <div key={`${q.id}-guess`} className="qcard pane-in guesscard">
+        <div key={`${q.id}-guess`} ref={card} className="qcard pane-in guesscard">
           <div className="qrow">
             <div className="eyebrow">{eyebrow}</div>
             <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
           </div>
-          <div className="qtext">{q.q}</div>
+          <div className={qtextClass(q.q)}>{q.q}</div>
           {/* Not shared until the part opens, so a mis-tap can still be put
               right here. */}
           <div className="yousaid yousaid-edit">
@@ -301,7 +304,8 @@ export default function PlayScreen({
           </p>
           <QuestionInput q={q} value={pendGuess} guess onPick={setPendGuess} />
         </div>
-        <div className="playfoot">
+        <div ref={foot} className={`playfoot${below.hidden ? " covering" : ""}`}>
+          <MoreBelow below={below} />
           <button className="btn pill" type="button" disabled={pendGuess == null} onClick={lockGuess}>
             {t("That’s my guess →", "Je valide →")}
           </button>
@@ -316,17 +320,17 @@ export default function PlayScreen({
   }
 
   return (
-    <section className="screenfill playscreen">
+    <section ref={screen} className="screenfill playscreen">
       {header}
-      <div key={q.id} className="qcard glide-in">
+      <div key={q.id} ref={card} className="qcard glide-in">
         <div className="eyebrow">{eyebrow}</div>
-        <div className="qtext">{q.q}</div>
+        <div className={qtextClass(q.q)}>{q.q}</div>
         <QuestionInput q={q} value={pendAns} onPick={setPendAns} />
 
         {/* Importance, on the same card as the answer it weights; it opens
             once they've chosen. Leaving it is a valid skip. */}
         {asksImportance(q) && pendAns != null && (
-          <div className="impinline">
+          <div ref={imp} className="impinline">
             <div className="impinline-head">
               <span>{t("How much does this matter to you?", "À quel point est-ce important pour vous ?")}</span>
               <span className="impinline-opt">{t("Optional", "Facultatif")}</span>
@@ -347,7 +351,8 @@ export default function PlayScreen({
           </div>
         )}
       </div>
-      <div className="playfoot">
+      <div ref={foot} className={`playfoot${below.hidden ? " covering" : ""}`}>
+        <MoreBelow below={below} />
         {last && (
           <p className="lastline">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -411,12 +416,15 @@ function QuestionInput({
   onPick: (v: AnswerValue | null) => void;
 }) {
   const t = useT();
+  const lang = useLang();
   if (q.type === "scale") {
+    const said = value != null ? scalePoint(q, Number(value), lang) : null;
+    const side = value == null ? "" : Number(value) < 3 ? " lo" : Number(value) > 3 ? " hi" : " mid";
     return (
       <>
         <div className="slabels">
-          <span>{q.lo}</span>
-          <span style={{ textAlign: "right" }}>{q.hi}</span>
+          <span>{shortEnd(q.lo)}</span>
+          <span style={{ textAlign: "right" }}>{shortEnd(q.hi)}</span>
         </div>
         <div className="scale" role="group" aria-label={q.q}>
           {[1, 2, 3, 4, 5].map((i) => (
@@ -432,18 +440,23 @@ function QuestionInput({
             </button>
           ))}
         </div>
-        {/* Live label under the chosen orb, so the middle is never a puzzle. */}
-        <div className="orblabels" aria-hidden={value == null}>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="orblabel-cell">
-              {value === i && (
-                <>
-                  <span className="caret" />
-                  <span className="orblabel">{t(SCALE_WORDS[i - 1], SCALE_WORDS_FR[i - 1])}</span>
-                </>
-              )}
-            </div>
-          ))}
+        {/* What the chosen point means, pointing up at its orb: the
+            question's own words for it, or how strongly plus the end's full
+            sentence. It leans to the side that was picked. */}
+        <div className="orbsay" aria-live="polite">
+          <div className="orbsay-carets" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <span key={i} className="orbsay-cell">
+                {value === i && <span className="caret" />}
+              </span>
+            ))}
+          </div>
+          {said && (
+            <p key={String(value)} className={`orbsay-text${side}`}>
+              <b>{said.word}</b>
+              {said.detail && <span>{said.detail}</span>}
+            </p>
+          )}
         </div>
       </>
     );
@@ -504,9 +517,13 @@ function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => voi
   };
   return (
     <>
-      <p className="helper rankhelp">
-        {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
-      </p>
+      {/* A question that sets its own order ("Put your least favourite
+          first") isn't contradicted by the usual one. */}
+      {!/ first\.$/.test(q.q) && (
+        <p className="helper rankhelp">
+          {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
+        </p>
+      )}
       <ol className="ranklist">
         {order.map((oi, pos) => {
           const label = q.opts![oi];
@@ -543,5 +560,70 @@ function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => voi
         })}
       </ol>
     </>
+  );
+}
+
+// Long questions step down a size so the answers still fit on the screen.
+function qtextClass(text: string): string {
+  return text.length > 120 ? "qtext qtext-longer" : text.length > 90 ? "qtext qtext-long" : "qtext";
+}
+
+// A scale answer read back the way it reads on the scale, not as a number.
+function scaleSaid(q: Question, i: number, lang: string): string {
+  const { word, detail } = scalePoint(q, i, lang);
+  if (q.steps?.length === 5 && lang === "en") return detail ? `${word}: ${detail}` : word;
+  const end = detail ?? (i < 3 ? q.lo : i > 3 ? q.hi : "");
+  return end ? `${word} — ${end}` : word;
+}
+
+type Below = { hidden: boolean; reveal: () => void };
+
+// Is part of the question card hidden behind the pinned button? Checked as the
+// screen scrolls, resizes, or the card grows (the importance row opening).
+function useMoreBelow(
+  card: RefObject<HTMLElement | null>,
+  foot: RefObject<HTMLElement | null>,
+  key: string,
+): Below {
+  const [hidden, setHidden] = useState(false);
+  const overlap = () => {
+    const c = card.current;
+    const f = foot.current;
+    if (!c || !f) return 0;
+    return c.getBoundingClientRect().bottom - f.getBoundingClientRect().top;
+  };
+  useLayoutEffect(() => {
+    const check = () => setHidden(overlap() > 8);
+    check();
+    document.addEventListener("scroll", check, { capture: true, passive: true });
+    window.addEventListener("resize", check);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(check) : null;
+    if (card.current) ro?.observe(card.current);
+    return () => {
+      document.removeEventListener("scroll", check, { capture: true });
+      window.removeEventListener("resize", check);
+      ro?.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+  return {
+    hidden,
+    reveal: () => {
+      const d = overlap();
+      if (d > 0 && card.current) glideBy(scrollerOf(card.current), d + 16);
+    },
+  };
+}
+
+function MoreBelow({ below }: { below: Below }) {
+  const t = useT();
+  if (!below.hidden) return null;
+  return (
+    <button type="button" className="morebelow" onClick={below.reveal}>
+      {t("More below", "Voir la suite")}
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
   );
 }

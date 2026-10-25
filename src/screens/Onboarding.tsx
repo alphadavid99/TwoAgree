@@ -21,6 +21,7 @@ import {
 } from "../lib/session";
 import { redeemInvite, joinByCode, createInvite } from "../lib/functions";
 import { inviteLink, type Invite } from "../lib/invite";
+import { useScrollMemory } from "../lib/scroll";
 import { optValue, withNames } from "../lib/who";
 import {
   getOnbCheckpoint,
@@ -143,6 +144,8 @@ export default function Onboarding({
   const [stepB, setStepB] = useState<BStep>(
     saved?.flow === "b" ? (saved.step as BStep) : "arrive",
   );
+  // Each step opens at the top.
+  useScrollMemory(`${stepA}:${stepB}`);
   // Known before joining when the invite link carries the inviter's first name.
   const [initiatorName, setInitiatorName] = useState(
     saved?.initiatorName ?? invite?.from ?? "",

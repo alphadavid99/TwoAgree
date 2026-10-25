@@ -14,7 +14,7 @@ Decisions behind it: the design review walkthrough (items 1–17) and the UX law
 
 - Streaks, countdowns, "don't lose your progress", fake head starts on progress bars, nagging reminders, or anything that makes a partner feel behind.
 - A pre-selected or suggested answer. Every question starts empty.
-- Softened or hedged wording on hard questions. Don't rewrite question text.
+- Softened or hedged wording on hard questions. Rewording for plain language keeps the meaning, the options' order and their number.
 - "Him / Her" or "your partner" where a name is known. Use the person's name.
 - Honey (`--ta-honey`, `--app-honey`) as text on a light ground. It's a fill colour only.
 - A raw hex outside `src/brand/tokens.css` (exceptions are listed in CLAUDE.md §10.1).
@@ -35,8 +35,9 @@ Build from these. Don't hand-style a one-off when a kit piece fits.
 | White button | Secondary. 2px `--ta-line` edge, 4px base. Claret text. |
 | Red button | Deleting only. `#A32D45`, white text. |
 | Text button | Grey, no fill, still 48px tall to tap. |
-| Answer row | At least 56px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7`. Never colour alone. |
+| Answer row | At least 56px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
 | Filter pill | 40px. Selected: claret fill, white text. |
+| Importance button | Three in a row, white with the card's base. Selected: fills claret from its centre with a small spring, white text. |
 | Badge | A label, not a button. Agreed `#FBEBDC`/`#8F5A12` · Close `#F7EEF1`/`#5C2E45` · Worth a chat claret/`#F3D58E`. |
 | Avatar | Host: white on claret. Guest: ink `#3A2410` on `#D9963A`. Each person keeps their colour on both phones. Side by side, never overlapping. |
 | Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. They shrink into a slim bar as you scroll on Review and Together. |
@@ -52,7 +53,7 @@ In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.o
 |---|---|
 | Hero | Fraunces 32/38 |
 | Screen heading | Fraunces 28/34 |
-| Question | Fraunces 22/30 |
+| Question | Fraunces 22/30; 20/28 over 90 characters, 18/26 over 120, so the answers still fit |
 | Card title | Fraunces 18/24 |
 | Body and answers | Hanken Grotesk 16/24 |
 | Helper | Hanken 14/20. The floor for anything you need to read to act. |
@@ -72,7 +73,9 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 ## Interaction
 
 - Tap targets at least 48×48px (44pt on iOS).
-- On question screens, the main button is pinned in the same place at the bottom, with space kept for "Skip for now" so it never moves.
+- On question screens, the main button is pinned in the same place at the bottom, with space kept for "Skip for now" so it never moves. When the card runs on underneath it, the card fades out above the button and a "More below" chip glides it into view. Opening "How much does this matter?" brings it up above the button.
+- Scale ends show the short half of a label that has a colon ("My relationship"); picking a point shows what it means in full under that orb.
+- Every screen opens at the top. Going back (closing a conversation, Back in You) returns to where you were.
 - Never make someone wait on the server to move on. Show the next step at once, then "Saving…", "✓ Saved", or "Try again" if it fails. Never lose an answer.
 - Loading shows the outline of the screen, not a spinner. After 5 seconds add "Still loading…"; after 10, offer Try again and a way back.
 - Every error says what happened and what to do next, in plain words, with Try again where it can work.
@@ -88,6 +91,7 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 ## Words
 
 - Short, warm, direct. "You" and the partner's name.
+- Questions in plain words anyone can follow and a translator can carry: no idioms ("take a back seat", "dropping by"), at most 100 characters. The plain-language pass of Oct 2026 rewrote the 91 that ran longer.
 - Scores always carry their count: "Based on 22 questions you both answered", "7 of 10 guesses right".
 - "Not a verdict: a place to start talking." on every reveal except 100%.
 - Scripture is ESV, except Amos 3:3 (NKJV).

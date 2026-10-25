@@ -214,9 +214,10 @@ async function seatGuest(uid: string, code: string): Promise<string> {
 /** Join by typing the 4-character code the host shared. */
 export const joinByCode = onCall(async (request) => {
   const uid = requireUid(request.auth);
+  // Accept the code however it was typed: any case, spaces or dashes.
   const code = String((request.data as { code?: string })?.code ?? "")
-    .trim()
-    .toUpperCase();
+    .toUpperCase()
+    .replace(/[\s\-–—_.]/g, "");
   if (code.length < 4) {
     throw new HttpsError("invalid-argument", "Enter the 4-character code.");
   }

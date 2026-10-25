@@ -1,5 +1,5 @@
 {
-  "screens": 87,
+  "screens": 92,
   "results": [
     {
       "id": "kit-sheet",
@@ -182,6 +182,24 @@
       "contrast": []
     },
     {
+      "id": "auth-signup-fields",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signup-taken",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signin-shown",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
       "id": "auth-reset",
       "small": [],
       "taps": [],
@@ -213,6 +231,18 @@
     },
     {
       "id": "start-join",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join-tidy",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join-link",
       "small": [],
       "taps": [],
       "contrast": []

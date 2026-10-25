@@ -21,3 +21,18 @@ describe("invite links carry the inviter's first name", () => {
     expect(cleanFirstName("   ")).toBeUndefined();
   });
 });
+
+describe("the join-code box accepts messy input", () => {
+  it("tidies case, spaces and dashes", async () => {
+    const { parseCodeInput } = await import("./invite");
+    expect(parseCodeInput("ab-cd")).toEqual({ kind: "code", code: "ABCD", how: "tidied" });
+    expect(parseCodeInput("  AB CD ")).toEqual({ kind: "code", code: "ABCD", how: "tidied" });
+    expect(parseCodeInput("ABCD")).toEqual({ kind: "code", code: "ABCD", how: "as-typed" });
+    expect(parseCodeInput("   ")).toEqual({ kind: "empty" });
+  });
+  it("finds the code in a pasted link, and treats an invite link as an invite", async () => {
+    const { parseCodeInput } = await import("./invite");
+    expect(parseCodeInput("https://twoagree.app/?c=abcd&n=Sarah")).toEqual({ kind: "code", code: "ABCD", how: "from-link" });
+    expect(parseCodeInput("Join me: https://twoagree.app/?t=tok-123&n=Sarah")).toEqual({ kind: "token", token: "tok-123", from: "Sarah" });
+  });
+});

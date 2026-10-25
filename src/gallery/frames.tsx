@@ -278,7 +278,7 @@ export const FRAMES: FrameDef[] = [
   onboarding(false, {
     id: 'onb-profile-error', title: 'Create your profile: email taken',
     seed: cp({ flow: 'a', step: 'profile' }), authError: 'auth/email-already-in-use',
-    steps: [{ type: '#oe', value: 'sarah.placeholder@example.invalid' }, { type: '#op', value: 'fixture-password' }, { click: /Create profile/ }, { wait: 150 }],
+    steps: [{ type: '#oe', value: 'sarah.placeholder@example.invalid' }, { type: '#op', value: 'fixture-password' }, { click: /Create account/ }, { wait: 150 }],
   }),
   onboarding(false, { id: 'onb-invite', title: 'Invite your partner', seed: cp({ flow: 'a', step: 'invite' }) }),
   onboarding(false, { id: 'onb-menu', title: 'Where would you like to start?', seed: cp({ flow: 'a', step: 'menu' }) }),
@@ -311,7 +311,10 @@ export const FRAMES: FrameDef[] = [
       ['auth-signin', 'Sign in (a phone that has never signed in)', false, [], undefined],
       ['auth-signin-error', 'Sign in: wrong password', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-wrong' }, { click: /Sign in →/ }, { wait: 150 }], { authError: 'auth/invalid-credential' }],
       ['auth-signin-busy', 'Sign in: waiting on the server', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Sign in →/ }], { authHang: true }],
-      ['auth-reset', 'Password reset sent', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { click: /Forgot password/ }, { wait: 150 }], undefined],
+      ['auth-signup-fields', 'Create account: errors under each field', false, [{ click: /Create one/ }, { type: '#email', value: 'sarah@' }, { type: '#pw', value: 'abc' }, { click: /Create account →/ }], undefined],
+      ['auth-signup-taken', 'Create account: email already has an account', false, [{ click: /Create one/ }, { sel: 'input[type=checkbox]', nth: 0 }, { type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Create account →/ }, { wait: 150 }], { authError: 'auth/email-already-in-use' }],
+      ['auth-signin-shown', 'Sign in: password shown', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Show password/ }], undefined],
+      ['auth-reset', 'Password reset sent: Check your email', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { click: /Forgot password/ }, { wait: 150 }], undefined],
     ] as [string, string, boolean, Step[], Partial<FrameDef> | undefined][]
   ).map(([id, title, returning, steps, extra]): FrameDef => ({
     id, flow: 'auth', title, user: null,
@@ -335,6 +338,8 @@ export const FRAMES: FrameDef[] = [
   { id: 'start-choose', flow: 'start', title: 'Start a session', db: dbWith(() => null), bare: true, render: () => <App /> },
   { id: 'start-stage', flow: 'start', title: 'Start a session: stage picked', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /In a relationship|Engaged|Married/ }], bare: true, render: () => <App /> },
   { id: 'start-join', flow: 'start', title: 'Join with a code', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }], bare: true, render: () => <App /> },
+  { id: 'start-join-tidy', flow: 'start', title: 'Join with a code: typed messily', note: 'Any case, spaces or dashes; it says how it read it.', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }, { type: '#code', value: 'ab-cd' }], bare: true, render: () => <App /> },
+  { id: 'start-join-link', flow: 'start', title: 'Join with a code: a pasted link', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }, { type: '#code', value: 'https://twoagree.app/?c=abcd&n=Sarah' }], bare: true, render: () => <App /> },
   {
     id: 'start-join-error', flow: 'start', title: 'Join with a code: not found',
     db: dbWith(() => null), callables: { joinByCode: fail('functions/not-found', 'No session with that code.') },

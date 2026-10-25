@@ -5185,3 +5185,123 @@ label {
 .consent {
   margin-top: 16px;
 }
+/* The join-code box says how it read what you typed. */
+.codeinfo {
+  min-height: 20px;
+  margin: 8px 4px 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--app-guess-ok);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.codeinfo-tick {
+  flex: 0 0 auto;
+}
+
+/* ---- Sign-in pieces (item 9) ---- */
+.pwfield {
+  position: relative;
+}
+.pwfield > .input {
+  padding-right: 56px;
+}
+.pweye {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: none;
+  color: var(--ta-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.forgot {
+  display: flex;
+  justify-content: flex-end;
+}
+.forgot > .linkbtn {
+  margin-right: -8px;
+}
+.linkbtn {
+  min-height: 48px;
+  padding: 0 8px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+  cursor: pointer;
+}
+.fielderr {
+  margin: 6px 4px 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--kit-red);
+}
+.errpanel {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--kit-sel-bg);
+  border: 2px solid var(--kit-close-bg);
+  color: var(--kit-red);
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
+}
+.errpanel svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+.errpanel .inlinebtn {
+  display: inline;
+  padding: 12px 0;
+  margin: -12px 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.mailicon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--app-honey-bg);
+  color: var(--ta-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px auto 20px;
+}
+.crashscreen {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  text-align: center;
+}
+.crashscreen > svg {
+  align-self: center;
+}
+a.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

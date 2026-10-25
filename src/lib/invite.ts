@@ -75,3 +75,28 @@ export function onInvite(cb: (i: Invite | null) => void): () => void {
     subs.delete(cb);
   };
 }
+
+// The join-code box (UX laws: Postel, Tesler): accept messy input and tidy it.
+// Any case, spaces or dashes ("ab-cd", " abcd "), or a whole pasted invite
+// link — a ?c= link carries the code itself; a ?t= link is a single-use invite
+// and is redeemed as one.
+export type CodeInput =
+  | { kind: "code"; code: string; how: "as-typed" | "tidied" | "from-link" }
+  | { kind: "token"; token: string; from?: string }
+  | { kind: "empty" };
+
+export function parseCodeInput(raw: string): CodeInput {
+  const text = raw.trim();
+  if (!text) return { kind: "empty" };
+  const q = text.indexOf("?");
+  if (q >= 0 && /[?&](t|c)=/.test(text)) {
+    const inv = parseInvite(text.slice(q));
+    if (inv?.kind === "token") return { kind: "token", token: inv.value, from: inv.from };
+    if (inv?.kind === "code") {
+      const code = inv.value.replace(/[^A-Z0-9]/g, "");
+      return { kind: "code", code, how: "from-link" };
+    }
+  }
+  const code = text.toUpperCase().replace(/[\s\-–—_.]/g, "");
+  return { kind: "code", code, how: code === text ? "as-typed" : "tidied" };
+}

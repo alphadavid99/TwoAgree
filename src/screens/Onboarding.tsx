@@ -36,6 +36,7 @@ import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { TopBar } from "../components/TopBar";
 import { ScriptureNotice } from "../components/ScriptureNotice";
+import { PasswordField, FieldError, ErrorPanel, cleanEmail, looksLikeEmail } from "../components/AuthBits";
 import StartMenu from "./StartMenu";
 import RevealScreen from "./RevealScreen";
 import AuthScreen from "./AuthScreen";
@@ -132,6 +133,8 @@ export default function Onboarding({
   // Deliberately asking to sign in (front door link) — same screen as the
   // anonymous-auth fallback, different framing, and it has a way back.
   const [signIn, setSignIn] = useState(false);
+  // "Sign in instead" from the account step carries the email typed there.
+  const [signInEmail, setSignInEmail] = useState("");
 
   const [stepA, setStepA] = useState<AStep>(
     saved?.flow === "a" ? (saved.step === "stage" ? "names" : (saved.step as AStep)) : "welcome",
@@ -278,6 +281,8 @@ export default function Onboarding({
   );
 
   if (fallback || signIn) {
+    // One heading per screen: AuthScreen says "Welcome back" or "Create your
+    // account" itself, so nothing is added above it here.
     return (
       <section className={enter}>
         {signIn ? (
@@ -287,15 +292,7 @@ export default function Onboarding({
             <Wordmark size={32} />
           </div>
         )}
-        <p className="sub center" style={{ margin: "14px 24px 0" }}>
-          {signIn
-            ? t("Welcome back: sign in to pick up where you left off.", "Bon retour, connectez-vous pour reprendre où vous en étiez.")
-            : t(
-                "Let's set up a quick account to save your answers.",
-                "Créons un compte rapide pour enregistrer vos réponses.",
-              )}
-        </p>
-        <AuthScreen initialMode={signIn ? "signin" : "signup"} />
+        <AuthScreen initialMode={signIn ? "signin" : "signup"} initialEmail={signInEmail} />
       </section>
     );
   }
@@ -434,6 +431,7 @@ export default function Onboarding({
           )}
           onDone={() => (setStepB("path"), checkpoint("b", "path"))}
           onFallback={() => setFallback(true)}
+          onSignIn={(em) => (setSignInEmail(em), setSignIn(true))}
         />
       );
     }
@@ -546,6 +544,7 @@ export default function Onboarding({
         t={t}
         onDone={() => (setStepA("invite"), checkpoint("a", "invite"))}
         onFallback={() => setFallback(true)}
+        onSignIn={(em) => (setSignInEmail(em), setSignIn(true))}
       />
     );
   }
@@ -963,6 +962,7 @@ function ProfileStep({
   code,
   onDone,
   onFallback,
+  onSignIn,
   t,
   heading,
   sub,
@@ -972,6 +972,8 @@ function ProfileStep({
   code: string;
   onDone: () => void;
   onFallback: () => void;
+  /** "Sign in instead", carrying the email typed here. */
+  onSignIn: (email: string) => void;
   t: T;
   heading?: string;
   sub?: string;
@@ -980,6 +982,8 @@ function ProfileStep({
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [fieldErr, setFieldErr] = useState<{ email?: string; pw?: string }>({});
+  const [taken, setTaken] = useState(false);
 
   // No photo at sign-up (item 8): it slowed the account step for no gain. It
   // lives in Edit profile instead.
@@ -990,16 +994,28 @@ function ProfileStep({
   };
 
   const withEmail = async () => {
-    if (!email.trim() || pw.length < 6 || busy) return;
-    setBusy(true);
+    if (busy) return;
+    const addr = cleanEmail(email);
+    // Errors under the field they belong to; the email is always kept.
+    const next: { email?: string; pw?: string } = {};
+    if (!looksLikeEmail(addr)) next.email = t("Enter your email address.", "Saisissez votre adresse e-mail.");
+    if (pw.length < 6) next.pw = t("Use at least 6 characters.", "Utilisez au moins 6 caractères.");
+    setFieldErr(next);
+    setTaken(false);
     setErr("");
+    if (next.email || next.pw) return;
+    setBusy(true);
     try {
       const u = auth.currentUser;
       if (!u) return onFallback();
-      await linkWithCredential(u, EmailAuthProvider.credential(email.trim(), pw));
-      await finish(email.trim());
+      await linkWithCredential(u, EmailAuthProvider.credential(addr, pw));
+      await finish(addr);
     } catch (e) {
-      setErr(prettyError(e));
+      const code = String((e as { code?: string })?.code ?? "");
+      if (code === "auth/email-already-in-use" || code === "auth/credential-already-in-use") setTaken(true);
+      else if (code === "auth/invalid-email") setFieldErr({ email: prettyError(e) });
+      else if (code === "auth/weak-password") setFieldErr({ pw: prettyError(e) });
+      else setErr(prettyError(e));
       setBusy(false);
     }
   };
@@ -1032,17 +1048,14 @@ function ProfileStep({
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       <h1 className="h1 center" style={{ marginTop: 16 }}>
-        {heading ??
-          t(`Set up your profile to invite ${partner}.`, `Créez votre profil pour inviter ${partner}.`)}
+        {heading ?? t("Save your place", "Gardez votre place")}
       </h1>
-      {/* This promised "this is how we let you know when they answer" — there
-          is no notification channel in the app: no push, no email, no badge.
-          The account's real job here is keeping the answers, which is true. */}
+      {/* The account's real job here is keeping the answers, which is true. */}
       <p className="sub center" style={{ margin: "8px 24px 10px" }}>
         {sub ??
           t(
-            "It keeps your answers safe and lets you pick this back up on any device.",
-            "Il garde vos réponses en sécurité et vous permet de reprendre sur n’importe quel appareil.",
+            `Create an account to keep your answers and invite ${partner}.`,
+            `Créez un compte pour garder vos réponses et inviter ${partner}.`,
           )}
       </p>
 
@@ -1064,13 +1077,55 @@ function ProfileStep({
       <div className="authdiv">{t("or use email", "ou par e-mail")}</div>
 
       <label htmlFor="oe">{t("Email", "E-mail")}</label>
-      <input className="input" id="oe" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+      <input
+        className="input"
+        id="oe"
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@example.com"
+        aria-invalid={!!fieldErr.email || taken || undefined}
+        aria-describedby="oe-err"
+      />
+      <FieldError id="oe-err">
+        {taken ? t("That email already has a TwoAgree account.", "Cette adresse a déjà un compte TwoAgree.") : fieldErr.email}
+      </FieldError>
       <label htmlFor="op">{t("Password", "Mot de passe")}</label>
-      <input className="input" id="op" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder={t("At least 6 characters", "Au moins 6 caractères")} />
-      {err && <div className="err">{err}</div>}
-      <button className={busy ? "btn pill busy" : "btn pill"} type="button" disabled={!email.trim() || pw.length < 6 || busy} onClick={withEmail}>
-        {busy ? t("One moment…", "Un instant…") : t("Create profile →", "Créer le profil →")}
-      </button>
+      <PasswordField
+        id="op"
+        value={pw}
+        onChange={setPw}
+        autoComplete="new-password"
+        placeholder={t("At least 6 characters", "Au moins 6 caractères")}
+        invalid={!!fieldErr.pw}
+        describedBy="op-err"
+      />
+      <FieldError id="op-err">{fieldErr.pw}</FieldError>
+      {err && <ErrorPanel>{err}</ErrorPanel>}
+      {taken ? (
+        <>
+          {/* The way forward is the main button, not a hint. */}
+          <button className="btn pill" type="button" onClick={() => onSignIn(cleanEmail(email))}>
+            {t("Sign in instead →", "Se connecter →")}
+          </button>
+          <button
+            className="btn ghost"
+            type="button"
+            onClick={() => {
+              setTaken(false);
+              setEmail("");
+            }}
+          >
+            {t("Use a different email", "Utiliser une autre adresse")}
+          </button>
+        </>
+      ) : (
+        <button className={busy ? "btn pill busy" : "btn pill"} type="button" disabled={busy} onClick={withEmail}>
+          {busy ? t("One moment…", "Un instant…") : t("Create account →", "Créer le compte →")}
+        </button>
+      )}
     </section>
   );
 }

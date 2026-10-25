@@ -425,7 +425,7 @@ export const FRAMES: FrameDef[] = [
   }),
   inSession({ id: 'reveal-answers', flow: 'reveal', title: 'Every answer, side by side (review)', session: (c) => sessionOf(seat(c), { decks: { [FULL]: fakeDeck(FULL, nLevels(FULL)) } }), openSlug: FULL, steps: [{ wait: 500 }] }),
   {
-    id: 'reveal-flags', flow: 'reveal', title: 'Worth a closer look (flags)',
+    id: 'reveal-flags', flow: 'reveal', title: 'Worth a closer look, inside the card', note: 'The reason sits in the card. No banner.',
     db: dbWith((c) => sessionOf(seat(c))),
     render: (c) => (
       <RevealScreen slug={FULL} level={0} role="host" deck={flagDeck(FULL)} myName="Sarah" partnerName="Judah"

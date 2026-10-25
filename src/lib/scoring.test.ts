@@ -110,6 +110,35 @@ describe("a question flagged complement in the bank", () => {
   });
 });
 
+describe("a mirrored scale (I give more … you give more)", () => {
+  const q: Question = { id: "G", q: "", type: "scale", depth: 4, mirror: true };
+  it("the same answer from both is a disagreement", () => {
+    const r = scoreQ(q, deck({ G: { host: 1, guest: 1 } }), "host");
+    expect(r.score).toBe(0);
+    expect(r.verdict).toBe("Worth a chat");
+  });
+  it("mirrored answers agree: I give more / you give more", () => {
+    const r = scoreQ(q, deck({ G: { host: 1, guest: 5 } }), "host");
+    expect(r.score).toBe(1);
+    expect(r.verdict).toBe("Agreed");
+  });
+  it("balanced from both sides agrees", () => {
+    expect(scoreQ(q, deck({ G: { host: 3, guest: 3 } }), "host").verdict).toBe("Agreed");
+  });
+  it("one step off is Close, and reads the same from either side", () => {
+    const d = deck({ G: { host: 2, guest: 5 } });
+    expect(scoreQ(q, d, "host").verdict).toBe("Close");
+    expect(scoreQ(q, d, "guest").score).toBe(scoreQ(q, d, "host").score);
+  });
+  it("guesses are not flipped: you guess your partner's own answer", () => {
+    const r = scoreQ(q, deck({ G: { host: 2, guest: 4 } }, { G: { host: 4 } }), "host");
+    expect(r.guessRight).toBe(true);
+  });
+  it("an unflagged scale is unchanged", () => {
+    expect(scoreQ(scale(), deck({ S: { host: 1, guest: 1 } }), "host").verdict).toBe("Agreed");
+  });
+});
+
 describe("agreeBasis — the count under every score", () => {
   const qs: Question[] = [
     { id: "A", q: "", type: "scale", depth: 3 },

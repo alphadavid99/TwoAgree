@@ -7,6 +7,8 @@ import {
   isNotYet,
   other,
   scoreQ,
+  inMyFrame,
+  isMirror,
   jointQuestions,
   type DeckData,
   type Role,
@@ -775,12 +777,15 @@ function AnswerTrack({
 }) {
   const mv = Number(r.me);
   const tv = Number(r.th);
-  const same = mv === tv;
+  // On a mirrored scale the partner's dot sits where their answer lands from
+  // your side; the rows below still quote each of you in your own words.
+  const tvHere = inMyFrame(q, r.th);
+  const same = mv === tv && !isMirror(q);
   return (
     <div className="atrack">
       <div className="atrack-steps" role="img" aria-label={`${me.name}: ${scaleText(q, mv, t)}. ${them.name}: ${scaleText(q, tv, t)}.`}>
         {[1, 2, 3, 4, 5].map((n) => {
-          const here = [n === mv ? me : null, n === tv ? them : null].filter((x): x is Who => !!x);
+          const here = [n === mv ? me : null, n === tvHere ? them : null].filter((x): x is Who => !!x);
           return (
             <span key={n} className="atrack-step">
               {here.length ? (

@@ -1042,6 +1042,20 @@
         ],
         "why": "Now standalone: sentence case and a proper prompt. Options unchanged apart from capitals."
       }
+    },
+    "scoring": {
+      "_about": "Dave, 25 Oct: score the two self-referential questions as agreement when mirrored. The scale uses the new `mirror` flag; the pick-one becomes a \"which of you\" question (who: true), stored by person.",
+      "mirror": [
+        "US-018"
+      ],
+      "who": {
+        "FIN-005#fu1": [
+          "Mainly {A}",
+          "Mainly {B}",
+          "Both of us equally",
+          "Whoever is better at it"
+        ]
+      }
     }
   }
 }

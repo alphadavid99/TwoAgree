@@ -16,6 +16,8 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** A scale about the two of you ("I give more" … "you give more"): one partner's answer is flipped before comparing. */
+  mirror?: boolean;
   /** "Which of you": opts[0]/[1] are {A} (host) and {B} (guest); answered as "host"/"guest". */
   who?: boolean;
   /** Offers a first-class, unscored "Not yet" answer (brief §7). */

@@ -129,6 +129,15 @@ for (const q of questions) {
   } else if ("who" in q) bad("who must be true or absent");
   else if ([q.q, ...(q.opts ?? [])].some((o) => /\{[AB]\}/.test(o ?? ""))) bad("{A}/{B} placeholders need who: true");
 
+  // Mirrored scales: the ends are the two of you ("I give more" … "you give
+  // more"), so the same answer from both means opposite things. An mc about
+  // the two of you is a who question instead, stored by person.
+  if ("mirror" in q) {
+    if (q.mirror !== true) bad("mirror must be true or absent");
+    else if (q.type !== "scale") bad("mirror is for scale questions (use who for mc)");
+    else if (q.complement) bad("mirror and complement can't both be set");
+  }
+
   if (q.type === "mc" || q.type === "rank") {
     if (!Array.isArray(q.opts) || q.opts.length < 2) bad(`${q.type} needs at least 2 options`);
     if (q.lo || q.hi) bad(`${q.type} must not have lo/hi`);
@@ -191,6 +200,7 @@ function runtimeQuestion(q) {
   if (q.note) o.note = q.note;
   if (q.guessable === true) o.guessable = true;
   if (q.complement === true) o.complement = true;
+  if (q.mirror === true) o.mirror = true;
   if (q.who === true) o.who = true;
   if (q.notYet === true) o.notYet = true;
   if (q.core === true) o.core = true;
@@ -239,6 +249,8 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** A scale about the two of you ("I give more" … "you give more"): one partner's answer is flipped before comparing. */
+  mirror?: boolean;
   /** "Which of you": opts[0]/[1] are {A} (host) and {B} (guest); answered as "host"/"guest". */
   who?: boolean;
   /** Offers a first-class, unscored "Not yet" answer (brief §7). */

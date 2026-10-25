@@ -118,6 +118,20 @@ export function isComplement(q: Question): boolean {
   return !!q.complement && (q.type === "scale" || q.type === "mc");
 }
 
+// A mirrored scale's ends are the two of you ("I give more" … "you give more"),
+// so the same answer from both partners means they disagree. The partner's
+// answer is flipped into your frame (1↔5, 2↔4) before comparing. Guesses are
+// not flipped: you guess the answer your partner gave, in their words.
+export function isMirror(q: Question): boolean {
+  return !!q.mirror && q.type === "scale";
+}
+
+/** Your partner's scale answer as it reads from your side (flipped when mirrored). */
+export function inMyFrame(q: Question, th: AnswerValue | undefined): number {
+  const n = Number(th);
+  return isMirror(q) ? 6 - n : n;
+}
+
 // unevenStakes (brief §4b): both partners rated importance and the gap is ≥3.
 // Independent of agreement and of question type (rank included). Rare by design.
 function stakesGap(q: Question, deck: DeckData, role: Role) {
@@ -168,7 +182,7 @@ export function scoreQ(q: Question, deck: DeckData, role: Role): ScoreResult {
   let verdict: Verdict;
   let score: number;
   if (q.type === "scale") {
-    const diff = Math.abs(Number(me) - Number(th));
+    const diff = Math.abs(Number(me) - inMyFrame(q, th));
     score = 1 - diff / 4;
     verdict = diff === 0 ? "Agreed" : diff === 1 ? "Close" : "Worth a chat";
   } else {

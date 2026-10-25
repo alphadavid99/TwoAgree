@@ -846,7 +846,7 @@ function OnbQuestions({
           <div className="qtext">{q.q}</div>
           <div className="yousaid">
             <div>
-              <div className="eyebrow" style={{ fontSize: 10 }}>
+              <div className="eyebrow">
                 {t("YOU SAID", "VOUS AVEZ DIT")}
               </div>
               <div className="yousaid-val">{yourText}</div>

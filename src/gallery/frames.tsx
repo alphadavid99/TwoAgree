@@ -15,6 +15,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary'
 import { ORDER, DECKS, type Question } from '../lib/questions'
 import { lvlQs, nLevels } from '../lib/leveling'
 import { revealKey } from '../lib/progress'
+import { KitSheet } from './KitSheet'
 import type { DeckData } from '../lib/scoring'
 import {
   markRevealSeen,
@@ -201,16 +202,15 @@ const revealTier = (id: string, title: string, hit: number, note: string, firstE
   }
 }
 
-// NOTE: no synthetic 'at-table' deck here when the session goes through
-// SessionApp. readyReveals() walks every key of session.decks and calls
-// nLevels(slug), which throws for 'at-table' (not in the question bank), so a
-// real session in that state crashes the whole app shell. See the report.
+// No synthetic 'at-table' deck in these sessions: readyReveals() once crashed
+// SessionApp on it (fixed in cfad38d; covered by screens.test.tsx).
 const pathSession = (c: Ctx, lamps = 9): Session =>
   sessionOf(seat(c), { path: true, lamps })
 
 const intakeDone = (c: Ctx) => ({ intake: { [c.uid]: { updated: 1, answers: { fixture: 0 } } } })
 
 const FLOW_TITLES: [string, string][] = [
+  ['kit', '0 · The kit (design system)'],
   ['boot', '1 · Boot & errors'],
   ['welcome', '2 · Welcome & onboarding (the person who arrives first)'],
   ['join', '3 · Joining by invite (the person they bring)'],
@@ -233,6 +233,9 @@ const Boom = (): ReactNode => {
 }
 
 export const FRAMES: FrameDef[] = [
+  // ============ 0 · The kit ============
+  { id: 'kit-sheet', flow: 'kit', title: 'Every kit piece', note: 'docs/design-system.md. Pressing a button drops its base.', render: () => <KitSheet /> },
+
   // ============ 1 · Boot & errors ============
   { id: 'boot-checking', flow: 'boot', title: 'Checking your account', authPending: true, bare: true, render: () => <App /> },
   {
@@ -324,7 +327,9 @@ export const FRAMES: FrameDef[] = [
   { id: 'start-settings', flow: 'start', title: 'Settings from the landing screen', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /Settings/ }], bare: true, render: () => <App /> },
 
   // ============ 6 · Session loading & access ============
-  inSession({ id: 'session-loading', flow: 'sessionstate', title: 'Opening your session', pending: ['sessions'] }),
+  inSession({ id: 'session-loading', flow: 'sessionstate', title: 'Opening your session', note: 'The outline of Home, not a spinner.', pending: ['sessions'] }),
+  inSession({ id: 'session-loading-still', flow: 'sessionstate', title: 'Opening your session: after 5 seconds', pending: ['sessions'], steps: [{ wait: 5300 }] }),
+  inSession({ id: 'session-loading-slow', flow: 'sessionstate', title: 'Opening your session: after 10 seconds', note: 'Try again, and a way back.', pending: ['sessions'], steps: [{ wait: 10300 }] }),
   inSession({ id: 'session-denied', flow: 'sessionstate', title: 'Session unavailable', denied: ['sessions'], note: 'Wrong code, closed session, or not a member.' }),
 
   // ============ 7 · Home ============

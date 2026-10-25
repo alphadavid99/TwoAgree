@@ -42,7 +42,9 @@ Build from these. Don't hand-style a one-off when a kit piece fits.
 | Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. They shrink into a slim bar as you scroll on Review and Together. |
 
 All buttons are 52px tall with radius 16. Pressing drops the base from 4px to 1px over 120ms.
-The new colours above become tokens in `tokens.css` when the kit is built; use the tokens, not the hex.
+The colours above are tokens in `tokens.css` (`--kit-card-edge`, `--kit-card-base`, `--kit-claret-base`, `--kit-honey-base`, `--kit-red`, `--kit-sel-bg`, `--kit-close-bg`, `--kit-chat-ink`); use the tokens, not the hex.
+
+In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.out` (white), `.btn.red`, `.btn.ghost` (text), `.opt` (answer row), `.fpill` (filter pill, `aria-pressed`), `.kbadge.agreed|close|chat`, `<Avatar tone={toneFor(role)}>`, `<Loading>` (the loading rule), `<HowScores>` (sheet). Type: `.hero`, `.h1`, `.qtext`, `.ktitle`, `.helper`, `.eyebrow`. All of them are on one screen in the gallery: flow 0, "The kit".
 
 ## Type
 
@@ -92,4 +94,4 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 
 ## Checking a screen
 
-Before calling a screen done: render it in the gallery (`npm run build:gallery`), check it at 390px wide and with large text, and confirm no text is under 12px, no tap target under 48px, and every colour pair passes.
+Before calling a screen done: render it in the gallery (`npm run build:gallery`), check it at 390px wide and with large text, and run `npm run audit:gallery`, which measures every gallery screen for text under 12px, tap targets under 44px and colour pairs under 4.5:1 (3:1 for large text) and writes `review/audit.json`. It must report zero. Aim for 48px targets; the audit's floor is Apple's 44.

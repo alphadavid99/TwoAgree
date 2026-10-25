@@ -4,6 +4,7 @@ import {
   overall,
   knowScore,
   agreeBasis,
+  other,
   scoreQ,
   jointQuestions,
   type DeckData,
@@ -22,7 +23,7 @@ import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { ScorePair } from "../components/ScorePair";
 import FlagsReview, { FlagBox } from "./FlagsReview";
 import { TopBar } from "../components/TopBar";
-import { Avatar } from "../components/Avatar";
+import { Avatar, toneFor } from "../components/Avatar";
 import { useT, useLang } from "../lib/i18n";
 
 // Display labels for each verdict when the language is French.
@@ -37,11 +38,19 @@ const VERDICT_FR: Record<Verdict, string> = {
 // "Worth a chat" is deliberately a calm, neutral ink — not alarm-red. Difference
 // here is an invitation to talk, never a failure state (see the subline below).
 const VERDICT_COLOR: Record<Verdict, string> = {
-  Agreed: "var(--app-guess-ok)",
-  Close: "var(--honeyD)",
-  "Worth a chat": "var(--app-verdict-grey)",
+  Agreed: "var(--app-honey)",
+  Close: "var(--ta-claret-hover)",
+  "Worth a chat": "var(--ta-claret)",
   Complementary: "var(--app-complement)",
   Shared: "var(--sub)",
+};
+// The kit's badge for each verdict: words in brand colours (item 13/16).
+const VERDICT_BADGE: Record<Verdict, string> = {
+  Agreed: "agreed",
+  Close: "close",
+  "Worth a chat": "chat",
+  Complementary: "comp",
+  Shared: "shared",
 };
 
 function optLabel(q: Question, v: AnswerValue | undefined): string {
@@ -243,8 +252,8 @@ export default function RevealScreen({
         {stage === 1 && (
           <div className="meetstage tall">
             <div className="meetpair">
-              <Avatar name={myName} tone="berry" size={58} />
-              <Avatar name={partnerName} tone="honey" size={58} />
+              <Avatar name={myName} tone={toneFor(role)} size={58} />
+              <Avatar name={partnerName} tone={toneFor(other(role))} size={58} />
             </div>
             <div className="meetnames">
               <span>{myName}</span>
@@ -262,8 +271,8 @@ export default function RevealScreen({
                 the full ring — the one beat no other band gets. */}
             {tier >= 4 && (
               <div className="meetpair oneheart lvlup-rise r2">
-                <Avatar name={myName} tone="berry" size={40} />
-                <Avatar name={partnerName} tone="honey" size={40} />
+                <Avatar name={myName} tone={toneFor(role)} size={40} />
+                <Avatar name={partnerName} tone={toneFor(other(role))} size={40} />
               </div>
             )}
             {/* The two axes at equal weight — agreement and Known — are the
@@ -584,7 +593,7 @@ function QCard({
       <div className="qc-head">
         <div className="qc-q">{q.q}</div>
         {q.type !== "open" && (
-          <span className="qc-badge" style={{ color: vcol, borderColor: vcol }}>
+          <span className={`kbadge ${VERDICT_BADGE[r.verdict]}`}>
             {t(r.verdict, VERDICT_FR[r.verdict])}
           </span>
         )}

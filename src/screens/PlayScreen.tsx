@@ -217,7 +217,7 @@ export default function PlayScreen({
             onClick={() => setGuessPhase(false)}
           >
             <div>
-              <div className="eyebrow" style={{ fontSize: 10 }}>
+              <div className="eyebrow">
                 {t("YOU SAID", "VOUS AVEZ DIT")}
               </div>
               <div className="yousaid-val">{yourText}</div>

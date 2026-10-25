@@ -12,6 +12,11 @@ const TONE_BG: Record<Tone, string> = {
   berry: "var(--berry)",
   honey: "var(--honeyD)",
 };
+// White on honey measured 2.5:1; the guest's initial is dark ink (5.8:1).
+const TONE_INK: Record<Tone, string> = {
+  berry: "var(--ta-white)",
+  honey: "var(--app-honey-ink)",
+};
 
 export function Avatar({
   name,
@@ -50,6 +55,9 @@ export function Avatar({
         width: size,
         height: size,
         background: photo ? "var(--ta-white)" : TONE_BG[tone],
+        // A custom property, not `color`, so a context can still recolour the
+        // initial (the reveal's claret room turns both discs light).
+        ["--av-ink" as string]: TONE_INK[tone],
         fontSize: Math.round(size * 0.42),
         borderWidth: ring ? Math.max(2, Math.round(size * 0.06)) : 0,
       }}

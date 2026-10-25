@@ -457,9 +457,8 @@ export default function ProfileScreen({
               {t("This cannot be undone.", "C’est irréversible.")}
             </p>
             <button
-              className="btn"
+              className="btn red"
               type="button"
-              style={{ background: "var(--danger)", boxShadow: "none" }}
               onClick={doDelete}
               disabled={dataBusy}
             >

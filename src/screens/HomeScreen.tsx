@@ -11,7 +11,7 @@ import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
 import { PATH_STEPS } from "../data/path.generated";
-import { Avatar } from "../components/Avatar";
+import { Avatar, toneFor } from "../components/Avatar";
 import { PathGlyph } from "../components/PathGlyph";
 import { IconDecks, IconSettings } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
@@ -181,10 +181,10 @@ export default function HomeScreen({
       <div className="homehdr">
         <span className={`avchip${justJoined ? " joinnow" : ""}`}>
           <span className="avchip-stack">
-            <Avatar name={myName} tone="berry" size={30} />
+            <Avatar name={myName} tone={toneFor(role)} size={30} />
             {joined ? (
               <span className="joinpop">
-                <Avatar name={partnerName} tone="honey" size={30} />
+                <Avatar name={partnerName} tone={toneFor(other(role))} size={30} />
               </span>
             ) : (
               <span

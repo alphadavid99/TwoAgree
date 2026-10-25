@@ -391,7 +391,7 @@ textarea.input {
   margin-top: 10px;
   text-align: center;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   letter-spacing: 0.02em;
   color: var(--mut);
   opacity: 0.55;
@@ -1281,7 +1281,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--ta-white);
   border: 2px solid var(--ta-white);
@@ -1303,7 +1303,7 @@ textarea.input {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 @keyframes dotPop {
@@ -2425,7 +2425,7 @@ textarea.input {
 }
 .tile-lb {
   float: right;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 600;
   color: var(--sub);
   text-align: right;
@@ -2438,7 +2438,7 @@ textarea.input {
   color: var(--ink);
 }
 .tile-u {
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--sub);
   margin-left: 4px;
 }
@@ -2479,7 +2479,7 @@ textarea.input {
 }
 .featmt {
   display: block;
-  font-size: 11.5px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-top: 1px;
 }
@@ -2537,7 +2537,7 @@ textarea.input {
   color: var(--ink);
 }
 .arow-t span {
-  font-size: 11.5px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--mut);
 }
 .pctpill {
@@ -2843,7 +2843,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--ta-white);
 }
@@ -2861,7 +2861,7 @@ textarea.input {
   margin: 8px 0 6px;
 }
 .cmp2-guess {
-  font-size: 11.5px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 .cmp2-guess b {
@@ -3005,7 +3005,7 @@ textarea.input {
   align-items: flex-end;
 }
 .ptick {
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   white-space: nowrap;
 }
@@ -3579,7 +3579,7 @@ textarea.input {
 .pi-vref {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   letter-spacing: 0.05em;
   color: var(--sub);
 }
@@ -3645,7 +3645,7 @@ textarea.input {
   gap: 6px;
   margin: clamp(10px, 1.5vh, 16px) 8px 0;
   text-align: center;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   line-height: 1.4;
   color: var(--app-mut);
 }
@@ -3758,7 +3758,7 @@ textarea.input {
 }
 .readycard-eyebrow {
   display: block;
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--ce-gold);
@@ -3929,7 +3929,7 @@ textarea.input {
   flex-direction: column;
 }
 .pathcard-eyebrow {
-  font-size: 0.625rem;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--app-amber);
@@ -4371,7 +4371,7 @@ textarea.input {
   color: var(--app-honey-ink);
 }
 .impinline-ends {
-  font-size: 11px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-left: 2px;
 }
@@ -4389,7 +4389,7 @@ textarea.input {
   cursor: pointer;
 }
 .yousaid-change {
-  font-size: 11.5px;
+  font-size: 0.75rem; /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--berry);
   text-decoration: underline;
@@ -4644,4 +4644,315 @@ textarea.input {
   line-height: 1rem;
   color: var(--app-sub);
   margin: 6px 0 0;
+}
+
+/* =============================================================================
+   THE KIT (design refresh, item 16). One design language: the thick card.
+   Spec and rules: docs/design-system.md. These override the older soft-shadow
+   pieces above, so every screen picks the kit up through the classes it
+   already uses; new screens build from these and nothing else.
+   ========================================================================== */
+
+/* Buttons: 52px tall, radius 16, a 4px base that drops to 1px when pressed. */
+.btn {
+  min-height: 52px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  /* Claret button: the question flow (Next, Finish part). */
+  background: var(--ta-claret);
+  color: var(--ta-white);
+  box-shadow: 0 4px 0 var(--kit-claret-base);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--kit-claret-base);
+}
+/* Honey button: the ONE main action on a screen. */
+.btn.pill,
+.btn.honey {
+  border-radius: 16px;
+  background: var(--app-honey);
+  color: var(--app-honey-ink);
+  box-shadow: 0 4px 0 var(--kit-honey-base);
+}
+.btn.pill:active,
+.btn.honey:active {
+  box-shadow: 0 1px 0 var(--kit-honey-base);
+}
+/* White button: secondary. */
+.btn.out {
+  border-radius: 16px;
+  background: var(--ta-white);
+  color: var(--ta-claret);
+  border: 2px solid var(--ta-line);
+  box-shadow: 0 4px 0 var(--ta-line);
+}
+.btn.out:active {
+  box-shadow: 0 1px 0 var(--ta-line);
+}
+/* Red button: deleting only. Busy keeps its label readable. */
+.btn.red,
+.btn.red[disabled] {
+  background: var(--kit-red);
+  color: var(--ta-white);
+  box-shadow: 0 4px 0 var(--kit-claret-base);
+}
+/* Text button: grey, no fill, still 48px to tap. */
+.btn.ghost {
+  min-height: 48px;
+  border-radius: 16px;
+  box-shadow: none;
+  background: none;
+  color: var(--ta-grey);
+}
+.btn.ghost:active {
+  transform: none;
+  box-shadow: none;
+}
+.btn[disabled],
+.btn.pill[disabled],
+.btn.honey[disabled] {
+  box-shadow: none;
+  transform: none;
+}
+
+/* Card: white, 2px edge, 5px base, radius 20, padding 16. */
+.card {
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 5px solid var(--kit-card-base);
+  border-radius: 20px;
+  box-shadow: none;
+  padding: 16px;
+}
+/* Claret card: at most one per screen, for the important moment. */
+.kcard-claret {
+  background: var(--ta-claret);
+  color: var(--ta-white);
+  border-radius: 20px;
+  border-bottom: 5px solid var(--kit-claret-base);
+  padding: 16px;
+}
+
+/* Answer row: at least 56px, never a fixed height. Selected = claret edge +
+   filled radio + light blush; never colour alone. */
+.opt {
+  min-height: 56px;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom-width: 4px;
+  border-bottom-color: var(--kit-card-base);
+  border-radius: 16px;
+  background: var(--ta-white);
+}
+.opt.sel {
+  border-color: var(--ta-claret);
+  border-bottom-color: var(--ta-claret);
+  background: var(--kit-sel-bg);
+}
+
+/* Filter pill: 40px tall to see, 48px to tap. Selected: claret, white text.
+   The 4px transparent border is the extra tap area; the visible edge is an
+   inset shadow inside it. */
+.fpill {
+  min-height: 48px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 4px solid transparent;
+  background: var(--ta-white);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 2px var(--ta-line);
+  color: var(--ta-claret);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fpill[aria-pressed="true"] {
+  background-color: var(--ta-claret);
+  box-shadow: none;
+  color: var(--ta-white);
+}
+
+/* Badge: a label, not a button. Words in brand colours, no traffic lights. */
+.kbadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: var(--tag-size);
+  font-weight: var(--tag-weight);
+  letter-spacing: var(--tag-track);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.kbadge.agreed {
+  background: var(--app-honey-bg);
+  color: var(--app-amber);
+}
+.kbadge.close {
+  background: var(--kit-close-bg);
+  color: var(--ta-claret-hover);
+}
+.kbadge.chat {
+  background: var(--ta-claret);
+  color: var(--kit-chat-ink);
+}
+.kbadge.comp {
+  background: var(--kit-sel-bg);
+  color: var(--app-complement);
+}
+.kbadge.shared {
+  background: var(--kit-sel-bg);
+  color: var(--ta-grey);
+}
+.avatar-disc:not(.avatar-wait) {
+  color: var(--av-ink, var(--ta-white));
+}
+
+/* Tap targets: at least 48px (design system), measured by audit-gallery. */
+.pinbtn,
+.talkbtn,
+.photobtn,
+.featleft,
+.codechip {
+  min-height: 48px;
+}
+.roundbtn,
+.talkdrop {
+  min-width: 48px;
+  min-height: 48px;
+}
+.impdot {
+  min-width: 44px;
+  min-height: 44px;
+}
+/* A link inside a sentence: the padding widens what you can tap without
+   moving the words around it. */
+.link,
+.consent a {
+  display: inline-block;
+  padding: 14px 4px;
+  margin: -14px -4px;
+}
+/* Consent: read to act, so helper size; the whole row is the target. */
+.consent {
+  min-height: 48px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 4px 0;
+  align-items: center;
+}
+.consent input {
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+}
+
+/* Type scale (docs/design-system.md), in rem so the phone's text size scales
+   it: hero 32/38 · screen heading 28/34 · question 22/30 · card title 18/24 ·
+   body 16/24 · helper 14/20 · label 12. */
+.h1 {
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+}
+.hero {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 2.375rem;
+  font-weight: 600;
+}
+.qtext {
+  font-size: 1.375rem;
+  line-height: 1.875rem;
+}
+.ktitle {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.helper {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--ta-grey);
+}
+
+/* ---- Loading: the outline of the screen (the loading rule) ---- */
+.skel {
+  padding-top: 20px;
+}
+.skel > div > * + * {
+  margin-top: 16px;
+}
+.skel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.skel-bar,
+.skel-dot,
+.skel-ring,
+.skel-tile {
+  display: block;
+  background: var(--app-track);
+  border-radius: 8px;
+}
+.skel-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.skel-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: none;
+  border: 7px solid var(--app-track);
+  flex: 0 0 auto;
+}
+.skel-tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+.skel-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.skel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.skel-still {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+  margin-top: 20px;
+}
+.skel-slow {
+  margin-top: 20px;
+  text-align: center;
+}
+.skel-slow .helper {
+  margin: 8px 0 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skel-bar,
+  .skel-dot,
+  .skel-tile {
+    animation: skelPulse 1.6s ease-in-out infinite;
+  }
+}
+@keyframes skelPulse {
+  50% {
+    opacity: 0.55;
+  }
 }

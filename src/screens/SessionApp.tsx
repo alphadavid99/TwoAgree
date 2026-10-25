@@ -28,6 +28,7 @@ import PartPicker from "./PartPicker";
 import RevealScreen from "./RevealScreen";
 import PathScreen, { PathFlow } from "./PathScreen";
 import { TopBar } from "../components/TopBar";
+import { Loading } from "../components/Loading";
 import { Mark } from "../brand/Mark";
 import { Avatar, toneFor } from "../components/Avatar";
 import { deckName } from "../lib/questions.fr";
@@ -153,12 +154,11 @@ export default function SessionApp({
 
   if (loading) {
     return (
-      <>
-        <div className="spin" />
-        <p className="muted center" style={{ fontSize: 14 }}>
-          {t("Opening your session…", "Ouverture de votre session…")}
-        </p>
-      </>
+      <Loading
+        shape="home"
+        label={t("Opening your session…", "Ouverture de votre session…")}
+        onBack={onLeave}
+      />
     );
   }
 

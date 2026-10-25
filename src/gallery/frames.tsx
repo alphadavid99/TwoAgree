@@ -16,6 +16,7 @@ import { ORDER, DECKS, type Question } from '../lib/questions'
 import { lvlQs, nLevels } from '../lib/leveling'
 import { revealKey } from '../lib/progress'
 import { NOT_YET } from '../lib/scoring'
+import { PathScene, SCENE_KEYS } from '../components/PathScene'
 import { KitSheet } from './KitSheet'
 import type { DeckData } from '../lib/scoring'
 import {
@@ -253,6 +254,14 @@ const Boom = (): ReactNode => {
 export const FRAMES: FrameDef[] = [
   // ============ 0 · The kit ============
   { id: 'kit-sheet', flow: 'kit', title: 'Every kit piece', note: 'docs/design-system.md. Pressing a button drops its base.', render: () => <KitSheet /> },
+  {
+    id: 'kit-scenes', flow: 'kit', title: 'The Path: ten code-drawn landmarks', note: 'One per step, the lamps lit so far. Illustrated versions drop into the same spot later.',
+    render: () => (
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, padding: 12 }}>
+        {SCENE_KEYS.map((k, i) => <PathScene key={k} stepKey={k} lit={i} label={k} className="scene-thumb" />)}
+      </div>
+    ),
+  },
 
   // ============ 1 · Boot & errors ============
   { id: 'boot-checking', flow: 'boot', title: 'Checking your account', authPending: true, bare: true, render: () => <App /> },

@@ -479,8 +479,7 @@ export default function SessionApp({
               slug={slug}
               onPlay={openDeck}
               onBrowse={() => setTab("decks")}
-              onReview={openReview}
-              onProfile={() => setTab("profile")}
+              onTogether={() => setTab("results")}
               pending={pending}
               onOpenReveal={openPendingReveal}
               onPath={PATH_ENABLED ? () => setTab("path") : undefined}

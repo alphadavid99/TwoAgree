@@ -99,15 +99,21 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
     expect(screen.getByText("Sarah & Judah")).toBeTruthy();
-    // The stat tile collapsed once when a label's font-size changed. Both units
-    // must survive as their own elements, not merge into one run of text.
-    expect(screen.getByText("agreed")).toBeTruthy();
-    expect(screen.getByText("known")).toBeTruthy();
+    // The soft scores card: two rings, each named with its count.
+    expect(screen.getByText("Agree")).toBeTruthy();
+    expect(screen.getByText("Known")).toBeTruthy();
+    expect(screen.getByText(/^based on \d+ questions?$/)).toBeTruthy();
+  });
+
+  it("has one honey button: the next step (item 10)", () => {
+    const { container } = render(
+      <HomeScreen code="ABCD" session={session} role="host" slug={slugA} onPlay={noop} onBrowse={noop} onTogether={noop} onPath={noop} />,
+    );
+    expect(container.querySelectorAll(".btn.pill, .btn.honey").length).toBe(1);
   });
 
   it("shows the code to share while the partner hasn't joined", () => {
@@ -120,11 +126,10 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
-    expect(screen.getByRole("button", { name: "WXYZ" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /WXYZ/ }).textContent).toBe("WXYZ");
   });
 
   it("loads with both partners' Path at-the-table answers in the session", () => {
@@ -149,8 +154,7 @@ describe("HomeScreen", () => {
         onOpenReveal={noop}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
     expect(screen.getByText("Sarah & Judah")).toBeTruthy();
@@ -165,8 +169,7 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
     expect(screen.queryByText(/CONTINUE THE PATH/i)).toBeNull();

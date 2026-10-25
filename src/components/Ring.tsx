@@ -83,7 +83,10 @@ export function PctRing({
   delayMs = 0,
   ink = "var(--berry)",
   track = "var(--track)",
+  sw = 12,
 }: {
+  /** Stroke width; thinner on Home's small soft rings. */
+  sw?: number;
   pct: number;
   size?: number;
   color?: string;
@@ -99,7 +102,6 @@ export function PctRing({
   const p = useDraw(drawMs ?? 900, delayMs);
   // The number is an animating <text> node inside an SVG — assistive tech got
   // either nothing or a changing fragment. Announce the settled value.
-  const sw = 12;
   const r = size / 2 - sw;
   const circ = 2 * Math.PI * r;
   const dash = ((circ * pct) / 100) * p;

@@ -256,8 +256,7 @@ function Preview() {
           slug={slugA}
           onPlay={noop}
           onBrowse={noop}
-          onReview={noop}
-          onProfile={noop}
+          onTogether={noop}
           // home-ready: the herald card, for a reveal that has just unlocked.
           pending={view === "home-ready" ? [{ slug: slugB, level: 0 }] : []}
           onOpenReveal={noop}
@@ -307,8 +306,7 @@ function Preview() {
           slug={slugC}
           onPlay={noop}
           onBrowse={noop}
-          onReview={noop}
-          onProfile={noop}
+          onTogether={noop}
         />
         <FakeNav on="home" />
       </div>

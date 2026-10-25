@@ -75,6 +75,25 @@
   --kit-close-bg:     #F7EEF1;  /* "Close" badge ground; claret-hover text 9.6:1 */
   --kit-chat-ink:     #F3D58E;  /* "Worth a chat" badge text on claret, 10.6:1 */
 
+  /* --- The Path scene (item 10/14): code-drawn sky, hills, road, lamps and
+     landmarks. Decorative only — no text sits on these. --- */
+  --scene-sky-top:    #FDF6EC;
+  --scene-sky-bot:    #F9E6E6;
+  --scene-sun:        #F9DFA6;
+  --scene-hill-far:   #EED3DC;
+  --scene-hill-mid:   #DFB6C6;
+  --scene-hill-near:  #4A2138;
+  --scene-road:       #F8EBD2;
+  --scene-lamp:       #F6C46B;
+  --scene-lamp-off:   #E4D5DB;
+  --scene-post:       #6B5A61;
+  --scene-wood:       #7A4A3A;
+  --scene-leaf:       #A9BC9A;
+  --scene-leaf-deep:  #8FA780;
+  --scene-water:      #C3DBE0;
+  --scene-rose:       #D98BA6;
+  --scene-peak:       #C7839E;
+
   /* Ground gradient (blush field the white cards float on) */
   --app-ground-top:   #FBF2F5;
   --app-ground-bot:   #F8E9EC;
@@ -91,6 +110,7 @@
   --app-banner-line:  #EAD3B2;  /* honey banner/knowpill border */
   --app-rose:         #9C4A6E;
   --app-rose-light:   #E7B9CB;  /* Known's ring on a claret ground */
+  --app-rose-soft:    #C97F9E;  /* Known's ring on Home's soft scores card */
 
   /* Decorative — reveal ceremony glints/sparks/petals */
   --app-glint:        #FFE9BD;

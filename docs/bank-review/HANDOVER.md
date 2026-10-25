@@ -53,3 +53,4 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
 - His comments, applied: modesty joins "Sex, gender and marriage"; `ROLE-012` → Fun; surnames (`NEW-muvgvq1q`) → Us "Getting ready for marriage"; `SELF-005#fu1` is standalone after `SELF-008`; `NOW-006` reworded. Everything is recorded under `decisions` in `grouping.json`, and `tools/merge.py` applies it.
 - Knock-on changes he hasn't seen yet: Roles became two parts of 8 ("Who does what", "Leading and headship"), and `PAR-009` moves to Children so each Children part has 6. Those verdicts were cleared on the page so he can look at them again.
 - **Now: 558 questions, 78 parts, all 6 to 8.** The comment threads stay open on the page because none was sent to Claude. Dave can resolve them himself.
+- **Draft: decided (Dave, 25 Oct).** Ignore the label. Every question goes live, Draft or not, as today. `status` stays as authoring metadata only.

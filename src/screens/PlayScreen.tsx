@@ -517,9 +517,13 @@ function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => voi
   };
   return (
     <>
-      <p className="helper rankhelp">
-        {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
-      </p>
+      {/* A question that sets its own order ("Put your least favourite
+          first") isn't contradicted by the usual one. */}
+      {!/ first\.$/.test(q.q) && (
+        <p className="helper rankhelp">
+          {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
+        </p>
+      )}
       <ol className="ranklist">
         {order.map((oi, pos) => {
           const label = q.opts![oi];

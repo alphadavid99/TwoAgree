@@ -14,7 +14,7 @@ Decisions behind it: the design review walkthrough (items 1–17) and the UX law
 
 - Streaks, countdowns, "don't lose your progress", fake head starts on progress bars, nagging reminders, or anything that makes a partner feel behind.
 - A pre-selected or suggested answer. Every question starts empty.
-- Softened or hedged wording on hard questions. Don't rewrite question text.
+- Softened or hedged wording on hard questions. Rewording for plain language keeps the meaning, the options' order and their number.
 - "Him / Her" or "your partner" where a name is known. Use the person's name.
 - Honey (`--ta-honey`, `--app-honey`) as text on a light ground. It's a fill colour only.
 - A raw hex outside `src/brand/tokens.css` (exceptions are listed in CLAUDE.md §10.1).
@@ -91,6 +91,7 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 ## Words
 
 - Short, warm, direct. "You" and the partner's name.
+- Questions in plain words anyone can follow and a translator can carry: no idioms ("take a back seat", "dropping by"), at most 100 characters. The plain-language pass of Oct 2026 rewrote the 91 that ran longer.
 - Scores always carry their count: "Based on 22 questions you both answered", "7 of 10 guesses right".
 - "Not a verdict: a place to start talking." on every reveal except 100%.
 - Scripture is ESV, except Amos 3:3 (NKJV).

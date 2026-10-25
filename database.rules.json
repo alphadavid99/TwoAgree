@@ -94,6 +94,18 @@
                     ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
                     ".validate": "newData.isBoolean()"
                   }
+                },
+                "note": {
+                  "$role": {
+                    ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                    ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 280"
+                  }
+                },
+                "at": {
+                  "$role": {
+                    ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists() && (($role === 'host' && root.child('sessions/'+$code+'/members/host/uid').val() === auth.uid) || ($role === 'guest' && root.child('sessions/'+$code+'/members/guest/uid').val() === auth.uid))",
+                    ".validate": "newData.isNumber() && newData.val() <= now"
+                  }
                 }
               }
             }

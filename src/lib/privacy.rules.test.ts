@@ -480,3 +480,60 @@ describe("the reveal's line and verse", () => {
     await assertFails(set(ref(asUser(HOST), `sessions/${CODE}/lastPick`), { line: 0, verse: 0 }));
   });
 });
+
+describe("Talk it through: the shared note and the date you talked", () => {
+  const QID = part0[0].id;
+  const base = `sessions/${CODE}/decks/${SLUG}/talks/${QID}`;
+  const tick = (uid: string, role: "host" | "guest", note?: string) =>
+    update(ref(asUser(uid)), {
+      [`${base}/talked/${role}`]: true,
+      [`${base}/at/${role}`]: { ".sv": "timestamp" },
+      ...(note ? { [`${base}/note/${role}`]: note } : {}),
+    });
+
+  it("each of you writes your own tick and note; both read them; nobody writes the other's", async () => {
+    await assertSucceeds(tick(HOST, "host", "One joint account for bills"));
+    await assertSucceeds(tick(GUEST, "guest"));
+    const seen = (await get(ref(asUser(GUEST), base))).val();
+    expect(seen.note.host).toBe("One joint account for bills");
+    expect(seen.talked).toEqual({ host: true, guest: true });
+    expect(typeof seen.at.host).toBe("number");
+    await assertFails(set(ref(asUser(GUEST), `${base}/note/host`), "Not what Sarah wrote"));
+    await assertFails(set(ref(asUser(HOST), `${base}/at/guest`), 1));
+  });
+
+  it("the outsider can neither read nor write it; a long note or a future date is refused", async () => {
+    await assertSucceeds(tick(HOST, "host", "Ours"));
+    await assertFails(get(ref(asUser(OUTSIDER), base)));
+    await assertFails(set(ref(asUser(OUTSIDER), `${base}/note/host`), "x"));
+    await assertFails(set(ref(asUser(HOST), `${base}/note/host`), "x".repeat(281)));
+    await assertFails(set(ref(asUser(HOST), `${base}/note/host`), ""));
+    await assertFails(set(ref(asUser(HOST), `${base}/at/host`), Date.now() + 86_400_000));
+    await assertFails(set(ref(asUser(HOST), `${base}/other/host`), true));
+  });
+
+  it("your export includes your note and not your partner's; delete removes yours and keeps theirs", async () => {
+    const { getAuth } = await import("../../functions/node_modules/firebase-admin/lib/auth/index.js");
+    await getAuth().createUser({ uid: GUEST }).catch(() => {});
+    await assertSucceeds(tick(HOST, "host", "Sarah's idea"));
+    await assertSucceeds(tick(GUEST, "guest", "Judah's idea"));
+    await assertSucceeds(set(ref(asUser(GUEST), `${base}/pinned/guest`), true));
+
+    const out = (await exportMyData.run({ auth: { uid: GUEST }, data: null, rawRequest: {} })) as {
+      sessions: Record<string, { decks: Record<string, { talks?: Record<string, { note?: string; at?: number }> }> }>;
+    };
+    const mine = out.sessions[CODE].decks[SLUG].talks![QID];
+    expect(mine.note).toBe("Judah's idea");
+    expect(typeof mine.at).toBe("number");
+    expect(JSON.stringify(out)).not.toContain("Sarah's idea");
+
+    await deleteMyAccount.run({ auth: { uid: GUEST }, data: null, rawRequest: {} });
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      const node = (await get(ref(ctx.database(), base))).val();
+      expect(node.note).toEqual({ host: "Sarah's idea" });
+      expect(node.talked).toEqual({ host: true });
+      expect(Object.keys(node.at)).toEqual(["host"]);
+      expect(node.pinned).toBeUndefined();
+    });
+  });
+});

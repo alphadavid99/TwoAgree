@@ -3,7 +3,7 @@
 // written into the host/guest member slot so the host/guest scoring layer is
 // untouched. Every write is a scalar leaf (never {}) so RTDB auto-creates
 // intermediates — the hard-won gotcha in §6.
-import { ref, update } from "firebase/database";
+import { ref, update, serverTimestamp } from "firebase/database";
 import { auth, db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
 import type { Stage } from "../types";
@@ -197,11 +197,21 @@ export function writeTalked(
   qid: string,
   role: Role,
   on: boolean,
+  /** "One thing we'll try" (item 13): optional, shared with your partner. */
+  note?: string,
 ): Promise<void> {
-  return update(ref(db, `sessions/${code}/decks/${slug}/talks/${qid}/talked`), {
-    [role]: on,
+  const base = `sessions/${code}/decks/${slug}/talks/${qid}`;
+  const text = note?.trim().slice(0, NOTE_MAX);
+  return update(ref(db), {
+    [`${base}/talked/${role}`]: on,
+    // When you ticked: "Talked about together" shows the later of the two.
+    [`${base}/at/${role}`]: on ? serverTimestamp() : null,
+    ...(text ? { [`${base}/note/${role}`]: text } : {}),
   });
 }
+
+/** The shared note's limit, matched by database.rules.json. */
+export const NOTE_MAX = 280;
 
 // Finishing a part is when you agree to share it (recommendation 6). If your
 // partner has already finished, this is the second "done": the part opens.

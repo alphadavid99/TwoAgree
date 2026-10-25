@@ -25,7 +25,7 @@ export interface RawDeck {
   guesses?: Record<string, RoleKeyed>;
   importance?: Record<string, RoleKeyed>;
   done?: Record<string, RoleKeyed>;
-  talks?: Record<string, { pinned?: RoleKeyed; talked?: RoleKeyed }>;
+  talks?: Record<string, { pinned?: RoleKeyed; talked?: RoleKeyed; note?: RoleKeyed; at?: RoleKeyed }>;
 }
 
 export interface RawSession {
@@ -36,6 +36,16 @@ export interface RawSession {
   decks?: Record<string, RawDeck>;
   path?: unknown;
   pathLamps?: Record<string, boolean>;
+}
+
+/** One talk-list entry, as this person left it. */
+export interface Talk {
+  pinned?: boolean;
+  talked?: boolean;
+  /** When you ticked "We talked about this" (ms since epoch). */
+  at?: number;
+  /** "One thing we'll try": the note you wrote, shared with your partner. */
+  note?: string;
 }
 
 export interface RedactedSession {
@@ -52,7 +62,7 @@ export interface RedactedSession {
       guesses?: Record<string, unknown>;
       importance?: Record<string, unknown>;
       done?: Record<string, unknown>;
-      talks?: Record<string, { pinned?: boolean; talked?: boolean }>;
+      talks?: Record<string, Talk>;
     }
   >;
   /** Shared couple state, not personal data of either partner alone. */
@@ -95,12 +105,15 @@ export function redactSessionForSubject(s: RawSession, uid: string): RedactedSes
       if (i) entry.importance = i;
       if (d) entry.done = d;
 
-      // Talks are two flags per question per partner; keep only this person's.
-      const talks: Record<string, { pinned?: boolean; talked?: boolean }> = {};
+      // Talks are flags, a date and a note per question per partner; keep
+      // only this person's.
+      const talks: Record<string, Talk> = {};
       for (const [qid, node] of Object.entries(deck.talks ?? {})) {
-        const t: { pinned?: boolean; talked?: boolean } = {};
+        const t: Talk = {};
         if (node?.pinned?.[role] !== undefined) t.pinned = !!node.pinned[role];
         if (node?.talked?.[role] !== undefined) t.talked = !!node.talked[role];
+        if (typeof node?.at?.[role] === "number") t.at = node.at[role] as number;
+        if (typeof node?.note?.[role] === "string") t.note = node.note[role] as string;
         if (Object.keys(t).length) talks[qid] = t;
       }
       if (Object.keys(talks).length) entry.talks = talks;

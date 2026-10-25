@@ -52,6 +52,11 @@ This replaces the per-answer read gate that used to be staged here.
 - **Partner status** ("Judah hasn't started this part yet") reads only the
   shared `started` and `done` flags.
 - **Export and delete** include and purge the private space.
+- **Talk it through** (item 13): `decks/{slug}/talks/{qid}/{pinned|talked|at|note}/{role}`.
+  Each partner writes only their own role. `at` is a timestamp no later than
+  now; `note` ("One thing we'll try") is a 1–280 character string, readable by
+  both members, never by an outsider. Export returns only your own; delete
+  removes yours and keeps your partner's. Emulator-tested.
 - **Existing sessions** need the one-off move in
   `scripts/migrate-private-answers.mjs` (dry run by default; emulator-tested).
 

@@ -53,6 +53,7 @@ interface SessionNode {
       importance?: Record<string, Record<string, unknown>>;
       published?: Record<string, unknown>;
       pick?: Record<string, Pick>;
+      talks?: Record<string, Record<string, Record<string, unknown> | undefined>>;
     }
   >;
   path?: { steps?: Record<string, { key?: string; qids?: string[] }> };
@@ -122,7 +123,7 @@ export const exportMyData = onCall(async (request) => {
 /**
  * deleteMyAccount — GDPR erasure. Cascades across every session the user is in:
  * removes their member slot, their uid from the membership set, and their
- * answers/guesses/done for their role in each deck. If they were the only
+ * answers/guesses/done, talk ticks and notes for their role in each deck. If they were the only
  * member left, the whole session is removed. Then deletes the profile and the
  * Firebase Auth user.
  */
@@ -168,6 +169,10 @@ export const deleteMyAccount = onCall(async (request) => {
           updates[`sessions/${code}/decks/${slug}/done/${lvl}/${role}`] = null;
         for (const lvl of Object.keys(deck.started ?? {}))
           updates[`sessions/${code}/decks/${slug}/started/${lvl}/${role}`] = null;
+        // Your talk-list ticks, the date you ticked and your shared note.
+        for (const qid of Object.keys(deck.talks ?? {}))
+          for (const leaf of ["pinned", "talked", "at", "note"])
+            updates[`sessions/${code}/decks/${slug}/talks/${qid}/${leaf}/${role}`] = null;
       }
     }
     if (role) {

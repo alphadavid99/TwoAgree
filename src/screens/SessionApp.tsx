@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import type { User } from "firebase/auth";
 import { ORDER } from "../lib/questions";
 import { lvlQs, nLevels } from "../lib/leveling";
@@ -40,6 +40,7 @@ import { IconHome, IconDecks, IconResults, IconProfile } from "../components/ico
 import { Route } from "lucide-react";
 import { useLang, useT } from "../lib/i18n";
 import { track } from "../lib/observability";
+import { useScrollMemory } from "../lib/scroll";
 
 type Tab = "home" | "decks" | "path" | "results" | "profile";
 type Flow = null | "picker" | "play" | "review" | "reviewDeck";
@@ -87,19 +88,34 @@ function deckEntry(
   return { flow: levelDone(d, lvl, role) ? "review" : "play", level: lvl };
 }
 
-export default function SessionApp({
-  code,
-  user,
-  onLeave,
-  openSlug,
-}: {
+type Props = {
   code: string;
   user: User;
   onLeave: () => void;
   // A conversation to open on arrival — the one picked at the end of
   // onboarding. Without it that choice was silently discarded.
   openSlug?: string;
-}) {
+};
+
+// The anchor sits beside every screen this renders, so the scroll memory can
+// find what scrolls before any screen has mounted.
+export default function SessionApp(props: Props) {
+  const anchor = useRef<HTMLElement>(null);
+  return (
+    <>
+      <i ref={anchor} hidden />
+      <SessionScreens {...props} anchor={anchor} />
+    </>
+  );
+}
+
+function SessionScreens({
+  code,
+  user,
+  onLeave,
+  openSlug,
+  anchor,
+}: Props & { anchor: RefObject<HTMLElement | null> }) {
   const t = useT();
   const lang = useLang();
   const { session, role, loading, denied } = useSession(code, user.uid);
@@ -151,6 +167,13 @@ export default function SessionApp({
   const [flowReturn, setFlowReturn] = useState<Tab>("home");
   // The Path step being walked (full-screen, no bottom nav), or null on the map.
   const [pathStep, setPathStep] = useState<number | null>(null);
+
+  // Every screen opens at the top. Coming back out of a conversation returns
+  // the tab to where you left it, like closing a card; switching tabs starts
+  // each one fresh.
+  const view =
+    pathStep != null ? `step:${pathStep}` : flow ? `${flow}:${slug}:${level}` : `tab:${tab}`;
+  useScrollMemory(view, (from, to) => !from.startsWith("tab:") && to.startsWith("tab:"), anchor);
 
   if (loading) {
     return (

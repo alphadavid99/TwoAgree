@@ -6748,3 +6748,341 @@ a.btn {
   font-size: 0.875rem;
   color: var(--ta-grey);
 }
+
+/* ==========================================================================
+   Feedback pass (Oct 2026): long questions, the pinned button, choosing,
+   and spacing. Later in the file on purpose, so it wins over the kit above.
+   ========================================================================== */
+
+/* Long questions step down a size so the answers still fit on the screen. */
+.qtext.qtext-long {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem;
+}
+.qtext.qtext-longer {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.625rem;
+}
+
+/* What the chosen point on a scale means: a caret up at its orb, then the
+   words, leaning to the side that was picked. Room is kept for one line so
+   picking doesn't shove the card. */
+.orbsay {
+  display: flex;
+  flex-direction: column;
+  min-height: 44px;
+  margin-top: 6px;
+}
+.orbsay-carets {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.orbsay-cell {
+  flex: 1;
+  max-width: 56px;
+  display: flex;
+  justify-content: center;
+  height: 6px;
+}
+.orbsay-cell .caret {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 6px solid var(--app-honey-bg);
+  animation: caretIn var(--dur-select) var(--ease-spring) both;
+}
+.orbsay-text {
+  max-width: 100%;
+  min-width: 46%;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--app-honey-bg);
+  color: var(--ta-ink);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  animation: sayIn var(--dur-select) var(--ease-glide) both;
+}
+.orbsay-text b {
+  color: var(--app-amber);
+  font-weight: 700;
+}
+.orbsay-text span {
+  display: block;
+  margin-top: 2px;
+}
+.orbsay-text.lo {
+  align-self: flex-start;
+  text-align: left;
+}
+.orbsay-text.mid {
+  align-self: center;
+  text-align: center;
+}
+.orbsay-text.hi {
+  align-self: flex-end;
+  text-align: right;
+}
+@keyframes sayIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes caretIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The pinned button sits on solid ground. When the card runs on underneath
+   it, the card fades out above the button and "More below" says so. */
+.playscreen > .playfoot {
+  background: var(--app-ground-bot);
+}
+.playscreen > .playfoot.covering::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 56px;
+  background: linear-gradient(to bottom, rgba(248, 233, 236, 0), var(--app-ground-bot) 85%);
+  pointer-events: none;
+}
+.morebelow {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom-width: 4px;
+  border-bottom-color: var(--kit-card-base);
+  border-radius: 999px;
+  background: var(--ta-white);
+  color: var(--ta-claret);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transform: translateX(-50%);
+  animation: moreIn var(--dur-enter) var(--ease-glide) both;
+}
+.morebelow svg {
+  animation: moreNudge 1.6s var(--ease-settle) 0.6s 2;
+}
+.morebelow:active {
+  border-bottom-width: 2px;
+  transform: translateX(-50%) translateY(2px);
+}
+@keyframes moreIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+}
+@keyframes moreNudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  40% {
+    transform: translateY(3px);
+  }
+}
+
+/* Choosing. A choice used to just change its outline; now it registers:
+   the row fills from the left, the radio springs and rings out once, and
+   an importance button fills from its centre and springs. All of it is
+   transform/opacity, and none of it plays under reduce-motion. */
+.opt {
+  isolation: isolate;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform var(--dur-press) ease;
+}
+.opt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, var(--kit-close-bg), var(--kit-sel-bg));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-select) var(--ease-glide);
+}
+.opt.sel {
+  background: var(--ta-white);
+  box-shadow: 0 6px 16px rgba(62, 26, 46, 0.1);
+}
+.opt.sel::before {
+  transform: scaleX(1);
+}
+.opt.guess::before {
+  background: linear-gradient(90deg, var(--app-honey-bg), var(--ta-white));
+}
+.opt:active {
+  transform: scale(0.985);
+}
+.opt .dot {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.opt.sel .dot::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  color: var(--ta-claret);
+  animation: dotRing 0.6s ease-out both;
+}
+.opt.guess.sel .dot::after {
+  color: var(--honeyD);
+}
+@keyframes dotRing {
+  from {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+.impbtn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: color 0.2s ease, border-color 0.2s ease, transform var(--dur-press) ease;
+}
+.impbtn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--ta-claret);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--dur-select) var(--ease-glide);
+}
+.impbtn.on {
+  color: var(--ta-white);
+  /* The fill is drawn by ::before; the button's own ground follows once it
+     has grown, so the white label always sits on claret. */
+  background: var(--ta-claret);
+  border-color: var(--ta-claret);
+  border-bottom-color: var(--kit-claret-base);
+  transition: color 0.2s ease, border-color 0.2s ease, transform var(--dur-press) ease,
+    background-color 0s linear var(--dur-select);
+  animation: impPop var(--dur-select) var(--ease-spring);
+}
+.impbtn.on::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+.impbtn:active {
+  transform: translateY(2px);
+}
+@keyframes impPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbsay-text,
+  .orbsay-cell .caret,
+  .morebelow,
+  .morebelow svg,
+  .opt.sel .dot::after,
+  .impbtn.on {
+    animation: none !important;
+  }
+  .opt::before,
+  .impbtn::before {
+    transition: none !important;
+  }
+}
+
+/* Home: every card ends the same distance below its last line. The text
+   button's own 48px tap height was adding to the card's padding. */
+.hnext .btn.ghost {
+  margin-bottom: -8px;
+}
+.hinvite > .btn.out ~ .helper {
+  margin-top: 12px;
+  text-align: center;
+}
+.hinvite > .helper:last-child {
+  margin-bottom: 4px;
+}
+
+/* You: Delete my account is a white button with the card's own base; the
+   claret button shadow it inherited showed as a second, dark base. */
+.btn.you-delete,
+.btn.you-delete:active {
+  box-shadow: none;
+}
+.btn.you-delete:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+/* Talk: rows on the kit's 16px padding, with more room at the arrow end. */
+.cv-group {
+  margin: 32px 4px 4px;
+}
+.cv-row {
+  gap: 16px;
+  margin-top: 12px;
+  padding: 14px 20px 14px 16px;
+}
+.cv-row-nm {
+  gap: 4px 10px;
+}
+.cv-bars {
+  margin-top: 8px;
+}
+.cv-go {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--ta-grey);
+}
+.pp-row {
+  gap: 14px;
+  padding: 14px 20px 14px 16px;
+}
+/* The search box lines up with the cards under it (the global label margin
+   was setting it 4px in on each side). */
+.cv-search {
+  margin: 0;
+}

@@ -7,6 +7,7 @@ import { prettyError } from "../lib/errors";
 import { exportMyData, deleteMyAccount } from "../lib/functions";
 import { renderReadableExport, type ExportPayload } from "../lib/dataexport";
 import { useT, useLang, setLang, LANGS } from "../lib/i18n";
+import { useScrollMemory } from "../lib/scroll";
 import BuildStamp from "../components/BuildStamp";
 import { Avatar } from "../components/Avatar";
 import { Sheet } from "../components/Sheet";
@@ -56,6 +57,8 @@ export default function ProfileScreen({
   const lang = useLang();
   const { profile, loading, saveProfile } = useProfile(user.uid);
   const [view, setView] = useState<View>("main");
+  // Each page opens at the top; Back returns the list to where you were.
+  useScrollMemory(view, (_, to) => to === "main");
   const [closing, setClosing] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [copied, setCopied] = useState(false);

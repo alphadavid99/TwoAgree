@@ -144,6 +144,8 @@ for (const q of questions) {
   } else if (q.type === "scale") {
     if (!q.lo || !q.hi) bad("scale needs both lo and hi endpoint labels");
     if (q.opts) bad("scale must not have opts");
+    if (q.steps && (!Array.isArray(q.steps) || q.steps.length !== 5 || q.steps.some((x) => typeof x !== "string" || !x.trim())))
+      bad("scale steps must be five non-empty labels, lo to hi");
   } else if (q.type === "open") {
     if (q.opts) bad("open must not have opts");
     if (q.lo || q.hi) bad("open must not have lo/hi");
@@ -209,6 +211,7 @@ function runtimeQuestion(q) {
   if (q.opts) o.opts = q.opts;
   if (q.lo) o.lo = q.lo;
   if (q.hi) o.hi = q.hi;
+  if (q.steps) o.steps = q.steps;
   return o;
 }
 
@@ -266,6 +269,8 @@ export interface Question {
   /** Scale endpoint labels (type === "scale"). */
   lo?: string;
   hi?: string;
+  /** Scale only: what each of the five points means, lo to hi (English). */
+  steps?: string[];
 }
 
 export interface Deck {

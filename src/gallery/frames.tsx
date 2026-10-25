@@ -472,7 +472,7 @@ export const FRAMES: FrameDef[] = [
     id: 'path-step-arrival', flow: 'path', title: 'Path: arriving at a step', note: 'The step’s scene, what it’s about, what to expect, the verse.',
     db: dbWith((c) => pathSession(c, 1)),
     render: (c) => (
-      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-001', 'CONF-002'] }}
+      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-038', 'CONF-002'] }}
         myName="Sarah" partnerName="Judah" onExit={() => {}} />
     ),
   },
@@ -480,7 +480,7 @@ export const FRAMES: FrameDef[] = [
     id: 'path-step-play', flow: 'path', title: 'Path: a waypoint question',
     db: dbWith((c) => pathSession(c, 1)), steps: [{ click: /Take the step/ }],
     render: (c) => (
-      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-001', 'CONF-002'] }}
+      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-038', 'CONF-002'] }}
         myName="Sarah" partnerName="Judah" onExit={() => {}} />
     ),
   },

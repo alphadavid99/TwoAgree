@@ -3,7 +3,7 @@ import { optValue, optIndex, optText, withNames, isLegacyWho } from "./who";
 import { scoreQ } from "./scoring";
 import { DECKS } from "./questions";
 
-const cooking = DECKS["in-the-home"].questions.find((q) => q.id === "HOME-001")!;
+const cooking = DECKS["in-the-home"].questions.find((q) => q.id === "HOME-012")!;
 const names = { host: "Sarah Placeholder", guest: "Judah" };
 
 describe("which-of-you questions", () => {
@@ -13,8 +13,9 @@ describe("which-of-you questions", () => {
     expect(withNames(cooking, names).opts).toEqual([
       "Mostly Sarah",
       "Mostly Judah",
-      "Both equally",
-      "We share by meal or day",
+      "Split roughly equally",
+      "Whoever enjoys it or is better at it",
+      "Whoever has more time",
     ]);
   });
 
@@ -27,10 +28,10 @@ describe("which-of-you questions", () => {
   });
 
   it("matching answers score as agreed, from both sides", () => {
-    const deck = { answers: { "HOME-001": { host: "host" as const, guest: "host" as const } } };
+    const deck = { answers: { "HOME-012": { host: "host" as const, guest: "host" as const } } };
     expect(scoreQ(cooking, deck, "host").verdict).toBe("Agreed");
     expect(scoreQ(cooking, deck, "guest").verdict).toBe("Agreed");
-    const differ = { answers: { "HOME-001": { host: "host" as const, guest: "guest" as const } } };
+    const differ = { answers: { "HOME-012": { host: "host" as const, guest: "guest" as const } } };
     expect(scoreQ(cooking, differ, "guest").verdict).toBe("Worth a chat");
   });
 
@@ -43,17 +44,19 @@ describe("which-of-you questions", () => {
   });
 
   it("leaves every other question alone, including husband/wife roles", () => {
-    const roles = DECKS["roles-responsibilities"].questions.find((q) => q.id === "ROLE-006")!;
+    const roles = DECKS["faith-worship-practice"].questions.find((q) => q.id === "FAITH-038")!;
     expect(withNames(roles, names)).toBe(roles);
     expect(roles.opts![0]).toBe("The husband");
     expect(optValue(roles, 0)).toBe(0);
   });
 
-  it("covers exactly the 18 Him / Her questions", () => {
+  it("covers exactly the 17 which-of-you questions, and no Him / Her is left", () => {
     const who = Object.values(DECKS).flatMap((d) => d.questions.filter((q) => q.who));
-    expect(who).toHaveLength(18);
+    expect(who).toHaveLength(17);
     for (const q of Object.values(DECKS).flatMap((d) => d.questions)) {
-      expect((q.opts ?? []).some((o) => /\b(him|her)\b/i.test(o)), q.id).toBe(false);
+      // "Him" for God and "her role" in a belief about roles are fine; an option
+      // that just names Him or Her as one of you is not.
+      expect((q.opts ?? []).some((o) => /^(mostly |mainly )?(him|her)$/i.test(o.trim())), q.id).toBe(false);
     }
   });
 });

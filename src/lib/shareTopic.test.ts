@@ -18,7 +18,8 @@ describe("shareTopic — what a shared card says about the topic", () => {
 
   it("names everything else, with the part when there are several", () => {
     expect(shareTopic("fun-icebreakers", "en", 0)).toBe("Fun · Part 1");
-    expect(shareTopic("career-ambition", "en", 0)).toBe("Work");
+    expect(shareTopic("career-ambition", "en")).toBe("Work");
+    expect(shareTopic("career-ambition", "en", 1)).toBe("Work · Part 2");
     expect(shareTopic("table", "en")).toBe("The Table");
   });
 });

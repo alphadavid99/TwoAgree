@@ -85,80 +85,72 @@ export const DECKS: Record<string, Deck> = {
       {
         "name": "Who does what",
         "qids": [
-          "HOME-001",
-          "HOME-002",
-          "HOME-003",
-          "HOME-006",
+          "HOME-012",
+          "HOME-013",
+          "HOME-014",
           "HOME-008",
-          "HOME-010"
+          "HOME-006",
+          "HOME-010",
+          "HOME-011"
         ]
       },
       {
         "name": "Putting down roots",
         "qids": [
-          "HOME-004",
-          "HOME-005",
+          "HOME-015",
+          "HOME-016",
           "HOME-007",
+          "HOME-017",
           "HOME-009",
-          "HOME-011"
+          "HOME-018",
+          "HOME-019",
+          "HOME-020"
         ]
       }
     ],
     "questions": [
       {
-        "id": "HOME-001",
-        "q": "Who does most of the cooking in your home?",
+        "id": "HOME-012",
+        "q": "How would you want us to divide the cooking at home?",
         "type": "mc",
         "depth": 1,
-        "note": "Surfaces day-to-day domestic expectations early — a common silent assumption.",
         "guessable": true,
         "who": true,
         "opts": [
           "Mostly {A}",
           "Mostly {B}",
-          "Both equally",
-          "We share by meal or day"
+          "Split roughly equally",
+          "Whoever enjoys it or is better at it",
+          "Whoever has more time"
         ]
       },
       {
-        "id": "HOME-002",
-        "q": "Who would own most of the household chores?",
+        "id": "HOME-013",
+        "q": "How would you want us to divide household chores?",
         "type": "mc",
         "depth": 1,
-        "note": "Extends the cooking question to the whole chore map.",
         "guessable": true,
-        "who": true,
         "opts": [
-          "Mostly {A}",
-          "Mostly {B}",
-          "Split evenly",
-          "We'll trade off"
+          "Split them roughly equally",
+          "Divide them based on what each person prefers",
+          "Divide them based on who is better at each task",
+          "Whoever has more time does more",
+          "Keep it flexible and adjust as life changes"
         ]
       },
       {
-        "id": "HOME-003",
-        "q": "How do you feel about pets at home - and are you more of a dog or a cat person?",
-        "type": "mc",
+        "id": "HOME-014",
+        "q": "Which household jobs would you least want to be responsible for? Rank them from least favourite to most manageable.",
+        "type": "rank",
         "depth": 1,
-        "note": "Light but real expectation about pets at home.",
-        "guessable": true,
         "opts": [
-          "Dogs",
-          "Cats",
-          "Both",
-          "Neither",
-          "Depends on the pet"
+          "Cooking",
+          "Cleaning",
+          "Laundry",
+          "Grocery shopping",
+          "Household admin",
+          "Repairs and maintenance"
         ]
-      },
-      {
-        "id": "HOME-006",
-        "q": "How tidy do you need our home to be?",
-        "type": "scale",
-        "depth": 1,
-        "note": "Cleanliness standards — a classic daily-friction gap.",
-        "guessable": true,
-        "lo": "Relaxed about mess",
-        "hi": "Everything in its place"
       },
       {
         "id": "HOME-008",
@@ -176,6 +168,16 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "HOME-006",
+        "q": "How tidy do you need our home to be?",
+        "type": "scale",
+        "depth": 1,
+        "note": "Cleanliness standards — a classic daily-friction gap.",
+        "guessable": true,
+        "lo": "Relaxed about mess",
+        "hi": "Everything in its place"
+      },
+      {
         "id": "HOME-010",
         "q": "Should we go to bed at the same time?",
         "type": "mc",
@@ -188,51 +190,6 @@ export const DECKS: Record<string, Deck> = {
           "Whenever each of us is tired",
           "It really doesn't matter"
         ]
-      },
-      {
-        "id": "HOME-004",
-        "q": "Where do you picture us putting down roots - city, suburbs, or somewhere quieter?",
-        "type": "mc",
-        "depth": 2,
-        "note": "Surfaces where each pictures building a home.",
-        "guessable": true,
-        "opts": [
-          "City",
-          "Suburbs",
-          "Rural / small town",
-          "Open to wherever"
-        ]
-      },
-      {
-        "id": "HOME-005",
-        "q": "How open and hospitable do you want our home to be to others?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Romans 12:13",
-        "note": "The hospitality theme as a home-culture value; HOME was a thin category.",
-        "guessable": true,
-        "lo": "Our home is our private space",
-        "hi": "Always open to others"
-      },
-      {
-        "id": "HOME-007",
-        "q": "How important is it to you to own a home rather than rent?",
-        "type": "scale",
-        "depth": 2,
-        "note": "A practical housing value with real financial weight.",
-        "guessable": true,
-        "lo": "Renting is fine",
-        "hi": "Owning matters a lot"
-      },
-      {
-        "id": "HOME-009",
-        "q": "How important is having some space at home that's just yours?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Personal-space needs within a shared home.",
-        "guessable": true,
-        "lo": "Sharing everything is fine",
-        "hi": "I need my own space"
       },
       {
         "id": "HOME-011",
@@ -249,6 +206,96 @@ export const DECKS: Record<string, Deck> = {
           "Church on Sunday",
           "None of these are essential"
         ]
+      },
+      {
+        "id": "HOME-015",
+        "q": "What would you ideally want when it comes to pets in our home?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "A dog",
+          "A cat",
+          "More than one type of pet",
+          "No pets",
+          "I'm flexible"
+        ]
+      },
+      {
+        "id": "HOME-016",
+        "q": "Where would you most want us to build our life long-term?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "In a city",
+          "In the suburbs",
+          "In a small town",
+          "Somewhere rural or quiet",
+          "I'm open to wherever life takes us"
+        ]
+      },
+      {
+        "id": "HOME-007",
+        "q": "How important is it to you to own a home rather than rent?",
+        "type": "scale",
+        "depth": 2,
+        "note": "A practical housing value with real financial weight.",
+        "guessable": true,
+        "lo": "Renting is fine",
+        "hi": "Owning matters a lot"
+      },
+      {
+        "id": "HOME-017",
+        "q": "How much would you want us to invest in making our home look and feel the way we want?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Very little: as long as it's comfortable and functional",
+        "hi": "A lot: creating a beautiful home would be a real priority"
+      },
+      {
+        "id": "HOME-009",
+        "q": "How important is having some space at home that's just yours?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Personal-space needs within a shared home.",
+        "guessable": true,
+        "lo": "Sharing everything is fine",
+        "hi": "I need my own space"
+      },
+      {
+        "id": "HOME-018",
+        "q": "What would personal space at home mean most to you?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Somewhere quiet to be alone",
+          "A workspace or desk",
+          "Space for hobbies",
+          "My own storage or belongings",
+          "I don't really need a separate space"
+        ]
+      },
+      {
+        "id": "HOME-019",
+        "q": "How open would you want our home to be to friends, family and people from our community?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Romans 12:13",
+        "guessable": true,
+        "lo": "Mostly private: home would mainly be our space",
+        "hi": "Very open: I'd love our home to be a place people regularly gather"
+      },
+      {
+        "id": "HOME-020",
+        "q": "How comfortable would you be with people dropping by without much notice?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Very uncomfortable",
+        "hi": "Completely comfortable"
       }
     ]
   },
@@ -257,86 +304,133 @@ export const DECKS: Record<string, Deck> = {
     "color": "#5E7A4E",
     "icon": "coin",
     "hook": {
-      "id": "FIN-009",
-      "q": "Be honest - are you more of a saver or a spender?"
+      "id": "FIN-018",
+      "q": "Where do you naturally fall with money?"
     },
     "parts": [
       {
         "name": "Sharing money",
         "qids": [
-          "FIN-009",
-          "FIN-001",
-          "FIN-002",
-          "FIN-003",
+          "FIN-018",
+          "FIN-019",
+          "FIN-020",
+          "FIN-021",
+          "FIN-022",
+          "FIN-023",
           "FIN-004",
-          "FIN-005",
-          "FIN-006",
-          "FIN-008",
-          "FIN-010"
+          "FIN-024"
         ]
       },
       {
-        "name": "Debt and safety nets",
+        "name": "Spending and saving",
         "qids": [
           "FIN-011",
-          "FIN-012",
-          "FIN-013",
-          "FIN-014",
-          "FIN-015",
-          "FIN-016",
-          "FIN-017",
-          "FIN-007"
+          "FIN-025",
+          "FIN-026",
+          "FIN-027",
+          "FIN-028",
+          "FIN-029",
+          "FIN-030",
+          "FIN-031"
+        ]
+      },
+      {
+        "name": "Debt, family and giving",
+        "qids": [
+          "FIN-032",
+          "FIN-033",
+          "FIN-034",
+          "FIN-035",
+          "FIN-036",
+          "FIN-037",
+          "FIN-038",
+          "FIN-039"
         ]
       }
     ],
     "questions": [
       {
-        "id": "FIN-009",
-        "q": "Be honest - are you more of a saver or a spender?",
+        "id": "FIN-018",
+        "q": "Where do you naturally fall with money?",
         "type": "scale",
         "depth": 1,
-        "note": "A quick, gamified read on money temperament.",
         "guessable": true,
         "core": true,
-        "lo": "Saver to the bone",
-        "hi": "Spender at heart"
+        "lo": "Strong spender",
+        "hi": "Strong saver"
       },
       {
-        "id": "FIN-001",
-        "q": "Should a married couple combine their finances fully, keep them separate, or a mix?",
+        "id": "FIN-019",
+        "q": "How would you want us to organise our money in marriage?",
         "type": "mc",
         "depth": 3,
-        "note": "Money is a leading source of marital conflict — better named now than discovered later.",
         "guessable": true,
         "core": true,
         "opts": [
-          "Fully combined",
-          "Fully separate",
-          "Mix of joint and personal"
+          "Everything combined",
+          "Mostly combined, with some personal money",
+          "Joint money for shared expenses, with separate personal money",
+          "Mostly separate finances",
+          "I’m not sure yet"
         ]
       },
       {
-        "id": "FIN-002",
-        "q": "How do you feel about debt?",
-        "type": "scale",
+        "id": "FIN-020",
+        "q": "How would you want us to manage our day-to-day finances?",
+        "type": "mc",
         "depth": 3,
-        "ref": "Romans 13:8",
-        "note": "Brings financial baggage into the open early.",
         "guessable": true,
-        "core": true,
-        "lo": "Avoid debt entirely",
-        "hi": "Comfortable carrying it"
+        "opts": [
+          "Both of us actively manage everything together",
+          "One person leads, but we regularly review things together",
+          "We divide different financial responsibilities between us",
+          "One person handles most of the finances",
+          "Keep it flexible depending on our circumstances"
+        ]
       },
       {
-        "id": "FIN-003",
-        "q": "How financially open should we be with each other?",
-        "type": "scale",
+        "id": "FIN-021",
+        "q": "Who would you naturally expect to take the lead on keeping track of our finances?",
+        "type": "mc",
         "depth": 3,
-        "note": "Opens the door to financial transparency.",
+        "guessable": true,
+        "who": true,
+        "opts": [
+          "Mainly {A}",
+          "Mainly {B}",
+          "Both of us equally",
+          "Whoever is better at it",
+          "I don't have a preference"
+        ]
+      },
+      {
+        "id": "FIN-022",
+        "q": "How financially transparent should we be with each other?",
+        "type": "mc",
+        "depth": 3,
         "guessable": true,
         "core": true,
-        "lo": "Keep some things private",
-        "hi": "Fully transparent"
+        "opts": [
+          "Some financial things can stay personal",
+          "Most things should be shared",
+          "We should know the important things",
+          "We should be very open about our finances",
+          "We should have complete transparency about income, debt, savings and spending"
+        ]
+      },
+      {
+        "id": "FIN-023",
+        "q": "When should we check with each other before spending money?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "For most non-routine purchases",
+          "Whenever something costs more than an amount we've agreed",
+          "Only for major purchases",
+          "Only when it affects our shared goals or budget",
+          "No need if it comes from agreed personal spending money"
+        ]
       },
       {
         "id": "FIN-004",
@@ -349,52 +443,13 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Track every dollar"
       },
       {
-        "id": "FIN-005",
-        "q": "How should we manage money day to day?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces the shared vision for budgeting as a couple.",
-        "guessable": true,
-        "opts": [
-          "One shared budget we both follow",
-          "Mostly one of us manages it",
-          "Loose, no strict budget",
-          "Still figuring it out"
-        ]
-      },
-      {
-        "id": "FIN-006",
-        "q": "How much do you prioritise saving for the long term?",
+        "id": "FIN-024",
+        "q": "How structured would you want us to be with budgeting?",
         "type": "scale",
         "depth": 3,
-        "note": "Surfaces long-term financial planning habits.",
         "guessable": true,
-        "lo": "Live for today",
-        "hi": "Save aggressively for the future"
-      },
-      {
-        "id": "FIN-008",
-        "q": "Beyond any children, who should our will provide for?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces estate and inheritance intentions.",
-        "guessable": true,
-        "opts": [
-          "Just us and our kids",
-          "Extended family too",
-          "Church or charity too",
-          "Haven't thought about it"
-        ]
-      },
-      {
-        "id": "FIN-010",
-        "q": "How important is it that we agree on money?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Weights money gaps in the agreement score.",
-        "guessable": true,
-        "lo": "We can differ freely",
-        "hi": "We need to agree"
+        "lo": "Very flexible: I wouldn't want much of a budget",
+        "hi": "Very structured: I'd want us to plan and track our money closely"
       },
       {
         "id": "FIN-011",
@@ -407,40 +462,109 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Very often"
       },
       {
-        "id": "FIN-012",
-        "q": "If we had money left over each month, where should most of it go?",
-        "type": "rank",
+        "id": "FIN-025",
+        "q": "What are you most likely to spend extra money on?",
+        "type": "mc",
         "depth": 3,
-        "note": "Surfaces the holiness-vs-happiness pull through where surplus flows.",
         "opts": [
-          "Giving or serving",
-          "Saving for the future",
-          "Experiences and travel",
-          "Things we enjoy now"
+          "Food and eating out",
+          "Travel and experiences",
+          "Clothes or appearance",
+          "Hobbies, technology or entertainment",
+          "Gifts or treating other people",
+          "Home or lifestyle upgrades"
         ]
       },
       {
-        "id": "FIN-013",
-        "q": "How much debt are you bringing into the relationship?",
+        "id": "FIN-026",
+        "q": "How much would you want us to prioritise saving for the future over enjoying our money now?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "lo": "Mostly enjoy it now",
+        "hi": "Strongly prioritise the future"
+      },
+      {
+        "id": "FIN-027",
+        "q": "As our income grows, how much would you want our lifestyle to grow with it?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "lo": "Very little: I'd rather keep life simple and use the extra elsewhere",
+        "hi": "A lot: I'd want our lifestyle to reflect what we can comfortably afford"
+      },
+      {
+        "id": "FIN-028",
+        "q": "If we regularly had money left after our main commitments, what would you most want us to do with it? Rank these from highest to lowest priority.",
+        "type": "rank",
+        "depth": 3,
+        "opts": [
+          "Give or help others",
+          "Save or invest it",
+          "Support family",
+          "Spend it on experiences and travel",
+          "Improve our lifestyle or buy things we enjoy"
+        ]
+      },
+      {
+        "id": "FIN-029",
+        "q": "How important is it to you that we build emergency savings?",
+        "type": "scale",
+        "depth": 3,
+        "ref": "Proverbs 21:20",
+        "guessable": true,
+        "lo": "Not very important: we can deal with problems as they come",
+        "hi": "Essential: I'd want us to build a strong financial safety net"
+      },
+      {
+        "id": "FIN-030",
+        "q": "What would financial success mean most to you? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 3,
+        "opts": [
+          "Security and stability",
+          "Freedom and flexibility",
+          "Being able to give generously",
+          "Enjoying life and experiences",
+          "Building something for future generations"
+        ]
+      },
+      {
+        "id": "FIN-031",
+        "q": "How important is it that we're aligned on money?",
+        "type": "scale",
+        "depth": 3,
+        "lo": "Not important: we can differ freely on money",
+        "hi": "Essential: we need to agree on how we handle money"
+      },
+      {
+        "id": "FIN-032",
+        "q": "Which best describes your attitude towards taking on debt?",
         "type": "mc",
         "depth": 3,
-        "ref": "Proverbs 22:7",
-        "note": "A debt disclosure as buckets — distance, not a private number.",
+        "ref": "Romans 13:8",
         "guessable": true,
         "core": true,
         "opts": [
-          "None",
-          "A small amount",
-          "A moderate amount",
-          "A significant amount"
+          "I would avoid debt whenever possible",
+          "I would only use debt for major needs, such as buying a home",
+          "I’m comfortable with some debt if there is a clear plan to repay it",
+          "I’m comfortable using debt when it makes financial sense",
+          "It depends heavily on the type of debt"
         ]
       },
       {
-        "id": "FIN-014",
+        "id": "FIN-033",
+        "q": "What financial commitments, debts or money pressures are you currently carrying that you think I should understand?",
+        "type": "open",
+        "depth": 3,
+        "ref": "Proverbs 22:7"
+      },
+      {
+        "id": "FIN-034",
         "q": "How would you rate your credit?",
         "type": "mc",
         "depth": 3,
-        "note": "Practical financial-health disclosure; guessable and scoreable.",
         "guessable": true,
         "opts": [
           "Excellent",
@@ -451,54 +575,62 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "FIN-015",
-        "q": "Should we pay off major debt before having children?",
+        "id": "FIN-035",
+        "q": "How important would it be to you for us to have major debt under control before having children?",
         "type": "scale",
         "depth": 3,
-        "note": "A concrete sequencing decision raised in the worksheet exercise.",
-        "guessable": true,
-        "lo": "Not a priority",
-        "hi": "Essential to clear it first"
-      },
-      {
-        "id": "FIN-016",
-        "q": "How do you see the things you own?",
-        "type": "mc",
-        "depth": 3,
-        "ref": "1 Peter 4:10",
-        "note": "Surfaces stewardship theology behind money and possessions.",
         "guessable": true,
         "core": true,
+        "lo": "Not a deciding factor",
+        "hi": "Essential to me"
+      },
+      {
+        "id": "FIN-036",
+        "q": "How much responsibility do you think we should have to financially help parents or close family when they are struggling?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
         "opts": [
-          "Mine to enjoy as I like",
-          "Mostly mine, with some giving",
-          "God's, and I'm just the manager",
-          "Haven't really thought about it"
+          "Our own household should come first: helping would be rare",
+          "Help occasionally when we comfortably can",
+          "Try to help when there is a genuine need",
+          "Make supporting family an important responsibility",
+          "We should make significant sacrifices to help family when needed"
         ]
       },
       {
-        "id": "FIN-017",
-        "q": "How important is it to you that we have a financial safety net for emergencies?",
-        "type": "scale",
+        "id": "FIN-037",
+        "q": "Which parts of Christian stewardship would you most want us to be intentional about? Rank them from most important to least important.",
+        "type": "rank",
         "depth": 3,
-        "ref": "Proverbs 21:20",
-        "note": "Crisis-resilience mindset, distinct from long-term saving (FIN-006).",
-        "guessable": true,
-        "lo": "We'll manage problems as they come",
-        "hi": "I want a solid emergency cushion"
+        "ref": "1 Peter 4:10",
+        "core": true,
+        "opts": [
+          "Giving generously",
+          "Living within our means",
+          "Planning wisely for the future",
+          "Being content rather than always wanting more",
+          "Enjoying what God provides with gratitude"
+        ]
       },
       {
-        "id": "FIN-007",
-        "q": "How do you feel about a prenuptial agreement?",
+        "id": "FIN-038",
+        "q": "What do you think God wants money to be for in our lives?",
+        "type": "open",
+        "depth": 3
+      },
+      {
+        "id": "FIN-039",
+        "q": "How would you feel about having a prenuptial agreement?",
         "type": "mc",
         "depth": 4,
-        "note": "Surfaces views on a prenuptial agreement candidly.",
         "guessable": true,
         "opts": [
-          "Want one",
-          "Open to one",
-          "Prefer not",
-          "Strongly against"
+          "Strongly against it",
+          "Uncomfortable with it, but willing to discuss it",
+          "Neutral",
+          "Open to it if there were good reasons",
+          "I would actively want one"
         ]
       }
     ]
@@ -508,84 +640,73 @@ export const DECKS: Record<string, Deck> = {
     "color": "#5C2E45",
     "icon": "faith",
     "hook": {
-      "id": "FAITH-019",
-      "q": "When your time with God and time with your partner compete for the same hour, which usually wins?"
+      "id": "FAITH-047",
+      "q": "When your relationship and your time with God compete for your attention, which would you usually prioritise?"
     },
     "parts": [
       {
-        "name": "Faith in everyday life",
+        "name": "Church life",
         "qids": [
-          "FAITH-001",
           "FAITH-007",
           "FAITH-010",
-          "FAITH-012",
-          "FAITH-020",
-          "FAITH-032",
-          "FAITH-002"
-        ]
-      },
-      {
-        "name": "Growing in faith together",
-        "qids": [
+          "FAITH-036",
+          "FAITH-031",
+          "FAITH-026",
           "FAITH-003",
-          "FAITH-004",
-          "FAITH-005",
-          "FAITH-006",
-          "FAITH-008",
-          "FAITH-009",
-          "FAITH-011"
+          "FAITH-033"
         ]
       },
       {
-        "name": "Drawing closer to God",
+        "name": "Faith at home",
         "qids": [
-          "FAITH-013",
-          "FAITH-014",
-          "FAITH-015",
-          "FAITH-016",
+          "FAITH-001",
+          "FAITH-004",
           "FAITH-017",
           "FAITH-021",
-          "FAITH-022"
+          "FAITH-037",
+          "FAITH-038",
+          "FAITH-039"
         ]
       },
       {
         "name": "Your walk with God",
         "qids": [
-          "FAITH-024",
-          "FAITH-025",
-          "FAITH-026",
-          "FAITH-027",
+          "FAITH-020",
+          "FAITH-015",
+          "FAITH-040",
           "FAITH-028",
-          "FAITH-029",
-          "FAITH-031"
+          "FAITH-041",
+          "FAITH-042",
+          "FAITH-043"
+        ]
+      },
+      {
+        "name": "Honest about faith",
+        "qids": [
+          "FAITH-012",
+          "FAITH-044",
+          "FAITH-045",
+          "FAITH-025",
+          "FAITH-030",
+          "FAITH-024",
+          "FAITH-046"
         ]
       },
       {
         "name": "God first",
         "qids": [
-          "FAITH-033",
-          "FAITH-034",
-          "FAITH-035",
           "FAITH-018",
-          "FAITH-019",
-          "FAITH-023",
-          "FAITH-030"
+          "FAITH-047",
+          "FAITH-022",
+          "FAITH-048",
+          "FAITH-016",
+          "FAITH-049",
+          "FAITH-050",
+          "FAITH-051"
         ]
       }
     ],
     "questions": [
-      {
-        "id": "FAITH-001",
-        "q": "How essential is praying together as a couple to you?",
-        "type": "scale",
-        "depth": 1,
-        "ref": "1 Thessalonians 5:17",
-        "note": "Reveals expectations about a shared spiritual rhythm.",
-        "guessable": true,
-        "core": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
       {
         "id": "FAITH-007",
         "q": "How involved do you want to be in church community and small groups?",
@@ -599,59 +720,50 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FAITH-010",
-        "q": "What's been your best experience with church - and your worst? How involved do you want to be?",
+        "q": "What's been your best or most difficult experience with church?",
         "type": "open",
         "depth": 1,
         "note": "Surfaces church hopes and hurts."
       },
       {
-        "id": "FAITH-012",
-        "q": "If you could ask God one question, what would it be?",
-        "type": "open",
-        "depth": 1,
-        "note": "A gentle window into each person's faith wrestlings."
-      },
-      {
-        "id": "FAITH-020",
-        "q": "What rhythm of personal Bible reading do you hope to keep?",
+        "id": "FAITH-036",
+        "q": "How would you most like to serve in church?",
         "type": "mc",
         "depth": 1,
-        "ref": "Psalm 1:2",
-        "note": "A target rhythm both pick; the gap is an expectation mismatch, not an audit.",
         "guessable": true,
         "opts": [
-          "Daily",
-          "Most days",
-          "Weekly",
-          "Occasionally"
+          "Teaching or leading: teaching, leading groups or helping others grow",
+          "Caring for people: welcoming, supporting or helping others",
+          "Behind the scenes: practical help, organising or technical roles",
+          "Outreach: serving the community or sharing the faith with others",
+          "Worship or creative ministry: music, media or other creative roles",
+          "I'm not sure yet"
         ]
       },
       {
-        "id": "FAITH-032",
-        "q": "How do you most want to serve in a church?",
-        "type": "mc",
-        "depth": 1,
-        "note": "A light compare-and-guess on how each prefers to serve.",
-        "guessable": true,
-        "opts": [
-          "Teaching or leading",
-          "Hospitality and people",
-          "Behind the scenes",
-          "Outreach and mission",
-          "Not a priority for me"
-        ]
-      },
-      {
-        "id": "FAITH-002",
-        "q": "How central is your faith to your everyday life?",
+        "id": "FAITH-031",
+        "q": "How important is it to you that we actively serve in a church, not just attend?",
         "type": "scale",
         "depth": 2,
-        "ref": "1 Peter 3:15",
-        "note": "Surfaces the foundation each person's faith is built on, in their own words.",
+        "ref": "Galatians 5:13",
+        "note": "Distinct from involvement level (FAITH-007) — this is contributing vs consuming.",
         "guessable": true,
-        "core": true,
-        "lo": "A background part of life",
-        "hi": "It centres everything"
+        "lo": "Attending is enough",
+        "hi": "Serving really matters"
+      },
+      {
+        "id": "FAITH-026",
+        "q": "If we come from different churches, how should we decide where to attend together?",
+        "type": "mc",
+        "depth": 2,
+        "note": "The 'where are we going to church' question as distinct positions.",
+        "guessable": true,
+        "opts": [
+          "We go to mine",
+          "We go to yours",
+          "We find a new one together",
+          "We're fine attending separately"
+        ]
       },
       {
         "id": "FAITH-003",
@@ -663,6 +775,29 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "lo": "Not a priority",
         "hi": "A firm commitment"
+      },
+      {
+        "id": "FAITH-033",
+        "q": "How open are you to being mentored and corrected by mature believers?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Proverbs 19:20",
+        "note": "The mentorship/teachability axis, distinct from feedback style (SELF-009).",
+        "guessable": true,
+        "lo": "I'd rather figure things out myself",
+        "hi": "I welcome it"
+      },
+      {
+        "id": "FAITH-001",
+        "q": "How essential is praying together as a couple to you?",
+        "type": "scale",
+        "depth": 1,
+        "ref": "1 Thessalonians 5:17",
+        "note": "Reveals expectations about a shared spiritual rhythm.",
+        "guessable": true,
+        "core": true,
+        "lo": "Not important",
+        "hi": "Essential"
       },
       {
         "id": "FAITH-004",
@@ -678,108 +813,6 @@ export const DECKS: Record<string, Deck> = {
           "Now and then",
           "I'd rather pray privately"
         ]
-      },
-      {
-        "id": "FAITH-005",
-        "q": "How open should we be with each other about our spiritual lives?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "James 5:16",
-        "note": "Surfaces how transparent and accountable each wants to be spiritually.",
-        "guessable": true,
-        "lo": "Keep faith private",
-        "hi": "Fully open and accountable"
-      },
-      {
-        "id": "FAITH-006",
-        "q": "When our faith differs, how should we handle it?",
-        "type": "mc",
-        "depth": 2,
-        "ref": "Romans 14:1",
-        "note": "Surfaces how the couple will navigate faith differences without division.",
-        "guessable": true,
-        "opts": [
-          "We need to agree",
-          "Talk it through till we agree",
-          "Respect our differences",
-          "Avoid the topic"
-        ]
-      },
-      {
-        "id": "FAITH-008",
-        "q": "How much should we shape each other's spiritual growth?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "1 Thessalonians 5:11",
-        "note": "Explores how each will help the other grow spiritually.",
-        "guessable": true,
-        "lo": "Faith is personal",
-        "hi": "We should actively grow each other's"
-      },
-      {
-        "id": "FAITH-009",
-        "q": "How willing are you to live against the cultural grain for your faith?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Romans 12:2",
-        "note": "Surfaces willingness to live out convictions against the grain.",
-        "guessable": true,
-        "lo": "Blend in with the culture",
-        "hi": "Stand apart for our convictions"
-      },
-      {
-        "id": "FAITH-011",
-        "q": "What has God taught you through the hard stretches - failure, waiting, loss, disappointment?",
-        "type": "open",
-        "depth": 2,
-        "ref": "Romans 5:3-4",
-        "note": "Surfaces faith shaped in difficulty."
-      },
-      {
-        "id": "FAITH-013",
-        "q": "Rank what marriage is ultimately for.",
-        "type": "rank",
-        "depth": 2,
-        "note": "Surfaces the deeper purpose each sees in marriage.",
-        "opts": [
-          "Companionship",
-          "Raising a family",
-          "Faith and serving God",
-          "Growing each other",
-          "Love and romance"
-        ]
-      },
-      {
-        "id": "FAITH-014",
-        "q": "How important is it that we share the same faith convictions?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Weights how much faith gaps should count in the alignment score.",
-        "guessable": true,
-        "core": true,
-        "lo": "We can differ freely",
-        "hi": "We need to agree"
-      },
-      {
-        "id": "FAITH-015",
-        "q": "How important is having a personal prayer life to you?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Matthew 6:6",
-        "note": "Splits personal prayer from praying-together (FAITH-001) so each scores on its own.",
-        "guessable": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
-      {
-        "id": "FAITH-016",
-        "q": "How important is it that your partner keeps a personal prayer life of their own, apart from you?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Measures the expectation that a partner owns their own spiritual disciplines.",
-        "guessable": true,
-        "lo": "Not important",
-        "hi": "Essential"
       },
       {
         "id": "FAITH-017",
@@ -803,61 +836,89 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Essential"
       },
       {
-        "id": "FAITH-022",
-        "q": "Our relationship should actively draw us both closer to God, not just leave our faith untouched.",
-        "type": "scale",
-        "depth": 2,
-        "note": "The summing-up green flag, framed as a conviction both rate for agreement.",
+        "id": "FAITH-037",
+        "q": "How do you think spiritual leadership should work in the home?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "Joshua 24:15",
         "guessable": true,
-        "lo": "Strongly disagree",
-        "hi": "Strongly agree"
+        "opts": [
+          "The husband should take the lead",
+          "The wife should take the lead",
+          "Leadership should be shared equally",
+          "It should depend on the situation",
+          "We should lead together rather than one person taking the lead"
+        ]
       },
       {
-        "id": "FAITH-024",
-        "q": "How important is it to you that your partner is born again, with a personal conversion?",
+        "id": "FAITH-038",
+        "q": "When you pray together, who would you usually expect to take the lead?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "The husband",
+          "The wife",
+          "Either of us",
+          "We would usually pray together without one person leading",
+          "It would depend on the situation"
+        ]
+      },
+      {
+        "id": "FAITH-039",
+        "q": "Which parts of a faith-centred home would matter most to you? Rank them from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "ref": "Psalm 127:1",
+        "opts": [
+          "Praying together",
+          "Reading and discussing Scripture together",
+          "Making decisions based on our faith",
+          "Talking openly about God and our spiritual lives",
+          "Serving and helping others together",
+          "Making church an active part of family life"
+        ]
+      },
+      {
+        "id": "FAITH-020",
+        "q": "What rhythm of personal Bible reading do you hope to keep?",
+        "type": "mc",
+        "depth": 1,
+        "ref": "Psalm 1:2",
+        "note": "A target rhythm both pick; the gap is an expectation mismatch, not an audit.",
+        "guessable": true,
+        "opts": [
+          "Daily",
+          "Most days",
+          "Weekly",
+          "Occasionally"
+        ]
+      },
+      {
+        "id": "FAITH-015",
+        "q": "How important is having a personal prayer life to you?",
         "type": "scale",
         "depth": 2,
-        "ref": "John 3:3",
-        "note": "Turns the 'are you born again' testimony question into a shared value both rate.",
+        "ref": "Matthew 6:6",
+        "note": "Splits personal prayer from praying-together (FAITH-001) so each scores on its own.",
         "guessable": true,
         "lo": "Not important",
         "hi": "Essential"
       },
       {
-        "id": "FAITH-025",
-        "q": "How sure are you of your own salvation?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "1 John 5:13",
-        "note": "Surfaces assurance of faith without an open-ended testimony.",
-        "guessable": true,
-        "lo": "Still questioning",
-        "hi": "Fully assured"
-      },
-      {
-        "id": "FAITH-026",
-        "q": "If we come from different churches, how should we decide where to attend together?",
+        "id": "FAITH-040",
+        "q": "Which best describes your relationship with God at the moment?",
         "type": "mc",
         "depth": 2,
-        "note": "The 'where are we going to church' question as distinct positions.",
+        "ref": "Philippians 3:12",
         "guessable": true,
         "opts": [
-          "We go to mine",
-          "We go to yours",
-          "We find a new one together",
-          "We're fine attending separately"
+          "I'm in a dry season: I feel distant or spiritually disconnected",
+          "I'm finding my way: I'm seeking God, but my faith feels unsettled",
+          "I'm steady: my relationship with God feels consistent",
+          "I'm growing: I feel like my faith is deepening",
+          "I'm thriving: I feel especially close to God and engaged in my faith"
         ]
-      },
-      {
-        "id": "FAITH-027",
-        "q": "How would you rate the current state of your walk with God?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Philippians 3:12",
-        "note": "Current-state self-assessment, distinct from how central faith is (FAITH-002).",
-        "guessable": true,
-        "lo": "In a dry season",
-        "hi": "Thriving"
       },
       {
         "id": "FAITH-028",
@@ -871,102 +932,100 @@ export const DECKS: Record<string, Deck> = {
         "hi": "It guides my decisions"
       },
       {
-        "id": "FAITH-029",
-        "q": "When you read Scripture that challenges your own thinking or desires, what's your usual response?",
+        "id": "FAITH-041",
+        "q": "When Scripture challenges something you currently believe or want, what are you most likely to do?",
         "type": "mc",
         "depth": 2,
         "ref": "James 1:22",
-        "note": "Surfaces posture toward biblical authority — a real, often-hidden divider.",
         "guessable": true,
         "core": true,
         "opts": [
-          "I adjust my view to fit Scripture",
-          "I wrestle, but usually submit",
-          "I look for another interpretation",
-          "I follow my own conviction"
+          "Change my view to align with Scripture",
+          "Work through it carefully before changing my view",
+          "Question whether I've understood the passage correctly",
+          "Hold my current position unless I'm convinced otherwise",
+          "I'm unsure"
         ]
       },
       {
-        "id": "FAITH-031",
-        "q": "How important is it to you that we actively serve in a church, not just attend?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Galatians 5:13",
-        "note": "Distinct from involvement level (FAITH-007) — this is contributing vs consuming.",
-        "guessable": true,
-        "lo": "Attending is enough",
-        "hi": "Serving really matters"
-      },
-      {
-        "id": "FAITH-033",
-        "q": "How open are you to being mentored and corrected by mature believers?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Proverbs 19:20",
-        "note": "The mentorship/teachability axis, distinct from feedback style (SELF-009).",
-        "guessable": true,
-        "lo": "I'd rather figure things out myself",
-        "hi": "I welcome it"
-      },
-      {
-        "id": "FAITH-034",
-        "q": "How central should faith be in the daily life of our home?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Psalm 127:1",
-        "note": "Household faith culture, distinct from personal faith centrality (FAITH-002).",
-        "guessable": true,
-        "lo": "A private, personal matter",
-        "hi": "The center of our home"
-      },
-      {
-        "id": "FAITH-035",
-        "q": "Do you own your spiritual growth, or would you lean on your partner to lead you?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Philippians 2:12",
-        "note": "Spiritual ownership vs dependence, distinct from active-growth effort (SELF-020).",
-        "guessable": true,
-        "lo": "I own my own growth",
-        "hi": "I'd lean on my partner to lead me"
-      },
-      {
-        "id": "FAITH-018",
-        "q": "How important is it that your partner's relationship with God comes before their relationship with you?",
-        "type": "scale",
-        "depth": 4,
-        "ref": "Matthew 6:33",
-        "note": "The core 'loves Christ first' value, asked as a shared expectation both rate.",
-        "guessable": true,
-        "core": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
-      {
-        "id": "FAITH-019",
-        "q": "When your time with God and time with your partner compete for the same hour, which usually wins?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Spectrum framing of the same value as a behaviour, not just an ideal.",
-        "guessable": true,
-        "lo": "The relationship usually wins",
-        "hi": "God always comes first"
-      },
-      {
-        "id": "FAITH-023",
-        "q": "Who should take the lead in prayer and spiritual life in the home?",
+        "id": "FAITH-042",
+        "q": "Which part of your faith most shapes your everyday life?",
         "type": "mc",
-        "depth": 4,
-        "ref": "Joshua 24:15",
-        "note": "Lands directly on a gender-roles conviction; surfaces the position rather than hedging it.",
+        "depth": 2,
+        "ref": "1 Peter 3:15",
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Prayer: how I talk to and rely on God",
+          "Scripture: how I understand and apply God's Word",
+          "Worship: how I express my relationship with God",
+          "Church and community: how I grow and live out my faith with others",
+          "How I make decisions: how my faith guides my choices and priorities"
+        ]
+      },
+      {
+        "id": "FAITH-043",
+        "q": "How willing are you to make choices based on your faith when they go against what is normal in society?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "Romans 12:2",
         "guessable": true,
         "opts": [
-          "The husband",
-          "The wife",
-          "Whoever feels led in the moment",
-          "We take turns",
-          "Always together, no one leads"
+          "I would usually follow what feels normal",
+          "I would consider my faith, but it wouldn't always decide",
+          "It would depend on the situation",
+          "I would usually follow my faith",
+          "My faith would come first, even when it goes against the norm"
         ]
+      },
+      {
+        "id": "FAITH-012",
+        "q": "If you could ask God one question and receive a clear answer, what would you ask Him?",
+        "type": "open",
+        "depth": 1,
+        "note": "A gentle window into each person's faith wrestlings."
+      },
+      {
+        "id": "FAITH-044",
+        "q": "Which area of faith do you find yourself wrestling with or questioning most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Why God allows suffering or difficult things to happen",
+          "Hearing God's voice and knowing His guidance",
+          "Unanswered prayer",
+          "Understanding the Bible or difficult teachings",
+          "Salvation, doubt or assurance",
+          "God's plan or purpose for my life",
+          "I don't currently have a major faith question"
+        ]
+      },
+      {
+        "id": "FAITH-045",
+        "q": "When you've been through a difficult season, what has it most often done to your faith?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "Romans 5:3-4",
+        "guessable": true,
+        "opts": [
+          "Strengthened it: I've come out trusting God more",
+          "Deepened it: I've understood God and my faith differently",
+          "Tested it: I've had doubts or questions, but kept believing",
+          "Made me more dependent on God: I've learned to rely on Him more",
+          "It's been difficult to see what God was doing: I still have unanswered questions"
+        ]
+      },
+      {
+        "id": "FAITH-025",
+        "q": "How sure are you of your own salvation?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "1 John 5:13",
+        "note": "Surfaces assurance of faith without an open-ended testimony.",
+        "guessable": true,
+        "lo": "Still questioning",
+        "hi": "Fully assured"
       },
       {
         "id": "FAITH-030",
@@ -982,6 +1041,121 @@ export const DECKS: Record<string, Deck> = {
           "Try to fix it on my own",
           "I tend to hide it"
         ]
+      },
+      {
+        "id": "FAITH-024",
+        "q": "How important is it to you that your partner is born again, with a personal conversion?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "John 3:3",
+        "note": "Turns the 'are you born again' testimony question into a shared value both rate.",
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential"
+      },
+      {
+        "id": "FAITH-046",
+        "q": "How open would you want to be with your partner about your faith and spiritual life?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "James 5:16",
+        "guessable": true,
+        "opts": [
+          "I would keep most of it private",
+          "I would share some things",
+          "I would share the main things",
+          "I would be very open",
+          "I would want complete openness and accountability"
+        ]
+      },
+      {
+        "id": "FAITH-018",
+        "q": "How important is it that your partner's relationship with God comes before their relationship with you?",
+        "type": "scale",
+        "depth": 4,
+        "ref": "Matthew 6:33",
+        "note": "The core 'loves Christ first' value, asked as a shared expectation both rate.",
+        "guessable": true,
+        "core": true,
+        "lo": "Not important",
+        "hi": "Essential"
+      },
+      {
+        "id": "FAITH-047",
+        "q": "When your relationship and your time with God compete for your attention, which would you usually prioritise?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "My relationship: I'd usually prioritise time with my partner",
+        "hi": "My time with God: I'd prioritise time with God even when my relationship needs attention"
+      },
+      {
+        "id": "FAITH-022",
+        "q": "Our relationship should actively draw us both closer to God, not just leave our faith untouched.",
+        "type": "scale",
+        "depth": 2,
+        "note": "The summing-up green flag, framed as a conviction both rate for agreement.",
+        "guessable": true,
+        "lo": "Strongly disagree",
+        "hi": "Strongly agree"
+      },
+      {
+        "id": "FAITH-048",
+        "q": "How involved would you want your partner to be in helping you grow in your faith?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "1 Thessalonians 5:11",
+        "guessable": true,
+        "lo": "Not involved: my faith is mainly personal",
+        "hi": "Highly involved: actively help me grow in my faith"
+      },
+      {
+        "id": "FAITH-016",
+        "q": "How important is it that your partner keeps a personal prayer life of their own, apart from you?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Measures the expectation that a partner owns their own spiritual disciplines.",
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential"
+      },
+      {
+        "id": "FAITH-049",
+        "q": "How important is it to you that you and your partner agree on matters of faith?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "core": true,
+        "lo": "Not important: we can have quite different views",
+        "hi": "Essential: we need to share the same core beliefs"
+      },
+      {
+        "id": "FAITH-050",
+        "q": "If you and your partner disagreed about something related to faith, how would you want to handle it?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "Romans 14:1",
+        "guessable": true,
+        "opts": [
+          "Talk it through: keep discussing it until we understand each other",
+          "Study it together: look at Scripture and learn together",
+          "Respect the difference: accept that we may not agree on everything",
+          "Seek guidance: talk to a pastor or trusted Christian mentor",
+          "Agree to disagree: leave the disagreement alone if it isn't something we need to resolve"
+        ]
+      },
+      {
+        "id": "FAITH-051",
+        "q": "What do you see as the most important purposes of marriage? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "Building a lifelong partnership",
+          "Growing together as people",
+          "Growing closer to God and serving Him together",
+          "Building and raising a family",
+          "Love, friendship and companionship"
+        ]
       }
     ]
   },
@@ -995,25 +1169,29 @@ export const DECKS: Record<string, Deck> = {
     },
     "parts": [
       {
-        "name": "Leading and providing",
+        "name": "Who does what",
         "qids": [
           "ROLE-011",
-          "ROLE-012",
-          "ROLE-001",
-          "ROLE-002",
-          "ROLE-003",
-          "ROLE-004"
+          "ROLE-013",
+          "ROLE-014",
+          "ROLE-015",
+          "ROLE-016",
+          "ROLE-017",
+          "ROLE-018",
+          "ROLE-019"
         ]
       },
       {
-        "name": "Who has the final call",
+        "name": "Leading and headship",
         "qids": [
-          "ROLE-009",
-          "ROLE-010",
-          "ROLE-005",
-          "ROLE-006",
-          "ROLE-007",
-          "ROLE-008"
+          "ROLE-020",
+          "ROLE-021",
+          "ROLE-022",
+          "ROLE-023",
+          "ROLE-024",
+          "ROLE-025",
+          "ROLE-026",
+          "ROLE-027"
         ]
       }
     ],
@@ -1035,161 +1213,191 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "ROLE-012",
-        "q": "Who's quicker at making a decision?",
+        "id": "ROLE-013",
+        "q": "Who would you naturally expect to carry most of the planning and organising of family life? Things like appointments, school dates, birthdays, forms, plans and things that need doing.",
         "type": "mc",
-        "depth": 1,
-        "note": "Light HHB entry that sits directly upstream of the tiebreak question later in the deck.",
+        "depth": 4,
         "guessable": true,
-        "who": true,
         "opts": [
-          "{A}",
-          "{B}",
-          "About the same",
-          "Neither of us: it's painful"
+          "Mostly the wife",
+          "Mostly the husband",
+          "Shared equally",
+          "Divide different areas between us",
+          "Whoever is naturally better organised"
         ]
       },
       {
-        "id": "ROLE-001",
-        "q": "How do you see roles and leadership working in a marriage?",
+        "id": "ROLE-014",
+        "q": "If one of us works significantly more hours than the other, how should household responsibilities change?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "They should still be divided equally",
+        "hi": "Responsibilities should largely reflect each person's available time"
+      },
+      {
+        "id": "ROLE-015",
+        "q": "Should earning more money give someone more say in family decisions?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "No: income should never determine authority",
+        "hi": "Providing financially should come with greater decision-making responsibility"
+      },
+      {
+        "id": "ROLE-016",
+        "q": "If the husband earns the income and the wife stays home to raise the children, how should we view their contributions to the family?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "His financial contribution carries more responsibility",
+          "His contribution carries slightly more weight",
+          "Their contributions are different but equally valuable",
+          "Her role at home deserves particular honour because of the sacrifice involved",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "ROLE-017",
+        "q": "If we have young children, what would you ideally want the mother's role to look like?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Primarily stay at home: caring for the children and home would be her main role",
+          "Mostly stay at home: perhaps working part-time or flexibly",
+          "Work if she wants to: but motherhood and home should take priority",
+          "Continue her career: childcare and home responsibilities should be shared",
+          "It depends on our circumstances"
+        ]
+      },
+      {
+        "id": "ROLE-018",
+        "q": "If we could comfortably live on the husband's income while our children were young, what would you ideally want the wife to do?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Stay home full-time",
+          "Mostly stay home, with some work if she wants",
+          "Work part-time",
+          "Continue working normally",
+          "Whatever she personally prefers"
+        ]
+      },
+      {
+        "id": "ROLE-019",
+        "q": "How strongly do you believe a mother should be the primary caregiver while her children are young?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "Not at all: parenting should be equally shared",
+        "hi": "I believe caring for young children is primarily the mother's role"
+      },
+      {
+        "id": "ROLE-020",
+        "q": "How strongly do you believe husbands and wives have different God-given roles in marriage?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "I don't believe their roles should differ because of gender",
+        "hi": "I strongly believe God designed distinct roles for husbands and wives"
+      },
+      {
+        "id": "ROLE-021",
+        "q": "How do you believe leadership should work in our marriage?",
         "type": "mc",
         "depth": 3,
         "ref": "Ephesians 5:21-33",
-        "note": "Theology varies widely by tradition — keep it open. Surface, don't settle.",
         "guessable": true,
         "core": true,
         "opts": [
-          "Husband leads, wife supports",
-          "Mutual submission, equal partners",
-          "No fixed roles",
-          "Still working it out"
+          "The husband should take primary leadership responsibility",
+          "We should lead together as equal partners",
+          "Leadership should depend on the area and who is best suited to it",
+          "Neither of us should have a defined leadership role",
+          "I'm still working out what I believe"
         ]
       },
       {
-        "id": "ROLE-002",
-        "q": "How do you imagine balancing work and home - would either of us want to stay home, especially with kids?",
-        "type": "mc",
+        "id": "ROLE-022",
+        "q": "What responsibilities matter most when you think about leadership in marriage? Rank them from most important to least important.",
+        "type": "rank",
         "depth": 3,
-        "note": "Surfaces expectations about working vs. staying home, especially with children.",
-        "guessable": true,
         "opts": [
-          "One of us stays home",
-          "Both of us work",
-          "Depends on the season of life"
+          "Serving and sacrificing for the family",
+          "Making wise decisions",
+          "Providing financially",
+          "Protecting the family",
+          "Leading spiritually",
+          "Creating stability and direction"
         ]
       },
       {
-        "id": "ROLE-003",
-        "q": "How important is it that we agree on marriage roles and responsibilities?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Weights roles gaps in the alignment score.",
-        "guessable": true,
-        "lo": "We can differ freely",
-        "hi": "We need to agree"
-      },
-      {
-        "id": "ROLE-004",
-        "q": "How important is it to you that the husband is the primary financial provider?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "1 Timothy 5:8",
-        "note": "The provision question as a pointed values split, not folded into general roles.",
+        "id": "ROLE-023",
+        "q": "What do you believe the husband's headship in marriage should mean in practice?",
+        "type": "mc",
+        "depth": 4,
         "guessable": true,
         "notYet": true,
         "core": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
-      {
-        "id": "ROLE-009",
-        "q": "What principle should divide the chores?",
-        "type": "mc",
-        "depth": 3,
-        "note": "HOME-002 asks who ends up doing them. This asks the rule behind it, and 'along traditional lines' is a position worth stating plainly rather than discovering.",
-        "guessable": true,
         "opts": [
-          "Split evenly down the middle",
-          "Whoever's better at each thing",
-          "Whoever has more time that week",
-          "Along fairly traditional lines"
+          "He has final responsibility for leading the family",
+          "He leads, while actively seeking and valuing his wife's input",
+          "He leads mainly through service, sacrifice and protection rather than authority",
+          "Husband and wife should share leadership equally",
+          "I don't believe husbands have a distinct leadership role",
+          "I'm still working this out"
         ]
       },
       {
-        "id": "ROLE-010",
-        "q": "Who should handle the money day to day?",
+        "id": "ROLE-024",
+        "q": "How strongly do you believe a wife should submit to her husband's leadership in marriage?",
         "type": "mc",
-        "depth": 3,
-        "note": "FIN-005 offers 'mostly one of us manages it' without ever asking which one. Uses the HHB shape to close that gap.",
+        "depth": 4,
         "guessable": true,
-        "who": true,
         "opts": [
-          "{A}",
-          "{B}",
-          "Both of us together",
-          "Whoever's better with numbers"
+          "I don't believe a wife has a distinct duty to submit to her husband",
+          "I see submission mainly as mutual between husband and wife",
+          "I believe wives should respect their husband's leadership, but decisions remain shared",
+          "I believe a wife should normally follow her husband's leadership",
+          "I strongly believe biblical marriage includes a wife's submission to her husband"
         ]
       },
       {
-        "id": "ROLE-005",
-        "q": "How literally do you take 'the husband is the head of the home'?",
+        "id": "ROLE-025",
+        "q": "If we faced an important decision, prayed about it, sought wise counsel and still genuinely disagreed, what should happen?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "The husband should make the final decision",
+          "We should wait until we both agree",
+          "The person with greater knowledge or responsibility in that area should decide",
+          "It depends on the decision",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "ROLE-026",
+        "q": "How strongly do you believe providing and protecting should be the husband's primary responsibility?",
         "type": "scale",
         "depth": 4,
-        "note": "Adds scoring resolution to the headship/submission axis beyond ROLE-001's categories.",
         "guessable": true,
-        "notYet": true,
         "core": true,
-        "lo": "Symbolic, we share leadership",
-        "hi": "Literal male headship"
+        "lo": "I don't: those responsibilities should be equally shared",
+        "hi": "Very strongly: I see providing and protecting as central responsibilities of the husband"
       },
       {
-        "id": "ROLE-006",
-        "q": "When we can't agree, who makes the final call?",
-        "type": "mc",
+        "id": "ROLE-027",
+        "q": "How strongly do you believe the home and family should be a wife's primary responsibility?",
+        "type": "scale",
         "depth": 4,
-        "ref": "Ephesians 5:21",
-        "note": "The tiebreak. ROLE-001 asks the philosophy of leadership and ROLE-005 asks how literally you take headship — neither asks what actually happens at the moment of deadlock, which is the only time it matters.",
         "guessable": true,
-        "notYet": true,
-        "core": true,
-        "opts": [
-          "The husband",
-          "The wife",
-          "Whoever cares more about it",
-          "Whoever knows more about it",
-          "Nothing happens until we both agree"
-        ]
-      },
-      {
-        "id": "ROLE-007",
-        "q": "If the wife earned significantly more, how would that sit with you?",
-        "type": "mc",
-        "depth": 4,
-        "ref": "1 Timothy 5:8",
-        "note": "ROLE-004 rates the provider ideal in the abstract. This makes it concrete and refuses to hedge — 'fine, but I'd notice' is the honest middle most people actually occupy.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "Completely fine",
-          "Fine, though I'd notice it",
-          "It would be uncomfortable",
-          "It would be a real problem for me"
-        ]
-      },
-      {
-        "id": "ROLE-008",
-        "q": "If one of us had to step back from work for the family, who?",
-        "type": "mc",
-        "depth": 4,
-        "note": "ROLE-002 asks the pattern (one stays home, both work, depends on the season). It never asks which of you. That's the whole question.",
-        "guessable": true,
-        "opts": [
-          "Me",
-          "You",
-          "Whoever's earning less at the time",
-          "We'd both go part-time",
-          "Neither: we'd find another way"
-        ]
+        "lo": "I don't: responsibility should be shared without gender expectations",
+        "hi": "Very strongly: I see caring for the home and family as a central responsibility of the wife"
       }
     ]
   },
@@ -1199,25 +1407,39 @@ export const DECKS: Record<string, Deck> = {
     "icon": "book",
     "parts": [
       {
-        "name": "Where you land",
+        "name": "Where you stand",
         "qids": [
           "THEO-011",
           "THEO-012",
-          "THEO-001",
-          "THEO-002",
-          "THEO-008",
-          "THEO-010"
+          "THEO-013",
+          "THEO-014",
+          "THEO-015",
+          "THEO-016",
+          "THEO-017"
+        ]
+      },
+      {
+        "name": "Communion, baptism and leadership",
+        "qids": [
+          "THEO-018",
+          "THEO-019",
+          "THEO-020",
+          "THEO-021",
+          "THEO-022",
+          "THEO-023"
         ]
       },
       {
         "name": "The debated questions",
         "qids": [
-          "THEO-003",
-          "THEO-004",
-          "THEO-005",
-          "THEO-006",
-          "THEO-007",
-          "THEO-009"
+          "THEO-024",
+          "THEO-025",
+          "THEO-026",
+          "THEO-027",
+          "THEO-028",
+          "THEO-029",
+          "THEO-030",
+          "THEO-031"
         ]
       }
     ],
@@ -1249,134 +1471,265 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "THEO-001",
-        "q": "Do you believe a woman can preach or pastor in a church?",
+        "id": "THEO-013",
+        "q": "Which best describes how you view the Bible?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "God's Word and completely trustworthy: what it teaches is true and should shape what I believe and how I live",
+          "God's Word and trustworthy for faith and life: but some parts reflect the human authors and their time",
+          "Inspired by God, but also shaped by human culture: so some teachings may not apply in the same way today",
+          "An important guide to Christian faith: but I don't see it as the final authority on everything",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "THEO-014",
+        "q": "When Christians disagree about what the Bible teaches, what would you rely on most to work out what is true?",
+        "type": "mc",
+        "depth": 3,
+        "opts": [
+          "Study the passage and wider Bible carefully",
+          "Look at how Christians throughout history have understood it",
+          "Seek teaching from trusted pastors or church leaders",
+          "Pray and follow my conscience before God",
+          "Use a combination of these",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-015",
+        "q": "Which theological issues would matter most for us to agree on? Rank them from most important to least important.",
+        "type": "rank",
+        "depth": 3,
+        "opts": [
+          "Biblical authority",
+          "Salvation",
+          "Baptism",
+          "Spiritual gifts",
+          "Church leadership and women in ministry",
+          "Marriage and gender roles",
+          "Creation",
+          "End times"
+        ]
+      },
+      {
+        "id": "THEO-016",
+        "q": "How important is it to you that we share the same denomination or church tradition?",
+        "type": "scale",
+        "depth": 5,
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential: I'd want us firmly within the same tradition"
+      },
+      {
+        "id": "THEO-017",
+        "q": "If we became convinced of different church traditions, what would you ideally want us to do?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "One of us joins the other's church",
+          "Find a new church we can both agree on",
+          "Attend different churches if necessary",
+          "Keep studying and discussing until we're aligned",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-018",
+        "q": "How often do you think Christians should ideally take Communion?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Daily or almost daily",
+          "Weekly",
+          "A few times a month",
+          "Monthly or occasionally",
+          "Only at certain church services or special occasions",
+          "I don't think there needs to be a set rhythm",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-019",
+        "q": "What would you want Communion to look like in our life together?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Mainly take it together when our church offers it",
+          "Attend church Communion regularly and sometimes take it together at home",
+          "Make taking Communion together at home a regular part of our faith",
+          "Take it together occasionally during meaningful spiritual moments",
+          "I wouldn't feel a need for us to take Communion privately as a couple",
+          "I'm not sure yet"
+        ]
+      },
+      {
+        "id": "THEO-020",
+        "q": "When should someone normally be baptised?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "As an infant within a believing family",
+          "Dedicated as an infant, then baptised when they personally believe",
+          "Only after personally professing faith in Christ",
+          "I don't have a firm view",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "THEO-021",
+        "q": "How would you want us to handle baptism if we disagreed about what to do with our children?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Baptise them as infants",
+          "Dedicate them and let them choose baptism later",
+          "Wait until we reach agreement",
+          "Follow the teaching of the church we commit to",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-022",
+        "q": "Do you believe women should serve as pastors or elders in a church?",
         "type": "mc",
         "depth": 3,
         "ref": "Galatians 3:28",
-        "note": "A classic dividing line — the goal is to talk it through, not to score who is 'right'.",
         "guessable": true,
         "opts": [
           "Yes",
           "No",
-          "Depends on the role",
-          "Still working it out"
+          "Women can lead in certain ministries, but pastor/elder should be reserved for a man",
+          "It depends on how the church defines the role",
+          "I'm still working it out"
         ]
       },
       {
-        "id": "THEO-002",
-        "q": "Theologically, where do you land?",
-        "type": "scale",
+        "id": "THEO-023",
+        "q": "Do you believe a woman should preach or teach Scripture to a mixed congregation of men and women?",
+        "type": "mc",
         "depth": 3,
-        "note": "Surfaces overall theological and social posture without forcing a label.",
         "guessable": true,
-        "core": true,
-        "lo": "Traditional / conservative",
-        "hi": "Progressive"
+        "opts": [
+          "Yes, without restriction",
+          "Yes, but not while holding pastoral/elder authority",
+          "Only in certain settings",
+          "No",
+          "I'm still working it out"
+        ]
       },
       {
-        "id": "THEO-008",
-        "q": "How important is it that we share the same denomination or church tradition?",
+        "id": "THEO-024",
+        "q": "How do you understand predestination and free will in salvation?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "God sovereignly chooses who will be saved",
+          "God offers salvation to everyone and people freely choose whether to respond",
+          "God's sovereignty and human choice are both true, even if I can't fully explain how",
+          "I don't think the distinction matters much",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "THEO-025",
+        "q": "Can someone who is genuinely saved later lose their salvation?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "No: someone truly saved cannot finally be lost; anyone who permanently walks away was never truly saved",
+          "Yes: a believer can later reject the faith and lose their salvation",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-026",
+        "q": "Do you believe miraculous spiritual gifts such as tongues, prophecy and healing are still active today?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes: all the gifts described in the New Testament continue today",
+          "Yes: but they should be practised carefully and tested",
+          "Some may continue, but I'm cautious about them",
+          "No: miraculous sign gifts ceased after the apostolic era",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "THEO-027",
+        "q": "How comfortable would you be attending a church where tongues or prophecy regularly happened publicly?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Very comfortable",
+          "Comfortable if it is orderly and biblically tested",
+          "Unsure or cautious",
+          "Uncomfortable",
+          "I wouldn't want us attending that kind of church"
+        ]
+      },
+      {
+        "id": "THEO-028",
+        "q": "What do you believe about speaking in tongues specifically?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "A gift some believers receive when filled with the Holy Spirit",
+          "A gift available to all believers, though not everyone uses it",
+          "A real gift, but widely misused in churches today",
+          "It ceased with the apostolic era",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "THEO-029",
+        "q": "How do you understand demonic influence on Christians?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Christians can be demonically possessed and need deliverance",
+          "Christians can experience spiritual attack or oppression, but cannot be possessed",
+          "Demonic influence cannot affect Christians",
+          "I don't believe in demonic influences",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "THEO-030",
+        "q": "Which view of the end times is closest to yours?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Christ removes believers before a future tribulation, then later returns to reign",
+          "Christians go through the tribulation before Christ returns to reign",
+          "The millennium is mainly symbolic, and Christ returns once at the end",
+          "The gospel increasingly transforms the world before Christ returns",
+          "I haven't settled my view"
+        ]
+      },
+      {
+        "id": "THEO-031",
+        "q": "How important would it be to you that we agreed on the end times?",
         "type": "scale",
-        "depth": 3,
-        "note": "The Presbyterian-marries-Baptist clash as a shared value.",
+        "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Very important"
-      },
-      {
-        "id": "THEO-010",
-        "q": "Rank which theological issues matter most for us to agree on.",
-        "type": "rank",
-        "depth": 3,
-        "note": "A granular doctrine-priority rank, beyond the binary importance weightings.",
-        "opts": [
-          "Baptism (infant vs believer)",
-          "End times",
-          "Spiritual gifts",
-          "Women in ministry",
-          "Worship style",
-          "Predestination vs free will"
-        ]
-      },
-      {
-        "id": "THEO-003",
-        "q": "Can salvation be lost?",
-        "type": "mc",
-        "depth": 5,
-        "note": "A classic dividing line - talk it through, don't settle who's right.",
-        "guessable": true,
-        "opts": [
-          "No - once saved, always saved",
-          "Yes, it can be lost",
-          "Not sure",
-          "Doesn't matter much to me"
-        ]
-      },
-      {
-        "id": "THEO-004",
-        "q": "Can believers be affected by spiritual oppression?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces beliefs about the spiritual realm that vary widely by tradition.",
-        "guessable": true,
-        "opts": [
-          "Yes",
-          "No",
-          "Unsure"
-        ]
-      },
-      {
-        "id": "THEO-005",
-        "q": "How do you view spiritual gifts like tongues?",
-        "type": "mc",
-        "depth": 5,
-        "note": "A continuationist/cessationist difference worth naming gently.",
-        "guessable": true,
-        "opts": [
-          "For today",
-          "Not for today",
-          "Unsure",
-          "Not important to me"
-        ]
-      },
-      {
-        "id": "THEO-006",
-        "q": "Where do you land on the end times?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Eschatology varies by tradition - keep it curious, not combative.",
-        "guessable": true,
-        "opts": [
-          "Pre-tribulation rapture",
-          "A different rapture view",
-          "Symbolic, not literal",
-          "Haven't settled it"
-        ]
-      },
-      {
-        "id": "THEO-007",
-        "q": "Politically, where do you land?",
-        "type": "scale",
-        "depth": 5,
-        "note": "Surfaces political alignment without taking sides.",
-        "guessable": true,
-        "lo": "Conservative",
-        "hi": "Progressive"
-      },
-      {
-        "id": "THEO-009",
-        "q": "Should our children be baptized as infants, or wait until they choose for themselves?",
-        "type": "mc",
-        "depth": 5,
-        "note": "The exact infant-baptism landmine the transcript names; a real divider.",
-        "guessable": true,
-        "opts": [
-          "Baptize as infants",
-          "Dedicate now, baptize when they choose",
-          "Wait until they can decide",
-          "Unsure"
-        ]
+        "hi": "Essential"
       }
     ]
   },
@@ -1388,58 +1741,104 @@ export const DECKS: Record<string, Deck> = {
       {
         "name": "Dreaming together",
         "qids": [
-          "DREAM-002",
           "DREAM-006",
-          "DREAM-001",
+          "DREAM-013",
+          "DREAM-014",
+          "DREAM-015",
+          "DREAM-016",
+          "DREAM-008",
           "DREAM-003",
-          "DREAM-004",
-          "DREAM-005"
+          "DREAM-017"
         ]
       },
       {
         "name": "Building a life",
         "qids": [
-          "DREAM-007",
-          "DREAM-008",
+          "DREAM-001",
+          "DREAM-004",
+          "DREAM-018",
+          "DREAM-019",
+          "DREAM-020",
           "DREAM-010",
           "DREAM-011",
-          "DREAM-012",
-          "DREAM-009"
+          "DREAM-021"
         ]
       }
     ],
     "questions": [
       {
-        "id": "DREAM-002",
-        "q": "How often would you love for us to travel in a typical year?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Light look at how much adventure each wants in the shared future.",
-        "guessable": true,
-        "opts": [
-          "Rarely",
-          "1-2 times a year",
-          "3-4 times a year",
-          "As often as we can"
-        ]
-      },
-      {
         "id": "DREAM-006",
-        "q": "Finish this a few times: 'If we marry, I would love for us to...'",
+        "q": "If we get married, I would love for us to… Complete the sentence with a few things you would love for us to experience, build or do together.",
         "type": "open",
         "depth": 1,
         "note": "A dreaming game that reveals hopes for married life."
       },
       {
-        "id": "DREAM-001",
-        "q": "How clear is your sense of life purpose?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Jeremiah 29:11",
-        "note": "Surfaces each person's sense of calling and direction.",
+        "id": "DREAM-013",
+        "q": "If money and work weren't limiting us, what kind of life would you most want us to build?",
+        "type": "mc",
+        "depth": 1,
         "guessable": true,
-        "lo": "Still searching",
-        "hi": "Very clear"
+        "opts": [
+          "A peaceful, settled family life",
+          "A life full of travel and new experiences",
+          "A life focused on serving God and other people",
+          "An ambitious life building businesses, careers or projects",
+          "A simple life with plenty of time and freedom",
+          "A mixture of several of these"
+        ]
+      },
+      {
+        "id": "DREAM-014",
+        "q": "Which future milestone would excite you most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Getting married",
+          "Buying or creating our ideal home",
+          "Having children",
+          "Becoming financially free",
+          "Travelling somewhere we've always dreamed of",
+          "Building or achieving something significant together"
+        ]
+      },
+      {
+        "id": "DREAM-015",
+        "q": "How much would you ideally want travel to be part of our life together?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Rarely: I'd mostly prefer life at home",
+          "1–2 trips a year",
+          "3–4 trips a year",
+          "5+ trips a year",
+          "As often as time and money allow"
+        ]
+      },
+      {
+        "id": "DREAM-016",
+        "q": "How open would you be to us living in another country for a season of our lives?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "Not open at all",
+        "hi": "I'd actively love for us to live abroad"
+      },
+      {
+        "id": "DREAM-008",
+        "q": "Where do you want to be living in ten years?",
+        "type": "mc",
+        "depth": 3,
+        "note": "HOME-004 asks city, suburbs or countryside. This is the bigger geography, and it decides things HOME-004 can't.",
+        "guessable": true,
+        "opts": [
+          "Right where we are",
+          "Same country, somewhere new",
+          "Abroad",
+          "Wherever life takes us"
+        ]
       },
       {
         "id": "DREAM-003",
@@ -1456,6 +1855,31 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "DREAM-017",
+        "q": "Ten years from now, which would you most want to have achieved?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "A strong family life: a close, loving home and family",
+          "Financial freedom: enough money to have real choices about how I live",
+          "Meaningful work: work that gives me purpose and satisfaction",
+          "A deeper faith: a stronger relationship with God and a more mature faith",
+          "More freedom and adventure: the time and freedom to travel, explore and enjoy life"
+        ]
+      },
+      {
+        "id": "DREAM-001",
+        "q": "How clear is your sense of life purpose?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Jeremiah 29:11",
+        "note": "Surfaces each person's sense of calling and direction.",
+        "guessable": true,
+        "lo": "Still searching",
+        "hi": "Very clear"
+      },
+      {
         "id": "DREAM-004",
         "q": "How much do you want our marriage to resemble your parents'?",
         "type": "scale",
@@ -1466,40 +1890,41 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Much like my parents'"
       },
       {
-        "id": "DREAM-005",
-        "q": "Ten years out, where do you want to be - in your heart, your faith, and your finances?",
-        "type": "open",
+        "id": "DREAM-018",
+        "q": "Which parts of married life would you most want us to get right? Rank them from most important to least important.",
+        "type": "rank",
         "depth": 2,
-        "note": "Surfaces a whole-life growth vision."
-      },
-      {
-        "id": "DREAM-007",
-        "q": "If we could only have one, which?",
-        "type": "mc",
-        "depth": 3,
-        "ref": "Matthew 6:33",
-        "note": "A forced choice between four goods. Comfort versus significance is the trade-off most Christian couples assume they agree on and often don't.",
-        "guessable": true,
         "opts": [
-          "A comfortable life",
-          "An adventurous life",
-          "A significant life",
-          "A quiet life"
+          "Our relationship with God",
+          "Friendship and enjoying each other",
+          "Communication and conflict",
+          "Raising a family",
+          "Financial stability",
+          "Supporting each other's individual goals"
         ]
       },
       {
-        "id": "DREAM-008",
-        "q": "Where do you want to be living in ten years?",
-        "type": "mc",
-        "depth": 3,
-        "note": "HOME-004 asks city, suburbs or countryside. This is the bigger geography, and it decides things HOME-004 can't.",
-        "guessable": true,
+        "id": "DREAM-019",
+        "q": "What kind of legacy would you most want us to leave? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
         "opts": [
-          "Right where we are",
-          "Same country, somewhere new",
-          "Abroad",
-          "Wherever life takes us"
+          "Children and family who know they were deeply loved",
+          "A strong Christian faith passed to the next generation",
+          "People whose lives were better because we helped them",
+          "Financial security or opportunities for future generations",
+          "Meaningful work or something we built",
+          "Memories of a life well enjoyed together"
         ]
+      },
+      {
+        "id": "DREAM-020",
+        "q": "How much would you want us to take big risks to pursue a dream together?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Very little: I'd strongly prefer stability",
+        "hi": "A lot: I'd rather take the chance than wonder what could have been"
       },
       {
         "id": "DREAM-010",
@@ -1522,34 +1947,13 @@ export const DECKS: Record<string, Deck> = {
         "hi": "We need a shared purpose"
       },
       {
-        "id": "DREAM-012",
-        "q": "Rank what you'd want people to say about our marriage in thirty years.",
-        "type": "rank",
+        "id": "DREAM-021",
+        "q": "How much of your personal dreams would you be willing to give up if they conflicted with what was best for our marriage or family?",
+        "type": "scale",
         "depth": 3,
-        "note": "Converts the open-ended legacy prompt into two lists worth comparing. What each puts last is more revealing than what they put first.",
-        "opts": [
-          "That we lasted",
-          "That we were kind to each other",
-          "That we served God with it",
-          "That we were fun to be around",
-          "That we genuinely loved each other",
-          "That we raised good people"
-        ]
-      },
-      {
-        "id": "DREAM-009",
-        "q": "Would you want to live abroad or do mission work at some point?",
-        "type": "mc",
-        "depth": 4,
-        "ref": "Matthew 28:19",
-        "note": "Entirely absent from the bank and unusually live for this audience. A yes and a no here is a marriage-shaping gap.",
         "guessable": true,
-        "opts": [
-          "Yes, definitely",
-          "Open to it",
-          "Probably not",
-          "No"
-        ]
+        "lo": "Very little: I wouldn't want marriage to cost me my individual dreams",
+        "hi": "Whatever was necessary: marriage and family would take priority"
       }
     ]
   },
@@ -1563,21 +1967,32 @@ export const DECKS: Record<string, Deck> = {
         "qids": [
           "FAM-011",
           "FAM-012",
+          "FAM-013",
           "FAM-001",
-          "FAM-003",
-          "FAM-004",
-          "FAM-005"
+          "FAM-014",
+          "FAM-015"
         ]
       },
       {
-        "name": "Family, faith and fertility",
+        "name": "If it isn’t easy",
         "qids": [
-          "FAM-006",
-          "FAM-007",
-          "FAM-009",
-          "FAM-010",
-          "FAM-002",
-          "FAM-008"
+          "FAM-016",
+          "FAM-017",
+          "FAM-018",
+          "FAM-019",
+          "FAM-020",
+          "FAM-021"
+        ]
+      },
+      {
+        "name": "Faith and family around them",
+        "qids": [
+          "FAM-004",
+          "FAM-022",
+          "FAM-023",
+          "FAM-024",
+          "FAM-025",
+          "FAM-026"
         ]
       }
     ],
@@ -1610,6 +2025,22 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "FAM-013",
+        "q": "Who's more likely to spoil them?",
+        "type": "mc",
+        "depth": 1,
+        "note": "HHB warm-up. Plays as a laugh, sits on the same axis as the discipline questions further down the deck.",
+        "guessable": true,
+        "who": true,
+        "notYet": true,
+        "opts": [
+          "{A}",
+          "{B}",
+          "Both of us, hopeless",
+          "Neither of us"
+        ]
+      },
+      {
         "id": "FAM-001",
         "q": "How many children would you hope for?",
         "type": "mc",
@@ -1627,16 +2058,109 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "FAM-003",
-        "q": "How open are you to adoption?",
+        "id": "FAM-014",
+        "q": "If we wanted children, when would you ideally want to start trying after marriage?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Within the first year",
+          "After 1–2 years",
+          "After 3–5 years",
+          "More than 5 years later",
+          "I'm not sure yet"
+        ]
+      },
+      {
+        "id": "FAM-015",
+        "q": "What would most influence when you feel ready to have children? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "Our relationship feeling ready",
+          "Financial stability",
+          "Having the right home or living situation",
+          "Career or work circumstances",
+          "Age or fertility considerations"
+        ]
+      },
+      {
+        "id": "FAM-016",
+        "q": "How important is having biological children to you personally?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "notYet": true,
+        "lo": "Not important: I'm equally open to other ways of building a family",
+        "hi": "Essential to me"
+      },
+      {
+        "id": "FAM-017",
+        "q": "If we struggled to have children naturally, how open would you be to fertility treatment?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "Very open: I would be comfortable exploring most treatment options",
+          "Open, with limits: I would consider treatment, but some options may not be right for me",
+          "Only as a last resort: I would want to try other approaches first",
+          "Not very open: I would prefer not to use fertility treatment",
+          "I'm unsure: I would need to understand the options before deciding"
+        ]
+      },
+      {
+        "id": "FAM-018",
+        "q": "Would you be comfortable using donor sperm or donor eggs to have a child?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "No: I believe a child should be biologically connected to both spouses",
+          "No personally, though I don't believe it is always morally wrong",
+          "I would consider it only if no other route worked",
+          "Yes: I would be comfortable with donor sperm or eggs",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "FAM-019",
+        "q": "Would you be comfortable using a surrogate to have our child?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "No: I would be morally opposed",
+          "No personally, though I don't believe all surrogacy is morally wrong",
+          "Only in exceptional medical circumstances",
+          "Yes, if the arrangement was ethical and carefully regulated",
+          "Yes: I would be comfortable with surrogacy",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "FAM-020",
+        "q": "How open would you be to adoption as a way of building a family?",
         "type": "scale",
         "depth": 2,
         "ref": "Ephesians 1:5",
-        "note": "Explores openness to adoption as a path to family.",
         "guessable": true,
         "notYet": true,
-        "lo": "Eager to adopt",
-        "hi": "Prefer not to"
+        "lo": "Not open to it",
+        "hi": "I would actively want to adopt"
+      },
+      {
+        "id": "FAM-021",
+        "q": "Would you consider adoption even if we were able to have biological children?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Yes, I would still want to consider it",
+          "Maybe, depending on our circumstances",
+          "Mainly if biological children weren't possible",
+          "No, adoption probably wouldn't be for me",
+          "I'm unsure"
+        ]
       },
       {
         "id": "FAM-004",
@@ -1650,93 +2174,75 @@ export const DECKS: Record<string, Deck> = {
         "hi": "We need to agree"
       },
       {
-        "id": "FAM-005",
-        "q": "How soon after marriage would you want to start trying for children?",
+        "id": "FAM-022",
+        "q": "If one of us wanted another child and the other didn't, how should we handle it?",
         "type": "mc",
-        "depth": 2,
-        "note": "Splits timing off from family-size (FAM-001) so each scores separately.",
+        "depth": 4,
         "guessable": true,
+        "notYet": true,
+        "core": true,
         "opts": [
-          "Right away",
-          "Within the first year or two",
-          "After several years",
-          "We'll see how it goes"
+          "We shouldn't have another child unless we both agree",
+          "Keep talking until we reach a decision together",
+          "Pause the decision and revisit it later",
+          "Seek advice or counselling to help us decide",
+          "I'm not sure how we should handle it"
         ]
       },
       {
-        "id": "FAM-006",
-        "q": "How important is it to you to have biological children specifically?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Distinct from openness to adoption (FAM-003).",
-        "guessable": true,
-        "notYet": true,
-        "lo": "Any path to family is equal",
-        "hi": "Biological children matter a lot"
-      },
-      {
-        "id": "FAM-007",
-        "q": "How important is it that our children grow up close to extended family?",
-        "type": "scale",
-        "depth": 2,
-        "note": "A family-geography value couples often assume.",
-        "guessable": true,
-        "notYet": true,
-        "lo": "Wherever life takes us",
-        "hi": "Near family really matters"
-      },
-      {
-        "id": "FAM-009",
-        "q": "How important is it to raise our children in the faith?",
-        "type": "scale",
+        "id": "FAM-023",
+        "q": "How actively should parents guide their children's faith?",
+        "type": "mc",
         "depth": 2,
         "ref": "Proverbs 22:6",
-        "note": "Faith-transmission priority, distinct from responding to a child's doubt (PAR-003).",
         "guessable": true,
         "notYet": true,
         "core": true,
-        "lo": "Let them choose freely",
-        "hi": "Essential to raise them in it"
-      },
-      {
-        "id": "FAM-010",
-        "q": "How involved should grandparents be in raising our children?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Grandparent involvement in childrearing specifically.",
-        "guessable": true,
-        "notYet": true,
-        "lo": "Minimal, we parent",
-        "hi": "Very involved"
-      },
-      {
-        "id": "FAM-002",
-        "q": "If we faced fertility struggles, how open are you to reproductive medicine?",
-        "type": "mc",
-        "depth": 4,
-        "note": "Surfaces values around fertility treatment before the pressure of facing it.",
-        "guessable": true,
         "opts": [
-          "Fully open to treatment",
-          "Some methods only",
-          "Prefer to accept what comes",
-          "Unsure"
+          "Give them freedom: let them explore and decide what they believe",
+          "Introduce them to the faith: but avoid strongly directing them",
+          "Teach them the faith: while encouraging questions and personal choice",
+          "Actively guide them: make faith an important part of their upbringing",
+          "Make faith central: intentionally disciple them at home and through church"
         ]
       },
       {
-        "id": "FAM-008",
-        "q": "If we disagreed about having more children, how should we handle it?",
-        "type": "mc",
-        "depth": 4,
-        "note": "Surfaces the decision rule for a high-stakes disagreement.",
+        "id": "FAM-024",
+        "q": "How important would it be to you for our children to grow up living near extended family?",
+        "type": "scale",
+        "depth": 2,
         "guessable": true,
         "notYet": true,
-        "core": true,
+        "lo": "Not important: we could live wherever works for us",
+        "hi": "A major priority: I'd want family nearby"
+      },
+      {
+        "id": "FAM-025",
+        "q": "How involved would you want grandparents to be in the day-to-day raising of our children?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "notYet": true,
         "opts": [
-          "Keep talking until we agree",
-          "Defer to whoever feels strongest",
-          "The one who wants fewer decides",
-          "We'd seek outside help"
+          "Limited involvement: loving relationship, but we handle the parenting",
+          "Occasional involvement: help or advice from time to time",
+          "Regular support: involved often, but we make the parenting decisions",
+          "Very involved: regularly helping with care and family life",
+          "A major role: closely involved in helping us raise the children"
+        ]
+      },
+      {
+        "id": "FAM-026",
+        "q": "When it comes to parenting decisions, how much say should grandparents have?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "None: decisions are ours",
+          "They can offer advice when asked",
+          "Their views should be considered",
+          "They should have meaningful input",
+          "They should be closely involved in major decisions"
         ]
       }
     ]
@@ -1750,14 +2256,35 @@ export const DECKS: Record<string, Deck> = {
         "name": "Raising them well",
         "qids": [
           "PAR-008",
-          "PAR-009",
-          "PAR-001",
-          "PAR-002",
-          "PAR-004",
-          "PAR-005",
-          "PAR-006",
-          "PAR-007",
-          "PAR-003"
+          "PAR-010",
+          "PAR-011",
+          "PAR-012",
+          "PAR-013",
+          "PAR-014"
+        ]
+      },
+      {
+        "name": "Discipline, school and culture",
+        "qids": [
+          "PAR-015",
+          "PAR-016",
+          "PAR-017",
+          "PAR-018",
+          "PAR-019",
+          "PAR-020",
+          "PAR-021",
+          "PAR-022"
+        ]
+      },
+      {
+        "name": "Teenagers, faith and identity",
+        "qids": [
+          "PAR-023",
+          "PAR-024",
+          "PAR-025",
+          "PAR-026",
+          "PAR-027",
+          "PAR-028"
         ]
       }
     ],
@@ -1779,116 +2306,240 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "PAR-009",
-        "q": "Who's more likely to spoil them?",
-        "type": "mc",
-        "depth": 1,
-        "note": "HHB warm-up. Plays as a laugh, sits on the same axis as the discipline questions further down the deck.",
-        "guessable": true,
-        "who": true,
-        "notYet": true,
-        "opts": [
-          "{A}",
-          "{B}",
-          "Both of us, hopeless",
-          "Neither of us"
-        ]
-      },
-      {
-        "id": "PAR-001",
-        "q": "Rank what matters most in raising children.",
+        "id": "PAR-010",
+        "q": "What matters most to you in raising our children? Rank these from most important to least important.",
         "type": "rank",
         "depth": 2,
         "ref": "Proverbs 22:6",
-        "note": "Surfaces core parenting philosophy and values.",
         "notYet": true,
         "opts": [
-          "Faith",
-          "Discipline",
-          "Independence",
-          "Kindness",
-          "Education",
-          "Emotional security"
+          "Faith and knowing God",
+          "Character and integrity",
+          "Discipline and self-control",
+          "Emotional security",
+          "Independence and resilience",
+          "Education and achievement"
         ]
       },
       {
-        "id": "PAR-002",
-        "q": "How much would you parent the way you were raised?",
+        "id": "PAR-011",
+        "q": "How much would you want us to parent our children the way you were raised?",
         "type": "scale",
         "depth": 2,
-        "note": "Surfaces what each would keep or change from their own upbringing.",
         "guessable": true,
         "notYet": true,
-        "lo": "Very differently from how I was raised",
-        "hi": "Much the same"
+        "lo": "Very differently",
+        "hi": "Very similarly"
       },
       {
-        "id": "PAR-004",
-        "q": "Where does your discipline style fall?",
+        "id": "PAR-012",
+        "q": "What's one thing from the way you were raised that you'd definitely want us to repeat, and one thing you'd want us to do differently?",
+        "type": "open",
+        "depth": 2
+      },
+      {
+        "id": "PAR-013",
+        "q": "When our child repeatedly disobeys, what should our normal approach to discipline be?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "notYet": true,
+        "opts": [
+          "Clear rules with consistent consequences",
+          "Firm correction, explanation and restoration",
+          "Natural or logical consequences wherever possible",
+          "Mainly conversation and coaching, with punishment used rarely",
+          "Adjust our approach depending on the child and situation"
+        ]
+      },
+      {
+        "id": "PAR-014",
+        "q": "How important is it to you that our children obey us promptly when we give them a clear instruction?",
         "type": "scale",
         "depth": 2,
-        "note": "Surfaces discipline philosophy and inherited patterns.",
         "guessable": true,
-        "notYet": true,
-        "lo": "Firm and structured",
-        "hi": "Gentle and relational"
+        "lo": "Not very important: understanding and discussion matter more",
+        "hi": "Extremely important: children should normally obey their parents promptly"
       },
       {
-        "id": "PAR-005",
-        "q": "How do you feel about spanking as a form of discipline?",
+        "id": "PAR-015",
+        "q": "Do you believe physical discipline, such as spanking, should ever be used with our children?",
         "type": "mc",
         "depth": 2,
         "ref": "Proverbs 13:24",
-        "note": "Names a real discipline split directly instead of folding it into PAR-004.",
         "guessable": true,
         "core": true,
         "opts": [
-          "For it",
-          "In some situations",
-          "Against it",
-          "Unsure"
+          "Yes: it can be a normal part of discipline",
+          "Yes: but only rarely or for serious/repeated disobedience",
+          "Possibly: but I'd want us to be very cautious about it",
+          "No: I wouldn't want us to use physical discipline",
+          "I'm unsure"
         ]
       },
       {
-        "id": "PAR-006",
-        "q": "How would you want to educate our children?",
+        "id": "PAR-016",
+        "q": "If you personally disagreed with physical discipline, how comfortable would you be with your partner using it?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Not comfortable at all",
+        "hi": "Comfortable trusting their judgement"
+      },
+      {
+        "id": "PAR-017",
+        "q": "How strict should we be about what our children watch, listen to and play?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Mostly let them choose for themselves",
+        "hi": "Very careful: actively restrict content that conflicts with our faith and values"
+      },
+      {
+        "id": "PAR-018",
+        "q": "How would you ideally want us to educate our children?",
         "type": "mc",
         "depth": 2,
         "ref": "Deuteronomy 6:7",
-        "note": "A concrete schooling decision couples often discover they differ on.",
         "guessable": true,
         "notYet": true,
         "opts": [
           "Homeschool",
           "Christian or faith-based school",
-          "Public school",
-          "Whatever suits each child"
+          "Public/state school",
+          "Private school without a particular faith basis",
+          "Decide separately based on what suits each child"
         ]
       },
       {
-        "id": "PAR-007",
-        "q": "How set apart from mainstream culture do you want to raise our children?",
+        "id": "PAR-019",
+        "q": "How important is it that our children's education actively reinforces our Christian beliefs?",
         "type": "scale",
         "depth": 2,
-        "note": "The counterculture flag (Halloween, media, etc.) aimed at parenting.",
         "guessable": true,
-        "notYet": true,
-        "lo": "Fully part of the culture",
-        "hi": "Deliberately set apart"
+        "lo": "Not important: faith can mainly be taught at home and church",
+        "hi": "Essential: I'd want their education to actively support our faith"
       },
       {
-        "id": "PAR-003",
-        "q": "If a child questions their faith, how should we respond?",
+        "id": "PAR-020",
+        "q": "If our child's school regularly taught beliefs about sex, gender or morality that we believed contradicted Scripture, what would you want us to do?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Keep them there and teach our beliefs clearly at home",
+          "Challenge or opt out of particular teaching where possible",
+          "Move them to another school",
+          "Homeschool or choose explicitly Christian education",
+          "Decide based on the child's age and circumstances"
+        ]
+      },
+      {
+        "id": "PAR-021",
+        "q": "How much should we intentionally protect our children from parts of mainstream culture that conflict with our Christian beliefs?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "notYet": true,
+        "lo": "Very little: teach discernment while allowing broad exposure",
+        "hi": "Very strong boundaries: deliberately keep them separate from many mainstream influences"
+      },
+      {
+        "id": "PAR-022",
+        "q": "How would you want us to handle celebrations like Halloween?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Participate normally",
+          "Participate, but avoid parts we believe conflict with our faith",
+          "Choose Christian or alternative activities instead",
+          "Avoid it completely",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "PAR-023",
+        "q": "How would you want our teenagers to approach dating?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "No dating until they're older or ready for marriage",
+          "Intentional courtship with strong parental involvement",
+          "Dating is fine with clear Christian boundaries and our involvement",
+          "Let them date normally while teaching them our values",
+          "Decide based on the individual child"
+        ]
+      },
+      {
+        "id": "PAR-024",
+        "q": "Who should take primary responsibility for teaching our children about sex and relationships?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Both parents together",
+          "Primarily the parent of the same sex",
+          "Parents should lead, with church teaching supporting us",
+          "School education is fine, with us discussing it at home",
+          "Use a mixture of parents, church and school"
+        ]
+      },
+      {
+        "id": "PAR-025",
+        "q": "If one of our children seriously questioned or rejected the Christian faith, how strongly should we continue directing them towards it?",
         "type": "mc",
         "depth": 4,
         "ref": "Deuteronomy 6:6-7",
-        "note": "Explores how they'd respond if a child questions their faith.",
         "guessable": true,
         "opts": [
-          "Gently guide them back",
-          "Let them explore freely",
-          "Step in with concern",
-          "Trust the foundation we laid"
+          "Give them freedom to decide what they believe without pressure",
+          "Mostly give them space, but remain available",
+          "Keep discussing and encouraging faith without forcing it",
+          "Actively guide them and involve trusted Christian mentors",
+          "Continue clear Christian expectations in our home while actively discipling them"
+        ]
+      },
+      {
+        "id": "PAR-026",
+        "q": "If our teenage child said they no longer wanted to attend church, what should we do?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "Require them to attend while they're living at home",
+          "Expect attendance but make room for discussion and questions",
+          "Strongly encourage them, but don't force them",
+          "Let them decide whether they attend",
+          "It would depend on their age and circumstances"
+        ]
+      },
+      {
+        "id": "PAR-027",
+        "q": "If one of our teenage children told us they were in a same-sex relationship, how would you want us to respond?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Fully affirm and support the relationship",
+          "Love and support our child while being clear we don't believe the relationship is right",
+          "Tell them we don't permit the relationship while they're living under our authority",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "PAR-028",
+        "q": "If one of our children said they identified as a different gender, non-binary etc. how would you want us to respond?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Fully affirm their gender identity, including their chosen name and pronouns",
+          "Use their chosen name and pronouns while taking time to understand what they're experiencing",
+          "Love and support them, but continue affirming their biological sex",
+          "Try to help them change their mind",
+          "I'm not sure"
         ]
       }
     ]
@@ -1906,32 +2557,49 @@ export const DECKS: Record<string, Deck> = {
         "name": "Affection and attraction",
         "qids": [
           "INT-012",
-          "INT-003",
+          "INT-023",
+          "INT-024",
+          "INT-025",
           "INT-016",
-          "INT-022",
           "INT-019",
-          "INT-001",
-          "INT-002"
+          "INT-018",
+          "INT-017"
         ]
       },
       {
         "name": "Before marriage",
         "qids": [
-          "INT-005",
-          "INT-007",
+          "INT-026",
+          "INT-027",
+          "INT-028",
+          "INT-029",
+          "INT-030",
+          "INT-031",
+          "INT-032",
+          "INT-033"
+        ]
+      },
+      {
+        "name": "Being honest about sex",
+        "qids": [
+          "INT-034",
+          "INT-035",
           "INT-008",
-          "INT-009",
-          "INT-010",
-          "INT-013"
+          "INT-036",
+          "INT-037",
+          "INT-038",
+          "INT-013",
+          "INT-014"
         ]
       },
       {
         "name": "Intimacy in marriage",
         "qids": [
-          "INT-014",
-          "INT-015",
-          "INT-017",
-          "INT-018",
+          "INT-001",
+          "INT-039",
+          "INT-040",
+          "INT-041",
+          "INT-042",
           "INT-020",
           "INT-021"
         ]
@@ -1951,15 +2619,38 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Very important"
       },
       {
-        "id": "INT-003",
-        "q": "How much does physical attraction factor into a relationship for you?",
+        "id": "INT-023",
+        "q": "Which kind of everyday physical affection makes you feel most connected?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Hugging",
+          "Kissing",
+          "Cuddling",
+          "Holding hands",
+          "Casual touch throughout the day",
+          "I don't need much physical affection"
+        ]
+      },
+      {
+        "id": "INT-024",
+        "q": "How important is strong physical attraction to you in a marriage?",
         "type": "scale",
         "depth": 3,
-        "note": "Names honestly how much physical attraction factors in.",
         "guessable": true,
         "core": true,
-        "lo": "Not much",
-        "hi": "Very much"
+        "lo": "Not particularly important",
+        "hi": "Essential: I need strong physical attraction to my spouse"
+      },
+      {
+        "id": "INT-025",
+        "q": "How important is it to you that we both continue making an effort with our physical appearance after marriage?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Extremely important"
       },
       {
         "id": "INT-016",
@@ -1970,23 +2661,6 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "lo": "The physical connection",
         "hi": "The emotional connection"
-      },
-      {
-        "id": "INT-022",
-        "q": "Who should take the lead in initiating physical affection in marriage?",
-        "type": "mc",
-        "depth": 3,
-        "ref": "1 Corinthians 7:3-4",
-        "note": "Lands the initiation question on the gender-roles axis directly, matching how FAITH-023 and ROLE-004 handle headship and provision.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "The husband",
-          "The wife",
-          "Whoever feels like it",
-          "Both, equally",
-          "We'd have to find our rhythm"
-        ]
       },
       {
         "id": "INT-019",
@@ -2000,51 +2674,170 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I need to feel close first"
       },
       {
-        "id": "INT-001",
-        "q": "How important is physical intimacy to you in marriage?",
-        "type": "scale",
-        "depth": 5,
-        "ref": "1 Corinthians 7:3-5",
-        "note": "Opens honest conversation about physical intimacy and expectations.",
-        "guessable": true,
-        "core": true,
-        "lo": "A low priority",
-        "hi": "Very important"
-      },
-      {
-        "id": "INT-002",
-        "q": "What should our physical boundaries be before marriage?",
+        "id": "INT-018",
+        "q": "Is it ever okay to hold back physical affection to make a point?",
         "type": "mc",
         "depth": 5,
-        "ref": "1 Thessalonians 4:3-4",
-        "note": "Surfaces convictions and boundaries around physical intimacy now.",
+        "ref": "1 Corinthians 7:5",
+        "note": "Names withholding intimacy as leverage directly rather than hedging it. Distinct from INT-011 (temptation protocol) and INT-001 (importance).",
         "guessable": true,
         "opts": [
-          "Save all physical intimacy for marriage",
-          "Some affection with clear limits",
-          "Comfortable being physically close",
-          "Still discussing"
+          "Never",
+          "Only if I'm genuinely hurt",
+          "Sometimes, yes",
+          "It's a fair response"
         ]
       },
       {
-        "id": "INT-005",
-        "q": "How comfortable are you talking openly about sex?",
-        "type": "scale",
+        "id": "INT-017",
+        "q": "In marriage, would you be comfortable being physically close when we're upset with each other?",
+        "type": "mc",
         "depth": 5,
-        "note": "Opens honest, judgment-free talk about intimacy and expectations.",
+        "ref": "Ephesians 4:26",
+        "note": "Sex-and-conflict interaction. The bank covers pre-marriage boundaries exhaustively but nothing about how intimacy behaves inside a marriage. A real and common split.",
         "guessable": true,
-        "lo": "Very uncomfortable",
-        "hi": "Very comfortable"
+        "opts": [
+          "Yes: it would help us reconnect",
+          "No: I'd need it resolved first",
+          "Depends how big the issue is",
+          "I'm not sure"
+        ]
       },
       {
-        "id": "INT-007",
-        "q": "How important is it that we agree on physical intimacy?",
+        "id": "INT-026",
+        "q": "Do you believe sex should only take place within marriage?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes: sex belongs only within marriage",
+          "Yes as the Christian ideal, though I see more complexity around failure and past choices",
+          "It depends on the commitment between the couple",
+          "No: marriage isn't necessary for sex to be morally right",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "INT-027",
+        "q": "Do you believe sex before marriage is morally wrong?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes: sex should only take place within marriage",
+          "Generally yes, but I believe there may be exceptional circumstances",
+          "I believe sex can be appropriate within a committed relationship before marriage",
+          "No: I don't believe marriage determines whether sex is morally right",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "INT-028",
+        "q": "If we crossed our sexual boundary before marriage, how would you want us to respond?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Stop and reset clear boundaries",
+          "Stop, pray about it and seek accountability",
+          "Reconsider our boundaries together",
+          "Continue as long as we were committed to marrying",
+          "I don't believe we would need to change anything"
+        ]
+      },
+      {
+        "id": "INT-029",
+        "q": "What is your conviction about kissing before marriage?",
+        "type": "mc",
+        "depth": 5,
+        "ref": "1 Thessalonians 4:3-4",
+        "guessable": true,
+        "opts": [
+          "I would prefer no kissing before marriage",
+          "Brief kissing is fine",
+          "Kissing is fine, but with clear limits",
+          "I don't believe kissing itself needs a boundary",
+          "I'm still working out my boundary"
+        ]
+      },
+      {
+        "id": "INT-030",
+        "q": "What is your conviction about prolonged or passionate kissing before marriage?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "I believe we should avoid it completely",
+          "I think it can be okay with strict limits",
+          "I think it is fine as long as we stop before sexual touching",
+          "I don't believe it is morally wrong before marriage",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "INT-031",
+        "q": "What is your conviction about touching intimate parts of each other's bodies before marriage?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "It should be completely reserved for marriage",
+          "We should avoid it, even over clothing",
+          "Some touching is acceptable, but intimate sexual touching is not",
+          "I don't believe it necessarily needs to wait until marriage",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "INT-032",
+        "q": "Would you be comfortable with us lying in bed together or sleeping in the same bed before marriage?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "No, I would avoid it completely",
+          "Only in exceptional circumstances, with clear boundaries",
+          "Lying together is fine, but not sleeping overnight together",
+          "Sleeping in the same bed is fine if we aren't having sex",
+          "I have no issue with it"
+        ]
+      },
+      {
+        "id": "INT-033",
+        "q": "What is your conviction about seeing each other naked before marriage?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "It should be completely reserved for marriage",
+          "I would strongly prefer to avoid it",
+          "It depends on the situation",
+          "I don't believe nudity itself needs to wait until marriage",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "INT-034",
+        "q": "How comfortable would you want us to be talking openly about sex with each other?",
         "type": "scale",
         "depth": 5,
-        "note": "Weights intimacy gaps in the agreement score.",
         "guessable": true,
-        "lo": "We can differ freely",
-        "hi": "We need to agree"
+        "lo": "I'd find those conversations very difficult",
+        "hi": "Completely open: nothing about our sex life should be difficult to discuss"
+      },
+      {
+        "id": "INT-035",
+        "q": "If something in our sex life wasn't working for you, how would you most likely handle it?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Tell me directly",
+          "Wait for the right moment and talk about it gently",
+          "Try to adjust without saying much",
+          "Find it difficult to raise unless it became a serious problem",
+          "Seek advice before talking to me"
+        ]
       },
       {
         "id": "INT-008",
@@ -2058,27 +2851,45 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Essential"
       },
       {
-        "id": "INT-009",
-        "q": "What's your view on sex before marriage?",
+        "id": "INT-036",
+        "q": "Would you want to know how many previous sexual partners your partner has had?",
         "type": "mc",
         "depth": 5,
-        "note": "The conviction itself, distinct from the boundaries question (INT-002).",
         "guessable": true,
         "opts": [
-          "Should be saved for marriage, no exceptions",
-          "Ideal, but grace for the past",
-          "A personal choice",
-          "Not a moral issue to me"
+          "Yes: I'd want to know the exact number",
+          "I'd want a general idea, but not necessarily an exact number",
+          "Only if there were important circumstances I needed to understand",
+          "I'd rather not know",
+          "It doesn't matter to me"
         ]
       },
       {
-        "id": "INT-010",
-        "q": "How open are you to fully sharing your sexual history before marriage?",
-        "type": "scale",
+        "id": "INT-037",
+        "q": "How much of our sexual history should we share with each other before marriage?",
+        "type": "mc",
         "depth": 5,
-        "note": "Surfaces disclosure comfort; left non-guessable as too sensitive to gamify.",
-        "lo": "I'd rather keep my past private",
-        "hi": "Fully open about it"
+        "opts": [
+          "Full disclosure, including previous partners and significant experiences",
+          "Honest disclosure of the important facts, without unnecessary detail",
+          "Only disclose things that could affect our marriage, health or trust",
+          "I believe some parts of the past can remain private",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "INT-038",
+        "q": "How much detail about past sexual experiences would you actually want to hear?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "I would want to understand the significant details",
+          "I would want the facts, but not graphic details",
+          "Only what directly affects our relationship",
+          "As little detail as possible",
+          "I'd rather not discuss previous experiences unless necessary"
+        ]
       },
       {
         "id": "INT-013",
@@ -2106,48 +2917,72 @@ export const DECKS: Record<string, Deck> = {
         "hi": "A real risk I think about"
       },
       {
-        "id": "INT-015",
-        "q": "If we found after marriage that we want very different things physically, what would you expect?",
-        "type": "mc",
+        "id": "INT-001",
+        "q": "How important is physical intimacy to you in marriage?",
+        "type": "scale",
         "depth": 5,
         "ref": "1 Corinthians 7:3-5",
-        "note": "Converts the abstract risk into a plan. The gap between 'we'd work it out' and 'serious problem' is the whole conversation.",
+        "note": "Opens honest conversation about physical intimacy and expectations.",
+        "guessable": true,
+        "core": true,
+        "lo": "A low priority",
+        "hi": "Very important"
+      },
+      {
+        "id": "INT-039",
+        "q": "Ideally, how often would you want us to have sex when married?",
+        "type": "mc",
+        "depth": 5,
         "guessable": true,
         "opts": [
-          "We'd work it out over time",
-          "We'd seek counsel or help",
-          "It'd be a serious problem for us",
-          "I haven't thought about it"
+          "Several times a week or more",
+          "Around 2–3 times a week",
+          "Around once a week",
+          "A few times a month",
+          "Less often than that",
+          "I don't think frequency can be decided in advance"
         ]
       },
       {
-        "id": "INT-017",
-        "q": "In marriage, would you be comfortable being physically close when we're upset with each other?",
+        "id": "INT-040",
+        "q": "How would you ideally want sex to be initiated between us?",
         "type": "mc",
         "depth": 5,
-        "ref": "Ephesians 4:26",
-        "note": "Sex-and-conflict interaction. The bank covers pre-marriage boundaries exhaustively but nothing about how intimacy behaves inside a marriage. A real and common split.",
         "guessable": true,
         "opts": [
-          "Yes: it would help us reconnect",
-          "No: I'd need it resolved first",
-          "Depends how big the issue is",
-          "I'm not sure"
+          "Either of us should initiate equally",
+          "I'd naturally expect the husband to initiate more",
+          "I'd naturally expect the wife to initiate more",
+          "Whoever wants intimacy should feel free to initiate",
+          "I haven't really thought about it"
         ]
       },
       {
-        "id": "INT-018",
-        "q": "Is it ever okay to hold back physical affection to make a point?",
+        "id": "INT-041",
+        "q": "If one of us wanted sex significantly more often than the other, how should we handle it?",
         "type": "mc",
         "depth": 5,
-        "ref": "1 Corinthians 7:5",
-        "note": "Names withholding intimacy as leverage directly rather than hedging it. Distinct from INT-011 (temptation protocol) and INT-001 (importance).",
         "guessable": true,
         "opts": [
-          "Never",
-          "Only if I'm genuinely hurt",
-          "Sometimes, yes",
-          "It's a fair response"
+          "Actively work together to find a rhythm that considers both people's needs",
+          "The person with the lower desire should make a real effort to meet the other more often",
+          "The person with the higher desire should mainly adjust their expectations",
+          "Seek counselling or pastoral help if the difference becomes ongoing",
+          "It would depend on why our levels of desire were different"
+        ]
+      },
+      {
+        "id": "INT-042",
+        "q": "How do you understand our responsibility to each other sexually within marriage?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Sex should always be freely chosen, with no sense of marital obligation",
+          "We should both intentionally prioritise each other's sexual needs, but never through pressure",
+          "Spouses have a real mutual responsibility to maintain sexual intimacy, while still respecting when either person says no",
+          "Regularly withholding sex without good reason would be a serious marital problem",
+          "I'm still working out what I believe"
         ]
       },
       {
@@ -2188,253 +3023,214 @@ export const DECKS: Record<string, Deck> = {
     },
     "parts": [
       {
-        "name": "Love, stress and respect",
+        "name": "Love, time and respect",
         "qids": [
-          "CONF-001",
-          "CONF-009",
-          "CONF-020",
-          "CONF-002",
-          "CONF-003",
-          "CONF-004",
-          "CONF-008"
+          "CONF-038",
+          "CONF-039",
+          "CONF-040",
+          "CONF-041",
+          "CONF-042",
+          "CONF-043",
+          "CONF-044",
+          "CONF-037"
+        ]
+      },
+      {
+        "name": "Under stress",
+        "qids": [
+          "CONF-045",
+          "CONF-046",
+          "CONF-047",
+          "CONF-048",
+          "CONF-021",
+          "CONF-049",
+          "CONF-036"
         ]
       },
       {
         "name": "In the heat of it",
         "qids": [
-          "CONF-011",
-          "CONF-012",
-          "CONF-013",
-          "CONF-014",
           "CONF-016",
-          "CONF-017",
-          "CONF-018"
+          "CONF-002",
+          "CONF-050",
+          "CONF-051",
+          "CONF-052",
+          "CONF-053",
+          "CONF-054"
         ]
       },
       {
-        "name": "Fighting fair",
+        "name": "Making it right",
         "qids": [
-          "CONF-019",
-          "CONF-021",
-          "CONF-022",
-          "CONF-023",
-          "CONF-024",
-          "CONF-025",
-          "CONF-026"
-        ]
-      },
-      {
-        "name": "Blind spots and feelings",
-        "qids": [
-          "CONF-027",
-          "CONF-028",
+          "CONF-055",
+          "CONF-056",
           "CONF-029",
-          "CONF-030",
-          "CONF-031",
-          "CONF-032"
-        ]
-      },
-      {
-        "name": "Safe to talk",
-        "qids": [
+          "CONF-012",
           "CONF-033",
           "CONF-034",
-          "CONF-036",
-          "CONF-037",
-          "CONF-015",
-          "CONF-035"
+          "CONF-057"
+        ]
+      },
+      {
+        "name": "Saying what you feel",
+        "qids": [
+          "CONF-030",
+          "CONF-031",
+          "CONF-032",
+          "CONF-058",
+          "CONF-059",
+          "CONF-060",
+          "CONF-061"
         ]
       }
     ],
     "questions": [
       {
-        "id": "CONF-001",
-        "q": "How do you most naturally give and receive love?",
+        "id": "CONF-038",
+        "q": "How do you most naturally show someone you love them?",
         "type": "mc",
         "depth": 1,
-        "note": "Helps each name how they best give and receive love.",
         "guessable": true,
-        "opts": [
-          "Words of affirmation",
-          "Quality time",
-          "Acts of service",
-          "Gifts",
-          "Physical touch"
-        ]
-      },
-      {
-        "id": "CONF-009",
-        "q": "Rank these from most to least how you give and receive love.",
-        "type": "rank",
-        "depth": 1,
-        "note": "Surfaces what makes each feel most loved.",
         "core": true,
         "opts": [
-          "Words of affirmation",
-          "Quality time",
-          "Acts of service",
-          "Gifts",
-          "Physical touch"
+          "Through words: I tell them and encourage them",
+          "Through time: I make time to be with them",
+          "Through actions: I help and do things for them",
+          "Through gifts: I give thoughtful things",
+          "Through affection: I show it physically"
         ]
       },
       {
-        "id": "CONF-020",
-        "q": "How much daily contact do you need to feel connected?",
+        "id": "CONF-039",
+        "q": "How do you most like to feel loved by your partner?",
         "type": "mc",
         "depth": 1,
-        "note": "Communication cadence — a real gap the bank only covered for style, not frequency.",
         "guessable": true,
         "opts": [
-          "Constant throughout the day",
-          "A few check-ins",
-          "Once a day is plenty",
-          "We don't need daily contact"
+          "Through words: being told and encouraged",
+          "Through time: having time made for me",
+          "Through actions: being helped and things done for me",
+          "Through gifts: being given thoughtful things",
+          "Through affection: being shown physically"
         ]
       },
       {
-        "id": "CONF-002",
-        "q": "How soon do you like to resolve conflict?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "James 1:19",
-        "note": "Surfaces conflict styles before they collide.",
+        "id": "CONF-040",
+        "q": "How much contact do you like to have with your partner during the day?",
+        "type": "mc",
+        "depth": 1,
         "guessable": true,
-        "core": true,
-        "lo": "I need space first",
-        "hi": "Address it right away"
-      },
-      {
-        "id": "CONF-003",
-        "q": "Rank how you react under stress, most like you first.",
-        "type": "rank",
-        "depth": 2,
-        "ref": "Philippians 4:6-7",
-        "note": "Surfaces coping styles so partners can support each other under pressure.",
         "opts": [
-          "Withdraw and go quiet",
-          "Talk it out",
-          "Power through alone",
-          "Get irritable"
+          "I like to stay in contact throughout the day",
+          "A few check-ins is enough",
+          "One meaningful conversation is enough",
+          "I don't need much contact during the day"
         ]
       },
       {
-        "id": "CONF-004",
-        "q": "How anxious do you feel about marriage?",
+        "id": "CONF-041",
+        "q": "How important is it to you that we regularly set aside time just for each other?",
         "type": "scale",
         "depth": 2,
-        "note": "Invites honesty about fears and the hard parts of marriage.",
         "guessable": true,
-        "lo": "Completely at ease",
-        "hi": "Quite anxious"
+        "lo": "Not important: we'll spend time together naturally",
+        "hi": "Essential: we should make time even when we're busy"
       },
       {
-        "id": "CONF-008",
-        "q": "Rank what makes you feel most respected.",
+        "id": "CONF-042",
+        "q": "What kind of one-on-one time would make you feel most connected to your partner?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Going out together",
+          "Staying in and talking",
+          "Doing an activity together",
+          "Physical affection and intimacy",
+          "Simply having uninterrupted time together"
+        ]
+      },
+      {
+        "id": "CONF-043",
+        "q": "Rank what makes you feel most respected by your partner.",
         "type": "rank",
         "depth": 2,
-        "note": "Surfaces what respect concretely looks like for each.",
         "opts": [
-          "Being heard",
-          "Loyalty",
+          "Being listened to",
           "Honesty",
-          "Support in public",
-          "My independence"
+          "Loyalty and commitment",
+          "Being supported in front of others",
+          "Having independence and personal space"
         ]
       },
       {
-        "id": "CONF-011",
+        "id": "CONF-044",
+        "q": "What kind of atmosphere would you want in our home?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Calm and quiet",
+        "hi": "Lively and energetic"
+      },
+      {
+        "id": "CONF-037",
+        "q": "When I make plans with friends, should you be invited by default?",
+        "type": "mc",
+        "depth": 3,
+        "note": "Everyday default inclusion, distinct from CONF-007 (solo trips, a big event) and US-030 (whether you get along with them).",
+        "guessable": true,
+        "opts": [
+          "Yes, always",
+          "Usually, unless there's a reason",
+          "No: separate friendships are healthy",
+          "Depends on the friends"
+        ]
+      },
+      {
+        "id": "CONF-045",
         "q": "Rank these communication styles from most to least like you.",
         "type": "rank",
         "depth": 2,
-        "note": "Surfaces talk-style differences before they trip us up.",
         "opts": [
-          "Direct and to the point",
-          "Detailed processor",
-          "Quiet and internal",
+          "Direct and straightforward",
+          "Talk things through in detail",
+          "Quiet and prefer to think before speaking",
           "Expressive and talkative"
         ]
       },
       {
-        "id": "CONF-012",
-        "q": "When you need to raise a problem, how do you prefer to do it?",
-        "type": "mc",
+        "id": "CONF-046",
+        "q": "When you're under stress, which of these are you most likely to do? Rank them from most to least likely.",
+        "type": "rank",
         "depth": 2,
-        "note": "Surfaces how concerns and complaints get raised.",
-        "guessable": true,
+        "ref": "Philippians 4:6-7",
         "opts": [
-          "Address it right away",
-          "Wait for the right moment",
-          "Write or text it",
-          "Avoid it until it builds up"
+          "Pray or turn to God",
+          "Talk it through with someone",
+          "Take time alone",
+          "Keep going and deal with it myself",
+          "Become more easily frustrated"
         ]
       },
       {
-        "id": "CONF-013",
-        "q": "In the heat of conflict, which is your reflex?",
-        "type": "mc",
+        "id": "CONF-047",
+        "q": "How easily do you become angry?",
+        "type": "scale",
         "depth": 2,
-        "note": "Surfaces default conflict mode.",
         "guessable": true,
         "core": true,
-        "opts": [
-          "Give in",
-          "Withdraw",
-          "Push to win",
-          "Compromise",
-          "Work it through"
-        ]
+        "lo": "Almost never",
+        "hi": "Very easily"
       },
       {
-        "id": "CONF-014",
-        "q": "How well do you handle hearing 'no' from a partner?",
+        "id": "CONF-048",
+        "q": "When you're frustrated, how would you describe the way you speak?",
         "type": "scale",
         "depth": 2,
-        "note": "Surfaces respect for boundaries and limits.",
+        "ref": "Proverbs 15:1",
         "guessable": true,
-        "lo": "I struggle with it",
-        "hi": "I take it easily"
-      },
-      {
-        "id": "CONF-016",
-        "q": "How much conflict feels normal and healthy in a relationship to you?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Catches the chaos-tolerance gap before it collides.",
-        "guessable": true,
-        "lo": "Almost none",
-        "hi": "Frequent is normal"
-      },
-      {
-        "id": "CONF-017",
-        "q": "How calm or high-energy do you want our home environment to feel?",
-        "type": "scale",
-        "depth": 2,
-        "note": "The peace-vs-chaos flag, framed as a shared preference.",
-        "guessable": true,
-        "lo": "Calm and quiet",
-        "hi": "Lively and high-energy"
-      },
-      {
-        "id": "CONF-018",
-        "q": "How quick is your temper?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Names the anger red flag directly as a self-rating, distinct from conflict style.",
-        "guessable": true,
-        "core": true,
-        "lo": "Very slow to anger",
-        "hi": "Quick-tempered"
-      },
-      {
-        "id": "CONF-019",
-        "q": "In a disagreement, how much does being proven right matter to you?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Philippians 2:3",
-        "note": "The 'unity over being right' value, distinct from conflict reflex (CONF-013).",
-        "guessable": true,
-        "lo": "I'd rather keep the peace",
-        "hi": "Being right matters to me"
+        "lo": "Very gentle and careful",
+        "hi": "Very direct and blunt"
       },
       {
         "id": "CONF-021",
@@ -2452,87 +3248,136 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "CONF-022",
-        "q": "When conflict happens, how readily do you take responsibility for your part?",
+        "id": "CONF-049",
+        "q": "How do you usually respond when your partner says no to something you want?",
         "type": "scale",
         "depth": 2,
-        "ref": "Matthew 7:5",
-        "note": "The ownership-vs-victim axis, distinct from conflict reflex (CONF-013).",
+        "guessable": true,
+        "lo": "I find it very difficult",
+        "hi": "I accept it easily"
+      },
+      {
+        "id": "CONF-036",
+        "q": "How readily would you ask me for help?",
+        "type": "scale",
+        "depth": 3,
+        "ref": "Galatians 6:2",
+        "note": "SELF-023 lists prayer, Scripture, counsel and own judgment as what you lean on — but never the partner. This fills that gap.",
+        "guessable": true,
+        "lo": "I'd rather work it out myself",
+        "hi": "I'd ask straight away"
+      },
+      {
+        "id": "CONF-016",
+        "q": "How much conflict feels normal and healthy in a relationship to you?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Catches the chaos-tolerance gap before it collides.",
+        "guessable": true,
+        "lo": "Almost none",
+        "hi": "Frequent is normal"
+      },
+      {
+        "id": "CONF-002",
+        "q": "How soon do you like to resolve conflict?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "James 1:19",
+        "note": "Surfaces conflict styles before they collide.",
         "guessable": true,
         "core": true,
-        "lo": "I usually feel wronged",
-        "hi": "I quickly own my part"
+        "lo": "I need space first",
+        "hi": "Address it right away"
       },
       {
-        "id": "CONF-023",
-        "q": "How okay is it to talk through our relationship problems with friends or family?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Proverbs 11:13",
-        "note": "The 'Lord first, don't vent to others' theme as a marital-discretion axis.",
-        "guessable": true,
-        "lo": "Keep it strictly between us",
-        "hi": "Fine to talk it through with others"
-      },
-      {
-        "id": "CONF-024",
-        "q": "How gentle or blunt is your way of speaking, especially when frustrated?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Proverbs 15:1",
-        "note": "The 'softer answer' theme — verbal harshness, distinct from temper (CONF-018).",
-        "guessable": true,
-        "lo": "Very gentle",
-        "hi": "Very blunt"
-      },
-      {
-        "id": "CONF-025",
-        "q": "How important is it to protect regular one-on-one time, no matter how busy we get?",
-        "type": "scale",
-        "depth": 2,
-        "note": "The 'ships passing in the night' theme; quality-time intentionality vs contact frequency (CONF-020).",
-        "guessable": true,
-        "lo": "We'll connect when we connect",
-        "hi": "We must guard dedicated time"
-      },
-      {
-        "id": "CONF-026",
-        "q": "When we argue, is it fair to bring up past mistakes?",
+        "id": "CONF-050",
+        "q": "When you are in a conflict, what are you most likely to do?",
         "type": "mc",
         "depth": 2,
-        "ref": "1 Corinthians 13:5",
-        "note": "The 'mental scorecard' theme as a conflict-style value (kitchen-sinking).",
         "guessable": true,
+        "core": true,
         "opts": [
-          "No, stay on the current issue",
-          "Only if directly relevant",
-          "Sometimes, patterns matter",
-          "Yes, the past is fair game"
+          "Try to resolve it straight away",
+          "Take some time and step away",
+          "Focus on getting my way",
+          "Give in to avoid making things worse",
+          "Look for a compromise"
         ]
       },
       {
-        "id": "CONF-027",
-        "q": "How important is it that we point out each other's blind spots?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Ephesians 4:15",
-        "note": "The blind-spot value as intensity — should we name what the other can't see?",
-        "guessable": true,
-        "lo": "Better to let things be",
-        "hi": "Very important"
-      },
-      {
-        "id": "CONF-028",
-        "q": "Should partners point out each other's blind spots?",
+        "id": "CONF-051",
+        "q": "In a disagreement, which matters more to you?",
         "type": "mc",
         "depth": 2,
-        "note": "The blind-spot value as approach — pairs with the SCALE on intensity.",
+        "ref": "Philippians 2:3",
         "guessable": true,
         "opts": [
-          "Always, lovingly",
-          "Only the big ones",
-          "Only when asked",
-          "Better to let it be"
+          "Keeping the peace",
+          "Finding a solution",
+          "Being understood",
+          "Being right",
+          "It depends on the situation"
+        ]
+      },
+      {
+        "id": "CONF-052",
+        "q": "In a disagreement, how important is it to you to be right?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Not important at all",
+        "hi": "Extremely important"
+      },
+      {
+        "id": "CONF-053",
+        "q": "When you realise mid-disagreement that you're the one in the wrong, what do you usually do?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Say so straight away and apologise",
+          "Admit it, but only once things have calmed down",
+          "Concede the point without really admitting I was wrong",
+          "Keep arguing and deal with it privately afterwards",
+          "I find it very hard to admit at all"
+        ]
+      },
+      {
+        "id": "CONF-054",
+        "q": "When we argue, how should we handle mistakes from the past?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "1 Corinthians 13:5",
+        "guessable": true,
+        "opts": [
+          "Keep them out of the current argument",
+          "Bring them up only if they're directly relevant",
+          "Bring them up if they show a pattern",
+          "The past is fair to discuss"
+        ]
+      },
+      {
+        "id": "CONF-055",
+        "q": "After a disagreement, how likely are you to recognise your own part in what happened?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Matthew 7:5",
+        "guessable": true,
+        "core": true,
+        "lo": "Very unlikely",
+        "hi": "Very likely"
+      },
+      {
+        "id": "CONF-056",
+        "q": "After a disagreement, what do you usually do first?",
+        "type": "mc",
+        "depth": 2,
+        "opts": [
+          "Think about what my partner did wrong",
+          "Think about what I could have done differently",
+          "Try to understand both sides",
+          "Wait for my partner to raise it",
+          "Put it aside and move on"
         ]
       },
       {
@@ -2551,6 +3396,58 @@ export const DECKS: Record<string, Deck> = {
           "To move on quickly",
           "To be physically close again"
         ]
+      },
+      {
+        "id": "CONF-012",
+        "q": "When you need to raise a problem, how do you prefer to do it?",
+        "type": "mc",
+        "depth": 2,
+        "note": "Surfaces how concerns and complaints get raised.",
+        "guessable": true,
+        "opts": [
+          "Address it right away",
+          "Wait for the right moment",
+          "Write or text it",
+          "Avoid it until it builds up"
+        ]
+      },
+      {
+        "id": "CONF-033",
+        "q": "How do hard conversations become safe for you?",
+        "type": "mc",
+        "depth": 3,
+        "note": "A genuine chicken-and-egg about disclosure sequencing. Distinct from SELF-001 (how easily you open up) — this is what has to be true first.",
+        "guessable": true,
+        "opts": [
+          "We get close first, then we can talk about hard things",
+          "Talking about hard things is what makes us close",
+          "A bit of both, in step",
+          "Depends entirely on the topic"
+        ]
+      },
+      {
+        "id": "CONF-034",
+        "q": "Does every problem between us need to be talked through?",
+        "type": "mc",
+        "depth": 3,
+        "ref": "Proverbs 19:11",
+        "note": "The inversion of the talk-it-out norm. CONF-002/012/013 all assume the conversation happens and ask about timing and style; this asks whether it should happen at all.",
+        "guessable": true,
+        "opts": [
+          "Yes, always",
+          "Most, but some can be let go",
+          "Only the big ones",
+          "Some things are better left alone"
+        ]
+      },
+      {
+        "id": "CONF-057",
+        "q": "How confident do you feel about handling the challenges that marriage may bring?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Not confident at all",
+        "hi": "Completely confident"
       },
       {
         "id": "CONF-030",
@@ -2598,83 +3495,51 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "CONF-033",
-        "q": "How do hard conversations become safe for you?",
-        "type": "mc",
-        "depth": 3,
-        "note": "A genuine chicken-and-egg about disclosure sequencing. Distinct from SELF-001 (how easily you open up) — this is what has to be true first.",
-        "guessable": true,
-        "opts": [
-          "We get close first, then we can talk about hard things",
-          "Talking about hard things is what makes us close",
-          "A bit of both, in step",
-          "Depends entirely on the topic"
-        ]
-      },
-      {
-        "id": "CONF-034",
-        "q": "Does every problem between us need to be talked through?",
-        "type": "mc",
-        "depth": 3,
-        "ref": "Proverbs 19:11",
-        "note": "The inversion of the talk-it-out norm. CONF-002/012/013 all assume the conversation happens and ask about timing and style; this asks whether it should happen at all.",
-        "guessable": true,
-        "opts": [
-          "Yes, always",
-          "Most, but some can be let go",
-          "Only the big ones",
-          "Some things are better left alone"
-        ]
-      },
-      {
-        "id": "CONF-036",
-        "q": "How readily would you ask me for help?",
+        "id": "CONF-058",
+        "q": "How important is it to you that your partner tells you when they notice something you may not see about yourself?",
         "type": "scale",
-        "depth": 3,
-        "ref": "Galatians 6:2",
-        "note": "SELF-023 lists prayer, Scripture, counsel and own judgment as what you lean on — but never the partner. This fills that gap.",
+        "depth": 2,
+        "ref": "Ephesians 4:15",
         "guessable": true,
-        "lo": "I'd rather work it out myself",
-        "hi": "I'd ask straight away"
+        "lo": "Not important: I'd rather work things out myself",
+        "hi": "Extremely important: I want my partner to challenge me when needed"
       },
       {
-        "id": "CONF-037",
-        "q": "When I make plans with friends, should you be invited by default?",
+        "id": "CONF-059",
+        "q": "When your partner notices something about you that you may not see yourself, how would you prefer them to raise it?",
         "type": "mc",
-        "depth": 3,
-        "note": "Everyday default inclusion, distinct from CONF-007 (solo trips, a big event) and US-030 (whether you get along with them).",
+        "depth": 2,
         "guessable": true,
         "opts": [
-          "Yes, always",
-          "Usually, unless there's a reason",
-          "No: separate friendships are healthy",
-          "Depends on the friends"
+          "Tell me directly, even if it's uncomfortable",
+          "Be gentle and choose the right moment",
+          "Ask me questions so I can notice it myself",
+          "Wait until I ask for feedback",
+          "It depends on the situation"
         ]
       },
       {
-        "id": "CONF-015",
-        "q": "How much privacy is healthy in a marriage?",
+        "id": "CONF-060",
+        "q": "How comfortable are you with talking to other people about problems in your relationship?",
         "type": "scale",
-        "depth": 4,
-        "note": "Surfaces transparency vs privacy expectations.",
+        "depth": 2,
+        "ref": "Proverbs 11:13",
         "guessable": true,
-        "lo": "Total transparency",
-        "hi": "Plenty can stay private"
+        "lo": "Not comfortable at all: I'd keep it between us",
+        "hi": "Completely comfortable: I'd have no issue talking it through with others"
       },
       {
-        "id": "CONF-035",
-        "q": "Which of these feels most okay to keep to yourself in marriage?",
+        "id": "CONF-061",
+        "q": "If you needed advice about a relationship problem, who would you be most likely to talk to first?",
         "type": "mc",
-        "depth": 4,
-        "note": "Makes CONF-015's abstract privacy scale concrete. The reveal is which specific thing each names — far more useful than a number.",
+        "depth": 2,
         "guessable": true,
-        "core": true,
         "opts": [
-          "Nothing: full openness",
-          "My private thoughts and prayers",
-          "My past",
-          "My friendships and conversations",
-          "My money"
+          "My partner: I'd try to work through it together",
+          "A close friend",
+          "A family member",
+          "A pastor or Christian mentor",
+          "A professional counsellor or therapist"
         ]
       }
     ]
@@ -2689,27 +3554,40 @@ export const DECKS: Record<string, Deck> = {
     },
     "parts": [
       {
-        "name": "Leaving and cleaving",
+        "name": "Family at the door",
         "qids": [
           "INLAW-013",
           "INLAW-014",
-          "INLAW-001",
-          "INLAW-002",
-          "INLAW-005",
-          "INLAW-006",
-          "INLAW-007"
+          "INLAW-015",
+          "INLAW-016",
+          "INLAW-011",
+          "INLAW-010",
+          "INLAW-012"
         ]
       },
       {
-        "name": "Family at the door",
+        "name": "Holidays, help and care",
         "qids": [
-          "INLAW-010",
-          "INLAW-011",
-          "INLAW-012",
-          "INLAW-003",
-          "INLAW-004",
-          "INLAW-008",
-          "INLAW-009"
+          "INLAW-017",
+          "INLAW-018",
+          "INLAW-009",
+          "INLAW-019",
+          "INLAW-020",
+          "INLAW-021",
+          "INLAW-022"
+        ]
+      },
+      {
+        "name": "Leaving and cleaving",
+        "qids": [
+          "INLAW-023",
+          "INLAW-024",
+          "INLAW-006",
+          "INLAW-025",
+          "INLAW-026",
+          "INLAW-027",
+          "INLAW-028",
+          "INLAW-029"
         ]
       }
     ],
@@ -2741,73 +3619,28 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I genuinely love it"
       },
       {
-        "id": "INLAW-001",
-        "q": "How firm should our boundaries with extended family be?",
+        "id": "INLAW-015",
+        "q": "How involved would you want our extended families to be in our everyday married life?",
         "type": "scale",
         "depth": 2,
         "ref": "Genesis 2:24",
-        "note": "Surfaces boundaries with extended family before tensions arise.",
         "guessable": true,
         "core": true,
-        "lo": "Keep family very involved",
-        "hi": "Firm boundaries"
+        "lo": "Quite separate: our married life would mainly be our own",
+        "hi": "Deeply involved: I'd want family to be a major part of our everyday life"
       },
       {
-        "id": "INLAW-002",
-        "q": "How should we handle holidays between both families?",
+        "id": "INLAW-016",
+        "q": "How comfortable would you be with our parents or close family dropping by our home without arranging it first?",
         "type": "mc",
         "depth": 2,
-        "note": "Surfaces holiday and family-time expectations.",
         "guessable": true,
         "opts": [
-          "Alternate fairly each year",
-          "Mostly all together",
-          "Start our own traditions",
-          "Play it by ear"
-        ]
-      },
-      {
-        "id": "INLAW-005",
-        "q": "How important is it to you that both our families support our relationship?",
-        "type": "scale",
-        "depth": 2,
-        "note": "The 'both families are at peace' flag as a shared value.",
-        "guessable": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
-      {
-        "id": "INLAW-006",
-        "q": "How much do your parents influence your decisions?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Parental-influence level, distinct from leave-and-cleave (INLAW-004); thin category.",
-        "guessable": true,
-        "lo": "I decide independently",
-        "hi": "I lean on them heavily"
-      },
-      {
-        "id": "INLAW-007",
-        "q": "As a couple, how much should we make big decisions on our own versus with our parents' input?",
-        "type": "scale",
-        "depth": 2,
-        "note": "The couple's stance on parental input, distinct from how much parents influence you (INLAW-006).",
-        "guessable": true,
-        "lo": "On our own",
-        "hi": "With our parents' input"
-      },
-      {
-        "id": "INLAW-010",
-        "q": "How often should we see each set of parents?",
-        "type": "mc",
-        "depth": 3,
-        "note": "INLAW-001 rates boundary firmness on a scale. This is the actual number, which is what people argue about.",
-        "guessable": true,
-        "opts": [
-          "Weekly or more",
-          "Monthly",
-          "A few times a year",
-          "As little as we can manage"
+          "Very uncomfortable: I'd want visits arranged",
+          "Mostly uncomfortable",
+          "It depends who it is",
+          "Mostly comfortable",
+          "Completely comfortable: close family should feel welcome anytime"
         ]
       },
       {
@@ -2825,6 +3658,20 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "INLAW-010",
+        "q": "How often should we see each set of parents?",
+        "type": "mc",
+        "depth": 3,
+        "note": "INLAW-001 rates boundary firmness on a scale. This is the actual number, which is what people argue about.",
+        "guessable": true,
+        "opts": [
+          "Weekly or more",
+          "Monthly",
+          "A few times a year",
+          "As little as we can manage"
+        ]
+      },
+      {
         "id": "INLAW-012",
         "q": "How close should we live to family?",
         "type": "mc",
@@ -2839,46 +3686,31 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "INLAW-003",
-        "q": "How should we approach caring for aging parents?",
+        "id": "INLAW-017",
+        "q": "How would you ideally want us to divide major holidays between our families?",
         "type": "mc",
-        "depth": 4,
-        "ref": "1 Timothy 5:8",
-        "note": "Surfaces expectations about caring for aging parents.",
+        "depth": 2,
         "guessable": true,
         "opts": [
-          "They live with us if needed",
-          "We support but keep separate homes",
-          "Shared with siblings",
-          "Haven't thought about it"
+          "Alternate between families from year to year",
+          "Split the holiday between both families where possible",
+          "Bring both families together",
+          "Build our own traditions and see family around them",
+          "Decide separately each year depending on circumstances"
         ]
       },
       {
-        "id": "INLAW-004",
-        "q": "How ready are you to put your spouse before your parents?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Surfaces 'leave and cleave' and healthy independence.",
-        "guessable": true,
-        "notYet": true,
-        "core": true,
-        "lo": "It would be hard",
-        "hi": "Fully ready"
-      },
-      {
-        "id": "INLAW-008",
-        "q": "If your family disrespected me, what would you do?",
+        "id": "INLAW-018",
+        "q": "If both families strongly expected us to spend the same major holiday with them, how should we decide?",
         "type": "mc",
-        "depth": 4,
-        "ref": "Genesis 2:24",
-        "note": "The defence question. INLAW-004 asks readiness to put a spouse before parents in principle; this is the moment that principle gets tested, and the honest fourth option is the one people recognise.",
+        "depth": 2,
         "guessable": true,
-        "core": true,
         "opts": [
-          "Address it with them immediately",
-          "Talk to you first, then decide",
-          "Let it go to keep the peace",
-          "I'd struggle to say anything"
+          "Alternate fairly",
+          "Prioritise whichever family we saw less",
+          "Prioritise the family for whom that tradition matters most",
+          "Celebrate mainly as our own household and see both families separately",
+          "The husband and wife should decide case by case together"
         ]
       },
       {
@@ -2894,6 +3726,161 @@ export const DECKS: Record<string, Deck> = {
           "Help in a genuine crisis",
           "Whatever they're willing to offer"
         ]
+      },
+      {
+        "id": "INLAW-019",
+        "q": "If our families have different cultural or family traditions, how should we decide which ones become part of our home?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Mainly follow the husband's family traditions",
+          "Mainly follow the wife's family traditions",
+          "Blend traditions from both families",
+          "Create mostly new traditions of our own",
+          "Decide tradition by tradition"
+        ]
+      },
+      {
+        "id": "INLAW-020",
+        "q": "If one of our parents could no longer live independently, what would you ideally want us to do?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "1 Timothy 5:8",
+        "guessable": true,
+        "opts": [
+          "Have them live with us",
+          "Help them live independently nearby",
+          "Arrange professional or supported care",
+          "Share their care with siblings or wider family",
+          "Not sure yet"
+        ]
+      },
+      {
+        "id": "INLAW-021",
+        "q": "How willing would you be to have one of our parents live with us permanently if they needed care?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "Not willing",
+        "hi": "I would see it as our responsibility if needed"
+      },
+      {
+        "id": "INLAW-022",
+        "q": "How much should we be willing to change our lifestyle to care for an ageing parent?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "Very little: our household has to come first",
+        "hi": "Whatever is reasonably necessary to honour and care for them"
+      },
+      {
+        "id": "INLAW-023",
+        "q": "How important would it be to you for your spouse to have a close relationship with your family?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Not important: respect is enough",
+        "hi": "Extremely important: I'd want my spouse to feel like part of my family"
+      },
+      {
+        "id": "INLAW-024",
+        "q": "If you loved your family but your spouse never became particularly close to them, how would you feel?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Completely fine as long as everyone is respectful",
+          "Slightly disappointed, but I could accept it",
+          "It would bother me quite a lot",
+          "I would see it as a significant relationship problem",
+          "It would depend on why they weren't close"
+        ]
+      },
+      {
+        "id": "INLAW-006",
+        "q": "How much do your parents influence your decisions?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Parental-influence level, distinct from leave-and-cleave (INLAW-004); thin category.",
+        "guessable": true,
+        "lo": "I decide independently",
+        "hi": "I lean on them heavily"
+      },
+      {
+        "id": "INLAW-025",
+        "q": "After we're married, how much influence should our parents have over our major decisions?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Decisions should be ours; involve parents only if we choose",
+          "Seek their advice, but make the decision ourselves",
+          "Seek their advice and give it significant weight",
+          "For major decisions, I'd want their blessing before we move forward",
+          "It depends on the decision"
+        ]
+      },
+      {
+        "id": "INLAW-026",
+        "q": "Which areas would you most value our parents' advice on? Rank them from most to least.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "Marriage and relationship issues",
+          "Raising children",
+          "Money and major financial decisions",
+          "Career and where we live",
+          "Faith and church decisions",
+          "Caring for family members"
+        ]
+      },
+      {
+        "id": "INLAW-027",
+        "q": "When what your spouse wants and what your parents want genuinely conflict, whose wishes should normally come first?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "notYet": true,
+        "core": true,
+        "opts": [
+          "My spouse should normally come first",
+          "My spouse should come first unless I believe they're clearly wrong",
+          "Both should carry roughly equal weight",
+          "My responsibilities to my parents may sometimes come first",
+          "We should do as our parents say and honour their decisions even if we don't agree",
+          "I'm not sure"
+        ]
+      },
+      {
+        "id": "INLAW-028",
+        "q": "If one of our families was crossing a boundary in our marriage, who should normally address it?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "The person whose family it is",
+          "We should address it together",
+          "Either of us should feel free to address it directly",
+          "The husband should normally take the lead in protecting the marriage",
+          "It depends on the situation"
+        ]
+      },
+      {
+        "id": "INLAW-029",
+        "q": "If one of your parents repeatedly disrespected your spouse, how far should you be willing to go to protect your marriage?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Speak privately to my parent and ask them to stop",
+          "Set clear boundaries with my parent",
+          "Reduce how much contact we have if it continues",
+          "Cut contact for a period if necessary",
+          "My spouse should try to tolerate it because they're still my parent",
+          "It depends on how serious the behaviour is"
+        ]
       }
     ]
   },
@@ -2907,58 +3894,158 @@ export const DECKS: Record<string, Deck> = {
     },
     "parts": [
       {
+        "name": "Date nights and laughs",
+        "qids": [
+          "FUN-024",
+          "FUN-025",
+          "FUN-026",
+          "FUN-027",
+          "FUN-028",
+          "FUN-029",
+          "FUN-030",
+          "FUN-031"
+        ]
+      },
+      {
         "name": "Who’s more likely…",
         "qids": [
-          "FUN-010",
           "FUN-008",
-          "FUN-023",
           "FUN-009",
+          "FUN-010",
           "FUN-011",
-          "FUN-002",
-          "FUN-003",
-          "FUN-004"
+          "FUN-012",
+          "FUN-013",
+          "FUN-014",
+          "FUN-015"
         ]
       },
       {
         "name": "Lazy Sundays",
         "qids": [
-          "FUN-005",
-          "FUN-006",
-          "FUN-001",
-          "FUN-007",
-          "FUN-016",
-          "FUN-017",
-          "FUN-020",
-          "FUN-022"
+          "FUN-032",
+          "FUN-033",
+          "FUN-034",
+          "FUN-035",
+          "FUN-036",
+          "FUN-037",
+          "FUN-038"
         ]
       },
       {
         "name": "The cheeky round",
         "qids": [
-          "FUN-012",
-          "FUN-013",
-          "FUN-014",
-          "FUN-015",
+          "FUN-007",
+          "FUN-016",
+          "FUN-020",
+          "FUN-023",
           "FUN-018",
           "FUN-019",
-          "FUN-021"
+          "FUN-021",
+          "FUN-039"
         ]
       }
     ],
     "questions": [
       {
-        "id": "FUN-010",
-        "q": "Who's more likely to be running late?",
+        "id": "FUN-024",
+        "q": "If we were planning a date night, what would you most enjoy?",
         "type": "mc",
         "depth": 1,
-        "note": "Light, concrete, and the source of more real friction than most couples admit before living together.",
         "guessable": true,
-        "who": true,
         "opts": [
-          "{A}",
-          "{B}",
-          "Both of us, equally",
-          "Neither of us"
+          "Going somewhere for great food",
+          "Doing an activity or adventure",
+          "A cosy night in together",
+          "Going to a show, concert or event",
+          "Doing something spontaneous we haven't tried before"
+        ]
+      },
+      {
+        "id": "FUN-025",
+        "q": "If we had a completely free day together, how would you most want to spend it?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Relaxing at home",
+          "Exploring somewhere new",
+          "Doing something active or outdoors",
+          "Spending time with friends or family",
+          "Working on a hobby or project together"
+        ]
+      },
+      {
+        "id": "FUN-026",
+        "q": "How planned or spontaneous would you want our fun together to be?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "I love having things planned well in advance",
+        "hi": "I love deciding what to do in the moment"
+      },
+      {
+        "id": "FUN-027",
+        "q": "If we had to choose something to watch together, what would you pick first?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Comedy",
+          "Action or thriller",
+          "Drama or romance",
+          "Documentary or true story",
+          "Fantasy, sci-fi or animation"
+        ]
+      },
+      {
+        "id": "FUN-028",
+        "q": "How do you feel about surprises from me?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "I love being surprised",
+          "I like small surprises, but not big ones",
+          "I like surprises if you know it's something I'll enjoy",
+          "I'd usually rather know what's happening",
+          "It depends on the situation"
+        ]
+      },
+      {
+        "id": "FUN-029",
+        "q": "How competitive do you get when we're playing a game or competing against each other?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "I really don't care who wins",
+        "hi": "I really want to win"
+      },
+      {
+        "id": "FUN-030",
+        "q": "What kind of humour makes you laugh the most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Silly and playful",
+          "Dry or deadpan",
+          "Clever or witty",
+          "Teasing and banter",
+          "Funny stories and everyday observations"
+        ]
+      },
+      {
+        "id": "FUN-031",
+        "q": "When we're having fun together, what matters most to you? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 1,
+        "opts": [
+          "Laughing together",
+          "Relaxing",
+          "Trying something new",
+          "Having quality time together",
+          "Being active",
+          "Being around other people"
         ]
       },
       {
@@ -2967,21 +4054,6 @@ export const DECKS: Record<string, Deck> = {
         "type": "mc",
         "depth": 1,
         "note": "A pure warm-up. Costs nothing, wrong answers are charming, and it teaches the guess mechanic before anything is at stake.",
-        "guessable": true,
-        "who": true,
-        "opts": [
-          "{A}",
-          "{B}",
-          "Both of us, equally",
-          "Neither of us"
-        ]
-      },
-      {
-        "id": "FUN-023",
-        "q": "Who's more likely to overthink a text?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Warm-up hook — modern and instantly relatable; universal options.",
         "guessable": true,
         "who": true,
         "opts": [
@@ -3007,6 +4079,21 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "FUN-010",
+        "q": "Who's more likely to be running late?",
+        "type": "mc",
+        "depth": 1,
+        "note": "Light, concrete, and the source of more real friction than most couples admit before living together.",
+        "guessable": true,
+        "who": true,
+        "opts": [
+          "{A}",
+          "{B}",
+          "Both of us, equally",
+          "Neither of us"
+        ]
+      },
+      {
         "id": "FUN-011",
         "q": "Who's more likely to fall asleep during the sermon?",
         "type": "mc",
@@ -3019,163 +4106,6 @@ export const DECKS: Record<string, Deck> = {
           "{B}",
           "Both of us, equally",
           "Neither of us"
-        ]
-      },
-      {
-        "id": "FUN-002",
-        "q": "What's your ideal way to spend a free day?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Light look at how each likes to spend time and where it overlaps.",
-        "guessable": true,
-        "opts": [
-          "Out adventuring",
-          "Cozy at home",
-          "With friends",
-          "Tackling projects"
-        ]
-      },
-      {
-        "id": "FUN-003",
-        "q": "Of all the things I love doing, which would you secretly rather sit out?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Clears the air on shared vs solo activities, honestly.",
-        "guessable": true,
-        "opts": [
-          "Your hobbies",
-          "Big group things",
-          "Church events",
-          "Family visits",
-          "Nothing: I'm in for all of it"
-        ]
-      },
-      {
-        "id": "FUN-004",
-        "q": "A perfect evening in together looks like…",
-        "type": "mc",
-        "depth": 1,
-        "note": "A warm opener about how each likes to spend time together — reframed from a TV-pick question that set a slightly disengaged tone for a couples app.",
-        "guessable": true,
-        "opts": [
-          "A film under a blanket",
-          "Cooking something together",
-          "Same room, both doing our own thing",
-          "Talking for hours",
-          "Friends round"
-        ]
-      },
-      {
-        "id": "FUN-005",
-        "q": "Surprise inheritance, money's no object. What actually happens?",
-        "type": "mc",
-        "depth": 1,
-        "note": "A fun hypothetical that quietly surfaces values.",
-        "guessable": true,
-        "opts": [
-          "We quit and travel",
-          "Buy a house outright",
-          "Give a big chunk away",
-          "Barely change anything",
-          "Start something of our own"
-        ]
-      },
-      {
-        "id": "FUN-006",
-        "q": "How much of your free time do you want to spend on your own hobbies versus together?",
-        "type": "scale",
-        "depth": 1,
-        "note": "Leisure allocation, distinct from solitude-to-recharge (SELF-013).",
-        "guessable": true,
-        "lo": "Mostly together",
-        "hi": "Lots of independent time"
-      },
-      {
-        "id": "FUN-001",
-        "q": "When it comes to food, what are you?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Reframed from a pick-a-cuisine question (too limiting — the options excluded whole tastes). Now captures the underlying value: your disposition toward food, which is what actually aligns.",
-        "guessable": true,
-        "opts": [
-          "Adventurous: I'll try anything",
-          "Give me my comfort favourites",
-          "Health comes first",
-          "Quick and easy: food's just fuel",
-          "A proper foodie: I live for it"
-        ]
-      },
-      {
-        "id": "FUN-007",
-        "q": "You've got a free evening and I'm busy. What's your instinct?",
-        "type": "mc",
-        "depth": 1,
-        "note": "A light, behavioural read on independence that lands the same construct as the solitude scales without asking anyone to rate themselves.",
-        "guessable": true,
-        "opts": [
-          "Go do something on my own",
-          "Save it for when we're both free",
-          "Call a friend",
-          "Stay in and rest"
-        ]
-      },
-      {
-        "id": "FUN-016",
-        "q": "Who gets the remote?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Replaces the open-ended half of FUN-004 with something that actually plays.",
-        "guessable": true,
-        "who": true,
-        "opts": [
-          "{A}",
-          "{B}",
-          "Both of us, equally",
-          "Neither of us"
-        ]
-      },
-      {
-        "id": "FUN-017",
-        "q": "Pick our holiday.",
-        "type": "mc",
-        "depth": 1,
-        "note": "A fast, high-agreement-value preference with zero threat. Good early filler that still produces a real reveal.",
-        "guessable": true,
-        "opts": [
-          "Beach and absolutely nothing",
-          "A city, museums and food",
-          "Mountains and walking",
-          "Somewhere neither of us has been",
-          "All-inclusive, no decisions"
-        ]
-      },
-      {
-        "id": "FUN-020",
-        "q": "Be honest: how good a cook are you?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Pairs with HOME-001. Someone can say 'we'd share the cooking' and also admit they can't cook, and the collision of those two answers is the joke and the point.",
-        "guessable": true,
-        "opts": [
-          "Genuinely good",
-          "Perfectly fine",
-          "Depends entirely on the recipe",
-          "I'd be relying on you"
-        ]
-      },
-      {
-        "id": "FUN-022",
-        "q": "Sunday afternoon, nothing planned. What's the dream?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Distinct from FUN-002 (a whole free day) — this is the specific dead hour every couple has to negotiate every week.",
-        "guessable": true,
-        "opts": [
-          "A nap",
-          "Out for a walk",
-          "See friends",
-          "A project at home",
-          "Whatever you fancy"
         ]
       },
       {
@@ -3239,6 +4169,148 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "FUN-032",
+        "q": "How much of our free time would you want us to spend on shared hobbies versus doing our own things?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "I'd love us to do most things together",
+        "hi": "I'd want us both to have lots of our own hobbies"
+      },
+      {
+        "id": "FUN-033",
+        "q": "If we were choosing a trip purely for fun, which would you pick first?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Beach and relaxation",
+          "City, food and culture",
+          "Nature and adventure",
+          "A road trip exploring different places",
+          "Somewhere completely new and unfamiliar"
+        ]
+      },
+      {
+        "id": "FUN-034",
+        "q": "If we were choosing somewhere to eat, what would excite you most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Going back to a favourite place",
+          "Trying a cuisine we've never had before",
+          "Somewhere casual with really good food",
+          "Dressing up for somewhere special",
+          "Staying in and cooking something together"
+        ]
+      },
+      {
+        "id": "FUN-035",
+        "q": "Which kinds of memories would you most want us to create together? Rank them from most important to least important.",
+        "type": "rank",
+        "depth": 1,
+        "opts": [
+          "Trips and adventures",
+          "Celebrations and traditions",
+          "Food and experiences",
+          "Shared hobbies or projects",
+          "Serving or helping other people together",
+          "Quiet everyday moments together"
+        ]
+      },
+      {
+        "id": "FUN-036",
+        "q": "If we wanted to do different things with our free time, what would you usually prefer?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Take turns choosing",
+          "Find something we both enjoy",
+          "Let whoever cares more choose",
+          "Do separate things and enjoy our own interests",
+          "Decide depending on the situation"
+        ]
+      },
+      {
+        "id": "FUN-037",
+        "q": "How would you most want us to celebrate something special like a birthday or anniversary?",
+        "type": "mc",
+        "depth": 1,
+        "opts": [
+          "A thoughtful meal together",
+          "A trip or experience",
+          "A big celebration with other people",
+          "A meaningful gift or surprise",
+          "Something simple and private together"
+        ]
+      },
+      {
+        "id": "FUN-038",
+        "q": "What's something fun you'd love for us to try together that we haven't done yet?",
+        "type": "open",
+        "depth": 1
+      },
+      {
+        "id": "FUN-007",
+        "q": "You've got a free evening and I'm busy. What's your instinct?",
+        "type": "mc",
+        "depth": 1,
+        "note": "A light, behavioural read on independence that lands the same construct as the solitude scales without asking anyone to rate themselves.",
+        "guessable": true,
+        "opts": [
+          "Go do something on my own",
+          "Save it for when we're both free",
+          "Call a friend",
+          "Stay in and rest"
+        ]
+      },
+      {
+        "id": "FUN-016",
+        "q": "Who gets the remote?",
+        "type": "mc",
+        "depth": 1,
+        "note": "Replaces the open-ended half of FUN-004 with something that actually plays.",
+        "guessable": true,
+        "who": true,
+        "opts": [
+          "{A}",
+          "{B}",
+          "Both of us, equally",
+          "Neither of us"
+        ]
+      },
+      {
+        "id": "FUN-020",
+        "q": "Be honest: how good a cook are you?",
+        "type": "mc",
+        "depth": 1,
+        "note": "Pairs with HOME-001. Someone can say 'we'd share the cooking' and also admit they can't cook, and the collision of those two answers is the joke and the point.",
+        "guessable": true,
+        "opts": [
+          "Genuinely good",
+          "Perfectly fine",
+          "Depends entirely on the recipe",
+          "I'd be relying on you"
+        ]
+      },
+      {
+        "id": "FUN-023",
+        "q": "Who's more likely to overthink a text?",
+        "type": "mc",
+        "depth": 1,
+        "note": "Warm-up hook — modern and instantly relatable; universal options.",
+        "guessable": true,
+        "who": true,
+        "opts": [
+          "{A}",
+          "{B}",
+          "Both of us, equally",
+          "Neither of us"
+        ]
+      },
+      {
         "id": "FUN-018",
         "q": "What's the most annoying thing you could do that I'd have to live with?",
         "type": "mc",
@@ -3280,6 +4352,21 @@ export const DECKS: Record<string, Deck> = {
           "Abroad, just us",
           "I honestly have no idea"
         ]
+      },
+      {
+        "id": "FUN-039",
+        "q": "Who's quicker at making a decision?",
+        "type": "mc",
+        "depth": 1,
+        "note": "Light HHB entry that sits directly upstream of the tiebreak question later in the deck.",
+        "guessable": true,
+        "who": true,
+        "opts": [
+          "{A}",
+          "{B}",
+          "About the same",
+          "Neither of us: it's painful"
+        ]
       }
     ]
   },
@@ -3298,35 +4385,31 @@ export const DECKS: Record<string, Deck> = {
           "DEAL-022",
           "DEAL-023",
           "DEAL-003",
-          "DEAL-013",
-          "DEAL-018",
-          "DEAL-001",
-          "DEAL-002",
-          "DEAL-004"
+          "DEAL-024",
+          "DEAL-025",
+          "DEAL-020"
         ]
       },
       {
         "name": "Lines you won’t cross",
         "qids": [
-          "DEAL-005",
-          "DEAL-006",
+          "DEAL-004",
           "DEAL-007",
+          "DEAL-006",
           "DEAL-008",
-          "DEAL-009",
-          "DEAL-010",
-          "DEAL-011",
+          "DEAL-026",
+          "DEAL-027",
           "DEAL-012"
         ]
       },
       {
         "name": "When life changes",
         "qids": [
-          "DEAL-014",
-          "DEAL-015",
-          "DEAL-016",
+          "DEAL-010",
           "DEAL-017",
           "DEAL-019",
-          "DEAL-020",
+          "DEAL-014",
+          "DEAL-013",
           "DEAL-021"
         ]
       }
@@ -3360,79 +4443,55 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DEAL-003",
-        "q": "What's the one thing about you you'd never change for anyone?",
-        "type": "mc",
+        "q": "What's one thing you would never be willing to give up for a relationship?",
+        "type": "open",
         "depth": 2,
-        "note": "Surfaces core, unchangeable values.",
-        "guessable": true,
-        "opts": [
-          "My faith",
-          "My independence",
-          "My honesty, even when it costs me",
-          "My ambition",
-          "How close I am to my family"
-        ]
+        "note": "Surfaces core, unchangeable values."
       },
       {
-        "id": "DEAL-013",
-        "q": "If you found out I'd hidden significant debt from you, what would that be?",
-        "type": "mc",
-        "depth": 4,
-        "ref": "Ephesians 4:25",
-        "note": "FIN-013 asks people to disclose their debt. This asks what happens if they didn't — and the framing puts the weight on the concealment rather than the number, which is where it belongs.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "A deal-breaker: it's the hiding, not the money",
-          "A serious problem, but we'd work through it",
-          "Frustrating, but survivable",
-          "Not really a big deal"
-        ]
-      },
-      {
-        "id": "DEAL-018",
-        "q": "If our marriage was in real trouble and one of us refused counselling, what then?",
-        "type": "mc",
-        "depth": 4,
-        "note": "US-013 asks whether you're open to counselling. This asks what happens when the other person isn't — which is the actual scenario, since the partner who needs it most is usually the one refusing.",
-        "guessable": true,
-        "opts": [
-          "I'd go on my own",
-          "I'd bring in our pastor or mentors",
-          "I'd push until you came",
-          "I'd probably give up"
-        ]
-      },
-      {
-        "id": "DEAL-001",
-        "q": "Rank these from most to least of a deal-breaker for you.",
+        "id": "DEAL-024",
+        "q": "What matters most to you in a partner? Rank these from most important to least important.",
         "type": "rank",
         "depth": 5,
-        "note": "Names genuine non-negotiables out loud.",
+        "opts": [
+          "Faith",
+          "Kindness",
+          "Loyalty",
+          "honesty",
+          "Attraction",
+          "Shared goals",
+          "Humour",
+          "Ambition"
+        ]
+      },
+      {
+        "id": "DEAL-025",
+        "q": "Which of these would be the biggest deal-breaker for you? Rank them from biggest to smallest.",
+        "type": "rank",
+        "depth": 5,
         "core": true,
         "opts": [
           "Dishonesty",
           "Disrespect",
-          "A different faith",
-          "Addiction",
           "Unfaithfulness",
-          "Laziness"
+          "Lack of effort",
+          "Lack of responsibility",
+          "Poor communication"
         ]
       },
       {
-        "id": "DEAL-002",
-        "q": "Rank your must-haves in a spouse, most important first.",
+        "id": "DEAL-020",
+        "q": "Rank these from easiest to hardest to recover from.",
         "type": "rank",
         "depth": 5,
-        "note": "Names non-negotiables on both sides.",
+        "note": "DEAL-001 ranks what would end things. This assumes you stay and ranks the cost of staying — a different question, and the order reveals what each person quietly thinks a marriage can absorb.",
         "opts": [
-          "Faith",
-          "Kindness",
-          "Ambition",
-          "Humour",
-          "Loyalty",
-          "Attraction",
-          "Shared goals"
+          "An affair",
+          "A serious lie about money",
+          "Losing their faith",
+          "A long depression",
+          "Their family turning on us",
+          "Slowly growing apart"
         ]
       },
       {
@@ -3451,31 +4510,6 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "DEAL-005",
-        "q": "Could you stay with someone who became unfaithful?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces where each lands on infidelity before it's ever tested.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "No, that's the end",
-          "I'd try to work through it",
-          "It would depend on the circumstances",
-          "I'd forgive and rebuild"
-        ]
-      },
-      {
-        "id": "DEAL-006",
-        "q": "How much would a serious addiction be a deal-breaker for you?",
-        "type": "scale",
-        "depth": 5,
-        "note": "Names the addiction line directly.",
-        "guessable": true,
-        "lo": "I could work through it",
-        "hi": "An absolute deal-breaker"
-      },
-      {
         "id": "DEAL-007",
         "q": "Could you marry someone who never wants children, when you do?",
         "type": "mc",
@@ -3488,6 +4522,16 @@ export const DECKS: Record<string, Deck> = {
           "I could let it go",
           "I'm flexible on kids"
         ]
+      },
+      {
+        "id": "DEAL-006",
+        "q": "How much would a serious addiction be a deal-breaker for you?",
+        "type": "scale",
+        "depth": 5,
+        "note": "Names the addiction line directly.",
+        "guessable": true,
+        "lo": "I could work through it",
+        "hi": "An absolute deal-breaker"
       },
       {
         "id": "DEAL-008",
@@ -3504,47 +4548,30 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "DEAL-009",
-        "q": "Could you marry someone your family strongly disapproved of?",
+        "id": "DEAL-026",
+        "q": "If your family strongly disapproved of your partner, could you still marry them?",
         "type": "mc",
         "depth": 5,
-        "note": "Family approval as a make-or-break, distinct from family-support (INLAW-005).",
         "guessable": true,
         "opts": [
-          "No",
-          "I'd hesitate a lot",
-          "Yes, if I was sure",
-          "My family's view wouldn't decide it"
+          "No, I couldn't go against my family",
+          "I'd have serious doubts",
+          "Yes, if I was confident in the relationship",
+          "Yes, my family's opinion wouldn't decide it"
         ]
       },
       {
-        "id": "DEAL-010",
-        "q": "If I walked away from my faith after we married, what would you do?",
+        "id": "DEAL-027",
+        "q": "If your partner was unfaithful, could you stay in the relationship?",
         "type": "mc",
         "depth": 5,
-        "ref": "1 Corinthians 7:12-14",
-        "note": "The single biggest hole in the bank. DEAL-004 asks whether you'd marry an unbeliever; it never asks what happens if you marry a believer who stops being one. For this audience that is the most common catastrophe there is, and almost no couple discusses it because it feels like inviting it.",
-        "guessable": true,
-        "opts": [
-          "It would change everything between us",
-          "I'd stay, and pray you back",
-          "We'd find a way to live with it",
-          "It wouldn't change how I feel about us"
-        ]
-      },
-      {
-        "id": "DEAL-011",
-        "q": "If a marriage became physically abusive, what should happen?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Abuse currently appears exactly once in the entire bank, buried as one option inside VAL-004's divorce list. The options here include positions the app does not endorse — that is the point. A person deserves to know before the wedding whether their partner believes leaving is ever permitted.",
         "guessable": true,
         "core": true,
         "opts": [
-          "Leave immediately, no question",
-          "Leave, and consider reconciliation only after real, proven change",
-          "Separate, and bring the church in",
-          "Stay and work through it"
+          "No, that would be the end of the relationship",
+          "I would try to work through it",
+          "It would depend on what happened",
+          "I would forgive them and try to rebuild the relationship"
         ]
       },
       {
@@ -3563,45 +4590,18 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "DEAL-014",
-        "q": "If something serious from my past surfaced years into our marriage, what would matter most to you?",
+        "id": "DEAL-010",
+        "q": "If I walked away from my faith after we married, what would you do?",
         "type": "mc",
         "depth": 5,
-        "note": "Pairs directly with PAST-002, which asks people to disclose. This asks what the reaction would be — and the reaction is what determines whether the disclosure ever happens at all.",
+        "ref": "1 Corinthians 7:12-14",
+        "note": "The single biggest hole in the bank. DEAL-004 asks whether you'd marry an unbeliever; it never asks what happens if you marry a believer who stops being one. For this audience that is the most common catastrophe there is, and almost no couple discusses it because it feels like inviting it.",
         "guessable": true,
         "opts": [
-          "That you told me yourself, even years late",
-          "What it actually was",
-          "Why you kept it from me",
-          "Nothing: the hiding would be the end of it"
-        ]
-      },
-      {
-        "id": "DEAL-015",
-        "q": "If one of us developed a serious long-term illness, what's your honest expectation of yourself?",
-        "type": "mc",
-        "depth": 5,
-        "note": "In sickness and in health, asked before it's a vow. Framed as self-assessment rather than 'would you leave' — nobody answers that one honestly, and everyone answers this one.",
-        "guessable": true,
-        "opts": [
-          "I'd carry it without question",
-          "I'd struggle, but I'd stay",
-          "I honestly don't know how I'd cope",
-          "I'd need a lot of support to manage it"
-        ]
-      },
-      {
-        "id": "DEAL-016",
-        "q": "If we found we could never have children, what would that mean for us?",
-        "type": "mc",
-        "depth": 5,
-        "note": "FAM-002 covers openness to fertility treatment. This is the outcome that treatment doesn't fix, and the last option is one people think and never say.",
-        "guessable": true,
-        "opts": [
-          "We'd grieve and build a different life",
-          "We'd pursue every option there is",
-          "We'd adopt or foster",
-          "I think it would really damage us"
+          "It would change everything between us",
+          "I'd stay, and pray you back",
+          "We'd find a way to live with it",
+          "It wouldn't change how I feel about us"
         ]
       },
       {
@@ -3629,18 +4629,33 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I'd struggle with it"
       },
       {
-        "id": "DEAL-020",
-        "q": "Rank these from easiest to hardest to recover from.",
-        "type": "rank",
+        "id": "DEAL-014",
+        "q": "If something serious from my past surfaced years into our marriage, what would matter most to you?",
+        "type": "mc",
         "depth": 5,
-        "note": "DEAL-001 ranks what would end things. This assumes you stay and ranks the cost of staying — a different question, and the order reveals what each person quietly thinks a marriage can absorb.",
+        "note": "Pairs directly with PAST-002, which asks people to disclose. This asks what the reaction would be — and the reaction is what determines whether the disclosure ever happens at all.",
+        "guessable": true,
         "opts": [
-          "An affair",
-          "A serious lie about money",
-          "Losing their faith",
-          "A long depression",
-          "Their family turning on us",
-          "Slowly growing apart"
+          "That you told me yourself, even years late",
+          "What it actually was",
+          "Why you kept it from me",
+          "Nothing: the hiding would be the end of it"
+        ]
+      },
+      {
+        "id": "DEAL-013",
+        "q": "If you found out I'd hidden significant debt from you, what would that be?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "Ephesians 4:25",
+        "note": "FIN-013 asks people to disclose their debt. This asks what happens if they didn't — and the framing puts the weight on the concealment rather than the number, which is where it belongs.",
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "A deal-breaker: it's the hiding, not the money",
+          "A serious problem, but we'd work through it",
+          "Frustrating, but survivable",
+          "Not really a big deal"
         ]
       },
       {
@@ -3666,16 +4681,26 @@ export const DECKS: Record<string, Deck> = {
     "icon": "leaf",
     "parts": [
       {
-        "name": "Habits and health",
+        "name": "Habits and rhythms",
         "qids": [
-          "HEALTH-001",
-          "HEALTH-002",
-          "HEALTH-003",
-          "HEALTH-008",
+          "HEALTH-011",
+          "HEALTH-012",
+          "HEALTH-013",
+          "HEALTH-014",
           "HEALTH-009",
-          "HEALTH-010",
-          "HEALTH-004",
-          "HEALTH-007",
+          "HEALTH-015",
+          "HEALTH-016"
+        ]
+      },
+      {
+        "name": "Screens, drink and health",
+        "qids": [
+          "HEALTH-017",
+          "HEALTH-018",
+          "HEALTH-019",
+          "HEALTH-020",
+          "HEALTH-021",
+          "HEALTH-022",
           "HEALTH-005",
           "HEALTH-006"
         ]
@@ -3683,52 +4708,46 @@ export const DECKS: Record<string, Deck> = {
     ],
     "questions": [
       {
-        "id": "HEALTH-001",
-        "q": "Where do your eating habits fall?",
+        "id": "HEALTH-011",
+        "q": "How health-conscious would you want us to be about what we eat day to day?",
         "type": "scale",
         "depth": 1,
-        "note": "Surfaces daily food and lifestyle compatibility.",
         "guessable": true,
-        "lo": "Very health-focused",
-        "hi": "Whatever tastes good"
+        "lo": "Very relaxed: enjoyment and convenience matter most",
+        "hi": "Very health-conscious: nutrition would be a major priority"
       },
       {
-        "id": "HEALTH-002",
-        "q": "How often do you like to see friends - what's your ideal social rhythm?",
+        "id": "HEALTH-012",
+        "q": "How active would you ideally want our lifestyle to be?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "Mostly relaxed: exercise wouldn't be a big part of our lifestyle",
+        "hi": "Fitness and physical activity would be a major part of our lifestyle"
+      },
+      {
+        "id": "HEALTH-013",
+        "q": "How would you most enjoy staying active together?",
         "type": "mc",
         "depth": 1,
-        "note": "Surfaces how social or homebound each likes to be.",
         "guessable": true,
         "opts": [
-          "Rarely",
-          "A few times a month",
-          "Weekly",
-          "Several times a week"
+          "Gym or structured workouts",
+          "Walking or hiking",
+          "Sports",
+          "Outdoor activities and adventures",
+          "I'd rather exercise separately",
+          "Staying active together isn't important to me"
         ]
       },
       {
-        "id": "HEALTH-003",
-        "q": "How do you feel about tattoos?",
+        "id": "HEALTH-014",
+        "q": "How much would you want us to protect time for rest in our normal routine?",
         "type": "scale",
         "depth": 1,
-        "note": "Light values check on body and appearance.",
         "guessable": true,
-        "lo": "Against them",
-        "hi": "Love them"
-      },
-      {
-        "id": "HEALTH-008",
-        "q": "How much of your day goes to screens and your phone, and how would that flex in a marriage?",
-        "type": "mc",
-        "depth": 1,
-        "note": "Surfaces digital habits.",
-        "guessable": true,
-        "opts": [
-          "Barely any",
-          "A moderate amount",
-          "A lot - it's my work",
-          "More than I'd like"
-        ]
+        "lo": "Not much: I like life busy and full",
+        "hi": "A lot: regular rest should be a real priority"
       },
       {
         "id": "HEALTH-009",
@@ -3742,54 +4761,118 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Night owl"
       },
       {
-        "id": "HEALTH-010",
-        "q": "How much do you prioritise personal grooming and self-care?",
-        "type": "scale",
-        "depth": 1,
-        "note": "A real domestic-friction axis (differing standards) that was missing.",
-        "guessable": true,
-        "lo": "Low-maintenance",
-        "hi": "Very particular about it"
-      },
-      {
-        "id": "HEALTH-004",
-        "q": "What's your relationship with alcohol, and what would you want it to look like in our home?",
+        "id": "HEALTH-015",
+        "q": "If our sleep schedules were different, what would matter most to you?",
         "type": "mc",
-        "depth": 2,
-        "note": "Surfaces habits and convictions around alcohol.",
+        "depth": 1,
         "guessable": true,
-        "core": true,
         "opts": [
-          "I don't drink",
-          "Occasionally / socially",
-          "Regularly",
-          "I'd prefer an alcohol-free home"
+          "Going to bed together most nights",
+          "Waking up together when possible",
+          "Having some shared evening time",
+          "Having some shared morning time",
+          "We're fine keeping different schedules"
         ]
       },
       {
-        "id": "HEALTH-007",
-        "q": "When you're sick, how do you most want to be treated?",
+        "id": "HEALTH-016",
+        "q": "How often would you ideally want us to make social plans with friends?",
         "type": "mc",
-        "depth": 2,
-        "note": "Surfaces caregiving needs and instincts.",
+        "depth": 1,
         "guessable": true,
         "opts": [
-          "Left alone to rest",
-          "Cared for and fussed over",
-          "Checked on lightly",
-          "Kept company and distracted"
+          "Rarely",
+          "A few times a month",
+          "About once a week",
+          "Several times a week",
+          "It would depend on the season of life"
+        ]
+      },
+      {
+        "id": "HEALTH-017",
+        "q": "How important would it be to you that we regularly put our phones away when we're spending time together?",
+        "type": "scale",
+        "depth": 1,
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential: I'd want regular phone-free time together"
+      },
+      {
+        "id": "HEALTH-018",
+        "q": "When would you most want us to keep phones away?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "During meals",
+          "On dates",
+          "In bed at night",
+          "During important conversations",
+          "Whenever we're intentionally spending time together",
+          "I wouldn't need specific phone-free times"
+        ]
+      },
+      {
+        "id": "HEALTH-019",
+        "q": "What would you ideally want alcohol to look like in our life together?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "No alcohol",
+          "Only occasionally or on special occasions",
+          "Social drinking in moderation",
+          "Regular drinking is fine in moderation",
+          "I don't have a strong preference"
+        ]
+      },
+      {
+        "id": "HEALTH-020",
+        "q": "How important is it to you that we have similar views on alcohol?",
+        "type": "scale",
+        "depth": 2,
+        "lo": "Not important",
+        "hi": "Essential"
+      },
+      {
+        "id": "HEALTH-021",
+        "q": "When you're ill or feeling unwell, how would you most want me to care for you?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Give me space and let me rest",
+          "Look after me and fuss over me",
+          "Check on me occasionally, but don't overdo it",
+          "Keep me company",
+          "Ask me what I need at the time"
+        ]
+      },
+      {
+        "id": "HEALTH-022",
+        "q": "If I'm ill, what do you think your natural instinct would be?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Take care of everything for me",
+          "Check in and offer help",
+          "Give me space unless I ask",
+          "Stay close and keep me company",
+          "I'd probably need you to tell me what you need"
         ]
       },
       {
         "id": "HEALTH-005",
-        "q": "If you were filling out a health history with me, what should I know - past and present?",
+        "q": "Is there anything about your physical or mental health, past or present, that you think I should understand?",
         "type": "open",
         "depth": 4,
         "note": "A gentle prompt for important health disclosure."
       },
       {
         "id": "HEALTH-006",
-        "q": "What's your history and current relationship with alcohol or other substances?",
+        "q": "Is there anything in your past or present relationship with substances or addictive habits that you think I should understand?",
         "type": "open",
         "depth": 4,
         "note": "Surfaces substance history honestly and without shame."
@@ -3804,112 +4887,387 @@ export const DECKS: Record<string, Deck> = {
       {
         "name": "Where you’ve come from",
         "qids": [
-          "PAST-004",
-          "PAST-003",
-          "PAST-006",
-          "PAST-008",
-          "PAST-010",
-          "PAST-011",
+          "PAST-012",
+          "PAST-013",
+          "PAST-014",
+          "PAST-015",
+          "PAST-016",
+          "PAST-017",
+          "PAST-018"
+        ]
+      },
+      {
+        "name": "Past relationships",
+        "qids": [
+          "PAST-019",
+          "PAST-020",
+          "PAST-021",
+          "PAST-022",
+          "PAST-023",
+          "PAST-024",
+          "PAST-025"
+        ]
+      },
+      {
+        "name": "Hard seasons and healing",
+        "qids": [
+          "PAST-026",
+          "PAST-027",
+          "PAST-009",
+          "PAST-028",
+          "PAST-029",
+          "PAST-030"
+        ]
+      },
+      {
+        "name": "What I should know",
+        "qids": [
+          "PAST-031",
           "PAST-001",
-          "PAST-002",
-          "PAST-007",
-          "PAST-009"
+          "PAST-032",
+          "PAST-033",
+          "PAST-034",
+          "PAST-035"
         ]
       }
     ],
     "questions": [
       {
-        "id": "PAST-004",
-        "q": "How much 'baggage' are you bringing - and what size does it pack into?",
+        "id": "PAST-012",
+        "q": "Which best describes the home environment you grew up in?",
         "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Warm, secure and affectionate",
+          "Loving but very strict or controlled",
+          "Emotionally distant",
+          "Often tense or conflict-heavy",
+          "Unpredictable or chaotic",
+          "Unsafe or abusive",
+          "None of the above"
+        ]
+      },
+      {
+        "id": "PAST-013",
+        "q": "When adults in your home strongly disagreed, what usually happened?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "They talked it through calmly",
+          "One person normally had the final say",
+          "There was arguing or shouting",
+          "People became silent or withdrew",
+          "The issue was usually avoided",
+          "I rarely saw disagreement between them"
+        ]
+      },
+      {
+        "id": "PAST-014",
+        "q": "Which best describes your relationship with your mother or maternal figure?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Very close and supportive",
+          "Generally good, with some tension",
+          "Complicated",
+          "Distant",
+          "Strained or conflictual",
+          "No meaningful relationship / she wasn't present"
+        ]
+      },
+      {
+        "id": "PAST-015",
+        "q": "Which best describes your relationship with your father or paternal figure?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Very close and supportive",
+          "Generally good, with some tension",
+          "Complicated",
+          "Distant",
+          "Strained or conflictual",
+          "No meaningful relationship / he wasn't present"
+        ]
+      },
+      {
+        "id": "PAST-016",
+        "q": "What role did you most often play in your family growing up?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "The responsible one",
+          "The peacemaker",
+          "The achiever",
+          "The caregiver",
+          "The rebel or challenger",
+          "The quiet one who stayed out of the way",
+          "The funny one who kept things light"
+        ]
+      },
+      {
+        "id": "PAST-017",
+        "q": "When your family is under stress now, which role are you most likely to fall back into?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "The responsible one",
+          "The peacemaker",
+          "The achiever",
+          "The caregiver",
+          "The rebel or challenger",
+          "The quiet one who stayed out of the way",
+          "The funny one who kept things light"
+        ]
+      },
+      {
+        "id": "PAST-018",
+        "q": "What about your relationship with your parents or the people who raised you would you most want me to understand?",
+        "type": "open",
+        "depth": 3
+      },
+      {
+        "id": "PAST-019",
+        "q": "What has been the biggest recurring difficulty in your past romantic relationships?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Communication",
+          "Conflict or arguments",
+          "Trust or jealousy",
+          "Emotional openness",
+          "Commitment",
+          "Boundaries or faithfulness",
+          "Different values or life goals",
+          "I haven't had a serious previous relationship"
+        ]
+      },
+      {
+        "id": "PAST-020",
+        "q": "What did those experiences teach you that you'd want to do differently with me?",
+        "type": "open",
+        "depth": 3
+      },
+      {
+        "id": "PAST-021",
+        "q": "Which best describes how you feel emotionally about your previous romantic relationships?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "I've never had a serious previous relationship",
+          "They're fully behind me and I feel at peace",
+          "I'm over the people, but some experiences still affect me",
+          "There are still some unresolved feelings or questions",
+          "I'm still emotionally attached to someone from my past",
+          "I'm still actively processing a previous relationship"
+        ]
+      },
+      {
+        "id": "PAST-022",
+        "q": "Are you currently in contact with anyone you previously dated or had a romantic or sexual relationship with?",
+        "type": "mc",
+        "depth": 4,
+        "opts": [
+          "No contact",
+          "Only unavoidable contact, such as work, family or church",
+          "Occasional friendly contact",
+          "Regular contact or friendship",
+          "A close friendship",
+          "There is a situation I think my partner should understand"
+        ]
+      },
+      {
+        "id": "PAST-023",
+        "q": "Once we're married, what contact with previous romantic or sexual partners do you think is appropriate?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "No contact unless absolutely unavoidable",
+          "Only polite or necessary contact",
+          "Occasional friendship is fine if completely open with each other",
+          "Regular friendship is fine with clear boundaries",
+          "Close friendship is fine as long as there is trust"
+        ]
+      },
+      {
+        "id": "PAST-024",
+        "q": "What is the most serious commitment you've had before this relationship?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "I've never had a serious romantic relationship",
+          "A serious long-term relationship",
+          "We lived together",
+          "We were engaged",
+          "I was previously married and divorced/separated",
+          "I was previously married and widowed"
+        ]
+      },
+      {
+        "id": "PAST-025",
+        "q": "Have you ever been unfaithful in a previous relationship?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "No",
+          "Yes: emotionally, but not physically",
+          "Yes: physically, but not sexually",
+          "Yes: sexually",
+          "Yes: in more than one of these ways",
+          "I've never had a previous relationship where this applies"
+        ]
+      },
+      {
+        "id": "PAST-026",
+        "q": "If your parents or caregivers seriously hurt you in the past, where do you feel you are with it today?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "I don't have significant hurt from them",
+          "I've worked through it and feel largely at peace",
+          "I've forgiven them, but what happened still affects me",
+          "I'm actively trying to work through it",
+          "There is significant hurt I haven't resolved",
+          "I'm not ready to talk about it yet"
+        ]
+      },
+      {
+        "id": "PAST-027",
+        "q": "If a parent seriously wronged you and later apologised, what do you believe forgiveness should mean?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "Forgive them and fully restore the relationship",
+          "Forgive them, but rebuild trust gradually",
+          "Forgive them, while keeping firm boundaries if necessary",
+          "Reconciliation should only happen if there is real repentance and change",
+          "I don't believe forgiveness always requires restoring the relationship"
+        ]
+      },
+      {
+        "id": "PAST-009",
+        "q": "What's been one of the hardest or lowest seasons of your life, and what helped you get through it?",
+        "type": "open",
+        "depth": 4,
+        "ref": "Psalm 34:18",
+        "note": "Surfaces resilience and tender spots."
+      },
+      {
+        "id": "PAST-028",
+        "q": "When life becomes extremely difficult, who or what do you most naturally turn to first?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "God, prayer and Scripture",
+          "My partner",
+          "Family or close friends",
+          "A pastor or Christian mentor",
+          "A counsellor or therapist",
+          "I mostly deal with things on my own"
+        ]
+      },
+      {
+        "id": "PAST-029",
+        "q": "Have you ever intentionally worked through difficult parts of your past with someone?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Yes, with a counsellor or therapist",
+          "Yes, with a pastor, Christian mentor or through discipleship",
+          "Yes, mainly with trusted friends or family",
+          "Mostly on my own through prayer, reflection or study",
+          "No: I haven't felt I needed to",
+          "No: but there are things I know I still need to work through"
+        ]
+      },
+      {
+        "id": "PAST-030",
+        "q": "If something from your past began seriously affecting our marriage, who would you be most willing to involve?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "A pastor or church leader",
+          "A Christian counsellor",
+          "A counsellor or therapist",
+          "A mature Christian couple or mentor",
+          "Work through it privately together",
+          "I would strongly prefer not to involve anyone outside the marriage"
+        ]
+      },
+      {
+        "id": "PAST-031",
+        "q": "How much do you think experiences from your past still influence how you behave in relationships today?",
+        "type": "scale",
         "depth": 1,
-        "note": "A light way into a real talk about what each carries.",
         "guessable": true,
-        "opts": [
-          "A briefcase",
-          "A carry-on",
-          "A full suitcase",
-          "A steamer trunk"
-        ]
-      },
-      {
-        "id": "PAST-003",
-        "q": "What have your past relationships taught you that'll make you a better partner now?",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces growth (vs blame) from previous relationships."
-      },
-      {
-        "id": "PAST-006",
-        "q": "Pick a few words for your relationship with each of your parents - and tell me the story behind them.",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces family-of-origin bonds."
-      },
-      {
-        "id": "PAST-008",
-        "q": "What was the home you grew up in like?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces the formative family environment.",
-        "guessable": true,
-        "opts": [
-          "Warm and stable",
-          "Strict",
-          "Chaotic or tense",
-          "Distant"
-        ]
-      },
-      {
-        "id": "PAST-010",
-        "q": "What are a few memories from childhood that still shape you today?",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces formative early experiences."
-      },
-      {
-        "id": "PAST-011",
-        "q": "Have you worked through your past issues with a mentor, counselor, or in discipleship?",
-        "type": "mc",
-        "depth": 3,
-        "note": "The 'have you done the work before engagement' question, made scoreable.",
-        "guessable": true,
-        "opts": [
-          "Yes, ongoing",
-          "Yes, in the past",
-          "No, but I'm open to it",
-          "No"
-        ]
+        "lo": "Very little: I see most of it as behind me",
+        "hi": "A lot: I'm very aware that my past still shapes my reactions"
       },
       {
         "id": "PAST-001",
-        "q": "Is there anything from your past you're still working through or healing from?",
+        "q": "Is there anything from your past that still affects how you trust, communicate, handle conflict, intimacy, family or faith today?",
         "type": "open",
         "depth": 4,
         "ref": "Psalm 147:3",
         "note": "Invites gentle honesty about wounds still being worked through."
       },
       {
-        "id": "PAST-002",
-        "q": "Is there anyone in our circle you've had more than a friendship with that I should know about?",
-        "type": "open",
+        "id": "PAST-032",
+        "q": "Which part of relationships do you think your past affects most?",
+        "type": "mc",
         "depth": 4,
-        "note": "Invites honest disclosure about past or present entanglements."
+        "guessable": true,
+        "opts": [
+          "Trust",
+          "Conflict and how I react",
+          "Emotional openness",
+          "Physical or sexual intimacy",
+          "Family relationships",
+          "My confidence or sense of worth",
+          "My faith",
+          "I don't think my past affects my relationships very much"
+        ]
       },
       {
-        "id": "PAST-007",
-        "q": "Is there anything you wish you could say to your parents that you never have?",
-        "type": "open",
+        "id": "PAST-033",
+        "q": "Have you ever had serious legal or criminal issues that could affect our future together?",
+        "type": "mc",
         "depth": 4,
-        "note": "Surfaces unfinished business with parents."
+        "guessable": true,
+        "opts": [
+          "No",
+          "Yes, but they are completely resolved",
+          "Yes, and there are still some consequences or restrictions",
+          "Yes, and there is an ongoing legal issue",
+          "There is something I need to explain properly"
+        ]
       },
       {
-        "id": "PAST-009",
-        "q": "What's been the lowest point you've walked through, and how did you come out of it?",
+        "id": "PAST-034",
+        "q": "Is there anything from your past that you're afraid could change how I see you if I knew the full story?",
         "type": "open",
-        "depth": 4,
-        "ref": "Psalm 34:18",
-        "note": "Surfaces resilience and tender spots."
+        "depth": 5
+      },
+      {
+        "id": "PAST-035",
+        "q": "Is there anything involving abuse, violence, serious addiction or major trauma in your past that you believe I should understand before marriage?",
+        "type": "open",
+        "depth": 5
       }
     ]
   },
@@ -3921,20 +5279,82 @@ export const DECKS: Record<string, Deck> = {
       {
         "name": "Work and calling",
         "qids": [
-          "CAREER-010",
           "CAREER-001",
-          "CAREER-002",
-          "CAREER-003",
-          "CAREER-005",
+          "CAREER-011",
           "CAREER-006",
-          "CAREER-007",
           "CAREER-008",
+          "CAREER-003",
+          "CAREER-010"
+        ]
+      },
+      {
+        "name": "Work and family",
+        "qids": [
+          "CAREER-005",
+          "CAREER-007",
           "CAREER-009",
-          "CAREER-004"
+          "CAREER-004",
+          "CAREER-012",
+          "CAREER-013"
         ]
       }
     ],
     "questions": [
+      {
+        "id": "CAREER-001",
+        "q": "How central is career ambition to you?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Proverbs 16:3",
+        "note": "Surfaces ambitions and how careers fit the shared future.",
+        "guessable": true,
+        "lo": "A job is just for living",
+        "hi": "Career is central to me"
+      },
+      {
+        "id": "CAREER-011",
+        "q": "Which best describes what you've wanted from your work so far?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Stability: security, consistency and a reliable income",
+          "Progression: growing, achieving and moving up",
+          "Purpose: doing work that feels meaningful",
+          "Freedom: flexibility, independence and control over my time",
+          "Variety: learning, changing things up and trying new challenges"
+        ]
+      },
+      {
+        "id": "CAREER-006",
+        "q": "How important is it that your work feels meaningful, versus just paying well?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Money vs calling in how each picks work.",
+        "guessable": true,
+        "lo": "Paying well is enough",
+        "hi": "It must feel meaningful"
+      },
+      {
+        "id": "CAREER-008",
+        "q": "How do you feel about one of us taking a big career risk, like starting a business?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Career risk appetite as a couple.",
+        "guessable": true,
+        "lo": "I prefer stability",
+        "hi": "I'm all for bold risks"
+      },
+      {
+        "id": "CAREER-003",
+        "q": "How willing are you to relocate for a job opportunity?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Surfaces mobility vs rootedness, a common career-stage clash.",
+        "guessable": true,
+        "lo": "I want to put down roots",
+        "hi": "Very willing to move"
+      },
       {
         "id": "CAREER-010",
         "q": "At what age would you like to be able to retire or slow down?",
@@ -3948,34 +5368,6 @@ export const DECKS: Record<string, Deck> = {
           "Mid-60s",
           "I'd work as long as I can"
         ]
-      },
-      {
-        "id": "CAREER-001",
-        "q": "How central is career ambition to you?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Proverbs 16:3",
-        "note": "Surfaces ambitions and how careers fit the shared future.",
-        "guessable": true,
-        "lo": "A job is just for living",
-        "hi": "Career is central to me"
-      },
-      {
-        "id": "CAREER-002",
-        "q": "Walk me through the jobs you've held - what you loved, what you didn't, and what it says about your work life.",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces work patterns and stability."
-      },
-      {
-        "id": "CAREER-003",
-        "q": "How willing are you to relocate for a job opportunity?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Surfaces mobility vs rootedness, a common career-stage clash.",
-        "guessable": true,
-        "lo": "I want to put down roots",
-        "hi": "Very willing to move"
       },
       {
         "id": "CAREER-005",
@@ -3992,16 +5384,6 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "CAREER-006",
-        "q": "How important is it that your work feels meaningful, versus just paying well?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Money vs calling in how each picks work.",
-        "guessable": true,
-        "lo": "Paying well is enough",
-        "hi": "It must feel meaningful"
-      },
-      {
         "id": "CAREER-007",
         "q": "Would you take a pay cut for a better lifestyle or more time together?",
         "type": "scale",
@@ -4010,16 +5392,6 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "lo": "I'd hold out for the income",
         "hi": "Gladly, for a better life"
-      },
-      {
-        "id": "CAREER-008",
-        "q": "How do you feel about one of us taking a big career risk, like starting a business?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Career risk appetite as a couple.",
-        "guessable": true,
-        "lo": "I prefer stability",
-        "hi": "I'm all for bold risks"
       },
       {
         "id": "CAREER-009",
@@ -4045,6 +5417,37 @@ export const DECKS: Record<string, Deck> = {
           "Whoever is more passionate about theirs",
           "We'd decide case by case"
         ]
+      },
+      {
+        "id": "CAREER-012",
+        "q": "If having children meant one career needed to take a back seat, whose would you normally expect it to be?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "The wife's",
+          "The husband's",
+          "Whoever earns less",
+          "Whoever has the more flexible career",
+          "Whoever most wants to focus on raising the children",
+          "Decide entirely case by case"
+        ]
+      },
+      {
+        "id": "CAREER-013",
+        "q": "If the wife earned significantly more, how would that sit with you?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "1 Timothy 5:8",
+        "note": "ROLE-004 rates the provider ideal in the abstract. This makes it concrete and refuses to hedge — 'fine, but I'd notice' is the honest middle most people actually occupy.",
+        "guessable": true,
+        "notYet": true,
+        "opts": [
+          "Completely fine",
+          "Fine, though I'd notice it",
+          "It would be uncomfortable",
+          "It would be a real problem for me"
+        ]
       }
     ]
   },
@@ -4053,8 +5456,8 @@ export const DECKS: Record<string, Deck> = {
     "color": "#5E7A4E",
     "icon": "star",
     "hook": {
-      "id": "SELF-019",
-      "q": "How do you feel about small 'white lies'?"
+      "id": "SELF-038",
+      "q": "How comfortable are you with telling a small lie to avoid hurting someone's feelings?"
     },
     "parts": [
       {
@@ -4062,47 +5465,57 @@ export const DECKS: Record<string, Deck> = {
         "qids": [
           "SELF-013",
           "SELF-001",
-          "SELF-002",
           "SELF-004",
-          "SELF-005",
-          "SELF-008",
-          "SELF-009",
-          "SELF-010"
+          "SELF-028",
+          "SELF-030",
+          "SELF-031",
+          "SELF-032"
         ]
       },
       {
         "name": "What shaped you",
         "qids": [
           "SELF-011",
-          "SELF-014",
-          "SELF-015",
-          "SELF-016",
-          "SELF-017",
-          "SELF-018",
-          "SELF-019"
+          "SELF-008",
+          "SELF-033",
+          "SELF-023",
+          "SELF-024",
+          "SELF-029",
+          "SELF-016"
         ]
       },
       {
-        "name": "Growth and integrity",
+        "name": "Growing on purpose",
         "qids": [
           "SELF-020",
-          "SELF-021",
+          "SELF-015",
+          "SELF-034",
+          "SELF-035",
+          "SELF-036",
           "SELF-022",
-          "SELF-023",
-          "SELF-024",
+          "SELF-018"
+        ]
+      },
+      {
+        "name": "Integrity and honesty",
+        "qids": [
+          "SELF-037",
+          "SELF-021",
+          "SELF-038",
           "SELF-025",
-          "SELF-026"
+          "SELF-026",
+          "SELF-039",
+          "SELF-040"
         ]
       },
       {
         "name": "Fears and forgiveness",
         "qids": [
-          "SELF-027",
-          "SELF-029",
-          "SELF-028",
-          "SELF-003",
+          "SELF-041",
+          "SELF-042",
           "SELF-006",
           "SELF-007",
+          "SELF-043",
           "SELF-012"
         ]
       }
@@ -4130,13 +5543,6 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Very open"
       },
       {
-        "id": "SELF-002",
-        "q": "If you had to describe who you really are to someone who'd never met you, what would you say?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces identity and self-understanding."
-      },
-      {
         "id": "SELF-004",
         "q": "How easily do you express your emotions?",
         "type": "scale",
@@ -4147,11 +5553,64 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I express them easily"
       },
       {
-        "id": "SELF-005",
-        "q": "What are a couple of habits you're glad you have, and a couple you'd love to shake?",
+        "id": "SELF-028",
+        "q": "How much do you need to be alone with a feeling before you can talk about it?",
+        "type": "scale",
+        "depth": 3,
+        "note": "Latency, not ease. SELF-004 measures how easily emotions come out; someone can be expressive and still need two days first. The gap between partners here causes the 'why won't you just talk to me' fight.",
+        "guessable": true,
+        "lo": "I can talk about it as it happens",
+        "hi": "I need time alone first"
+      },
+      {
+        "id": "SELF-030",
+        "q": "What kind of people do you feel most comfortable around?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Warm and expressive: open, friendly and emotionally open",
+          "Quiet and reserved: calm, private and comfortable with silence",
+          "Fun and outgoing: energetic, social and spontaneous",
+          "Direct and straightforward: honest, blunt and to the point",
+          "Calm and practical: realistic, steady and focused on solutions",
+          "Driven and ambitious: focused, motivated and goal-oriented"
+        ]
+      },
+      {
+        "id": "SELF-031",
+        "q": "Which best describes how you see yourself?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Steady: dependable, grounded and consistent",
+          "Driven: ambitious, motivated and always pushing forward",
+          "Caring: people-focused, supportive and empathetic",
+          "Independent: self-reliant, private and comfortable doing my own thing",
+          "Adventurous: curious, spontaneous and always up for something new"
+        ]
+      },
+      {
+        "id": "SELF-032",
+        "q": "What matters most to you when you think about the person you're becoming?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Growing in character",
+          "Deepening my faith",
+          "Building a good family life",
+          "Achieving something meaningful",
+          "Living freely and authentically"
+        ]
+      },
+      {
+        "id": "SELF-011",
+        "q": "Who has influenced you most in becoming the person you are today?",
         "type": "open",
         "depth": 2,
-        "note": "Light self-awareness about daily patterns."
+        "note": "Surfaces formative influences."
       },
       {
         "id": "SELF-008",
@@ -4169,127 +5628,17 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "SELF-009",
-        "q": "When someone gives you honest feedback, how do you usually take it?",
-        "type": "mc",
+        "id": "SELF-033",
+        "q": "Rank these areas of your life from most to least important to you.",
+        "type": "rank",
         "depth": 2,
-        "note": "Surfaces openness to correction.",
-        "guessable": true,
-        "core": true,
         "opts": [
-          "Welcome it",
-          "Hear it but bristle",
-          "Get defensive",
-          "Depends who it's from"
+          "Health",
+          "Family",
+          "Wealth",
+          "Faith",
+          "Personal growth"
         ]
-      },
-      {
-        "id": "SELF-010",
-        "q": "What kind of people do you click with instantly, and what kind do you find hard work?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces relational style and patience."
-      },
-      {
-        "id": "SELF-011",
-        "q": "Who has shaped who you are the most, and in what way?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces formative influences."
-      },
-      {
-        "id": "SELF-014",
-        "q": "Which character traits come naturally to you - patience, kindness, self-control, gentleness - and which take real effort?",
-        "type": "open",
-        "depth": 2,
-        "ref": "Galatians 5:22-23",
-        "note": "A gentle, honest character self-check."
-      },
-      {
-        "id": "SELF-015",
-        "q": "If you could change one thing about yourself, what would it be?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces self-awareness and desire to grow."
-      },
-      {
-        "id": "SELF-016",
-        "q": "If I asked your parents what I should really know about you, what would they say?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces self-awareness through others' eyes."
-      },
-      {
-        "id": "SELF-017",
-        "q": "When life gets hard, how do you most often cope?",
-        "type": "mc",
-        "depth": 2,
-        "note": "Surfaces default coping style; pairs with the spending question.",
-        "guessable": true,
-        "opts": [
-          "Prayer or Scripture",
-          "Talking it out with someone",
-          "Staying active or exercising",
-          "Treating myself or shopping",
-          "Going quiet and withdrawing"
-        ]
-      },
-      {
-        "id": "SELF-018",
-        "q": "How much do you take initiative rather than waiting to be led?",
-        "type": "scale",
-        "depth": 2,
-        "note": "The passivity red flag as a self-awareness measure.",
-        "guessable": true,
-        "lo": "I tend to wait and follow",
-        "hi": "I take charge and initiate"
-      },
-      {
-        "id": "SELF-019",
-        "q": "How do you feel about small 'white lies'?",
-        "type": "mc",
-        "depth": 2,
-        "note": "Surfaces the integrity threshold without inviting self-flattery.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "Never okay",
-          "Okay to spare feelings",
-          "Fine in small doses",
-          "No big deal"
-        ]
-      },
-      {
-        "id": "SELF-020",
-        "q": "How actively are you working on your own growth and character right now?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Surfaces present-tense sanctification effort the hosts press on.",
-        "guessable": true,
-        "lo": "Not focused on it",
-        "hi": "Actively working on myself"
-      },
-      {
-        "id": "SELF-021",
-        "q": "How comfortable are you being held accountable for your weaknesses?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Proverbs 28:13",
-        "note": "The 'live confessionally' trait as a scoreable comfort level.",
-        "guessable": true,
-        "lo": "I'd rather handle them privately",
-        "hi": "I want people holding me accountable"
-      },
-      {
-        "id": "SELF-022",
-        "q": "How well do you manage your time and responsibilities?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Ephesians 5:16",
-        "note": "Stewardship of time, distinct from money discipline (FIN-004).",
-        "guessable": true,
-        "lo": "Often disorganized",
-        "hi": "Very organized and on top of it"
       },
       {
         "id": "SELF-023",
@@ -4316,6 +5665,150 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "lo": "Very little",
         "hi": "A great deal"
+      },
+      {
+        "id": "SELF-029",
+        "q": "When an everyday problem hits, who do you go to first?",
+        "type": "mc",
+        "depth": 2,
+        "ref": "Proverbs 15:22",
+        "note": "SELF-023 covers big decisions and omits the partner entirely. This is the daily instinct, and includes them.",
+        "guessable": true,
+        "opts": [
+          "I work it out myself",
+          "My partner",
+          "A parent",
+          "A friend or mentor",
+          "I pray about it first"
+        ]
+      },
+      {
+        "id": "SELF-016",
+        "q": "What would the people who know you best say I should know about you?",
+        "type": "open",
+        "depth": 2,
+        "note": "Surfaces self-awareness through others' eyes."
+      },
+      {
+        "id": "SELF-020",
+        "q": "How actively are you working on your own growth and character right now?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Surfaces present-tense sanctification effort the hosts press on.",
+        "guessable": true,
+        "lo": "Not focused on it",
+        "hi": "Actively working on myself"
+      },
+      {
+        "id": "SELF-015",
+        "q": "What's one part of yourself you'd most like to grow or change?",
+        "type": "open",
+        "depth": 2,
+        "note": "Surfaces self-awareness and desire to grow."
+      },
+      {
+        "id": "SELF-034",
+        "q": "Which character traits come most naturally to you? Rank these from strongest to weakest.",
+        "type": "rank",
+        "depth": 2,
+        "ref": "Galatians 5:22-23",
+        "opts": [
+          "Patience",
+          "Kindness",
+          "Self-control",
+          "Gentleness",
+          "Honesty",
+          "Humility"
+        ]
+      },
+      {
+        "id": "SELF-035",
+        "q": "Which of these do you most want to grow in?",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "Patience",
+          "Kindness",
+          "Self-control",
+          "Gentleness",
+          "Honesty",
+          "Humility"
+        ]
+      },
+      {
+        "id": "SELF-036",
+        "q": "Which area of your life are you most intentional about staying disciplined in?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Health: exercise, food, sleep",
+          "family time - quality time spent with family",
+          "Time: planning, routines, getting things done",
+          "Money: spending, saving, budgeting",
+          "Faith: prayer, Scripture, spiritual disciplines",
+          "Personal growth: learning, reflection, working on myself"
+        ]
+      },
+      {
+        "id": "SELF-022",
+        "q": "How well do you manage your time and responsibilities?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Ephesians 5:16",
+        "note": "Stewardship of time, distinct from money discipline (FIN-004).",
+        "guessable": true,
+        "lo": "Often disorganized",
+        "hi": "Very organized and on top of it"
+      },
+      {
+        "id": "SELF-018",
+        "q": "How much do you take initiative rather than waiting to be led?",
+        "type": "scale",
+        "depth": 2,
+        "note": "The passivity red flag as a self-awareness measure.",
+        "guessable": true,
+        "lo": "I tend to wait and follow",
+        "hi": "I take charge and initiate"
+      },
+      {
+        "id": "SELF-037",
+        "q": "When someone gives you honest feedback, how do you usually respond?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "I welcome it: I appreciate being challenged",
+          "I listen, even when it's difficult",
+          "I find it difficult to accept",
+          "It depends on who it's from"
+        ]
+      },
+      {
+        "id": "SELF-021",
+        "q": "How comfortable are you being held accountable for your weaknesses?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Proverbs 28:13",
+        "note": "The 'live confessionally' trait as a scoreable comfort level.",
+        "guessable": true,
+        "lo": "I'd rather handle them privately",
+        "hi": "I want people holding me accountable"
+      },
+      {
+        "id": "SELF-038",
+        "q": "How comfortable are you with telling a small lie to avoid hurting someone's feelings?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Not comfortable at all",
+          "Only in rare situations",
+          "Sometimes, if it seems kinder",
+          "Quite comfortable with it"
+        ]
       },
       {
         "id": "SELF-025",
@@ -4345,48 +5838,48 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I adapt a lot to who I'm with"
       },
       {
-        "id": "SELF-027",
-        "q": "When your feelings and your convictions clash, which usually wins?",
+        "id": "SELF-039",
+        "q": "When your feelings and your values point in different directions, which do you usually follow?",
         "type": "scale",
         "depth": 2,
         "ref": "Proverbs 3:5",
-        "note": "Head-vs-heart axis; broader than the biblical-authority question (FAITH-029).",
         "guessable": true,
-        "lo": "My feelings usually win",
-        "hi": "My convictions usually win"
+        "lo": "My feelings almost always",
+        "hi": "My values almost always"
       },
       {
-        "id": "SELF-029",
-        "q": "When an everyday problem hits, who do you go to first?",
+        "id": "SELF-040",
+        "q": "When life gets hard, how do you most often cope?",
         "type": "mc",
         "depth": 2,
-        "ref": "Proverbs 15:22",
-        "note": "SELF-023 covers big decisions and omits the partner entirely. This is the daily instinct, and includes them.",
         "guessable": true,
         "opts": [
-          "I work it out myself",
-          "My partner",
-          "A parent",
-          "A friend or mentor",
-          "I pray about it first"
+          "Turn to prayer or Scripture",
+          "Talk it through with someone",
+          "Keep busy or stay active",
+          "Take time to think and process it on my own",
+          "Distract myself with something enjoyable"
         ]
       },
       {
-        "id": "SELF-028",
-        "q": "How much do you need to be alone with a feeling before you can talk about it?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Latency, not ease. SELF-004 measures how easily emotions come out; someone can be expressive and still need two days first. The gap between partners here causes the 'why won't you just talk to me' fight.",
+        "id": "SELF-041",
+        "q": "Which quality do you think you'd bring most to a marriage?",
+        "type": "mc",
+        "depth": 4,
         "guessable": true,
-        "lo": "I can talk about it as it happens",
-        "hi": "I need time alone first"
+        "opts": [
+          "Steadiness: I'm dependable and consistent",
+          "Encouragement: I naturally build people up",
+          "Care: I notice needs and look after people",
+          "Fun: I bring energy, humour and adventure",
+          "Commitment: I stick with people through difficult seasons"
+        ]
       },
       {
-        "id": "SELF-003",
-        "q": "Give five reasons someone would love sharing life with you - and three reasons they might find it hard.",
+        "id": "SELF-042",
+        "q": "What's one thing about you that could be difficult to live with?",
         "type": "open",
-        "depth": 4,
-        "note": "Tests self-honesty; the 'hard' three matter most."
+        "depth": 4
       },
       {
         "id": "SELF-006",
@@ -4400,10 +5893,19 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "SELF-007",
-        "q": "What are your biggest fears in life right now?",
+        "q": "What are you most afraid of in this season of your life?",
         "type": "open",
         "depth": 4,
         "note": "Surfaces fears beyond the relationship itself."
+      },
+      {
+        "id": "SELF-043",
+        "q": "How much do worries about the future occupy your thoughts?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "Hardly ever",
+        "hi": "Almost constantly"
       },
       {
         "id": "SELF-012",
@@ -4424,97 +5926,176 @@ export const DECKS: Record<string, Deck> = {
     "color": "#9C4A6E",
     "icon": "heart",
     "hook": {
-      "id": "US-024",
-      "q": "How much are you counting on me changing after we marry?"
+      "id": "US-120",
+      "q": "How much would you need me to change from who I am today for you to be happy marrying me as I am?"
     },
     "parts": [
       {
         "name": "Why us",
         "qids": [
+          "US-051",
           "US-008",
-          "US-010",
-          "US-014",
-          "US-034",
+          "US-052",
+          "US-053",
           "US-050",
-          "US-001",
-          "US-003",
-          "US-005"
+          "US-016",
+          "US-035",
+          "US-054"
+        ]
+      },
+      {
+        "name": "Choosing each other",
+        "qids": [
+          "US-048",
+          "US-055",
+          "US-056",
+          "US-057",
+          "US-058",
+          "US-059",
+          "US-060",
+          "US-049"
         ]
       },
       {
         "name": "The pace we’re going",
         "qids": [
-          "US-006",
-          "US-009",
-          "US-013",
-          "US-017",
-          "US-027",
           "US-029",
-          "US-030"
+          "US-061",
+          "US-062",
+          "US-063",
+          "US-034",
+          "US-064",
+          "US-065",
+          "US-066"
         ]
       },
       {
-        "name": "Love, not just feelings",
+        "name": "Towards engagement",
         "qids": [
-          "US-031",
-          "US-033",
-          "US-035",
-          "US-039",
-          "US-048",
-          "US-002",
-          "US-004"
+          "US-067",
+          "US-068",
+          "US-069",
+          "US-070",
+          "US-071",
+          "US-072",
+          "US-073"
+        ]
+      },
+      {
+        "name": "Getting ready for marriage",
+        "qids": [
+          "US-074",
+          "US-010",
+          "US-075",
+          "US-076",
+          "US-077",
+          "US-078",
+          "US-079",
+          "US-080"
+        ]
+      },
+      {
+        "name": "Friends and our own lives",
+        "qids": [
+          "US-030",
+          "US-081",
+          "US-082",
+          "US-083",
+          "US-084",
+          "US-085",
+          "US-086"
         ]
       },
       {
         "name": "Counsel and blessing",
         "qids": [
-          "US-015",
-          "US-016",
-          "US-019",
-          "US-020",
-          "US-021",
-          "US-022",
-          "US-023"
+          "US-087",
+          "US-088",
+          "US-089",
+          "US-090",
+          "US-091",
+          "US-092"
+        ]
+      },
+      {
+        "name": "Love, not just feelings",
+        "qids": [
+          "US-002",
+          "US-093",
+          "US-004",
+          "US-094",
+          "US-095",
+          "US-096",
+          "US-097"
+        ]
+      },
+      {
+        "name": "What makes it last",
+        "qids": [
+          "US-098",
+          "US-099",
+          "US-006",
+          "US-100",
+          "US-101",
+          "US-102",
+          "US-103"
         ]
       },
       {
         "name": "Through hard seasons",
         "qids": [
-          "US-025",
-          "US-026",
-          "US-032",
-          "US-036",
-          "US-037",
-          "US-038",
-          "US-040"
+          "US-104",
+          "US-105",
+          "US-106",
+          "US-107",
+          "US-108",
+          "US-109",
+          "US-110"
         ]
       },
       {
         "name": "Covenant and cost",
         "qids": [
-          "US-043",
-          "US-047",
-          "US-007",
-          "US-012",
-          "US-018",
-          "US-028",
-          "US-041"
+          "US-111",
+          "US-040",
+          "US-041",
+          "US-112",
+          "US-113",
+          "US-114",
+          "US-115"
         ]
       },
       {
-        "name": "Making room for us",
+        "name": "Honest about us",
         "qids": [
-          "US-042",
-          "US-044",
-          "US-045",
-          "US-046",
-          "US-049",
+          "US-038",
+          "US-116",
+          "US-117",
+          "US-118",
+          "US-119",
           "US-011",
-          "US-024"
+          "US-120",
+          "US-121"
         ]
       }
     ],
     "questions": [
+      {
+        "id": "US-051",
+        "q": "Which version of “us” do you enjoy most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "Us on a proper date",
+          "Us travelling or exploring somewhere",
+          "Us at home doing absolutely nothing",
+          "Us laughing and being silly",
+          "Us having a deep conversation",
+          "Us worshipping, praying or serving together",
+          "Us working towards a goal together"
+        ]
+      },
       {
         "id": "US-008",
         "q": "What about me makes you proud?",
@@ -4523,26 +6104,240 @@ export const DECKS: Record<string, Deck> = {
         "note": "An affirming prompt that builds each other up."
       },
       {
-        "id": "US-010",
-        "q": "Whose marriage do you admire, and what do they do that you'd want for us?",
-        "type": "open",
-        "depth": 1,
-        "note": "Surfaces role models for a healthy marriage."
+        "id": "US-052",
+        "q": "When do you feel closest to me?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "When we're having a deep conversation",
+          "When we're laughing and having fun",
+          "When we're physically affectionate",
+          "When we're praying, worshipping or talking about God",
+          "When we're doing something or going somewhere together",
+          "When you support me through something difficult",
+          "When we're simply relaxing together"
+        ]
       },
       {
-        "id": "US-014",
-        "q": "Where did most of what you believe about marriage come from?",
+        "id": "US-053",
+        "q": "What makes you feel most emotionally chosen by me?",
         "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "When you prioritise time with me",
+          "When you defend or stand up for me",
+          "When you ask what I'm thinking or feeling",
+          "When you show affection without me asking",
+          "When you include me in your plans and decisions",
+          "When you speak positively about me to other people",
+          "When you make sacrifices for me"
+        ]
+      },
+      {
+        "id": "US-050",
+        "q": "How much of your enjoyment of something comes from having someone to share it with?",
+        "type": "scale",
         "depth": 1,
-        "note": "Surfaces the source of marriage assumptions.",
+        "note": "Enjoyment amplification, distinct from FUN-006 (how free time gets allocated) and SELF-013 (solitude to recharge). This is whether company is what makes it good.",
+        "guessable": true,
+        "lo": "I enjoy things just as much alone",
+        "hi": "Everything's better shared"
+      },
+      {
+        "id": "US-016",
+        "q": "What's something you've always wanted to ask me but never have?",
+        "type": "open",
+        "depth": 3,
+        "note": "A trust-builder that opens hidden doors."
+      },
+      {
+        "id": "US-035",
+        "q": "How important is it that your spouse is also your best friend?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Song of Solomon 5:16",
+        "note": "The friendship-vs-romance value behind 'enjoy time together in non-romantic settings'.",
         "guessable": true,
         "core": true,
+        "lo": "Romance matters more to me",
+        "hi": "Best friends first"
+      },
+      {
+        "id": "US-054",
+        "q": "Which parts of our connection would you most want to remain strong throughout our marriage? Rank them.",
+        "type": "rank",
+        "depth": 2,
         "opts": [
-          "My parents",
-          "Friends",
-          "Church",
-          "Books or media",
-          "Mostly figuring it out"
+          "Deep friendship",
+          "Romance",
+          "Physical and sexual attraction",
+          "Emotional closeness",
+          "Shared faith",
+          "Fun and laughter",
+          "Shared purpose and goals"
+        ]
+      },
+      {
+        "id": "US-048",
+        "q": "How clear are you on what you're looking for in a spouse?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Confidence rather than content. DEAL-002 asks what the must-haves are; this asks whether the person actually knows.",
+        "guessable": true,
+        "lo": "Still working it out",
+        "hi": "I know exactly"
+      },
+      {
+        "id": "US-055",
+        "q": "What matters most to you for two people to feel truly compatible? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "How we communicate day to day",
+          "Our energy levels and how much time we need alone",
+          "Our sense of humour",
+          "The pace of life and routines we each like",
+          "How we each handle money in practice",
+          "How we like to spend free time",
+          "How tidy and organised we each are"
+        ]
+      },
+      {
+        "id": "US-056",
+        "q": "Where do you think we are strongest as a couple/friends right now?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Our faith and convictions",
+          "Our friendship",
+          "Our attraction and chemistry",
+          "Our communication",
+          "Our personalities complementing each other",
+          "Our shared goals and direction",
+          "The way we enjoy everyday life together"
+        ]
+      },
+      {
+        "id": "US-057",
+        "q": "Where do you think we're most alike? Rank these from most similar to least similar.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "Faith and values",
+          "Personality",
+          "Sense of humour",
+          "Lifestyle and habits",
+          "Interests and hobbies",
+          "Ambition and goals",
+          "How we relate to other people"
+        ]
+      },
+      {
+        "id": "US-058",
+        "q": "What's one difference between us that you genuinely love, and one difference you think could be difficult for us?",
+        "type": "open",
+        "depth": 2
+      },
+      {
+        "id": "US-059",
+        "q": "When deciding whether someone is the right person to marry, what should matter most? Rank these.",
+        "type": "rank",
+        "depth": 3,
+        "ref": "Amos 3:3",
+        "core": true,
+        "opts": [
+          "Shared faith and convictions",
+          "Character",
+          "Commitment and loyalty",
+          "Attraction and chemistry",
+          "Friendship and emotional connection",
+          "Shared goals and direction",
+          "How well we handle conflict and difficult seasons"
+        ]
+      },
+      {
+        "id": "US-060",
+        "q": "If the emotional “spark” faded for a season but everything else in the relationship was strong, how would that affect your commitment?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "It would not change my commitment",
+          "I would be concerned, but intentionally work to rebuild it",
+          "I would question whether something important was missing",
+          "I would seriously reconsider the relationship",
+          "I believe strong romantic feelings are necessary for a marriage to continue"
+        ]
+      },
+      {
+        "id": "US-049",
+        "q": "Has what you're looking for in a partner changed since we met?",
+        "type": "mc",
+        "depth": 4,
+        "note": "Surfaces whether the list bent to fit the person in front of them — which can be growth or self-deception. The conversation is the point.",
+        "guessable": true,
+        "opts": [
+          "Not at all",
+          "A little",
+          "A lot: you changed it",
+          "I've let go of things that didn't matter"
+        ]
+      },
+      {
+        "id": "US-029",
+        "q": "How do you feel about the pace our relationship is moving?",
+        "type": "scale",
+        "depth": 2,
+        "ref": "Ecclesiastes 3:1",
+        "note": "Surfaces a pace mismatch directly; gap between answers is the signal.",
+        "guessable": true,
+        "lo": "Too slow for me",
+        "hi": "Too fast for me  (3 = just right)"
+      },
+      {
+        "id": "US-061",
+        "q": "What would you ideally want our next major relationship step to be?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Spend more time simply dating and getting to know each other",
+          "Become more intentional about discussing marriage",
+          "Involve family, pastors or mentors more seriously",
+          "Move towards engagement",
+          "Begin actively planning marriage",
+          "I'm happy with where we are for now"
+        ]
+      },
+      {
+        "id": "US-062",
+        "q": "What is your intention for our relationship at this stage?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "I'm intentionally pursuing marriage with you",
+          "I'm seriously discerning whether we should marry",
+          "I'm committed to the relationship but not ready to think about marriage yet",
+          "I'm mainly enjoying our relationship and seeing where it goes",
+          "I'm unsure what I want our relationship to become"
+        ]
+      },
+      {
+        "id": "US-063",
+        "q": "How certain do you currently feel that you want this relationship to lead to marriage?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Very uncertain",
+          "I have significant questions",
+          "I'm genuinely considering it",
+          "Very likely",
+          "I'm already confident that I want to marry you"
         ]
       },
       {
@@ -4556,35 +6351,536 @@ export const DECKS: Record<string, Deck> = {
         "hi": "Seriously evaluate it"
       },
       {
-        "id": "US-050",
-        "q": "How much of your enjoyment of something comes from having someone to share it with?",
-        "type": "scale",
+        "id": "US-064",
+        "q": "Do you believe Christians should date someone they already know they could not realistically marry?",
+        "type": "mc",
         "depth": 1,
-        "note": "Enjoyment amplification, distinct from FUN-006 (how free time gets allocated) and SELF-013 (solitude to recharge). This is whether company is what makes it good.",
         "guessable": true,
-        "lo": "I enjoy things just as much alone",
-        "hi": "Everything's better shared"
+        "opts": [
+          "No: dating should only be pursued where marriage is realistically possible",
+          "Generally no, because dating should be intentional towards marriage",
+          "Possibly, if you're still genuinely discerning compatibility",
+          "Yes: dating can be worthwhile even if marriage isn't currently the goal",
+          "Yes: dating does not need to be connected to marriage at all"
+        ]
       },
       {
-        "id": "US-001",
-        "q": "What does being 'compatible' actually mean to you?",
-        "type": "open",
+        "id": "US-065",
+        "q": "How soon into dating do you think a relationship should become exclusive?",
+        "type": "mc",
         "depth": 2,
-        "note": "Surfaces each person's working definition of fit."
+        "guessable": true,
+        "opts": [
+          "From the beginning: if we're dating, we shouldn't date other people",
+          "After a few dates once there's clear mutual interest",
+          "Once we've had an explicit conversation about exclusivity",
+          "Only once the relationship becomes serious",
+          "Dating multiple people is fine until there's a formal commitment"
+        ]
       },
       {
-        "id": "US-003",
-        "q": "Name three ways we're alike and three ways we're different - which differences do you actually treasure?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces how differences are held."
+        "id": "US-066",
+        "q": "How comfortable would you be ending a good relationship if, after enough time, it wasn't clearly moving towards marriage?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "Very uncomfortable: I'd keep giving it time",
+        "hi": "Very comfortable: if marriage is the goal and we're not moving towards it, I wouldn't want to waste either person's time"
       },
       {
-        "id": "US-005",
-        "q": "Forget 'perfect' - paint me your picture of a realistic, great marriage.",
-        "type": "open",
+        "id": "US-067",
+        "q": "If you were confident this was the person you wanted to marry, how long would you ideally want to wait before getting engaged?",
+        "type": "mc",
         "depth": 2,
-        "note": "Surfaces marriage expectations grounded in reality."
+        "guessable": true,
+        "opts": [
+          "Less than 6 months",
+          "Around 6–12 months",
+          "Around 1–2 years",
+          "More than 2 years",
+          "I wouldn't want a set timeframe"
+        ]
+      },
+      {
+        "id": "US-068",
+        "q": "Once engaged, how long would you ideally want the engagement to last?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Less than 6 months",
+          "Around 6–12 months",
+          "Around 1–2 years",
+          "More than 2 years",
+          "However long was practically necessary"
+        ]
+      },
+      {
+        "id": "US-069",
+        "q": "How long do you think a couple should ideally know each other before getting engaged?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Less than 6 months can be enough",
+          "Around 6–12 months",
+          "At least 1–2 years",
+          "More than 2 years",
+          "Time matters less than what the couple has actually worked through together"
+        ]
+      },
+      {
+        "id": "US-070",
+        "q": "What would you most want us to experience together before getting engaged? Rank these",
+        "type": "rank",
+        "depth": 3,
+        "opts": [
+          "A serious disagreement or difficult conversation",
+          "Spending significant time with each other's families",
+          "Seeing each other under stress",
+          "Travelling or spending extended time together",
+          "Working through money and future plans",
+          "Serving or being involved in church together",
+          "Going through premarital counselling or mentoring"
+        ]
+      },
+      {
+        "id": "US-071",
+        "q": "When should we start having serious conversations about marriage?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Very early: if marriage is the goal of dating, we should talk about it from the beginning",
+          "Once we know there is strong mutual interest",
+          "Once we're exclusive",
+          "Once the relationship has become clearly serious",
+          "Only when one of us is seriously thinking about engagement",
+          "I prefer relationships to develop naturally without much marriage talk early on"
+        ]
+      },
+      {
+        "id": "US-072",
+        "q": "Before engagement, how emotionally invested do you think a couple should become?",
+        "type": "mc",
+        "depth": 3,
+        "ref": "Proverbs 4:23",
+        "guessable": true,
+        "opts": [
+          "Keep strong emotional boundaries until there is a formal commitment",
+          "Grow emotionally close gradually while still guarding against acting married before marriage",
+          "Become deeply emotionally invested once the relationship is exclusive and serious",
+          "Become fully emotionally invested once both people are intentionally pursuing marriage",
+          "I don't think engagement should determine how emotionally close a couple becomes"
+        ]
+      },
+      {
+        "id": "US-073",
+        "q": "When do you think it is appropriate to start speaking about each other as part of your long-term future?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Only after engagement",
+          "Once we've clearly agreed we're dating towards marriage",
+          "Once the relationship becomes exclusive",
+          "Whenever we both feel serious about each other",
+          "Very early: talking about the future is part of finding out whether we're compatible"
+        ]
+      },
+      {
+        "id": "US-074",
+        "q": "What has shaped your understanding of marriage the most?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "The Bible and my Christian beliefs",
+          "My parents or the marriage I grew up watching",
+          "Church teaching, pastors or Christian mentors",
+          "Other marriages I've seen around me",
+          "Books, films, social media or wider culture",
+          "My own relationship experiences and conclusions"
+        ]
+      },
+      {
+        "id": "US-010",
+        "q": "Whose marriage do you admire, and what do they do that you'd want for us?",
+        "type": "open",
+        "depth": 1,
+        "note": "Surfaces role models for a healthy marriage."
+      },
+      {
+        "id": "US-075",
+        "q": "What do you notice first when you see a marriage you admire?",
+        "type": "mc",
+        "depth": 1,
+        "guessable": true,
+        "opts": [
+          "They genuinely enjoy each other",
+          "Their faith clearly shapes their marriage",
+          "They communicate and handle conflict well",
+          "They are loyal and committed to each other",
+          "They work well as a team",
+          "They have a strong family life",
+          "They still show affection and romance"
+        ]
+      },
+      {
+        "id": "US-076",
+        "q": "Before getting married, how much intentional marriage preparation would you want us to do?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Formal premarital counselling with a pastor or counsellor",
+          "A structured Christian marriage course or counselling",
+          "Several intentional conversations with a pastor or mentor",
+          "Mainly work through important topics ourselves",
+          "I don't think formal preparation is necessary"
+        ]
+      },
+      {
+        "id": "US-077",
+        "q": "Who would you most want involved in preparing us for marriage?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Our pastor or church leaders",
+          "A Christian counsellor",
+          "A mature married couple we trust",
+          "Our parents",
+          "A marriage course or programme",
+          "Mainly just the two of us"
+        ]
+      },
+      {
+        "id": "US-078",
+        "q": "What matters most for being ready for marriage? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "ref": "Luke 14:28",
+        "opts": [
+          "Spiritual maturity",
+          "Strong character and emotional maturity",
+          "Shared convictions about marriage and family",
+          "Ability to communicate and resolve conflict",
+          "Financial responsibility",
+          "Practical stability and ability to build a household",
+          "Genuine certainty about choosing the person"
+        ]
+      },
+      {
+        "id": "US-079",
+        "q": "Which of these do you think we personally still need to strengthen most before marriage?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Spiritual maturity",
+          "Strong character and emotional maturity",
+          "Shared convictions about marriage and family",
+          "Ability to communicate and resolve conflict",
+          "Financial responsibility",
+          "Practical stability and ability to build a household",
+          "Genuine certainty about choosing the person"
+        ]
+      },
+      {
+        "id": "US-080",
+        "q": "What would you want us to do about surnames if we married?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Both use the husband's surname",
+          "Each keep our own surname",
+          "Use a double-barrelled or combined surname",
+          "Be open to either person's surname",
+          "I don't have a strong preference"
+        ]
+      },
+      {
+        "id": "US-030",
+        "q": "How important is it to you that I get along with your closest friends?",
+        "type": "scale",
+        "depth": 2,
+        "note": "A practical compatibility check the friendship section raises.",
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential"
+      },
+      {
+        "id": "US-081",
+        "q": "How involved would you want your partner to be with your closest friends?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "I would want us to become one close social circle",
+          "I'd want my partner to be genuinely close with them",
+          "I'd want everyone to get along, but separate friendships are fine",
+          "Respectful but fairly separate is enough",
+          "My friendships and relationship can remain largely separate"
+        ]
+      },
+      {
+        "id": "US-082",
+        "q": "If your closest friend and your partner really didn't like each other, what would you expect?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "My partner should come first, and I would distance myself from the friendship if necessary",
+          "I would expect my friend to respect my relationship even if they disliked my partner",
+          "I would try hard to preserve both relationships",
+          "I would keep the friendship separate from my relationship",
+          "If my friend had serious concerns, I would give their view significant weight"
+        ]
+      },
+      {
+        "id": "US-083",
+        "q": "How much would you want our married life to be surrounded by close friendships and Christian community?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Mostly just us",
+        "hi": "Deeply connected: I would want community to be a major part of our life"
+      },
+      {
+        "id": "US-084",
+        "q": "After marriage, how important is it to you that we build friendships with other couples?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Very important: I'd want close couple friendships",
+          "Important, but not essential",
+          "Nice to have, but individual friendships matter more",
+          "I don't particularly need couple friends",
+          "I'd prefer most of our social life to stay separate rather than shared"
+        ]
+      },
+      {
+        "id": "US-085",
+        "q": "Once we're married, how do you think we should view our individual lives and our life as a couple?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Marriage becomes the main priority: our individual plans should normally come second to what is best for us as a couple",
+          "Marriage comes first, but we should still strongly protect each person's individual goals and identity",
+          "Our shared life and individual lives should carry roughly equal weight",
+          "Marriage should support our individual lives rather than significantly reshape them",
+          "We should remain highly independent while choosing to share life together"
+        ]
+      },
+      {
+        "id": "US-086",
+        "q": "Which best describes what you believe marriage should become over time?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "Two people becoming increasingly united in almost every part of life",
+          "A deeply united couple while still keeping strong individual identities",
+          "A partnership where we share the important things but keep plenty separate",
+          "Two independent people who love each other without needing to merge much of their lives",
+          "I haven't really thought about it"
+        ]
+      },
+      {
+        "id": "US-087",
+        "q": "Whose opinion about our relationship would carry the most weight for you? Rank these from most to least.",
+        "type": "rank",
+        "depth": 3,
+        "ref": "Proverbs 15:22",
+        "opts": [
+          "My parents",
+          "Your parents",
+          "Our pastor or church leaders",
+          "A mature Christian couple or mentor",
+          "My closest friends",
+          "Our wider church community"
+        ]
+      },
+      {
+        "id": "US-088",
+        "q": "If your parents strongly believed you should not marry me, what would you do?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "I would not marry without their blessing",
+          "I would pause the relationship until their concerns were resolved",
+          "I would take their concerns very seriously but could still marry if I believed they were wrong",
+          "I would listen respectfully, but the decision would ultimately be mine before God",
+          "My parents' objection would not significantly affect my decision"
+        ]
+      },
+      {
+        "id": "US-089",
+        "q": "If several people we trusted raised serious concerns about our relationship, what should we do?",
+        "type": "mc",
+        "depth": 3,
+        "ref": "Proverbs 11:14",
+        "guessable": true,
+        "opts": [
+          "Stop moving towards marriage unless those concerns were resolved",
+          "Pause and seriously investigate what they were seeing",
+          "Listen carefully, but continue if we still believed the relationship was right",
+          "Consider their advice, but make the decision mainly between us",
+          "Our relationship is ultimately between us and God, so outside concerns should have little influence"
+        ]
+      },
+      {
+        "id": "US-090",
+        "q": "If our pastor strongly advised us not to marry, how much weight should that carry?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "I would not marry against that advice",
+          "I would pause until we understood and resolved the concern",
+          "It would carry major weight, but wouldn't automatically decide for me",
+          "I would consider it like any other advice",
+          "I would not believe a pastor should have that level of authority over the decision"
+        ]
+      },
+      {
+        "id": "US-091",
+        "q": "How comfortable are you with trusted people challenging things they see in our relationship?",
+        "type": "mc",
+        "depth": 3,
+        "ref": "Proverbs 27:6",
+        "guessable": true,
+        "opts": [
+          "Very comfortable: I want people close to us to speak up even when it's uncomfortable",
+          "Comfortable if they know us well and have a genuine concern",
+          "I'd rather they raise only serious concerns",
+          "I'd prefer people to support us rather than question the relationship",
+          "I believe relationship problems should mainly stay between the couple"
+        ]
+      },
+      {
+        "id": "US-092",
+        "q": "If someone close to you raised a concern about me or our relationship privately, would you tell me?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Yes, straight away",
+          "Yes, once I'd thought through whether the concern had merit",
+          "Only if I thought the concern was serious",
+          "Probably not: private conversations should remain private",
+          "No: I would deal with their concern separately from our relationship"
+        ]
+      },
+      {
+        "id": "US-002",
+        "q": "What tells you that what we have is really love and not just strong feelings?",
+        "type": "open",
+        "depth": 3,
+        "note": "Surfaces how each distinguishes love from infatuation."
+      },
+      {
+        "id": "US-093",
+        "q": "What makes you feel most confident that a relationship is built on real love? Rank these.",
+        "type": "rank",
+        "depth": 3,
+        "opts": [
+          "Choosing each other even when feelings fluctuate",
+          "Sacrificing for each other",
+          "Trust and honesty",
+          "Deep friendship",
+          "Strong attraction and affection",
+          "Helping each other grow",
+          "Shared faith and commitment to God"
+        ]
+      },
+      {
+        "id": "US-004",
+        "q": "What do you hope marriage would give or allow us to build that you don't think you could have in the same way while single?",
+        "type": "open",
+        "depth": 3,
+        "note": "Surfaces the 'why marriage' for each."
+      },
+      {
+        "id": "US-094",
+        "q": "How much do you expect marriage to change the way you live your life?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Very little: I expect most of my life to stay much the same",
+        "hi": "Completely: becoming one household should fundamentally change how I make decisions and live"
+      },
+      {
+        "id": "US-095",
+        "q": "How much would you want us to rely on each other in married life?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "lo": "Very independent: I think each person should handle most of their own needs and responsibilities",
+        "hi": "Deeply interdependent: I would want us to function as one team across almost every area of life"
+      },
+      {
+        "id": "US-096",
+        "q": "How much do you believe marriage itself changes a person's character and habits?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "core": true,
+        "lo": "Very little: we should assume the person we marry is largely the person we'll live with",
+        "hi": "I expect marriage to change people significantly"
+      },
+      {
+        "id": "US-097",
+        "q": "If your partner had a habit you strongly disliked before marriage, what would be your default assumption?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Assume it may never change and decide whether I can live with it",
+          "Hope it changes, but don't make marriage depend on it",
+          "Expect them to seriously work on changing it",
+          "Expect marriage and responsibility to naturally change it",
+          "I would struggle to marry unless they changed it first"
+        ]
+      },
+      {
+        "id": "US-098",
+        "q": "What would make you feel that we had built a genuinely great marriage? Rank these from most important to least important.",
+        "type": "rank",
+        "depth": 2,
+        "opts": [
+          "A strong relationship with God at the centre",
+          "Deep friendship and emotional closeness",
+          "Trust, loyalty and commitment",
+          "A peaceful and loving home",
+          "A strong sex life and physical connection",
+          "Raising a strong family",
+          "Growing, achieving and building things together",
+          "Having fun and genuinely enjoying life together"
+        ]
+      },
+      {
+        "id": "US-099",
+        "q": "If our marriage was strong in most areas but one of these was consistently weak, which would concern you most?",
+        "type": "mc",
+        "depth": 2,
+        "guessable": true,
+        "opts": [
+          "A strong relationship with God at the centre",
+          "Deep friendship and emotional closeness",
+          "Trust, loyalty and commitment",
+          "A peaceful and loving home",
+          "A strong sex life and physical connection",
+          "Raising a strong family",
+          "Growing, achieving and building things together",
+          "Having fun and genuinely enjoying life together"
+        ]
       },
       {
         "id": "US-006",
@@ -4604,234 +6900,72 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "US-009",
-        "q": "How would you keep romance alive over the long haul?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces intentionality about romance."
-      },
-      {
-        "id": "US-013",
-        "q": "How open are you to premarital counseling now, and marriage counseling later if we needed it?",
+        "id": "US-100",
+        "q": "If one of these became weak for a long season, which would worry you most about our marriage?",
         "type": "mc",
         "depth": 2,
-        "note": "Surfaces openness to outside help.",
         "guessable": true,
         "opts": [
-          "Definitely",
-          "If we needed it",
-          "I'd be hesitant",
-          "Not sure"
+          "Shared faith",
+          "Trust",
+          "Commitment",
+          "Communication",
+          "Friendship",
+          "Physical and sexual intimacy",
+          "Shared direction and goals"
         ]
       },
       {
-        "id": "US-017",
-        "q": "What do you picture for the future of us?",
-        "type": "open",
-        "depth": 2,
-        "note": "Surfaces shared vision and direction."
-      },
-      {
-        "id": "US-027",
-        "q": "Rank the markers of readiness for marriage, most important first.",
+        "id": "US-101",
+        "q": "What would make you feel like we're still dating each other years into marriage? Rank these from most important to least important.",
         "type": "rank",
         "depth": 2,
-        "ref": "Luke 14:28",
-        "note": "Turns 'what markers of maturity matter' into a compare-your-lists ranking.",
         "opts": [
-          "Spiritual maturity",
-          "Emotional health",
-          "Financial stability",
-          "Conflict-resolution skills",
-          "Living independently",
-          "Career direction"
+          "Regular dates just for us",
+          "Flirting and playful affection",
+          "Physical and sexual intimacy",
+          "Thoughtful surprises or gestures",
+          "Trying new things and having adventures",
+          "Making time for deep conversation",
+          "Dressing up or making an effort for each other"
         ]
       },
       {
-        "id": "US-029",
-        "q": "How do you feel about the pace our relationship is moving?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Ecclesiastes 3:1",
-        "note": "Surfaces a pace mismatch directly; gap between answers is the signal.",
-        "guessable": true,
-        "lo": "Too slow for me",
-        "hi": "Too fast for me  (3 = just right)"
-      },
-      {
-        "id": "US-030",
-        "q": "How important is it to you that I get along with your closest friends?",
-        "type": "scale",
-        "depth": 2,
-        "note": "A practical compatibility check the friendship section raises.",
-        "guessable": true,
-        "lo": "Not important",
-        "hi": "Essential"
-      },
-      {
-        "id": "US-031",
-        "q": "Once you knew it was right, how soon would you want to get married?",
+        "id": "US-102",
+        "q": "If life became really busy, which part of our romantic connection would you protect first?",
         "type": "mc",
         "depth": 2,
-        "note": "Engagement-to-marriage timeline, distinct from readiness markers (US-027).",
         "guessable": true,
         "opts": [
-          "Within a year",
-          "One to two years",
-          "Two years or more",
-          "No rush at all"
+          "Date nights",
+          "Sex and physical intimacy",
+          "Time talking properly",
+          "Affection and flirting",
+          "Trips or experiences together",
+          "Small everyday gestures"
         ]
       },
       {
-        "id": "US-033",
-        "q": "What's your goal for this season of dating?",
-        "type": "mc",
-        "depth": 2,
-        "note": "Surfaces dating intent/seriousness — the 'are we on the same page' question.",
-        "guessable": true,
-        "opts": [
-          "Heading toward marriage",
-          "Seeing if we're compatible",
-          "Enjoying it for now",
-          "Not sure yet"
-        ]
-      },
-      {
-        "id": "US-035",
-        "q": "How important is it that your spouse is also your best friend?",
-        "type": "scale",
-        "depth": 2,
-        "ref": "Song of Solomon 5:16",
-        "note": "The friendship-vs-romance value behind 'enjoy time together in non-romantic settings'.",
-        "guessable": true,
-        "core": true,
-        "lo": "Romance matters more to me",
-        "hi": "Best friends first"
-      },
-      {
-        "id": "US-039",
-        "q": "As a couple, how involved in community do you want to be?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Couple-level community orientation, distinct from individual social rhythm (HEALTH-002).",
-        "guessable": true,
-        "lo": "Mostly just us",
-        "hi": "Deeply involved in community"
-      },
-      {
-        "id": "US-048",
-        "q": "How clear are you on what you're looking for in a spouse?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Confidence rather than content. DEAL-002 asks what the must-haves are; this asks whether the person actually knows.",
-        "guessable": true,
-        "lo": "Still working it out",
-        "hi": "I know exactly"
-      },
-      {
-        "id": "US-002",
-        "q": "What tells you that what we have is really love and not just strong feelings?",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces how each distinguishes love from infatuation."
-      },
-      {
-        "id": "US-004",
-        "q": "What would marriage give you that staying single wouldn't?",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces the 'why marriage' for each."
-      },
-      {
-        "id": "US-015",
-        "q": "In marriage, what would you want us to lean on each other for - and what would you keep as your own?",
-        "type": "open",
-        "depth": 3,
-        "note": "Surfaces healthy interdependence and boundaries."
-      },
-      {
-        "id": "US-016",
-        "q": "What's something you've always wanted to ask me but never have?",
-        "type": "open",
-        "depth": 3,
-        "note": "A trust-builder that opens hidden doors."
-      },
-      {
-        "id": "US-019",
-        "q": "Whose blessing on our relationship matters most to you?",
+        "id": "US-103",
+        "q": "Which things would you most want people to say about our marriage one day? Rank them.",
         "type": "rank",
-        "depth": 3,
-        "ref": "Proverbs 15:22",
-        "note": "The wise-counsel flag; compare whose voices each weights heaviest.",
+        "depth": 2,
         "opts": [
-          "Our parents",
-          "A pastor or mentor",
-          "Close friends",
-          "Our small group or church"
+          "They really love God",
+          "They genuinely love and enjoy each other",
+          "They are completely loyal to one another",
+          "They built a strong family",
+          "They are generous and serve other people",
+          "They work as an incredible team",
+          "They built a meaningful and successful life together"
         ]
       },
       {
-        "id": "US-020",
-        "q": "How much should wise counsel from people we trust shape our biggest decisions?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "Proverbs 11:14",
-        "note": "Echo-chamber vs real discernment, as a shared posture.",
-        "guessable": true,
-        "lo": "We decide on our own",
-        "hi": "It shapes us heavily"
-      },
-      {
-        "id": "US-021",
-        "q": "In choosing a life partner, what matters more to you?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "Amos 3:3",
-        "note": "The 'clarity over chemistry' principle as a value both rate.",
-        "guessable": true,
-        "core": true,
-        "lo": "Chemistry and connection",
-        "hi": "Clarity and shared direction"
-      },
-      {
-        "id": "US-022",
-        "q": "How much should a couple agree on the big things before marrying, rather than working it out later?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Surfaces how much pre-marriage alignment each thinks is needed.",
-        "guessable": true,
-        "lo": "Work most of it out later",
-        "hi": "Agree on the big things first"
-      },
-      {
-        "id": "US-023",
-        "q": "How much do you believe a person's habits and character can change after marriage?",
-        "type": "scale",
-        "depth": 3,
-        "note": "The 'fixer-upper' belief — general view, pairs with the personal one below.",
-        "guessable": true,
-        "core": true,
-        "lo": "People rarely change",
-        "hi": "People can change a lot"
-      },
-      {
-        "id": "US-025",
-        "q": "Do you think marriage will improve our current problems, or mostly reveal them?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Surfaces an idealistic vs realistic view of what marriage does.",
-        "guessable": true,
-        "lo": "Marriage will help fix things",
-        "hi": "Marriage mainly reveals what's already there"
-      },
-      {
-        "id": "US-026",
+        "id": "US-104",
         "q": "When hard seasons hit, how do you expect we'll get through them?",
-        "type": "mc",
+        "type": "rank",
         "depth": 3,
         "ref": "James 1:2-4",
-        "note": "Surfaces the couple's expected coping mode for trials.",
-        "guessable": true,
         "opts": [
           "Lean on God together",
           "Lean mainly on each other",
@@ -4840,54 +6974,104 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "US-032",
-        "q": "Rank what should come first in our life together.",
-        "type": "rank",
+        "id": "US-105",
+        "q": "If our marriage was happy and loving but never achieved the lifestyle, career or financial success we'd hoped for, would you still consider it a successful marriage?",
+        "type": "mc",
         "depth": 3,
-        "ref": "Matthew 6:33",
-        "note": "Surfaces ordering of life priorities; the 'marriage as first ministry' theme.",
-        "core": true,
+        "guessable": true,
         "opts": [
-          "God",
-          "Each other",
-          "Our children",
-          "Work and career",
-          "Extended family",
-          "Ministry and serving"
+          "Yes: the quality and faithfulness of the marriage matters far more than external success",
+          "Yes, although I would still feel disappointed about what we hadn't achieved",
+          "Partly: I need both a strong marriage and meaningful progress in life",
+          "I would struggle to feel successful if we hadn't built the life we'd planned",
+          "No: achieving our wider goals is an important part of what marriage success means to me"
         ]
       },
       {
-        "id": "US-036",
-        "q": "Early in a relationship, how much do you guard your heart versus give it fully?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "Proverbs 4:23",
-        "note": "Emotional investment pace, distinct from relationship-progression pace (US-029).",
+        "id": "US-106",
+        "q": "If caring for our children consistently started pushing our marriage relationship into the background, what should we do?",
+        "type": "mc",
+        "depth": 4,
         "guessable": true,
-        "lo": "I guard it carefully",
-        "hi": "I give my heart fully and fast"
+        "opts": [
+          "Our marriage should be intentionally restored as the priority under God",
+          "Children should remain the main practical priority while they're young",
+          "Accept that marriage naturally takes a back seat during some parenting seasons",
+          "Protect both equally even if other areas of life have to suffer",
+          "I haven't thought about it"
+        ]
       },
       {
-        "id": "US-037",
-        "q": "How open are you to people close to us questioning our relationship?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "Proverbs 27:6",
-        "note": "Openness to scrutiny of the relationship itself — the isolation red flag.",
+        "id": "US-107",
+        "q": "If our marriage went through a long season where you were unhappy, what would commitment mean to you?",
+        "type": "mc",
+        "depth": 4,
         "guessable": true,
-        "lo": "I'd rather they stayed out of it",
-        "hi": "I welcome their honest questions"
+        "opts": [
+          "Stay and keep working on the marriage regardless of how long the season lasts",
+          "Stay unless there is a biblically valid reason to end the marriage",
+          "Stay while both people are genuinely trying to improve things",
+          "Give it a serious period of effort, but leave if nothing changes",
+          "Personal happiness is important enough that a persistently unhappy marriage may need to end"
+        ]
       },
       {
-        "id": "US-038",
-        "q": "How much should partners push each other to grow, versus accept each other as they are?",
-        "type": "scale",
-        "depth": 3,
-        "ref": "Proverbs 27:17",
-        "note": "The growth-pushing tension behind 'support each other's growth without pressure'; broader than the spiritual version (FAITH-008).",
+        "id": "US-108",
+        "q": "If your spouse changed significantly after marriage and became very different from the person you married, what would you believe commitment requires?",
+        "type": "mc",
+        "depth": 4,
         "guessable": true,
-        "lo": "Accept each other as we are",
-        "hi": "Actively push each other to grow"
+        "opts": [
+          "Remain committed because marriage is a lifelong covenant regardless of how much they change",
+          "Remain committed unless they break the marriage covenant in a biblically serious way",
+          "Work hard to adapt and rebuild the relationship, but recognise there may be a limit",
+          "Stay only if the new version of the relationship remained healthy",
+          "If we became fundamentally incompatible, ending the marriage could be right"
+        ]
+      },
+      {
+        "id": "US-109",
+        "q": "If one of us developed a serious long-term illness or disability that radically changed our life together, what would you believe marriage requires?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "Stay fully committed and personally carry whatever responsibility marriage requires",
+          "Stay committed while bringing in as much family or professional support as necessary",
+          "Remain married, but recognise that caregiving may need to be largely handled by others",
+          "I don't know how much caregiving I could realistically take on",
+          "I would see some circumstances as potentially changing what could reasonably be expected of the marriage"
+        ]
+      },
+      {
+        "id": "US-110",
+        "q": "If we had a major marriage problem and one of us wanted counselling but the other refused, what should happen?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "The refusing spouse should still be expected to attend for the sake of the marriage",
+          "Keep asking and involve trusted church leadership or mentors",
+          "The willing spouse should seek help alone first",
+          "Counselling should never be forced; both must choose it",
+          "Refusing all help for a serious problem would make me question the marriage"
+        ]
+      },
+      {
+        "id": "US-111",
+        "q": "Rank these by the priority you believe they should normally have in our life together.",
+        "type": "rank",
+        "depth": 3,
+        "ref": "Matthew 6:33",
+        "core": true,
+        "opts": [
+          "God and our relationship with Him",
+          "Our marriage",
+          "Our children",
+          "Work and career",
+          "Extended family",
+          "Church, ministry and serving others"
+        ]
       },
       {
         "id": "US-040",
@@ -4899,73 +7083,6 @@ export const DECKS: Record<string, Deck> = {
         "guessable": true,
         "lo": "I'd be reluctant",
         "hi": "Readily"
-      },
-      {
-        "id": "US-043",
-        "q": "How much room does your life have right now for this to grow?",
-        "type": "scale",
-        "depth": 3,
-        "note": "Present-tense capacity. US-033 asks intent; nothing in the bank asks whether the person actually has the bandwidth to act on it.",
-        "guessable": true,
-        "lo": "I'm stretched thin",
-        "hi": "Plenty of room"
-      },
-      {
-        "id": "US-047",
-        "q": "How long does it take to really know someone?",
-        "type": "mc",
-        "depth": 3,
-        "note": "The epistemics of knowing a person, distinct from relationship pace (US-029) and emotional pace (US-036). Two people who differ here will disagree about engagement timing without knowing why.",
-        "guessable": true,
-        "opts": [
-          "A few months",
-          "About a year",
-          "Two years or more",
-          "You never fully do"
-        ]
-      },
-      {
-        "id": "US-007",
-        "q": "How confident are you that we'd go the distance?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Surfaces commitment and realism about lasting.",
-        "guessable": true,
-        "lo": "Some real doubts",
-        "hi": "Completely confident"
-      },
-      {
-        "id": "US-012",
-        "q": "What life experiences would you hope your future spouse had had - and which would you hope they hadn't?",
-        "type": "open",
-        "depth": 4,
-        "note": "Surfaces expectations about a partner's history."
-      },
-      {
-        "id": "US-018",
-        "q": "How much do you feel you give up of yourself to be in this relationship?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Surfaces the give-and-take balance honestly.",
-        "guessable": true,
-        "lo": "Very little",
-        "hi": "A great deal"
-      },
-      {
-        "id": "US-028",
-        "q": "Do you see marriage more as a covenant or a contract?",
-        "type": "mc",
-        "depth": 4,
-        "ref": "Malachi 2:14",
-        "note": "The 'covenant, not box-checking' question; surfaces permanence theology.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "A sacred covenant before God",
-          "A lifelong commitment",
-          "A partnership that can end if needed",
-          "Not sure"
-        ]
       },
       {
         "id": "US-041",
@@ -4983,76 +7100,118 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "US-042",
-        "q": "Rank where your emotional energy actually goes right now.",
+        "id": "US-112",
+        "q": "What do you believe makes our marriage commitment binding?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "Malachi 2:14",
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Our covenant before God: marriage remains binding even when feelings or circumstances change",
+          "Our vows to God and each other: we are committed for life except where Scripture permits the marriage to end",
+          "Our lifelong promise to each other: even without seeing it primarily as a religious covenant",
+          "Our commitment remains while the marriage is healthy and both people continue choosing it",
+          "Marriage is a partnership that either person should be able to end if it no longer works",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "US-113",
+        "q": "If you no longer felt “in love” with your spouse, but there was no abuse, adultery or abandonment, what would you believe you should do?",
+        "type": "mc",
+        "depth": 4,
+        "guessable": true,
+        "opts": [
+          "Remain married and actively work to rebuild love",
+          "Remain married because the covenant does not depend on feelings",
+          "Seek counselling and make every serious effort before considering separation",
+          "Separate if the relationship remained emotionally dead for long enough",
+          "Divorce should be an option if love is genuinely gone"
+        ]
+      },
+      {
+        "id": "US-114",
+        "q": "How confident are you right now that you would want to marry me and remain committed to our marriage for life?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "lo": "I have serious doubts",
+        "hi": "I'm fully confident in choosing you for life"
+      },
+      {
+        "id": "US-115",
+        "q": "What, if anything, still gives you hesitation about choosing me for life?",
+        "type": "open",
+        "depth": 4
+      },
+      {
+        "id": "US-038",
+        "q": "How much should partners push each other to grow, versus accept each other as they are?",
+        "type": "scale",
+        "depth": 3,
+        "ref": "Proverbs 27:17",
+        "note": "The growth-pushing tension behind 'support each other's growth without pressure'; broader than the spiritual version (FAITH-008).",
+        "guessable": true,
+        "lo": "Accept each other as we are",
+        "hi": "Actively push each other to grow"
+      },
+      {
+        "id": "US-116",
+        "q": "If we discovered a major disagreement before marriage that neither of us was willing to change, what should we do?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Do not marry until we genuinely agree",
+          "Decide whether the issue is important enough to prevent marriage",
+          "Marry if our core faith and commitment are strong and keep working on it",
+          "Accept that spouses can hold major differences and move forward",
+          "I would expect one person eventually to yield for the sake of unity"
+        ]
+      },
+      {
+        "id": "US-117",
+        "q": "Which areas would you least want us to enter marriage seriously divided on? Rank them.",
         "type": "rank",
-        "depth": 4,
-        "note": "US-032 ranks what should come first — the ideal. This ranks what is. The gap between a person's two answers is the honest conversation, and 'just keeping myself going' is the option that makes it possible to admit.",
+        "depth": 3,
         "opts": [
-          "Work",
-          "Family",
-          "Friends",
-          "Church or ministry",
-          "This relationship",
-          "Just keeping myself going"
+          "Faith and theology",
+          "Children and parenting",
+          "Marriage roles",
+          "Sex and intimacy",
+          "Money",
+          "Family and in-laws",
+          "Career and lifestyle",
+          "Political or moral convictions"
         ]
       },
       {
-        "id": "US-044",
-        "q": "If your life is too full right now, what would you actually cut to make room for us?",
+        "id": "US-118",
+        "q": "If we had a serious recurring problem before marriage, what would you expect marriage to do to it?",
         "type": "mc",
-        "depth": 4,
-        "ref": "Philippians 2:4",
-        "note": "Turns a vague 'I'd prioritise you' into a real trade-off. Naming ministry as a competing good is deliberate — it's the hardest option to pick and the most revealing.",
+        "depth": 3,
         "guessable": true,
         "opts": [
-          "Work hours",
-          "Time with friends",
-          "Ministry or serving",
-          "Hobbies and downtime",
-          "Nothing: I'd find the time somewhere"
+          "Probably make it harder unless we dealt with it first",
+          "Mostly leave it unchanged",
+          "Give us more opportunity to work through it together",
+          "Marriage itself would likely make the issue easier",
+          "It would depend entirely on the problem"
         ]
       },
       {
-        "id": "US-045",
-        "q": "Which is harder for you to give right now?",
+        "id": "US-119",
+        "q": "How serious would a recurring unresolved problem need to become before you would postpone or reconsider marriage?",
         "type": "mc",
-        "depth": 4,
-        "note": "Time and energy are different scarcities and the bank conflates them. Someone with a free diary and nothing left in the tank is the harder case, and the one nobody names.",
+        "depth": 3,
         "guessable": true,
         "opts": [
-          "Time",
-          "Emotional energy",
-          "Neither: I have both",
-          "Both are stretched"
-        ]
-      },
-      {
-        "id": "US-046",
-        "q": "Wanting to invest in us, and being able to right now, which is truer for you?",
-        "type": "mc",
-        "depth": 4,
-        "note": "The desire-versus-capacity gap named directly. Option three is the one that surfaces a conversation nothing else in the bank reaches.",
-        "guessable": true,
-        "opts": [
-          "I want to and I can",
-          "I want to but life is full",
-          "I have the time but I'm holding back",
-          "Neither, right now"
-        ]
-      },
-      {
-        "id": "US-049",
-        "q": "Has what you're looking for in a partner changed since we met?",
-        "type": "mc",
-        "depth": 4,
-        "note": "Surfaces whether the list bent to fit the person in front of them — which can be growth or self-deception. The conversation is the point.",
-        "guessable": true,
-        "opts": [
-          "Not at all",
-          "A little",
-          "A lot: you changed it",
-          "I've let go of things that didn't matter"
+          "Any major recurring problem should be resolved first",
+          "If it affected trust, faithfulness, safety or core values",
+          "Only if it made me seriously doubt the relationship",
+          "I would usually prefer to marry and work through problems together",
+          "I would be very reluctant to postpone marriage once committed"
         ]
       },
       {
@@ -5063,14 +7222,24 @@ export const DECKS: Record<string, Deck> = {
         "note": "Invites honest concerns while there's still time."
       },
       {
-        "id": "US-024",
-        "q": "How much are you counting on me changing after we marry?",
-        "type": "scale",
+        "id": "US-120",
+        "q": "How much would you need me to change from who I am today for you to be happy marrying me as I am?",
+        "type": "mc",
         "depth": 5,
-        "note": "The personal application; the reveal is the whole point of the conversation.",
         "guessable": true,
-        "lo": "Not at all, I accept you as you are",
-        "hi": "I'm counting on some real changes"
+        "opts": [
+          "Hardly at all: I can genuinely accept you as you are",
+          "A few smaller things",
+          "There are some meaningful areas I'd want to improve",
+          "There are several significant things I'd need to change",
+          "I would be relying on major changes for the marriage to work"
+        ]
+      },
+      {
+        "id": "US-121",
+        "q": "What's the main thing about me that you would hope changes over time?",
+        "type": "open",
+        "depth": 5
       }
     ]
   },
@@ -5080,27 +7249,51 @@ export const DECKS: Record<string, Deck> = {
     "icon": "compass",
     "parts": [
       {
-        "name": "Politics, science and society",
+        "name": "Politics and culture",
         "qids": [
           "VAL-013",
           "VAL-014",
-          "VAL-005",
-          "VAL-006",
-          "VAL-007",
-          "VAL-009",
-          "VAL-010"
+          "VAL-015",
+          "VAL-016",
+          "VAL-017",
+          "VAL-018"
         ]
       },
       {
-        "name": "Life, death and marriage",
+        "name": "Life, death and medicine",
         "qids": [
-          "VAL-001",
-          "VAL-002",
-          "VAL-003",
-          "VAL-004",
-          "VAL-008",
-          "VAL-011",
-          "VAL-012"
+          "VAL-019",
+          "VAL-020",
+          "VAL-021",
+          "VAL-022",
+          "VAL-023",
+          "VAL-024",
+          "VAL-025"
+        ]
+      },
+      {
+        "name": "Sex, gender and marriage",
+        "qids": [
+          "VAL-026",
+          "VAL-027",
+          "VAL-028",
+          "VAL-029",
+          "VAL-030",
+          "VAL-031",
+          "VAL-032"
+        ]
+      },
+      {
+        "name": "Marriage, divorce and living together",
+        "qids": [
+          "VAL-033",
+          "VAL-034",
+          "VAL-035",
+          "VAL-036",
+          "VAL-037",
+          "VAL-038",
+          "VAL-039",
+          "VAL-040"
         ]
       }
     ],
@@ -5131,170 +7324,365 @@ export const DECKS: Record<string, Deck> = {
         "hi": "I love one"
       },
       {
-        "id": "VAL-005",
-        "q": "What's your view on the death penalty?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces a moral conviction about justice and life.",
-        "guessable": true,
-        "opts": [
-          "Support it",
-          "Oppose it",
-          "Depends on the case",
-          "Unsure"
-        ]
-      },
-      {
-        "id": "VAL-006",
-        "q": "Would you want guns in our home?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Both a values question and a practical home decision.",
-        "guessable": true,
-        "opts": [
-          "Yes, comfortable",
-          "Only if secured / limited",
-          "No guns at all",
-          "Unsure"
-        ]
-      },
-      {
-        "id": "VAL-007",
-        "q": "Where do you lean on immigration?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces political and moral leanings on a live issue.",
-        "guessable": true,
-        "opts": [
-          "Stricter",
-          "Moderate",
-          "More open",
-          "Unsure"
-        ]
-      },
-      {
-        "id": "VAL-009",
-        "q": "How do you hold creation and evolution together - or not?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Surfaces where faith and science meet for each of you.",
-        "guessable": true,
-        "opts": [
-          "Young-earth creation",
-          "God-guided over long ages",
-          "Evolution, separate from faith",
-          "Still exploring"
-        ]
-      },
-      {
-        "id": "VAL-010",
-        "q": "Where do you stand on vaccines?",
-        "type": "mc",
-        "depth": 3,
-        "note": "A modern flashpoint that can hit parenting hard.",
-        "guessable": true,
-        "opts": [
-          "Fully pro-vaccine",
-          "Selective",
-          "Hesitant",
-          "Against"
-        ]
-      },
-      {
-        "id": "VAL-001",
-        "q": "Where do you land on abortion?",
-        "type": "mc",
-        "depth": 5,
-        "note": "A core conviction couples need to know they share or differ on.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "Always wrong",
-          "Wrong, with some exceptions",
-          "A personal or medical choice",
-          "Still working it out"
-        ]
-      },
-      {
-        "id": "VAL-002",
-        "q": "What's your view on same-sex marriage?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces the belief and the lived, relational side of it.",
-        "guessable": true,
-        "opts": [
-          "Wrong",
-          "Acceptable for others, not us",
-          "Fully support it",
-          "Still working it out"
-        ]
-      },
-      {
-        "id": "VAL-003",
-        "q": "How do you feel about birth control?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces convictions that directly shape family planning.",
-        "guessable": true,
-        "opts": [
-          "Avoid it entirely",
-          "Natural methods only",
-          "Most methods are fine",
-          "Whatever works for us"
-        ]
-      },
-      {
-        "id": "VAL-004",
-        "q": "Under what circumstances, if any, is divorce acceptable to you?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces how each views the exit door before the vows.",
-        "guessable": true,
-        "core": true,
-        "opts": [
-          "Never",
-          "Only for abuse, adultery, or abandonment",
-          "When it's broken beyond repair",
-          "Still working it out"
-        ]
-      },
-      {
-        "id": "VAL-008",
-        "q": "What's your view on assisted dying?",
-        "type": "mc",
-        "depth": 5,
-        "note": "Surfaces convictions you may one day face for each other or family.",
-        "guessable": true,
-        "opts": [
-          "Wrong",
-          "Acceptable in some cases",
-          "A personal right",
-          "Unsure"
-        ]
-      },
-      {
-        "id": "VAL-011",
-        "q": "How important is it that we share the same social and political convictions?",
+        "id": "VAL-015",
+        "q": "Politically, where do you land?",
         "type": "scale",
         "depth": 5,
-        "note": "Weights values/convictions gaps in the alignment score.",
+        "note": "Surfaces political alignment without taking sides.",
         "guessable": true,
-        "lo": "We can differ freely",
-        "hi": "We need to agree"
+        "lo": "Conservative",
+        "hi": "Progressive"
       },
       {
-        "id": "VAL-012",
-        "q": "How do you feel about living together before marriage?",
+        "id": "VAL-016",
+        "q": "If we regularly voted for different political parties or candidates, how would that affect you?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "It wouldn't bother me",
+          "I'd prefer political agreement, but could comfortably accept the difference",
+          "It would create real tension for me",
+          "I would find it very difficult to marry someone whose politics were very different from mine",
+          "Shared political convictions are important enough that major disagreement could be a deal-breaker"
+        ]
+      },
+      {
+        "id": "VAL-017",
+        "q": "Which public issues would matter most to you for us to broadly agree on? Rank them from most important to least important.",
+        "type": "rank",
+        "depth": 5,
+        "opts": [
+          "Abortion",
+          "Sexuality and gender",
+          "Religious freedom",
+          "Immigration",
+          "Poverty and welfare",
+          "Crime and justice",
+          "Environment and climate",
+          "Role and size of government"
+        ]
+      },
+      {
+        "id": "VAL-018",
+        "q": "Would you be comfortable with us legally keeping a firearm in our home?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Yes: I would actively want one for protection or sport",
+          "Yes: if it were securely stored and responsibly handled",
+          "I would tolerate one if it mattered strongly to my partner",
+          "No: I would not want a firearm in our home",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-019",
+        "q": "What is your conviction about the death penalty?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "I support it for the most serious crimes",
+          "I believe it can be morally justified, but should be used very rarely",
+          "I oppose it because life imprisonment is sufficient",
+          "I oppose it in principle because the state should not take life as punishment",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-020",
+        "q": "When, if ever, do you believe abortion can be morally acceptable?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Never, except where treatment is necessary to save the mother's life and the baby's death cannot be avoided",
+          "Only when the mother's life is seriously at risk",
+          "In cases such as rape, incest or severe medical circumstances",
+          "I believe abortion can be morally acceptable in some other circumstances, especially early in pregnancy",
+          "I believe the decision should ultimately belong to the pregnant woman",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "VAL-021",
+        "q": "If we had an unexpected pregnancy at a very difficult time, what would you believe we should do?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Continue the pregnancy regardless of the difficulty",
+          "Continue the pregnancy unless there was a serious threat to the mother's life",
+          "Consider abortion only in exceptional circumstances",
+          "Consider all options together",
+          "I believe the pregnant partner should ultimately decide"
+        ]
+      },
+      {
+        "id": "VAL-022",
+        "q": "When, if ever, do you believe assisted suicide or euthanasia is morally acceptable?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Never: intentionally ending an innocent human life is morally wrong",
+          "I oppose it generally, including in terminal illness",
+          "Only in exceptional cases involving terminal illness and extreme suffering",
+          "Competent adults should have the right to choose it under strict safeguards",
+          "Adults should generally have the right to choose the timing of their death",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-023",
+        "q": "If one of us became terminally ill and wanted medically assisted death, what would you believe the other spouse should do?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Strongly oppose it",
+          "Encourage other forms of care and relief, but ultimately respect their legal choice",
+          "Support their choice if suffering was severe and death was near",
+          "Fully support their right to decide",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-024",
+        "q": "What best describes your approach to vaccinations for yourself and our future children?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Generally follow the recommended vaccination schedule",
+          "Generally vaccinate, but consider some vaccines individually",
+          "Decide each vaccine case by case after doing our own research",
+          "Prefer to avoid most vaccinations unless clearly necessary",
+          "Opposed to routine vaccination",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-025",
+        "q": "If we strongly disagreed about whether our child should receive a particular vaccine, how should we decide?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "Follow the advice of our child's doctor",
+          "Seek several medical opinions before deciding",
+          "The more cautious parent should be able to say no",
+          "Both parents must agree before the child receives it",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-026",
+        "q": "Do you believe marriage, as God designed it, is only between a man and a woman?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes",
+          "Yes as a Christian definition of marriage, while civil marriage can be broader",
+          "I believe Christian marriage can include same-sex couples",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "VAL-027",
+        "q": "If a close friend or family member invited us to their same-sex wedding, what would you want us to do?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Decline because attending would feel like affirming something we believe is wrong",
+          "Attend because loving the person doesn't mean agreeing with the marriage",
+          "Attend and fully celebrate the marriage",
+          "Decide individually rather than expecting us both to make the same choice",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-028",
+        "q": "Do you believe same-sex sexual relationships can be consistent with Christian faith?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "No: Scripture reserves sex for marriage between a man and a woman",
+          "I believe the traditional teaching, but I'm still working through how it should be applied",
+          "Some committed same-sex relationships can be compatible with Christian faith",
+          "Yes: same-sex relationships can be fully affirmed",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "VAL-029",
+        "q": "Do you believe a Christian should affirm someone identifying as a gender different from their biological sex?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "No: Christians should affirm biological sex as God-given",
+          "Treat the person with love and respect, but don't affirm the changed identity",
+          "It depends on the individual situation",
+          "Yes: affirming their gender identity is compatible with Christian faith",
+          "I'm still working it out"
+        ]
+      },
+      {
+        "id": "VAL-030",
+        "q": "If someone close to us transitioned and asked us to use a new name or pronouns, what would you want us to do?",
+        "type": "mc",
+        "depth": 3,
+        "guessable": true,
+        "opts": [
+          "I would not use language that I believed affirmed a false gender identity",
+          "I would use their chosen name but not language I believed denied biological sex",
+          "I would use their requested name and pronouns as an act of respect, even if I disagreed",
+          "I would fully affirm their gender identity",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-031",
+        "q": "Do you believe God created us ONLY as man and woman?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes: male and female are God-given realities",
+          "Yes biologically, though someone may experience their gender differently",
+          "I believe gender identity can differ from biological sex",
+          "I believe anyone can identify as whatever they identify with",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "VAL-032",
+        "q": "How important is modesty in how you believe we should dress and present ourselves after marriage?",
+        "type": "scale",
+        "depth": 3,
+        "guessable": true,
+        "lo": "Not particularly important",
+        "hi": "Extremely important: I believe Christians should have clear standards of modesty"
+      },
+      {
+        "id": "VAL-033",
+        "q": "What is your overall conviction about using birth control in marriage?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "I believe we should avoid artificial contraception and remain open to children",
+          "I would prefer natural family planning or fertility-awareness methods only",
+          "I am comfortable with contraception, but would have moral concerns about some methods",
+          "I am comfortable with most forms of contraception",
+          "I believe the choice is entirely personal and don't have a moral concern about contraception",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-034",
+        "q": "How should we decide how many children to have or whether to delay pregnancy?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Remain open to however many children God gives us",
+          "Use natural family planning to space pregnancies",
+          "Intentionally plan our family using contraception",
+          "Make the decision mainly around health, finances and family circumstances",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-035",
+        "q": "How important would it be to you that we agree on the specific method of contraception or family planning we use?",
+        "type": "scale",
+        "depth": 5,
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential: I could not comfortably use a method that conflicted with my convictions"
+      },
+      {
+        "id": "VAL-036",
+        "q": "When, if ever, do you believe divorce can be morally or biblically acceptable?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Never while both spouses are alive",
+          "Only because of sexual unfaithfulness",
+          "Sexual unfaithfulness or abandonment",
+          "Sexual unfaithfulness, abandonment, or serious abuse or danger",
+          "When a marriage has irretrievably broken down",
+          "I'm still working out what I believe"
+        ]
+      },
+      {
+        "id": "VAL-037",
+        "q": "If a spouse was abusive, what do you believe the other spouse should be free to do?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Separate immediately for safety, but I would not see divorce as biblically permitted",
+          "Separate and pursue repentance, accountability and possible reconciliation",
+          "Divorce is morally justified in serious abuse",
+          "Divorce and eventual remarriage can both be justified",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-038",
+        "q": "After divorce, when do you believe remarriage is morally or biblically acceptable?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Never while the former spouse is alive",
+          "Only if the divorce happened on biblically permitted grounds",
+          "If the former spouse has remarried or permanently moved on",
+          "After genuine healing and repentance, regardless of why the marriage ended",
+          "Remarriage is generally acceptable after divorce",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-039",
+        "q": "Do you believe an unmarried Christian couple should live together before marriage?",
         "type": "mc",
         "depth": 5,
         "ref": "1 Corinthians 6:18",
-        "note": "Cohabitation — a distinct moral/practical position the bank was missing.",
         "guessable": true,
         "opts": [
-          "Wait until married",
-          "Okay once engaged",
-          "Fine if we're committed",
-          "No issue with it"
+          "No: I believe living together should wait until marriage",
+          "Generally no, even if engaged",
+          "I would be comfortable once formally engaged and preparing to marry",
+          "I would be comfortable if the relationship was serious and committed",
+          "Yes: I don't see living together before marriage as morally wrong",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "VAL-040",
+        "q": "Would you be comfortable with us regularly sleeping overnight at each other's homes before marriage, even if we slept separately?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "No: I would avoid overnight stays",
+          "Only occasionally where there was a practical reason",
+          "Yes, if we slept separately and maintained physical boundaries",
+          "Yes: I don't see overnight stays themselves as a problem",
+          "I'm unsure"
         ]
       }
     ]
@@ -5305,30 +7693,39 @@ export const DECKS: Record<string, Deck> = {
     "icon": "shield",
     "parts": [
       {
-        "name": "Phones, friends and trust",
+        "name": "Phones, privacy and trust",
         "qids": [
           "LOYAL-009",
-          "LOYAL-010",
-          "LOYAL-004",
-          "LOYAL-005",
-          "LOYAL-006",
-          "LOYAL-007",
-          "LOYAL-011",
           "LOYAL-016",
-          "LOYAL-008"
+          "LOYAL-005",
+          "LOYAL-018",
+          "LOYAL-019",
+          "LOYAL-020",
+          "LOYAL-021"
+        ]
+      },
+      {
+        "name": "Attention from others",
+        "qids": [
+          "LOYAL-010",
+          "LOYAL-022",
+          "LOYAL-012",
+          "LOYAL-013",
+          "LOYAL-015",
+          "LOYAL-011",
+          "LOYAL-017"
         ]
       },
       {
         "name": "Guarding the line",
         "qids": [
-          "LOYAL-012",
-          "LOYAL-013",
-          "LOYAL-014",
-          "LOYAL-015",
-          "LOYAL-017",
-          "LOYAL-001",
-          "LOYAL-002",
-          "LOYAL-003"
+          "LOYAL-023",
+          "LOYAL-024",
+          "LOYAL-025",
+          "LOYAL-026",
+          "LOYAL-027",
+          "LOYAL-028",
+          "LOYAL-029"
         ]
       }
     ],
@@ -5343,6 +7740,71 @@ export const DECKS: Record<string, Deck> = {
         "core": true,
         "lo": "Not at all",
         "hi": "Very"
+      },
+      {
+        "id": "LOYAL-016",
+        "q": "How much reassurance do you need to feel secure?",
+        "type": "scale",
+        "depth": 3,
+        "note": "The security axis, entirely missing from the bank. A high-reassurance partner and a low-reassurance partner is a workable marriage — but only if they both know.",
+        "guessable": true,
+        "lo": "Very little",
+        "hi": "Quite a lot"
+      },
+      {
+        "id": "LOYAL-005",
+        "q": "How open should our phones be to each other?",
+        "type": "scale",
+        "depth": 2,
+        "note": "Surfaces expectations about privacy and openness with devices.",
+        "guessable": true,
+        "core": true,
+        "lo": "Phones stay private",
+        "hi": "Full access to each other"
+      },
+      {
+        "id": "LOYAL-018",
+        "q": "How open should our social media be to each other?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Keep our profiles private",
+        "hi": "Fully open to each other"
+      },
+      {
+        "id": "LOYAL-019",
+        "q": "How much privacy is healthy in a marriage?",
+        "type": "scale",
+        "depth": 4,
+        "note": "Surfaces transparency vs privacy expectations.",
+        "guessable": true,
+        "lo": "Total transparency",
+        "hi": "Plenty can stay private"
+      },
+      {
+        "id": "LOYAL-020",
+        "q": "Which of these feels most okay to keep to yourself in marriage?",
+        "type": "mc",
+        "depth": 4,
+        "note": "Makes CONF-015's abstract privacy scale concrete. The reveal is which specific thing each names — far more useful than a number.",
+        "guessable": true,
+        "core": true,
+        "opts": [
+          "Nothing: full openness",
+          "My private thoughts and prayers",
+          "My past",
+          "My friendships and conversations",
+          "My money"
+        ]
+      },
+      {
+        "id": "LOYAL-021",
+        "q": "How comfortable are you with your partner taking a trip with friends without you?",
+        "type": "scale",
+        "depth": 2,
+        "guessable": true,
+        "lo": "Not comfortable at all",
+        "hi": "Completely comfortable"
       },
       {
         "id": "LOYAL-010",
@@ -5360,77 +7822,14 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "LOYAL-004",
-        "q": "How open should our social media be to each other?",
+        "id": "LOYAL-022",
+        "q": "How comfortable are you with your partner having close friendships with people of the opposite sex?",
         "type": "scale",
         "depth": 2,
-        "note": "Surfaces comfort levels around posts, follows, and online life.",
-        "guessable": true,
-        "lo": "Keep our profiles private",
-        "hi": "Fully open to each other"
-      },
-      {
-        "id": "LOYAL-005",
-        "q": "How open should our phones be to each other?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Surfaces expectations about privacy and openness with devices.",
         "guessable": true,
         "core": true,
-        "lo": "Phones stay private",
-        "hi": "Full access to each other"
-      },
-      {
-        "id": "LOYAL-006",
-        "q": "How comfortable are you with solo trips with friends?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Surfaces trust and independence around time apart.",
-        "guessable": true,
-        "lo": "Not comfortable",
-        "hi": "Totally fine"
-      },
-      {
-        "id": "LOYAL-007",
-        "q": "How comfortable are you with close opposite-sex friendships after marriage?",
-        "type": "scale",
-        "depth": 2,
-        "note": "Surfaces boundaries and comfort with friendships after marriage.",
-        "guessable": true,
-        "core": true,
-        "lo": "Not comfortable",
-        "hi": "Completely fine"
-      },
-      {
-        "id": "LOYAL-011",
-        "q": "Is an emotional affair as bad as a physical one?",
-        "type": "scale",
-        "depth": 3,
-        "note": "A genuine divider that the bank never asks. Couples routinely assume they agree here and routinely don't.",
-        "guessable": true,
-        "core": true,
-        "lo": "Physical is far worse",
-        "hi": "Emotional is far worse"
-      },
-      {
-        "id": "LOYAL-016",
-        "q": "How much reassurance do you need to feel secure?",
-        "type": "scale",
-        "depth": 3,
-        "note": "The security axis, entirely missing from the bank. A high-reassurance partner and a low-reassurance partner is a workable marriage — but only if they both know.",
-        "guessable": true,
-        "lo": "Very little",
-        "hi": "Quite a lot"
-      },
-      {
-        "id": "LOYAL-008",
-        "q": "How fully closed are your past relationships?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Surfaces genuine closure on exes.",
-        "guessable": true,
-        "lo": "Still processing them",
-        "hi": "Fully closed"
+        "lo": "Not comfortable at all",
+        "hi": "Completely comfortable"
       },
       {
         "id": "LOYAL-012",
@@ -5462,20 +7861,6 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "LOYAL-014",
-        "q": "Do you still follow or message any exes?",
-        "type": "mc",
-        "depth": 4,
-        "note": "PAST-002 asks this open-ended and gets a speech. This gets an answer.",
-        "guessable": true,
-        "opts": [
-          "No, none",
-          "One or two, just following",
-          "We still talk occasionally",
-          "Yes: we're genuinely close"
-        ]
-      },
-      {
         "id": "LOYAL-015",
         "q": "What would you do if you saw me being a bit too friendly with someone?",
         "type": "mc",
@@ -5488,6 +7873,17 @@ export const DECKS: Record<string, Deck> = {
           "Say nothing, but feel it",
           "Say something to them"
         ]
+      },
+      {
+        "id": "LOYAL-011",
+        "q": "Is an emotional affair as bad as a physical one?",
+        "type": "scale",
+        "depth": 3,
+        "note": "A genuine divider that the bank never asks. Couples routinely assume they agree here and routinely don't.",
+        "guessable": true,
+        "core": true,
+        "lo": "Physical is far worse",
+        "hi": "Emotional is far worse"
       },
       {
         "id": "LOYAL-017",
@@ -5506,47 +7902,100 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "LOYAL-001",
-        "q": "Where does crossing the line begin for you?",
+        "id": "LOYAL-023",
+        "q": "Where would you first consider someone to have crossed a line of faithfulness in marriage?",
         "type": "mc",
         "depth": 5,
-        "note": "Surfaces where each draws the line on faithfulness, emotional and physical.",
         "guessable": true,
         "opts": [
-          "Any flirting",
-          "Emotional closeness with someone else",
-          "Only physical contact",
-          "We should define it together"
+          "Deliberately flirting with someone else",
+          "Building a private emotional closeness that is hidden from their spouse",
+          "Sending romantic or sexual messages",
+          "Kissing someone else",
+          "Sexual touching or sexual activity",
+          "Only having sex with someone else"
         ]
       },
       {
-        "id": "LOYAL-002",
-        "q": "How do you view pornography in a marriage?",
+        "id": "LOYAL-024",
+        "q": "Would you consider a secret emotional relationship with someone else to be cheating even if nothing physical happened?",
         "type": "mc",
         "depth": 5,
-        "note": "A sensitive but important boundary conversation.",
-        "core": true,
+        "guessable": true,
         "opts": [
-          "Never acceptable",
-          "A serious problem",
-          "Depends",
-          "Not a big deal"
+          "Yes, definitely",
+          "Usually yes",
+          "It would depend on the relationship",
+          "No, not unless it became physical",
+          "I'm unsure"
         ]
       },
       {
-        "id": "LOYAL-003",
-        "q": "If one of us struggles with sexual temptation or pornography, what should we do?",
+        "id": "LOYAL-025",
+        "q": "What is your conviction about pornography within marriage?",
+        "type": "mc",
+        "depth": 5,
+        "core": true,
+        "opts": [
+          "It is sinful and should have no place in marriage",
+          "It is wrong and damaging to a marriage",
+          "I dislike it, but wouldn't treat all use as a serious moral issue",
+          "I think it can be acceptable if both spouses agree",
+          "I'm unsure what I believe"
+        ]
+      },
+      {
+        "id": "LOYAL-026",
+        "q": "Would you personally consider pornography use to be a form of sexual unfaithfulness?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Yes, definitely",
+          "In most circumstances",
+          "It depends on the situation or frequency",
+          "No, although it could still damage the marriage",
+          "No, I don't see it as a major issue"
+        ]
+      },
+      {
+        "id": "LOYAL-027",
+        "q": "If one of us used pornography or was struggling with it, how much would you want disclosed?",
+        "type": "mc",
+        "depth": 5,
+        "guessable": true,
+        "opts": [
+          "Tell each other immediately, even after one incident",
+          "Tell each other if it becomes a repeated struggle",
+          "Tell the partner and also seek accountability",
+          "Deal with it first through a pastor, mentor or accountability partner",
+          "I wouldn't expect every struggle to be disclosed",
+          "I'm unsure"
+        ]
+      },
+      {
+        "id": "LOYAL-028",
+        "q": "If one of us was repeatedly struggling with sexual temptation, what should our first response be?",
         "type": "mc",
         "depth": 5,
         "ref": "Galatians 6:1-2",
-        "note": "The accountability protocol — distinct from the moral view of porn (INT-006).",
         "guessable": true,
         "opts": [
-          "Always tell each other",
-          "Tell a mentor or accountability partner",
-          "Handle it privately",
-          "Unsure"
+          "Tell each other honestly and work through it together",
+          "Tell each other and also involve a trusted Christian mentor or accountability partner",
+          "Seek outside accountability first, then tell the partner if the struggle continues",
+          "Handle it privately unless it starts affecting the relationship",
+          "I'm unsure"
         ]
+      },
+      {
+        "id": "LOYAL-029",
+        "q": "How important is it to you that we each have someone outside the marriage who can hold us accountable sexually?",
+        "type": "scale",
+        "depth": 5,
+        "guessable": true,
+        "lo": "Not important",
+        "hi": "Essential"
       }
     ]
   },
@@ -5565,43 +8014,45 @@ export const DECKS: Record<string, Deck> = {
           "NOW-025",
           "NOW-026",
           "NOW-027",
-          "NOW-008",
-          "NOW-001",
+          "NOW-022",
           "NOW-002",
-          "NOW-009"
+          "NOW-001",
+          "NOW-019"
         ]
       },
       {
         "name": "Seen and understood",
         "qids": [
-          "NOW-012",
-          "NOW-019",
-          "NOW-021",
-          "NOW-022",
           "NOW-003",
-          "NOW-004",
-          "NOW-005"
+          "NOW-005",
+          "NOW-028",
+          "NOW-029",
+          "NOW-009",
+          "NOW-013",
+          "NOW-012",
+          "NOW-021"
         ]
       },
       {
-        "name": "Trust and presence",
+        "name": "Making room for us",
         "qids": [
-          "NOW-006",
-          "NOW-007",
+          "NOW-030",
+          "NOW-031",
+          "NOW-032",
+          "NOW-033",
+          "NOW-034",
           "NOW-010",
-          "NOW-011",
-          "NOW-014",
-          "NOW-015",
-          "NOW-017"
+          "NOW-011"
         ]
       },
       {
         "name": "The honest questions",
         "qids": [
+          "NOW-006",
+          "NOW-007",
+          "NOW-015",
+          "NOW-017",
           "NOW-023",
-          "NOW-013",
-          "NOW-016",
-          "NOW-018",
           "NOW-020",
           "NOW-024"
         ]
@@ -5654,19 +8105,32 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "NOW-008",
-        "q": "Rank where you feel closest to me.",
-        "type": "rank",
-        "depth": 2,
-        "note": "Where connection actually lives. Distinct from CONF-009 (love languages) — that's how love is given and received, this is the setting in which the two of you click.",
+        "id": "NOW-022",
+        "q": "Compared to six months ago, where are we?",
+        "type": "mc",
+        "depth": 3,
+        "note": "Momentum rather than state. This is the question that makes the category worth re-taking — the answer is meaningless once and meaningful four times.",
+        "guessable": true,
         "notYet": true,
         "opts": [
-          "Doing something together",
-          "Deep conversation",
-          "Comfortable silence",
-          "Working through a problem side by side",
-          "Being physically close",
-          "Praying or worshipping together"
+          "Much closer",
+          "A bit closer",
+          "About the same",
+          "Drifting, if I'm honest"
+        ]
+      },
+      {
+        "id": "NOW-002",
+        "q": "Right now, what is this?",
+        "type": "mc",
+        "depth": 3,
+        "note": "A present-tense read on the thing itself. US-033 asks intent for the season; this asks what the relationship actually is at this moment, which is a different and often uncomfortable answer.",
+        "guessable": true,
+        "opts": [
+          "Solid: it knows what it is",
+          "Something real that's still finding its shape",
+          "In transition: changing in ways neither of us controls",
+          "Still deciding what we want it to be"
         ]
       },
       {
@@ -5685,18 +8149,58 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "NOW-002",
-        "q": "Right now, what is this?",
+        "id": "NOW-019",
+        "q": "After a disagreement, how long does it take us to be okay again?",
         "type": "mc",
         "depth": 3,
-        "note": "A present-tense read on the thing itself. US-033 asks intent for the season; this asks what the relationship actually is at this moment, which is a different and often uncomfortable answer.",
+        "note": "Observed repair speed. CONF-002 asks how soon you like to resolve conflict — the preference. This is what actually happens between the two of you.",
         "guessable": true,
+        "notYet": true,
         "opts": [
-          "Solid: it knows what it is",
-          "Something real that's still finding its shape",
-          "In transition: changing in ways neither of us controls",
-          "Still deciding what we want it to be"
+          "Minutes",
+          "A few hours",
+          "A day or two",
+          "We don't really close things, they fade"
         ]
+      },
+      {
+        "id": "NOW-003",
+        "q": "How well do you feel understood by me?",
+        "type": "scale",
+        "depth": 4,
+        "note": "Being known, rated by the one being known. A gap here — one feels deeply understood, the other doesn't — is one of the most useful reveals the app can produce.",
+        "guessable": true,
+        "notYet": true,
+        "lo": "You see the surface",
+        "hi": "You get the parts most people miss"
+      },
+      {
+        "id": "NOW-005",
+        "q": "Does the support between us flow both ways?",
+        "type": "scale",
+        "depth": 4,
+        "ref": "Galatians 6:2",
+        "note": "Deliberately not phrased as 'who gives more' — that version scores two people who both feel over-giving as perfectly aligned, which inverts the meaning.",
+        "guessable": true,
+        "notYet": true,
+        "lo": "Mostly in one direction",
+        "hi": "Evenly, both ways"
+      },
+      {
+        "id": "NOW-028",
+        "q": "How balanced does the give-and-take in our relationship feel to you right now?",
+        "type": "scale",
+        "depth": 4,
+        "guessable": true,
+        "mirror": true,
+        "lo": "I feel like I give significantly more",
+        "hi": "I feel like you give significantly more"
+      },
+      {
+        "id": "NOW-029",
+        "q": "Is there any area where the give-and-take between us currently feels uneven to you?",
+        "type": "open",
+        "depth": 4
       },
       {
         "id": "NOW-009",
@@ -5715,6 +8219,18 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
+        "id": "NOW-013",
+        "q": "Does this relationship bring out more in you, or less?",
+        "type": "scale",
+        "depth": 5,
+        "ref": "Proverbs 27:17",
+        "note": "The heaviest question in the category and correctly placed last. A low answer from either side is the whole point of an app called Aligned.",
+        "guessable": true,
+        "notYet": true,
+        "lo": "Less: I'm somehow smaller in it",
+        "hi": "More: I'm most myself in it"
+      },
+      {
         "id": "NOW-012",
         "q": "When something's clearly bothering me but I won't say what, you:",
         "type": "mc",
@@ -5727,21 +8243,6 @@ export const DECKS: Record<string, Deck> = {
           "Create space and wait for me",
           "Feel frustrated but don't push",
           "Assume it'll surface when I'm ready"
-        ]
-      },
-      {
-        "id": "NOW-019",
-        "q": "After a disagreement, how long does it take us to be okay again?",
-        "type": "mc",
-        "depth": 3,
-        "note": "Observed repair speed. CONF-002 asks how soon you like to resolve conflict — the preference. This is what actually happens between the two of you.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "Minutes",
-          "A few hours",
-          "A day or two",
-          "We don't really close things, they fade"
         ]
       },
       {
@@ -5761,86 +8262,72 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "NOW-022",
-        "q": "Compared to six months ago, where are we?",
-        "type": "mc",
+        "id": "NOW-030",
+        "q": "How much room does your life have right now for this to grow?",
+        "type": "scale",
         "depth": 3,
-        "note": "Momentum rather than state. This is the question that makes the category worth re-taking — the answer is meaningless once and meaningful four times.",
+        "note": "Present-tense capacity. US-033 asks intent; nothing in the bank asks whether the person actually has the bandwidth to act on it.",
         "guessable": true,
-        "notYet": true,
-        "opts": [
-          "Much closer",
-          "A bit closer",
-          "About the same",
-          "Drifting, if I'm honest"
-        ]
+        "lo": "I'm stretched thin",
+        "hi": "Plenty of room"
       },
       {
-        "id": "NOW-003",
-        "q": "How well do you feel understood by me?",
-        "type": "scale",
-        "depth": 4,
-        "note": "Being known, rated by the one being known. A gap here — one feels deeply understood, the other doesn't — is one of the most useful reveals the app can produce.",
-        "guessable": true,
-        "notYet": true,
-        "lo": "You see the surface",
-        "hi": "You get the parts most people miss"
-      },
-      {
-        "id": "NOW-004",
-        "q": "How does giving to this relationship feel to you right now?",
-        "type": "mc",
-        "depth": 4,
-        "note": "The economics of giving. 'Costly' is the option nobody volunteers unprompted, which is exactly why it has to be on the list.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "Natural: I don't keep score",
-          "Intentional: I want you to feel it",
-          "Measured: I think about how much I put in",
-          "Costly: part of me notices what it takes from me"
-        ]
-      },
-      {
-        "id": "NOW-005",
-        "q": "Does the support between us flow both ways?",
-        "type": "scale",
-        "depth": 4,
-        "ref": "Galatians 6:2",
-        "note": "Deliberately not phrased as 'who gives more' — that version scores two people who both feel over-giving as perfectly aligned, which inverts the meaning.",
-        "guessable": true,
-        "notYet": true,
-        "lo": "Mostly in one direction",
-        "hi": "Evenly, both ways"
-      },
-      {
-        "id": "NOW-006",
-        "q": "When this is at its hardest, what's usually underneath it?",
-        "type": "mc",
-        "depth": 4,
-        "note": "Root cause rather than conflict style. The last option is a deliberate honesty valve and pairs with NOW-001.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "Expectations neither of us has said out loud",
-          "Timing: we want different things at different moments",
-          "Things get lost between what's meant and what's heard",
-          "It hasn't been genuinely hard yet"
-        ]
-      },
-      {
-        "id": "NOW-007",
-        "q": "Rank what would most seriously threaten us.",
+        "id": "NOW-031",
+        "q": "Rank where your emotional energy actually goes right now.",
         "type": "rank",
         "depth": 4,
-        "note": "A threat model both build separately. DEAL-001 ranks deal-breakers in a partner; this ranks what could break the two of you. The faith option is the localisation the source didn't have.",
-        "notYet": true,
+        "note": "US-032 ranks what should come first — the ideal. This ranks what is. The gap between a person's two answers is the honest conversation, and 'just keeping myself going' is the option that makes it possible to admit.",
         "opts": [
-          "A breach of trust",
-          "Slowly growing in different directions",
-          "One of us needing more than the other can give",
-          "Outside pressure: money, family, work",
-          "Drifting apart in our faith"
+          "Work",
+          "Family",
+          "Friends",
+          "Church or ministry",
+          "This relationship",
+          "Just keeping myself going"
+        ]
+      },
+      {
+        "id": "NOW-032",
+        "q": "If your life is too full right now, what would you actually cut to make room for us?",
+        "type": "mc",
+        "depth": 4,
+        "ref": "Philippians 2:4",
+        "note": "Turns a vague 'I'd prioritise you' into a real trade-off. Naming ministry as a competing good is deliberate — it's the hardest option to pick and the most revealing.",
+        "guessable": true,
+        "opts": [
+          "Work hours",
+          "Time with friends",
+          "Ministry or serving",
+          "Hobbies and downtime",
+          "Nothing: I'd find the time somewhere"
+        ]
+      },
+      {
+        "id": "NOW-033",
+        "q": "Which is harder for you to give right now?",
+        "type": "mc",
+        "depth": 4,
+        "note": "Time and energy are different scarcities and the bank conflates them. Someone with a free diary and nothing left in the tank is the harder case, and the one nobody names.",
+        "guessable": true,
+        "opts": [
+          "Time",
+          "Emotional energy",
+          "Neither: I have both",
+          "Both are stretched"
+        ]
+      },
+      {
+        "id": "NOW-034",
+        "q": "Wanting to invest in us, and being able to right now, which is truer for you?",
+        "type": "mc",
+        "depth": 4,
+        "note": "The desire-versus-capacity gap named directly. Option three is the one that surfaces a conversation nothing else in the bank reaches.",
+        "guessable": true,
+        "opts": [
+          "I want to and I can",
+          "I want to but life is full",
+          "I have the time but I'm holding back",
+          "Neither, right now"
         ]
       },
       {
@@ -5874,20 +8361,33 @@ export const DECKS: Record<string, Deck> = {
         ]
       },
       {
-        "id": "NOW-014",
-        "q": "What's the one change in you that would most improve us?",
+        "id": "NOW-006",
+        "q": "When things are hardest between us, what is usually at the root of it?",
         "type": "mc",
         "depth": 4,
-        "ref": "Matthew 7:5",
-        "note": "SELF-015 asks what you'd change about yourself in the abstract and is open-ended. This aims it at the relationship and makes it scoreable — and the reveal is whether each guessed the other's answer.",
+        "note": "Root cause rather than conflict style. The last option is a deliberate honesty valve and pairs with NOW-001.",
         "guessable": true,
         "notYet": true,
         "opts": [
-          "Being less defensive",
-          "Being more present",
-          "Speaking up sooner",
-          "Needing less control",
-          "Being gentler with myself"
+          "Expectations neither of us has said out loud",
+          "Timing: we want different things at different moments",
+          "Things get lost between what's meant and what's heard",
+          "It hasn't been genuinely hard yet"
+        ]
+      },
+      {
+        "id": "NOW-007",
+        "q": "Rank what would most seriously threaten us.",
+        "type": "rank",
+        "depth": 4,
+        "note": "A threat model both build separately. DEAL-001 ranks deal-breakers in a partner; this ranks what could break the two of you. The faith option is the localisation the source didn't have.",
+        "notYet": true,
+        "opts": [
+          "A breach of trust",
+          "Slowly growing in different directions",
+          "One of us needing more than the other can give",
+          "Outside pressure: money, family, work",
+          "Drifting apart in our faith"
         ]
       },
       {
@@ -5935,48 +8435,6 @@ export const DECKS: Record<string, Deck> = {
           "Recently, but it passed",
           "Recently, and it hasn't passed",
           "Often, honestly"
-        ]
-      },
-      {
-        "id": "NOW-013",
-        "q": "Does this relationship bring out more in you, or less?",
-        "type": "scale",
-        "depth": 5,
-        "ref": "Proverbs 27:17",
-        "note": "The heaviest question in the category and correctly placed last. A low answer from either side is the whole point of an app called Aligned.",
-        "guessable": true,
-        "notYet": true,
-        "lo": "Less: I'm somehow smaller in it",
-        "hi": "More: I'm most myself in it"
-      },
-      {
-        "id": "NOW-016",
-        "q": "Is there something you haven't told me yet?",
-        "type": "mc",
-        "depth": 5,
-        "note": "The bluntest expression of surface, don't settle. Both answer it, both see it. Even 'something small' opens a door that nothing else in the bank reaches.",
-        "guessable": true,
-        "opts": [
-          "No: you know everything",
-          "Yes, something small",
-          "Yes, something significant",
-          "Yes, and I'm not sure I ever will"
-        ]
-      },
-      {
-        "id": "NOW-018",
-        "q": "Has anyone close to you raised a concern about us?",
-        "type": "mc",
-        "depth": 5,
-        "ref": "Proverbs 27:6",
-        "note": "US-037 asks how open you are to people questioning the relationship. This asks whether it has already happened and what you did with it — a fact, not a posture.",
-        "guessable": true,
-        "notYet": true,
-        "opts": [
-          "No",
-          "Yes, and I dismissed it",
-          "Yes, and it stuck with me",
-          "No one has said anything either way"
         ]
       },
       {

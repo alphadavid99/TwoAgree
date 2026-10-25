@@ -1,100 +1,122 @@
 {
- "fun-icebreakers": [
-  "Who’s more likely…",
-  "Lazy Sundays",
-  "The cheeky round"
- ],
  "in-the-home": [
   "Who does what",
   "Putting down roots"
  ],
  "finances-money": [
   "Sharing money",
-  "Debt and safety nets"
- ],
- "roles-responsibilities": [
-  "Leading and providing",
-  "Who has the final call"
- ],
- "career-ambition": [
-  "Work and calling"
- ],
- "health-lifestyle": [
-  "Habits and health"
- ],
- "family-children": [
-  "Hoping for children",
-  "Family, faith and fertility"
- ],
- "parenting-style": [
-  "Raising them well"
- ],
- "in-laws-extended-family": [
-  "Leaving and cleaving",
-  "Family at the door"
+  "Spending and saving",
+  "Debt, family and giving"
  ],
  "faith-worship-practice": [
-  "Faith in everyday life",
-  "Growing in faith together",
-  "Drawing closer to God",
+  "Church life",
+  "Faith at home",
   "Your walk with God",
+  "Honest about faith",
   "God first"
  ],
+ "roles-responsibilities": [
+  "Who does what",
+  "Leading and headship"
+ ],
  "theology-beliefs": [
-  "Where you land",
+  "Where you stand",
+  "Communion, baptism and leadership",
   "The debated questions"
- ],
- "values-convictions": [
-  "Politics, science and society",
-  "Life, death and marriage"
- ],
- "us-compatibility": [
-  "Why us",
-  "The pace we’re going",
-  "Love, not just feelings",
-  "Counsel and blessing",
-  "Through hard seasons",
-  "Covenant and cost",
-  "Making room for us"
- ],
- "character-self-awareness": [
-  "Who you really are",
-  "What shaped you",
-  "Growth and integrity",
-  "Fears and forgiveness"
- ],
- "conflict-communication": [
-  "Love, stress and respect",
-  "In the heat of it",
-  "Fighting fair",
-  "Blind spots and feelings",
-  "Safe to talk"
  ],
  "dreams-future": [
   "Dreaming together",
   "Building a life"
  ],
- "past-baggage": [
-  "Where you’ve come from"
+ "family-children": [
+  "Hoping for children",
+  "If it isn’t easy",
+  "Faith and family around them"
  ],
- "where-we-are-now": [
-  "How we’re doing",
-  "Seen and understood",
-  "Trust and presence",
-  "The honest questions"
+ "parenting-style": [
+  "Raising them well",
+  "Discipline, school and culture",
+  "Teenagers, faith and identity"
  ],
  "intimacy-physical": [
   "Affection and attraction",
   "Before marriage",
+  "Being honest about sex",
   "Intimacy in marriage"
  ],
- "faithfulness-loyalty": [
-  "Phones, friends and trust",
-  "Guarding the line"
+ "conflict-communication": [
+  "Love, time and respect",
+  "Under stress",
+  "In the heat of it",
+  "Making it right",
+  "Saying what you feel"
+ ],
+ "in-laws-extended-family": [
+  "Family at the door",
+  "Holidays, help and care",
+  "Leaving and cleaving"
+ ],
+ "fun-icebreakers": [
+  "Date nights and laughs",
+  "Who’s more likely…",
+  "Lazy Sundays",
+  "The cheeky round"
  ],
  "deal-breakers": [
   "Your must-haves",
   "Lines you won’t cross",
   "When life changes"
+ ],
+ "health-lifestyle": [
+  "Habits and rhythms",
+  "Screens, drink and health"
+ ],
+ "past-baggage": [
+  "Where you’ve come from",
+  "Past relationships",
+  "Hard seasons and healing",
+  "What I should know"
+ ],
+ "career-ambition": [
+  "Work and calling",
+  "Work and family"
+ ],
+ "character-self-awareness": [
+  "Who you really are",
+  "What shaped you",
+  "Growing on purpose",
+  "Integrity and honesty",
+  "Fears and forgiveness"
+ ],
+ "us-compatibility": [
+  "Why us",
+  "Choosing each other",
+  "The pace we’re going",
+  "Towards engagement",
+  "Getting ready for marriage",
+  "Friends and our own lives",
+  "Counsel and blessing",
+  "Love, not just feelings",
+  "What makes it last",
+  "Through hard seasons",
+  "Covenant and cost",
+  "Honest about us"
+ ],
+ "values-convictions": [
+  "Politics and culture",
+  "Life, death and medicine",
+  "Sex, gender and marriage",
+  "Marriage, divorce and living together"
+ ],
+ "faithfulness-loyalty": [
+  "Phones, privacy and trust",
+  "Attention from others",
+  "Guarding the line"
+ ],
+ "where-we-are-now": [
+  "How we’re doing",
+  "Seen and understood",
+  "Making room for us",
+  "The honest questions"
  ]
 }

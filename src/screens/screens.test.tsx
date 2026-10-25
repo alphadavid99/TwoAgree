@@ -275,7 +275,7 @@ describe("PlayScreen", () => {
 });
 
 describe("which-of-you questions show names, in the same order for both", () => {
-  // HOME-001 opens part 1 of Home: "Who does most of the cooking?"
+  // HOME-012 opens part 1 of Home: "How would you want us to divide the cooking at home?"
   const names = { host: "Sarah Placeholder", guest: "Judah Placeholder" };
   const optionsFor = (role: "host" | "guest") => {
     const { container, unmount } = render(

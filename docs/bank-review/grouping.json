@@ -1057,6 +1057,24 @@
           "I don't have a preference"
         ]
       }
+    },
+    "scaleToMc": {
+      "_about": "Claude, at build: marked SCALE in the review but the options are separate positions, not points on a line. Built as pick-one with all five options.",
+      "keys": [
+        "ROLE-003",
+        "PAR-004"
+      ]
+    },
+    "coreSuccessors": {
+      "_about": "Claude, at build: five Core questions were retired or dropped as duplicates. Their Core flag moves to the question that replaces them, so the Core instrument keeps the same topics and stays at 70. FIN-013 became a written answer, which never scores, so its flag moves to FIN-015 (debt under control before children); Core is never set on a written-answer question.",
+      "map": {
+        "ROLE-004": "NEW-muvgxb0d",
+        "ROLE-006": "ROLE-003",
+        "INLAW-008": "NEW-muvlsli2",
+        "DEAL-011": "NEW-muwli61l",
+        "CONF-009": "CONF-001",
+        "FIN-013": "FIN-015"
+      }
     }
   }
 }

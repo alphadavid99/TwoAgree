@@ -2,18 +2,29 @@ import { describe, it, expect } from "vitest";
 import { levelsOf, nLevels, lvlQs, stageOf, partName } from "./leveling";
 import { DECKS, ORDER } from "./questions";
 import APPROVED from "../../docs/refresh/part-names.json";
+import BANK from "../../data/questions.json";
 
 describe("question bank integrity", () => {
-  it("has 21 conversations and 399 questions (brief 2)", () => {
+  it("has 21 conversations and 558 questions (Oct 2026 bank)", () => {
     expect(ORDER).toHaveLength(21);
     const total = ORDER.reduce((n, s) => n + DECKS[s].questions.length, 0);
-    expect(total).toBe(399);
+    expect(total).toBe(558);
   });
-  it("every deck is sorted by depth ascending (brief 2 §A7b)", () => {
+  it("every follow-up is asked straight after its main question, in the same part", () => {
+    // Follow-ups never split from their main question (Dave, Oct 2026). A
+    // follow-up may come after a sibling follow-up of the same main question.
+    const follows = new Map(
+      (BANK as { id: string; followsId?: string }[]).filter((q) => q.followsId).map((q) => [q.id, q.followsId!]),
+    );
+    const root = (id: string): string => (follows.has(id) ? root(follows.get(id)!) : id);
     for (const slug of ORDER) {
-      const depths = DECKS[slug].questions.map((q) => q.depth);
-      const sorted = [...depths].sort((a, b) => a - b);
-      expect(depths, `${slug} not depth-sorted`).toEqual(sorted);
+      for (const part of DECKS[slug].parts) {
+        part.qids.forEach((id, i) => {
+          if (!follows.has(id)) return;
+          expect(i, `${id} opens a part`).toBeGreaterThan(0);
+          expect(root(part.qids[i - 1]), `${id} is not straight after its main question`).toBe(root(id));
+        });
+      }
     }
   });
 });
@@ -25,7 +36,7 @@ describe("levelsOf partitions a deck in order", () => {
       expect(flat).toEqual(DECKS[slug].questions); // same items, same order
     }
   });
-  it("every part has its approved name (item 11: 56 names, no 'Part 2')", () => {
+  it("every part has its approved name (78 names, no 'Part 2')", () => {
     let n = 0;
     for (const slug of ORDER) {
       expect(DECKS[slug].parts.length).toBe(nLevels(slug));
@@ -35,31 +46,15 @@ describe("levelsOf partitions a deck in order", () => {
         n++;
       }
     }
-    expect(n).toBe(56);
+    expect(n).toBe(78);
   });
-  it("fixing the parts moved nobody: each part holds what the old ~7-per-part cut gave it", () => {
-    // The old cutter, verbatim, over the same depth-ordered deck. This guards
-    // the switch to fixed parts; once questions are added to a part on
-    // purpose, the two are allowed to differ.
+  it("every part holds 6 to 8 questions, follow-ups counted (Oct 2026 re-cut)", () => {
     for (const slug of ORDER) {
-      const qs = DECKS[slug].questions;
-      const L = Math.max(1, Math.round(qs.length / 7));
-      const base = Math.floor(qs.length / L);
-      const rem = qs.length % L;
-      let i = 0;
-      for (let k = 0; k < L; k++) {
-        const n = base + (k < rem ? 1 : 0);
-        expect(lvlQs(slug, k).map((q) => q.id), `${slug} part ${k + 1}`).toEqual(
-          qs.slice(i, i + n).map((q) => q.id),
-        );
-        i += n;
+      for (let l = 0; l < nLevels(slug); l++) {
+        const n = lvlQs(slug, l).length;
+        expect(n >= 6 && n <= 8, `${slug} part ${l + 1} has ${n}`).toBe(true);
       }
     }
-  });
-  it("distributes the remainder to the earliest levels", () => {
-    // A single-part deck's part 0 is the whole deck.
-    const single = ORDER.find((s) => nLevels(s) === 1)!;
-    expect(lvlQs(single, 0).length).toBe(DECKS[single].questions.length);
   });
 });
 

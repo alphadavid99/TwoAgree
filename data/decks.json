@@ -10,22 +10,26 @@
       {
         "name": "Who does what",
         "qids": [
-          "HOME-001",
-          "HOME-002",
-          "HOME-003",
-          "HOME-006",
+          "HOME-012",
+          "HOME-013",
+          "HOME-014",
           "HOME-008",
-          "HOME-010"
+          "HOME-006",
+          "HOME-010",
+          "HOME-011"
         ]
       },
       {
         "name": "Putting down roots",
         "qids": [
-          "HOME-004",
-          "HOME-005",
+          "HOME-015",
+          "HOME-016",
           "HOME-007",
+          "HOME-017",
           "HOME-009",
-          "HOME-011"
+          "HOME-018",
+          "HOME-019",
+          "HOME-020"
         ]
       }
     ]
@@ -36,33 +40,45 @@
     "name": "Money",
     "color": "#5E7A4E",
     "icon": "coin",
-    "hook": "FIN-009",
+    "hook": "FIN-018",
     "parts": [
       {
         "name": "Sharing money",
         "qids": [
-          "FIN-009",
-          "FIN-001",
-          "FIN-002",
-          "FIN-003",
+          "FIN-018",
+          "FIN-019",
+          "FIN-020",
+          "FIN-021",
+          "FIN-022",
+          "FIN-023",
           "FIN-004",
-          "FIN-005",
-          "FIN-006",
-          "FIN-008",
-          "FIN-010"
+          "FIN-024"
         ]
       },
       {
-        "name": "Debt and safety nets",
+        "name": "Spending and saving",
         "qids": [
           "FIN-011",
-          "FIN-012",
-          "FIN-013",
-          "FIN-014",
-          "FIN-015",
-          "FIN-016",
-          "FIN-017",
-          "FIN-007"
+          "FIN-025",
+          "FIN-026",
+          "FIN-027",
+          "FIN-028",
+          "FIN-029",
+          "FIN-030",
+          "FIN-031"
+        ]
+      },
+      {
+        "name": "Debt, family and giving",
+        "qids": [
+          "FIN-032",
+          "FIN-033",
+          "FIN-034",
+          "FIN-035",
+          "FIN-036",
+          "FIN-037",
+          "FIN-038",
+          "FIN-039"
         ]
       }
     ]
@@ -73,66 +89,67 @@
     "name": "Faith",
     "color": "#5C2E45",
     "icon": "faith",
-    "hook": "FAITH-019",
+    "hook": "FAITH-047",
     "parts": [
       {
-        "name": "Faith in everyday life",
+        "name": "Church life",
         "qids": [
-          "FAITH-001",
           "FAITH-007",
           "FAITH-010",
-          "FAITH-012",
-          "FAITH-020",
-          "FAITH-032",
-          "FAITH-002"
-        ]
-      },
-      {
-        "name": "Growing in faith together",
-        "qids": [
+          "FAITH-036",
+          "FAITH-031",
+          "FAITH-026",
           "FAITH-003",
-          "FAITH-004",
-          "FAITH-005",
-          "FAITH-006",
-          "FAITH-008",
-          "FAITH-009",
-          "FAITH-011"
+          "FAITH-033"
         ]
       },
       {
-        "name": "Drawing closer to God",
+        "name": "Faith at home",
         "qids": [
-          "FAITH-013",
-          "FAITH-014",
-          "FAITH-015",
-          "FAITH-016",
+          "FAITH-001",
+          "FAITH-004",
           "FAITH-017",
           "FAITH-021",
-          "FAITH-022"
+          "FAITH-037",
+          "FAITH-038",
+          "FAITH-039"
         ]
       },
       {
         "name": "Your walk with God",
         "qids": [
-          "FAITH-024",
-          "FAITH-025",
-          "FAITH-026",
-          "FAITH-027",
+          "FAITH-020",
+          "FAITH-015",
+          "FAITH-040",
           "FAITH-028",
-          "FAITH-029",
-          "FAITH-031"
+          "FAITH-041",
+          "FAITH-042",
+          "FAITH-043"
+        ]
+      },
+      {
+        "name": "Honest about faith",
+        "qids": [
+          "FAITH-012",
+          "FAITH-044",
+          "FAITH-045",
+          "FAITH-025",
+          "FAITH-030",
+          "FAITH-024",
+          "FAITH-046"
         ]
       },
       {
         "name": "God first",
         "qids": [
-          "FAITH-033",
-          "FAITH-034",
-          "FAITH-035",
           "FAITH-018",
-          "FAITH-019",
-          "FAITH-023",
-          "FAITH-030"
+          "FAITH-047",
+          "FAITH-022",
+          "FAITH-048",
+          "FAITH-016",
+          "FAITH-049",
+          "FAITH-050",
+          "FAITH-051"
         ]
       }
     ]
@@ -146,25 +163,29 @@
     "hook": "ROLE-011",
     "parts": [
       {
-        "name": "Leading and providing",
+        "name": "Who does what",
         "qids": [
           "ROLE-011",
-          "ROLE-012",
-          "ROLE-001",
-          "ROLE-002",
-          "ROLE-003",
-          "ROLE-004"
+          "ROLE-013",
+          "ROLE-014",
+          "ROLE-015",
+          "ROLE-016",
+          "ROLE-017",
+          "ROLE-018",
+          "ROLE-019"
         ]
       },
       {
-        "name": "Who has the final call",
+        "name": "Leading and headship",
         "qids": [
-          "ROLE-009",
-          "ROLE-010",
-          "ROLE-005",
-          "ROLE-006",
-          "ROLE-007",
-          "ROLE-008"
+          "ROLE-020",
+          "ROLE-021",
+          "ROLE-022",
+          "ROLE-023",
+          "ROLE-024",
+          "ROLE-025",
+          "ROLE-026",
+          "ROLE-027"
         ]
       }
     ]
@@ -177,25 +198,39 @@
     "icon": "book",
     "parts": [
       {
-        "name": "Where you land",
+        "name": "Where you stand",
         "qids": [
           "THEO-011",
           "THEO-012",
-          "THEO-001",
-          "THEO-002",
-          "THEO-008",
-          "THEO-010"
+          "THEO-013",
+          "THEO-014",
+          "THEO-015",
+          "THEO-016",
+          "THEO-017"
+        ]
+      },
+      {
+        "name": "Communion, baptism and leadership",
+        "qids": [
+          "THEO-018",
+          "THEO-019",
+          "THEO-020",
+          "THEO-021",
+          "THEO-022",
+          "THEO-023"
         ]
       },
       {
         "name": "The debated questions",
         "qids": [
-          "THEO-003",
-          "THEO-004",
-          "THEO-005",
-          "THEO-006",
-          "THEO-007",
-          "THEO-009"
+          "THEO-024",
+          "THEO-025",
+          "THEO-026",
+          "THEO-027",
+          "THEO-028",
+          "THEO-029",
+          "THEO-030",
+          "THEO-031"
         ]
       }
     ]
@@ -210,23 +245,27 @@
       {
         "name": "Dreaming together",
         "qids": [
-          "DREAM-002",
           "DREAM-006",
-          "DREAM-001",
+          "DREAM-013",
+          "DREAM-014",
+          "DREAM-015",
+          "DREAM-016",
+          "DREAM-008",
           "DREAM-003",
-          "DREAM-004",
-          "DREAM-005"
+          "DREAM-017"
         ]
       },
       {
         "name": "Building a life",
         "qids": [
-          "DREAM-007",
-          "DREAM-008",
+          "DREAM-001",
+          "DREAM-004",
+          "DREAM-018",
+          "DREAM-019",
+          "DREAM-020",
           "DREAM-010",
           "DREAM-011",
-          "DREAM-012",
-          "DREAM-009"
+          "DREAM-021"
         ]
       }
     ]
@@ -243,21 +282,32 @@
         "qids": [
           "FAM-011",
           "FAM-012",
+          "FAM-013",
           "FAM-001",
-          "FAM-003",
-          "FAM-004",
-          "FAM-005"
+          "FAM-014",
+          "FAM-015"
         ]
       },
       {
-        "name": "Family, faith and fertility",
+        "name": "If it isn’t easy",
         "qids": [
-          "FAM-006",
-          "FAM-007",
-          "FAM-009",
-          "FAM-010",
-          "FAM-002",
-          "FAM-008"
+          "FAM-016",
+          "FAM-017",
+          "FAM-018",
+          "FAM-019",
+          "FAM-020",
+          "FAM-021"
+        ]
+      },
+      {
+        "name": "Faith and family around them",
+        "qids": [
+          "FAM-004",
+          "FAM-022",
+          "FAM-023",
+          "FAM-024",
+          "FAM-025",
+          "FAM-026"
         ]
       }
     ]
@@ -273,14 +323,35 @@
         "name": "Raising them well",
         "qids": [
           "PAR-008",
-          "PAR-009",
-          "PAR-001",
-          "PAR-002",
-          "PAR-004",
-          "PAR-005",
-          "PAR-006",
-          "PAR-007",
-          "PAR-003"
+          "PAR-010",
+          "PAR-011",
+          "PAR-012",
+          "PAR-013",
+          "PAR-014"
+        ]
+      },
+      {
+        "name": "Discipline, school and culture",
+        "qids": [
+          "PAR-015",
+          "PAR-016",
+          "PAR-017",
+          "PAR-018",
+          "PAR-019",
+          "PAR-020",
+          "PAR-021",
+          "PAR-022"
+        ]
+      },
+      {
+        "name": "Teenagers, faith and identity",
+        "qids": [
+          "PAR-023",
+          "PAR-024",
+          "PAR-025",
+          "PAR-026",
+          "PAR-027",
+          "PAR-028"
         ]
       }
     ]
@@ -297,32 +368,49 @@
         "name": "Affection and attraction",
         "qids": [
           "INT-012",
-          "INT-003",
+          "INT-023",
+          "INT-024",
+          "INT-025",
           "INT-016",
-          "INT-022",
           "INT-019",
-          "INT-001",
-          "INT-002"
+          "INT-018",
+          "INT-017"
         ]
       },
       {
         "name": "Before marriage",
         "qids": [
-          "INT-005",
-          "INT-007",
+          "INT-026",
+          "INT-027",
+          "INT-028",
+          "INT-029",
+          "INT-030",
+          "INT-031",
+          "INT-032",
+          "INT-033"
+        ]
+      },
+      {
+        "name": "Being honest about sex",
+        "qids": [
+          "INT-034",
+          "INT-035",
           "INT-008",
-          "INT-009",
-          "INT-010",
-          "INT-013"
+          "INT-036",
+          "INT-037",
+          "INT-038",
+          "INT-013",
+          "INT-014"
         ]
       },
       {
         "name": "Intimacy in marriage",
         "qids": [
-          "INT-014",
-          "INT-015",
-          "INT-017",
-          "INT-018",
+          "INT-001",
+          "INT-039",
+          "INT-040",
+          "INT-041",
+          "INT-042",
           "INT-020",
           "INT-021"
         ]
@@ -338,61 +426,64 @@
     "hook": "CONF-021",
     "parts": [
       {
-        "name": "Love, stress and respect",
+        "name": "Love, time and respect",
         "qids": [
-          "CONF-001",
-          "CONF-009",
-          "CONF-020",
-          "CONF-002",
-          "CONF-003",
-          "CONF-004",
-          "CONF-008"
+          "CONF-038",
+          "CONF-039",
+          "CONF-040",
+          "CONF-041",
+          "CONF-042",
+          "CONF-043",
+          "CONF-044",
+          "CONF-037"
+        ]
+      },
+      {
+        "name": "Under stress",
+        "qids": [
+          "CONF-045",
+          "CONF-046",
+          "CONF-047",
+          "CONF-048",
+          "CONF-021",
+          "CONF-049",
+          "CONF-036"
         ]
       },
       {
         "name": "In the heat of it",
         "qids": [
-          "CONF-011",
-          "CONF-012",
-          "CONF-013",
-          "CONF-014",
           "CONF-016",
-          "CONF-017",
-          "CONF-018"
+          "CONF-002",
+          "CONF-050",
+          "CONF-051",
+          "CONF-052",
+          "CONF-053",
+          "CONF-054"
         ]
       },
       {
-        "name": "Fighting fair",
+        "name": "Making it right",
         "qids": [
-          "CONF-019",
-          "CONF-021",
-          "CONF-022",
-          "CONF-023",
-          "CONF-024",
-          "CONF-025",
-          "CONF-026"
-        ]
-      },
-      {
-        "name": "Blind spots and feelings",
-        "qids": [
-          "CONF-027",
-          "CONF-028",
+          "CONF-055",
+          "CONF-056",
           "CONF-029",
-          "CONF-030",
-          "CONF-031",
-          "CONF-032"
-        ]
-      },
-      {
-        "name": "Safe to talk",
-        "qids": [
+          "CONF-012",
           "CONF-033",
           "CONF-034",
-          "CONF-036",
-          "CONF-037",
-          "CONF-015",
-          "CONF-035"
+          "CONF-057"
+        ]
+      },
+      {
+        "name": "Saying what you feel",
+        "qids": [
+          "CONF-030",
+          "CONF-031",
+          "CONF-032",
+          "CONF-058",
+          "CONF-059",
+          "CONF-060",
+          "CONF-061"
         ]
       }
     ]
@@ -406,27 +497,40 @@
     "hook": "INLAW-013",
     "parts": [
       {
-        "name": "Leaving and cleaving",
+        "name": "Family at the door",
         "qids": [
           "INLAW-013",
           "INLAW-014",
-          "INLAW-001",
-          "INLAW-002",
-          "INLAW-005",
-          "INLAW-006",
-          "INLAW-007"
+          "INLAW-015",
+          "INLAW-016",
+          "INLAW-011",
+          "INLAW-010",
+          "INLAW-012"
         ]
       },
       {
-        "name": "Family at the door",
+        "name": "Holidays, help and care",
         "qids": [
-          "INLAW-010",
-          "INLAW-011",
-          "INLAW-012",
-          "INLAW-003",
-          "INLAW-004",
-          "INLAW-008",
-          "INLAW-009"
+          "INLAW-017",
+          "INLAW-018",
+          "INLAW-009",
+          "INLAW-019",
+          "INLAW-020",
+          "INLAW-021",
+          "INLAW-022"
+        ]
+      },
+      {
+        "name": "Leaving and cleaving",
+        "qids": [
+          "INLAW-023",
+          "INLAW-024",
+          "INLAW-006",
+          "INLAW-025",
+          "INLAW-026",
+          "INLAW-027",
+          "INLAW-028",
+          "INLAW-029"
         ]
       }
     ]
@@ -440,41 +544,54 @@
     "hook": "FUN-011",
     "parts": [
       {
+        "name": "Date nights and laughs",
+        "qids": [
+          "FUN-024",
+          "FUN-025",
+          "FUN-026",
+          "FUN-027",
+          "FUN-028",
+          "FUN-029",
+          "FUN-030",
+          "FUN-031"
+        ]
+      },
+      {
         "name": "Who’s more likely…",
         "qids": [
-          "FUN-010",
           "FUN-008",
-          "FUN-023",
           "FUN-009",
+          "FUN-010",
           "FUN-011",
-          "FUN-002",
-          "FUN-003",
-          "FUN-004"
+          "FUN-012",
+          "FUN-013",
+          "FUN-014",
+          "FUN-015"
         ]
       },
       {
         "name": "Lazy Sundays",
         "qids": [
-          "FUN-005",
-          "FUN-006",
-          "FUN-001",
-          "FUN-007",
-          "FUN-016",
-          "FUN-017",
-          "FUN-020",
-          "FUN-022"
+          "FUN-032",
+          "FUN-033",
+          "FUN-034",
+          "FUN-035",
+          "FUN-036",
+          "FUN-037",
+          "FUN-038"
         ]
       },
       {
         "name": "The cheeky round",
         "qids": [
-          "FUN-012",
-          "FUN-013",
-          "FUN-014",
-          "FUN-015",
+          "FUN-007",
+          "FUN-016",
+          "FUN-020",
+          "FUN-023",
           "FUN-018",
           "FUN-019",
-          "FUN-021"
+          "FUN-021",
+          "FUN-039"
         ]
       }
     ]
@@ -493,35 +610,31 @@
           "DEAL-022",
           "DEAL-023",
           "DEAL-003",
-          "DEAL-013",
-          "DEAL-018",
-          "DEAL-001",
-          "DEAL-002",
-          "DEAL-004"
+          "DEAL-024",
+          "DEAL-025",
+          "DEAL-020"
         ]
       },
       {
         "name": "Lines you won’t cross",
         "qids": [
-          "DEAL-005",
-          "DEAL-006",
+          "DEAL-004",
           "DEAL-007",
+          "DEAL-006",
           "DEAL-008",
-          "DEAL-009",
-          "DEAL-010",
-          "DEAL-011",
+          "DEAL-026",
+          "DEAL-027",
           "DEAL-012"
         ]
       },
       {
         "name": "When life changes",
         "qids": [
-          "DEAL-014",
-          "DEAL-015",
-          "DEAL-016",
+          "DEAL-010",
           "DEAL-017",
           "DEAL-019",
-          "DEAL-020",
+          "DEAL-014",
+          "DEAL-013",
           "DEAL-021"
         ]
       }
@@ -535,16 +648,26 @@
     "icon": "leaf",
     "parts": [
       {
-        "name": "Habits and health",
+        "name": "Habits and rhythms",
         "qids": [
-          "HEALTH-001",
-          "HEALTH-002",
-          "HEALTH-003",
-          "HEALTH-008",
+          "HEALTH-011",
+          "HEALTH-012",
+          "HEALTH-013",
+          "HEALTH-014",
           "HEALTH-009",
-          "HEALTH-010",
-          "HEALTH-004",
-          "HEALTH-007",
+          "HEALTH-015",
+          "HEALTH-016"
+        ]
+      },
+      {
+        "name": "Screens, drink and health",
+        "qids": [
+          "HEALTH-017",
+          "HEALTH-018",
+          "HEALTH-019",
+          "HEALTH-020",
+          "HEALTH-021",
+          "HEALTH-022",
           "HEALTH-005",
           "HEALTH-006"
         ]
@@ -561,16 +684,47 @@
       {
         "name": "Where you’ve come from",
         "qids": [
-          "PAST-004",
-          "PAST-003",
-          "PAST-006",
-          "PAST-008",
-          "PAST-010",
-          "PAST-011",
+          "PAST-012",
+          "PAST-013",
+          "PAST-014",
+          "PAST-015",
+          "PAST-016",
+          "PAST-017",
+          "PAST-018"
+        ]
+      },
+      {
+        "name": "Past relationships",
+        "qids": [
+          "PAST-019",
+          "PAST-020",
+          "PAST-021",
+          "PAST-022",
+          "PAST-023",
+          "PAST-024",
+          "PAST-025"
+        ]
+      },
+      {
+        "name": "Hard seasons and healing",
+        "qids": [
+          "PAST-026",
+          "PAST-027",
+          "PAST-009",
+          "PAST-028",
+          "PAST-029",
+          "PAST-030"
+        ]
+      },
+      {
+        "name": "What I should know",
+        "qids": [
+          "PAST-031",
           "PAST-001",
-          "PAST-002",
-          "PAST-007",
-          "PAST-009"
+          "PAST-032",
+          "PAST-033",
+          "PAST-034",
+          "PAST-035"
         ]
       }
     ]
@@ -585,16 +739,23 @@
       {
         "name": "Work and calling",
         "qids": [
-          "CAREER-010",
           "CAREER-001",
-          "CAREER-002",
-          "CAREER-003",
-          "CAREER-005",
+          "CAREER-011",
           "CAREER-006",
-          "CAREER-007",
           "CAREER-008",
+          "CAREER-003",
+          "CAREER-010"
+        ]
+      },
+      {
+        "name": "Work and family",
+        "qids": [
+          "CAREER-005",
+          "CAREER-007",
           "CAREER-009",
-          "CAREER-004"
+          "CAREER-004",
+          "CAREER-012",
+          "CAREER-013"
         ]
       }
     ]
@@ -605,54 +766,64 @@
     "name": "Character",
     "color": "#5E7A4E",
     "icon": "star",
-    "hook": "SELF-019",
+    "hook": "SELF-038",
     "parts": [
       {
         "name": "Who you really are",
         "qids": [
           "SELF-013",
           "SELF-001",
-          "SELF-002",
           "SELF-004",
-          "SELF-005",
-          "SELF-008",
-          "SELF-009",
-          "SELF-010"
+          "SELF-028",
+          "SELF-030",
+          "SELF-031",
+          "SELF-032"
         ]
       },
       {
         "name": "What shaped you",
         "qids": [
           "SELF-011",
-          "SELF-014",
-          "SELF-015",
-          "SELF-016",
-          "SELF-017",
-          "SELF-018",
-          "SELF-019"
+          "SELF-008",
+          "SELF-033",
+          "SELF-023",
+          "SELF-024",
+          "SELF-029",
+          "SELF-016"
         ]
       },
       {
-        "name": "Growth and integrity",
+        "name": "Growing on purpose",
         "qids": [
           "SELF-020",
-          "SELF-021",
+          "SELF-015",
+          "SELF-034",
+          "SELF-035",
+          "SELF-036",
           "SELF-022",
-          "SELF-023",
-          "SELF-024",
+          "SELF-018"
+        ]
+      },
+      {
+        "name": "Integrity and honesty",
+        "qids": [
+          "SELF-037",
+          "SELF-021",
+          "SELF-038",
           "SELF-025",
-          "SELF-026"
+          "SELF-026",
+          "SELF-039",
+          "SELF-040"
         ]
       },
       {
         "name": "Fears and forgiveness",
         "qids": [
-          "SELF-027",
-          "SELF-029",
-          "SELF-028",
-          "SELF-003",
+          "SELF-041",
+          "SELF-042",
           "SELF-006",
           "SELF-007",
+          "SELF-043",
           "SELF-012"
         ]
       }
@@ -664,91 +835,154 @@
     "name": "Us",
     "color": "#9C4A6E",
     "icon": "heart",
-    "hook": "US-024",
+    "hook": "US-120",
     "parts": [
       {
         "name": "Why us",
         "qids": [
+          "US-051",
           "US-008",
-          "US-010",
-          "US-014",
-          "US-034",
+          "US-052",
+          "US-053",
           "US-050",
-          "US-001",
-          "US-003",
-          "US-005"
+          "US-016",
+          "US-035",
+          "US-054"
+        ]
+      },
+      {
+        "name": "Choosing each other",
+        "qids": [
+          "US-048",
+          "US-055",
+          "US-056",
+          "US-057",
+          "US-058",
+          "US-059",
+          "US-060",
+          "US-049"
         ]
       },
       {
         "name": "The pace we’re going",
         "qids": [
-          "US-006",
-          "US-009",
-          "US-013",
-          "US-017",
-          "US-027",
           "US-029",
-          "US-030"
+          "US-061",
+          "US-062",
+          "US-063",
+          "US-034",
+          "US-064",
+          "US-065",
+          "US-066"
         ]
       },
       {
-        "name": "Love, not just feelings",
+        "name": "Towards engagement",
         "qids": [
-          "US-031",
-          "US-033",
-          "US-035",
-          "US-039",
-          "US-048",
-          "US-002",
-          "US-004"
+          "US-067",
+          "US-068",
+          "US-069",
+          "US-070",
+          "US-071",
+          "US-072",
+          "US-073"
+        ]
+      },
+      {
+        "name": "Getting ready for marriage",
+        "qids": [
+          "US-074",
+          "US-010",
+          "US-075",
+          "US-076",
+          "US-077",
+          "US-078",
+          "US-079",
+          "US-080"
+        ]
+      },
+      {
+        "name": "Friends and our own lives",
+        "qids": [
+          "US-030",
+          "US-081",
+          "US-082",
+          "US-083",
+          "US-084",
+          "US-085",
+          "US-086"
         ]
       },
       {
         "name": "Counsel and blessing",
         "qids": [
-          "US-015",
-          "US-016",
-          "US-019",
-          "US-020",
-          "US-021",
-          "US-022",
-          "US-023"
+          "US-087",
+          "US-088",
+          "US-089",
+          "US-090",
+          "US-091",
+          "US-092"
+        ]
+      },
+      {
+        "name": "Love, not just feelings",
+        "qids": [
+          "US-002",
+          "US-093",
+          "US-004",
+          "US-094",
+          "US-095",
+          "US-096",
+          "US-097"
+        ]
+      },
+      {
+        "name": "What makes it last",
+        "qids": [
+          "US-098",
+          "US-099",
+          "US-006",
+          "US-100",
+          "US-101",
+          "US-102",
+          "US-103"
         ]
       },
       {
         "name": "Through hard seasons",
         "qids": [
-          "US-025",
-          "US-026",
-          "US-032",
-          "US-036",
-          "US-037",
-          "US-038",
-          "US-040"
+          "US-104",
+          "US-105",
+          "US-106",
+          "US-107",
+          "US-108",
+          "US-109",
+          "US-110"
         ]
       },
       {
         "name": "Covenant and cost",
         "qids": [
-          "US-043",
-          "US-047",
-          "US-007",
-          "US-012",
-          "US-018",
-          "US-028",
-          "US-041"
+          "US-111",
+          "US-040",
+          "US-041",
+          "US-112",
+          "US-113",
+          "US-114",
+          "US-115"
         ]
       },
       {
-        "name": "Making room for us",
+        "name": "Honest about us",
         "qids": [
-          "US-042",
-          "US-044",
-          "US-045",
-          "US-046",
-          "US-049",
+          "US-038",
+          "US-116",
+          "US-117",
+          "US-118",
+          "US-119",
           "US-011",
-          "US-024"
+          "US-120",
+          "US-121"
         ]
       }
     ]
@@ -761,27 +995,51 @@
     "icon": "compass",
     "parts": [
       {
-        "name": "Politics, science and society",
+        "name": "Politics and culture",
         "qids": [
           "VAL-013",
           "VAL-014",
-          "VAL-005",
-          "VAL-006",
-          "VAL-007",
-          "VAL-009",
-          "VAL-010"
+          "VAL-015",
+          "VAL-016",
+          "VAL-017",
+          "VAL-018"
         ]
       },
       {
-        "name": "Life, death and marriage",
+        "name": "Life, death and medicine",
         "qids": [
-          "VAL-001",
-          "VAL-002",
-          "VAL-003",
-          "VAL-004",
-          "VAL-008",
-          "VAL-011",
-          "VAL-012"
+          "VAL-019",
+          "VAL-020",
+          "VAL-021",
+          "VAL-022",
+          "VAL-023",
+          "VAL-024",
+          "VAL-025"
+        ]
+      },
+      {
+        "name": "Sex, gender and marriage",
+        "qids": [
+          "VAL-026",
+          "VAL-027",
+          "VAL-028",
+          "VAL-029",
+          "VAL-030",
+          "VAL-031",
+          "VAL-032"
+        ]
+      },
+      {
+        "name": "Marriage, divorce and living together",
+        "qids": [
+          "VAL-033",
+          "VAL-034",
+          "VAL-035",
+          "VAL-036",
+          "VAL-037",
+          "VAL-038",
+          "VAL-039",
+          "VAL-040"
         ]
       }
     ]
@@ -794,30 +1052,39 @@
     "icon": "shield",
     "parts": [
       {
-        "name": "Phones, friends and trust",
+        "name": "Phones, privacy and trust",
         "qids": [
           "LOYAL-009",
-          "LOYAL-010",
-          "LOYAL-004",
-          "LOYAL-005",
-          "LOYAL-006",
-          "LOYAL-007",
-          "LOYAL-011",
           "LOYAL-016",
-          "LOYAL-008"
+          "LOYAL-005",
+          "LOYAL-018",
+          "LOYAL-019",
+          "LOYAL-020",
+          "LOYAL-021"
+        ]
+      },
+      {
+        "name": "Attention from others",
+        "qids": [
+          "LOYAL-010",
+          "LOYAL-022",
+          "LOYAL-012",
+          "LOYAL-013",
+          "LOYAL-015",
+          "LOYAL-011",
+          "LOYAL-017"
         ]
       },
       {
         "name": "Guarding the line",
         "qids": [
-          "LOYAL-012",
-          "LOYAL-013",
-          "LOYAL-014",
-          "LOYAL-015",
-          "LOYAL-017",
-          "LOYAL-001",
-          "LOYAL-002",
-          "LOYAL-003"
+          "LOYAL-023",
+          "LOYAL-024",
+          "LOYAL-025",
+          "LOYAL-026",
+          "LOYAL-027",
+          "LOYAL-028",
+          "LOYAL-029"
         ]
       }
     ]
@@ -836,43 +1103,45 @@
           "NOW-025",
           "NOW-026",
           "NOW-027",
-          "NOW-008",
-          "NOW-001",
+          "NOW-022",
           "NOW-002",
-          "NOW-009"
+          "NOW-001",
+          "NOW-019"
         ]
       },
       {
         "name": "Seen and understood",
         "qids": [
-          "NOW-012",
-          "NOW-019",
-          "NOW-021",
-          "NOW-022",
           "NOW-003",
-          "NOW-004",
-          "NOW-005"
+          "NOW-005",
+          "NOW-028",
+          "NOW-029",
+          "NOW-009",
+          "NOW-013",
+          "NOW-012",
+          "NOW-021"
         ]
       },
       {
-        "name": "Trust and presence",
+        "name": "Making room for us",
         "qids": [
-          "NOW-006",
-          "NOW-007",
+          "NOW-030",
+          "NOW-031",
+          "NOW-032",
+          "NOW-033",
+          "NOW-034",
           "NOW-010",
-          "NOW-011",
-          "NOW-014",
-          "NOW-015",
-          "NOW-017"
+          "NOW-011"
         ]
       },
       {
         "name": "The honest questions",
         "qids": [
+          "NOW-006",
+          "NOW-007",
+          "NOW-015",
+          "NOW-017",
           "NOW-023",
-          "NOW-013",
-          "NOW-016",
-          "NOW-018",
           "NOW-020",
           "NOW-024"
         ]

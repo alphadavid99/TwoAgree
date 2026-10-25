@@ -425,7 +425,7 @@ function Preview() {
         role="host"
         session={s}
         index={1}
-        step={{ key: "fork", mechanic: "guess", qids: ["CONF-001", "CONF-002"] }}
+        step={{ key: "fork", mechanic: "guess", qids: ["CONF-038", "CONF-002"] }}
         myName="Sarah"
         partnerName="Judah"
         onExit={noop}

@@ -8,7 +8,7 @@ Everything a build session needs, in one place.
 | `../design-system.md` | The rules every screen follows. |
 | `DECISIONS.md` | Every decision from the walkthrough (items 1–17 and the UX laws review), with what was rejected and why. The **Decided** box at the end of each item wins. |
 | `mockups/` | The approved mockups referenced in DECISIONS.md. Match them. |
-| `part-names.json` | The 56 approved part names, by deck slug, in today's part order (item 11). |
+| `part-names.json` | The 78 approved part names, by deck slug, in today's part order (item 11; re-cut with the Oct 2026 bank overhaul, see `docs/bank-review/`). |
 | `reveal-library.json` | The 35 encouragement lines and 15 verses by range (item 2). |
 
 ## Dave's answers to every "Needs you" (given 24 Oct)

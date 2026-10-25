@@ -56,3 +56,16 @@ A full overhaul: the reviewed bank replaces the old one. Only testers use the ap
 - **Draft: decided (Dave, 25 Oct).** Ignore the label. Every question goes live, Draft or not, as today. `status` stays as authoring metadata only.
 - **Mirrored scoring: built (Dave, 25 Oct).** New `mirror: true` flag, scale-only (the build rejects it on any other type or alongside `complement`). Scoring flips the partner's answer (1↔5, 2↔4) before comparing. Guesses aren't flipped, because you guess your partner's answer in their own words. The reveal track places the partner's dot as it reads from your side and never says "You both said" on a mirrored question. At build: set `mirror` on the new `US-018`, and make `FIN-005#fu1` a who question ("Mainly {A}" / "Mainly {B}" / …), which the app already stores by person. Both are in `grouping.json` → `decisions.scoring`.
 - **Weighting: no change needed.** Scoring never read the six old "how important is it that we agree" questions. It weights by `depth` and by each partner's per-question importance rating.
+
+## Session 2, the build (25 Oct): the new bank is in `data/`
+- **558 questions, 78 parts**, built by `tools/build-bank.py` from `grouping.json` (all of Dave's decisions). 187 questions kept their ID (unchanged, reworded-in-place or July, still in the same conversation). 371 got fresh numbers above every ID ever used, so no old ID points at a new question. Follow-ups carry `followsId`. Scales keep the reviewed five step labels in `steps` (not shown yet: the app shows the two ends).
+- **Fixed at build (Claude):** ROLE-003 and PAR-004 were marked scale but list separate positions, so they're built as pick-one. Five retired or duplicate Core questions passed Core to their successor, and FIN-013 (now a written answer) passed it to FIN-015, so Core stays at 70 (62 take guesses). No rank question is guessable, because the app can't score a guess on a ranking. The review wanted all 38 guessable; that needs rank-guess scoring built first. Em dashes became colons (#44 rule). "Mostly him/her" became names.
+- **French:** 78 translations survive. 188 described questions whose English changed and were dropped, so those questions show in English until retranslated.
+- **"discussion-only"** (FAITH-023, ROLE-001, US-010#fu1 in the review) has no meaning in the app yet. They score like any other pick-one. Ask Dave.
+- **Fresh start:** `functions/src/migrateFresh.ts` + `scripts/migrate-fresh-start.mjs` replace the old Him/Her re-ask. They clear decks, Path and private spaces, and keep couples, codes and Path intake. Emulator-tested in `privacy.rules.test.ts`.
+
+### Release order (Dave runs the live steps)
+This branch sits on `claude/design-refresh`, so that has to land first.
+1. `firebase deploy --only functions` (they carry the new bank and parts).
+2. Merge to `main`; Hosting deploys itself.
+3. Straight after: `npm --prefix functions run build`, then `node scripts/migrate-fresh-start.mjs --live --project twoagreeapp` (dry run, lists sessions), then the same with `--apply`.

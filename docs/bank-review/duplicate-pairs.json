@@ -1,0 +1,261 @@
+{
+ "likely": [
+  [
+   "NOW-008",
+   "NEW-muwo2oxh",
+   "Both ask when you feel closest to me (yours ranks, the new one picks)."
+  ],
+  [
+   "INT-022",
+   "INT-001#fu2",
+   "Both ask who should start physical intimacy."
+  ],
+  [
+   "FUN-017",
+   "FUN-004#fu1",
+   "Both ask which holiday or trip you'd pick."
+  ],
+  [
+   "FUN-018",
+   "SELF-003#fu1",
+   "Both ask what about you would be hard to live with (yours is playful)."
+  ],
+  [
+   "FUN-022",
+   "FUN-001#fu1",
+   "Both ask how you'd spend a free day together."
+  ],
+  [
+   "HOME-011",
+   "US-009#fu1",
+   "Both ask what you'd protect together when life gets busy."
+  ],
+  [
+   "ROLE-006",
+   "ROLE-003",
+   "Both ask what happens when you can't agree on a decision."
+  ],
+  [
+   "ROLE-008",
+   "NEW-muvgry18",
+   "Both ask whose work steps back for the family."
+  ],
+  [
+   "ROLE-009",
+   "HOME-002",
+   "Both ask how chores should be divided."
+  ],
+  [
+   "ROLE-010",
+   "FIN-005#fu1",
+   "Both ask who handles the money day to day."
+  ],
+  [
+   "DREAM-009",
+   "DREAM-002#fu1",
+   "Both ask about living abroad (yours adds mission work)."
+  ],
+  [
+   "DREAM-010",
+   "NEW-muwncem8",
+   "Both ask how much risk you want in your life together."
+  ],
+  [
+   "DREAM-012",
+   "NEW-muwowe7q",
+   "Both ask you to rank what people would say about your marriage one day."
+  ],
+  [
+   "INLAW-008",
+   "NEW-muvlsli2",
+   "Both ask what you'd do if your family disrespected your partner."
+  ],
+  [
+   "DEAL-011",
+   "NEW-muwli61l",
+   "Both ask what should happen if a marriage became abusive."
+  ],
+  [
+   "DEAL-015",
+   "NEW-muycdoov",
+   "Both ask what marriage means if one of you became seriously ill."
+  ],
+  [
+   "DEAL-018",
+   "NEW-muycdrpx",
+   "Both ask what happens if one of you refuses counselling."
+  ],
+  [
+   "LOYAL-011",
+   "INT-004#fu1",
+   "Both ask whether an emotional affair counts as cheating."
+  ],
+  [
+   "LOYAL-014",
+   "PAST-002",
+   "Both ask whether you're still in contact with exes."
+  ]
+ ],
+ "maybe": [
+  [
+   "NOW-002",
+   "US-033",
+   "What the relationship is right now, vs what you intend it to become."
+  ],
+  [
+   "FUN-009",
+   "CONF-022#fu1",
+   "Who apologises first, vs what you do first after a disagreement."
+  ],
+  [
+   "FUN-012",
+   "FAITH-023#fu1",
+   "Who prays out loud first, vs who leads when you pray together."
+  ],
+  [
+   "FUN-013",
+   "FIN-003#fu1",
+   "Spending without mentioning it, vs when to check before spending."
+  ],
+  [
+   "NOW-004",
+   "US-018",
+   "How giving to the relationship feels, vs how balanced the give-and-take is."
+  ],
+  [
+   "NOW-005",
+   "US-018#fu1",
+   "Support flowing both ways, vs where the give-and-take feels uneven."
+  ],
+  [
+   "NOW-014",
+   "SELF-015",
+   "One change in you that would improve us, vs one part of yourself you'd change."
+  ],
+  [
+   "NOW-016",
+   "NEW-muvmjt5v",
+   "Something you haven't told me, vs something from your past you fear sharing."
+  ],
+  [
+   "NOW-018",
+   "US-037#fu1",
+   "Has anyone raised a concern about us, vs would you tell me if they did."
+  ],
+  [
+   "NOW-019",
+   "CONF-002",
+   "How long until we're okay after a disagreement, vs how soon you like to resolve it."
+  ],
+  [
+   "NOW-020",
+   "US-033#fu1",
+   "How often you doubt us, vs how certain you are this leads to marriage."
+  ],
+  [
+   "NOW-021",
+   "SELF-026",
+   "Same in private as in public as a couple, vs as a person."
+  ],
+  [
+   "CONF-029",
+   "CONF-022#fu1",
+   "What you need after a fight, vs what you do first after a disagreement."
+  ],
+  [
+   "CONF-035",
+   "CONF-015",
+   "What's okay to keep to yourself, vs how much privacy is healthy."
+  ],
+  [
+   "US-041",
+   "DEAL-003",
+   "Rank what's hardest to give up for marriage, vs the one thing you'd never give up."
+  ],
+  [
+   "US-047",
+   "NEW-muyctwfk",
+   "How long to really know someone, vs how long before getting engaged."
+  ],
+  [
+   "SELF-029",
+   "CONF-023#fu1",
+   "Who you go to first with a problem, vs who you'd ask about a relationship problem."
+  ],
+  [
+   "HOME-010",
+   "HEALTH-010",
+   "Going to bed at the same time, vs what matters if sleep schedules differ."
+  ],
+  [
+   "ROLE-007",
+   "NEW-muvgszs9",
+   "If the wife earned more, vs whether earning more gives more say."
+  ],
+  [
+   "ROLE-011",
+   "HOME-008",
+   "Bins, spiders and the car, vs who handles repairs and maintenance."
+  ],
+  [
+   "DREAM-008",
+   "HOME-004",
+   "Where you'll live in ten years, vs where to build your life long-term."
+  ],
+  [
+   "DREAM-011",
+   "US-017",
+   "Building something together, vs individual lives and life as a couple."
+  ],
+  [
+   "INLAW-009",
+   "FIN-008",
+   "How much family money help is okay, vs helping family who are struggling."
+  ],
+  [
+   "INLAW-011",
+   "INLAW-001#fu1",
+   "Parents having a key, vs parents dropping by unannounced."
+  ],
+  [
+   "INLAW-012",
+   "FAM-007",
+   "How close to live to family, vs children growing up near family."
+  ],
+  [
+   "INT-015",
+   "INT-007",
+   "Wanting different things physically, vs one wanting sex more often."
+  ],
+  [
+   "DEAL-016",
+   "FAM-002",
+   "Never being able to have children, vs fertility treatment."
+  ],
+  [
+   "DEAL-019",
+   "INT-003#fu1",
+   "If I changed physically, vs keeping up effort with appearance."
+  ],
+  [
+   "DEAL-020",
+   "DEAL-001",
+   "Rank what's hardest to recover from, vs rank the biggest deal-breakers."
+  ],
+  [
+   "DEAL-022",
+   "DEAL-001",
+   "What you could never live with, vs rank the biggest deal-breakers."
+  ],
+  [
+   "LOYAL-017",
+   "INT-004",
+   "Rank what feels most like betrayal, vs where faithfulness is first crossed."
+  ],
+  [
+   "DREAM-007",
+   "NEW-muwnb1mz",
+   "Comfortable, adventurous, significant or quiet life, vs the life you'd build if nothing limited you."
+  ]
+ ]
+}

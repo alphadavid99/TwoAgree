@@ -19,8 +19,12 @@ import { fileURLToPath } from "node:url";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
-const QUESTIONS_PATH = path.join(ROOT, "data", "questions.json");
-const DECKS_PATH = path.join(ROOT, "data", "decks.json");
+// --data <dir> validates another copy of the bank and writes nothing (tests).
+const DATA_AT = process.argv.indexOf("--data");
+const DATA_DIR = DATA_AT >= 0 ? path.resolve(process.argv[DATA_AT + 1]) : path.join(ROOT, "data");
+const VALIDATE_ONLY = DATA_AT >= 0;
+const QUESTIONS_PATH = path.join(DATA_DIR, "questions.json");
+const DECKS_PATH = path.join(DATA_DIR, "decks.json");
 const OUT_PATH = path.join(ROOT, "src", "data", "questions.generated.ts");
 
 const CHECK = process.argv.includes("--check");
@@ -68,7 +72,7 @@ if (errors.length) fail(`deck metadata problems:\n  - ${errors.join("\n  - ")}`)
 // A question may arrive with a `deck` but no `id` — assign the next free number
 // for that deck's prefix so a hand-pasted block can never collide with the bank.
 // (--check refuses to mutate; a missing id there is a validation error below.)
-if (!CHECK) {
+if (!CHECK && !VALIDATE_ONLY) {
   const nextNum = new Map(); // prefix -> next free integer
   for (const q of questions) {
     if (typeof q.id === "string") {
@@ -115,6 +119,25 @@ for (const q of questions) {
   if (typeof q.q !== "string" || !q.q.trim()) bad("question text (q) is empty");
   if (q.guessable !== true && q.guessable !== false) bad("guessable must be true or false");
 
+  // "Which of you" questions (design refresh, item 12): the first two options
+  // are the two of you, {A} the host and {B} the guest, shown as your names in
+  // the same order on both phones. Nowhere else may carry a placeholder.
+  if (q.who === true) {
+    if (q.type !== "mc") bad("who questions must be mc");
+    else if (!q.opts?.[0]?.includes("{A}") || !q.opts?.[1]?.includes("{B}")) bad("who: opts[0] needs {A} and opts[1] needs {B}");
+    else if (q.opts.slice(2).some((o) => /\{[AB]\}/.test(o)) || q.opts[0].includes("{B}") || q.opts[1].includes("{A}")) bad("who: {A}/{B} only in the first two options");
+  } else if ("who" in q) bad("who must be true or absent");
+  else if ([q.q, ...(q.opts ?? [])].some((o) => /\{[AB]\}/.test(o ?? ""))) bad("{A}/{B} placeholders need who: true");
+
+  // Mirrored scales: the ends are the two of you ("I give more" … "you give
+  // more"), so the same answer from both means opposite things. An mc about
+  // the two of you is a who question instead, stored by person.
+  if ("mirror" in q) {
+    if (q.mirror !== true) bad("mirror must be true or absent");
+    else if (q.type !== "scale") bad("mirror is for scale questions (use who for mc)");
+    else if (q.complement) bad("mirror and complement can't both be set");
+  }
+
   if (q.type === "mc" || q.type === "rank") {
     if (!Array.isArray(q.opts) || q.opts.length < 2) bad(`${q.type} needs at least 2 options`);
     if (q.lo || q.hi) bad(`${q.type} must not have lo/hi`);
@@ -127,6 +150,34 @@ for (const q of questions) {
   }
 }
 
+// --- validate parts ----------------------------------------------------------
+// Each deck's parts are fixed in data/decks.json: a name plus its question ids
+// (design refresh, item 11). A name must never drift away from its questions,
+// so every question sits in exactly one part of its own deck.
+const deckOfId = new Map(questions.map((q) => [q.id, q.deck]));
+const partOf = new Map();
+for (const d of decks) {
+  const where = `deck "${d.slug}"`;
+  if (!Array.isArray(d.parts) || !d.parts.length) {
+    errors.push(`${where}: needs a "parts" list (each { name, qids })`);
+    continue;
+  }
+  d.parts.forEach((p, i) => {
+    const at = `${where} part ${i + 1}`;
+    if (typeof p.name !== "string" || !p.name.trim()) errors.push(`${at}: needs a name`);
+    if (!Array.isArray(p.qids) || !p.qids.length) errors.push(`${at} ("${p.name}"): needs question ids`);
+    for (const id of p.qids ?? []) {
+      if (!deckOfId.has(id)) errors.push(`${id}: in ${at} but not in the question bank`);
+      else if (deckOfId.get(id) !== d.slug) errors.push(`${id}: in ${at} but belongs to deck "${deckOfId.get(id)}"`);
+      if (partOf.has(id)) errors.push(`${id}: in two parts (${partOf.get(id)} and ${at})`);
+      else partOf.set(id, at);
+    }
+  });
+}
+for (const q of questions) {
+  if (!partOf.has(q.id)) errors.push(`${q.id}: in no part — add it to a part of "${q.deck}" in data/decks.json`);
+}
+
 if (errors.length) {
   fail(`${errors.length} problem(s) in the question bank:\n  - ${errors.join("\n  - ")}`);
 }
@@ -134,13 +185,14 @@ if (errors.length) {
 // --- render generated TS ------------------------------------------------------
 // Runtime carries only the fields the app renders; authoring-only columns
 // (level, subcat, status, source, dateAdded) live in the JSON source only.
+const byId = new Map(questions.map((q) => [q.id, q]));
 const order = decks.map((d) => d.slug);
-const byDeck = new Map(order.map((s) => [s, []]));
-for (const q of questions) byDeck.get(q.deck).push(q);
-// Sort every deck by depth ascending (stable — ties keep bank order). This is
-// what turns the existing ~7-per-chunk grouping into a real difficulty ramp:
-// Part 1 is a deck's lightest questions, Part N its heaviest (brief §A7b).
-for (const arr of byDeck.values()) arr.sort((a, b) => a.depth - b.depth);
+// A deck's questions run in part order, as fixed in data/decks.json. (The parts
+// were cut from the old depth-sorted ~7-per-part split, so Part 1 is still a
+// deck's lightest questions and Part N its heaviest — brief §A7b.)
+const byDeck = new Map(
+  decks.map((d) => [d.slug, d.parts.flatMap((p) => p.qids.map((id) => byId.get(id)))]),
+);
 
 function runtimeQuestion(q) {
   const o = { id: q.id, q: q.q, type: q.type, depth: q.depth };
@@ -148,6 +200,8 @@ function runtimeQuestion(q) {
   if (q.note) o.note = q.note;
   if (q.guessable === true) o.guessable = true;
   if (q.complement === true) o.complement = true;
+  if (q.mirror === true) o.mirror = true;
+  if (q.who === true) o.who = true;
   if (q.notYet === true) o.notYet = true;
   if (q.core === true) o.core = true;
   if (q.showIf) o.showIf = q.showIf;
@@ -160,7 +214,6 @@ function runtimeQuestion(q) {
 
 // Resolve each conversation's A7 hook (brief 2 §A7) from a question id to live
 // text at build time, so rewording the question moves the hook with it.
-const byId = new Map(questions.map((q) => [q.id, q]));
 const decksLiteral = {};
 for (const d of decks) {
   if (d.hook && !byId.has(d.hook)) {
@@ -171,6 +224,7 @@ for (const d of decks) {
     color: d.color,
     icon: d.icon,
     ...(d.hook ? { hook: { id: d.hook, q: byId.get(d.hook).q } } : {}),
+    parts: d.parts.map((p) => ({ name: p.name, qids: p.qids })),
     questions: byDeck.get(d.slug).map(runtimeQuestion),
   };
 }
@@ -195,6 +249,10 @@ export interface Question {
   guessable?: boolean;
   /** Scores as fully aligned even when answers differ (purple "Complementary"). */
   complement?: boolean;
+  /** A scale about the two of you ("I give more" … "you give more"): one partner's answer is flipped before comparing. */
+  mirror?: boolean;
+  /** "Which of you": opts[0]/[1] are {A} (host) and {B} (guest); answered as "host"/"guest". */
+  who?: boolean;
   /** Offers a first-class, unscored "Not yet" answer (brief §7). */
   notYet?: boolean;
   /** Part of the fixed Core scoring instrument (brief 2 §C). */
@@ -216,6 +274,8 @@ export interface Deck {
   icon: string;
   /** A7 onboarding hook — a real question from inside, resolved at build time. */
   hook?: { id: string; q: string };
+  /** The deck's fixed parts, in order: a name and its question ids. */
+  parts: { name: string; qids: string[] }[];
   questions: Question[];
 }
 
@@ -238,8 +298,13 @@ for (const q of questions) {
   const e = { deck: q.deck, type: q.type, depth: q.depth };
   if (q.guessable === true) e.guessable = true;
   if (q.complement === true) e.complement = true;
+  if (q.who === true) e.who = true;
   bank[q.id] = e;
 }
+// The parts of each deck, as question ids (data/decks.json). The publish
+// function copies exactly one part's answers into the shared session once both
+// partners have finished it, so it reads the same fixed parts as the app.
+const levels = Object.fromEntries(decks.map((d) => [d.slug, d.parts.map((p) => p.qids)]));
 const fnBody = `${header}
 // Compact question metadata for the Path generation Cloud Function.
 export type QuestionType = "scale" | "mc" | "rank" | "open";
@@ -249,10 +314,14 @@ export interface BankEntry {
   depth: number;
   guessable?: boolean;
   complement?: boolean;
+  who?: boolean;
 }
 
 /** Every question's selection metadata, keyed by id. */
 export const BANK: Record<string, BankEntry> = ${JSON.stringify(bank, null, 2)};
+
+/** Each deck's parts, in order, as question ids (what one publish releases). */
+export const LEVELS: Record<string, string[][]> = ${JSON.stringify(levels, null, 2)};
 `;
 
 function checkFile(outPath, expected, label) {
@@ -265,7 +334,9 @@ function checkFile(outPath, expected, label) {
   void label;
 }
 
-if (CHECK) {
+if (VALIDATE_ONLY) {
+  console.log(`✓ question bank valid (${questions.length} questions, ${decks.length} decks).`);
+} else if (CHECK) {
   checkFile(OUT_PATH, body);
   checkFile(FN_OUT_PATH, fnBody);
   console.log(`✓ question bank valid and up to date (${questions.length} questions, ${decks.length} decks).`);

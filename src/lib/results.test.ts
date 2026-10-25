@@ -3,11 +3,12 @@ import { answersWaiting, overallAll, knownAll, isCore } from "./results";
 import { DECKS } from "./questions";
 import type { Session } from "../types";
 
-// The fixed Core instrument (brief 2 §C6): 70 Agreed, 63 Known.
+// The fixed Core instrument (brief 2 §C6): 70 Agreed, 62 Known (Oct 2026 bank:
+// rank questions take no guesses, and retired Core questions passed the flag on).
 describe("Core aggregates", () => {
-  it("has the fixed denominators — 70 agreed, 63 known", () => {
+  it("has the fixed denominators — 70 agreed, 62 known", () => {
     expect(overallAll({}, "host", isCore).total).toBe(70);
-    expect(knownAll({}, "host", isCore).total).toBe(63);
+    expect(knownAll({}, "host", isCore).total).toBe(62);
   });
 
   it("counts only both-answered core questions toward `done`", () => {

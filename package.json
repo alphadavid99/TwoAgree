@@ -9,15 +9,20 @@
     "build:path": "node scripts/build-path.mjs",
     "prebuild": "node scripts/build-questions.mjs --check && node scripts/build-path.mjs --check",
     "build": "tsc -b && vite build",
+    "postbuild": "node scripts/check-no-gallery.mjs",
+    "dev:gallery": "vite --config vite.gallery.config.ts --open /gallery.html",
+    "capture:gallery": "node scripts/capture-gallery.mjs",
+    "build:gallery": "node scripts/build-questions.mjs --check && node scripts/build-path.mjs --check && tsc -b && vite build --config vite.gallery.config.ts && node scripts/check-gallery.mjs",
     "lint": "oxlint",
     "pretest": "node scripts/build-questions.mjs --check && node scripts/build-path.mjs --check",
     "test": "vitest run",
-    "test:rules": "firebase emulators:exec --only database \"vitest run --config vitest.rules.config.ts\"",
+    "test:rules": "firebase emulators:exec --only database,auth \"vitest run --config vitest.rules.config.ts\"",
     "preview": "vite preview",
     "cap:sync": "npm run build && cap sync ios",
     "cap:copy": "npm run build && cap copy ios",
     "cap:open": "cap open ios",
-    "ios:assets": "npx @capacitor/assets generate --ios --iconBackgroundColor '#3E1A2E' --splashBackgroundColor '#3E1A2E' --splashBackgroundColorDark '#3E1A2E'"
+    "ios:assets": "npx @capacitor/assets generate --ios --iconBackgroundColor '#3E1A2E' --splashBackgroundColor '#3E1A2E' --splashBackgroundColorDark '#3E1A2E'",
+    "audit:gallery": "node scripts/audit-gallery.mjs"
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^8.3.0",
@@ -45,8 +50,10 @@
     "@vitejs/plugin-react": "^6.0.3",
     "jsdom": "^29.1.1",
     "oxlint": "^1.71.0",
+    "playwright-core": "^1.63.0",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
+    "vite-plugin-singlefile": "^2.3.3",
     "vitest": "^4.1.9"
   }
 }

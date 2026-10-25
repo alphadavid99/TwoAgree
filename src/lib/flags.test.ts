@@ -45,10 +45,10 @@ describe("blindSpot flag (§4a)", () => {
   });
 
   it("excludes Complementary", () => {
-    const par: Question = { id: "PAR-004", q: "", type: "scale", depth: 3, guessable: true };
+    const par: Question = { id: "X-001", q: "", type: "scale", depth: 3, guessable: true, complement: true };
     const d: DeckData = {
-      answers: { "PAR-004": { host: 1, guest: 5 } },
-      guesses: { "PAR-004": { host: 5 } }, // wrong
+      answers: { "X-001": { host: 1, guest: 5 } },
+      guesses: { "X-001": { host: 5 } }, // wrong
     };
     const r = scoreQ(par, d, "host");
     expect(r.verdict).toBe("Complementary");

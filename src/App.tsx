@@ -13,6 +13,7 @@ import StartScreen from "./screens/StartScreen";
 import SessionApp from "./screens/SessionApp";
 import Onboarding from "./screens/Onboarding";
 import { Wordmark } from "./brand/Wordmark";
+import { Loading } from "./components/Loading";
 import { IconSettings, IconBack } from "./components/icons";
 import { useT } from "./lib/i18n";
 
@@ -22,14 +23,9 @@ const BrandHead = () => (
   </div>
 );
 
-const Boot = ({ label }: { label: string }) => (
-  <>
-    <div className="spin" />
-    <p className="muted center" style={{ fontSize: 14 }}>
-      {label}
-    </p>
-  </>
-);
+// Loading follows the loading rule: the shape of a page, then "Still
+// loading…", then Try again (components/Loading.tsx).
+const Boot = ({ label }: { label: string }) => <Loading label={label} />;
 
 // The signed-in-but-no-session landing: Start a session, with a settings gear
 // that opens Profile (language, account, data controls, sign out) so this

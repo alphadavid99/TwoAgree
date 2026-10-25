@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { discoveries, answerText } from "../lib/discoveries";
 import { localizeQuestion } from "../lib/questions.fr";
+import { namesFor } from "../lib/who";
 import type { Session } from "../types";
 import type { Role } from "../lib/scoring";
 import { useLang } from "../lib/i18n";
@@ -39,7 +40,7 @@ export function Discoveries({
         {t(`What you've learned about ${them}`, `Ce que vous avez appris sur ${them}`)}
       </div>
       {shown.map((d) => {
-        const q = localizeQuestion(d.q, lang);
+        const q = localizeQuestion(d.q, lang, namesFor(session.members, role, "", partnerName));
         return (
           <div key={d.q.id} className="disc">
             <div className="disc-q">{q.q}</div>

@@ -97,33 +97,6 @@ export function clearOnbCheckpoint(uid: string): void {
 }
 
 // ---- Path lamps already witnessed ------------------------------------------
-// The lamp is shared couple state, so the second partner to finish a waypoint
-// arrived at a screen that was already lit and static — they never got the
-// ceremony at all. The lighting moment is therefore gated per-person on this
-// flag rather than on the shared lamp. Keyed by code + role (one device can
-// hold both sides of a session during testing); losing it only costs a repeat
-// of a moment the person liked.
-const lampKey = (code: string, role: string) => `aligned_lamps_${code}_${role}`;
-
-export function seenLamp(code: string, role: string, index: number): boolean {
-  try {
-    const raw = localStorage.getItem(lampKey(code, role));
-    return raw ? (JSON.parse(raw) as number[]).includes(index) : false;
-  } catch {
-    return false;
-  }
-}
-
-export function markLampSeen(code: string, role: string, index: number): void {
-  try {
-    const raw = localStorage.getItem(lampKey(code, role));
-    const seen = raw ? (JSON.parse(raw) as number[]) : [];
-    if (seen.includes(index)) return;
-    localStorage.setItem(lampKey(code, role), JSON.stringify([...seen, index]));
-  } catch {
-    /* storage blocked — the ceremony simply replays, which is harmless */
-  }
-}
 
 // ---- Path intake draft -----------------------------------------------------
 // The intake renders below a `key={tab}` remount, so tapping Decks mid-way and

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ORDER } from "../lib/questions";
-import { nLevels, lvlQs } from "../lib/leveling";
-import { curLevel, doneInLevel, catComplete } from "../lib/progress";
+import { DECKS } from "../lib/questions";
+import { nLevels, lvlQs, partName } from "../lib/leveling";
+import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
+import { startedLevel } from "../lib/privacy";
+import { inviteLink } from "../lib/invite";
 import { revealedRows, answersWaiting } from "../lib/results";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
@@ -9,12 +11,13 @@ import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
 import { PATH_STEPS } from "../data/path.generated";
-import { Avatar } from "../components/Avatar";
-import { PathGlyph } from "../components/PathGlyph";
-import { IconDecks, IconSettings } from "../components/icons";
+import { Avatar, toneFor } from "../components/Avatar";
+import { PathScene } from "../components/PathScene";
+import { PctRing } from "../components/Ring";
+import { DeckIcon } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
 import { track } from "../lib/observability";
-import { useT, useLang, type Lang } from "../lib/i18n";
+import { useT, useLang } from "../lib/i18n";
 
 export default function HomeScreen({
   code,
@@ -23,8 +26,7 @@ export default function HomeScreen({
   slug,
   onPlay,
   onBrowse,
-  onReview,
-  onProfile,
+  onTogether,
   pending = [],
   onOpenReveal,
   onPath,
@@ -35,8 +37,8 @@ export default function HomeScreen({
   slug: string;
   onPlay: (slug: string) => void;
   onBrowse: () => void;
-  onReview: (slug: string) => void;
-  onProfile: () => void;
+  /** The scores card opens Together. */
+  onTogether: () => void;
   // Reveals that are ready and this person hasn't opened yet, newest last.
   pending?: { slug: string; level: number }[];
   onOpenReveal?: (slug: string, level: number) => void;
@@ -79,7 +81,10 @@ export default function HomeScreen({
   const lvl = curLevel(slug, deck, role);
   const lvlTotal = lvlQs(slug, lvl).length;
   const mine = doneInLevel(slug, lvl, deck, role);
-  const theirs = doneInLevel(slug, lvl, deck, other(role));
+  // Their answers are private until you've both finished, so partner status
+  // comes from the shared started/done flags only.
+  const theyStarted = startedLevel(deck, lvl, other(role));
+  const theyFinished = levelDone(deck, lvl, other(role));
   const allDone = catComplete(slug, deck, role);
 
   const cta = allDone
@@ -92,16 +97,10 @@ export default function HomeScreen({
         ? t("Continue →", "Continuer →")
         : t("Start answering →", "Commencer à répondre →");
 
-  // Stat tiles + recent reveals share the Results maths, so the numbers agree.
-  const decksComplete = ORDER.filter((s) =>
-    catComplete(s, session.decks?.[s], role),
-  ).length;
-  const { rows, overallPct, knownPct } = revealedRows(session.decks, role);
+  // The scores card shares Together's maths, so the numbers agree.
+  const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
-  const ranked = [...rows].sort((a, b) => a.pct - b.pct);
-  const lowest = ranked[0];
-  const closest = ranked[ranked.length - 1];
 
   // Where the couple stands on the Path, for the hero card below.
   const pathCur = currentIndex(session);
@@ -137,7 +136,7 @@ export default function HomeScreen({
     setInviteMsg("");
     try {
       const res = await createInvite({ code });
-      const link = `${window.location.origin}/?t=${res.data.token}`;
+      const link = inviteLink(window.location.origin, { token: res.data.token }, myName);
       const txt = t(
         `Come do this with me on TwoAgree, we each answer the same questions, then see where the two of us land: ${link}`,
         `Fais-le avec moi sur TwoAgree, on répond chacun aux mêmes questions, puis on voit où on se retrouve tous les deux : ${link}`,
@@ -170,22 +169,21 @@ export default function HomeScreen({
     }
   };
 
+  // The Path card's scene: the step you're on, its landmark, the lamps lit.
+  const sceneKey = atLookout ? "lookout" : (pathStep?.key ?? "trailhead");
+
   return (
     <section>
-      {/* Avatar-pair chip + settings — the couple lives in the header now. */}
       <div className="homehdr">
         <span className={`avchip${justJoined ? " joinnow" : ""}`}>
           <span className="avchip-stack">
-            <Avatar name={myName} tone="berry" size={30} />
+            <Avatar name={myName} tone={toneFor(role)} size={34} />
             {joined ? (
               <span className="joinpop">
-                <Avatar name={partnerName} tone="honey" size={30} />
+                <Avatar name={partnerName} tone={toneFor(other(role))} size={34} />
               </span>
             ) : (
-              <span
-                className="avatar-disc avatar-wait"
-                style={{ width: 30, height: 30, fontSize: 13 }}
-              >
+              <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34, fontSize: 14 }}>
                 ?
               </span>
             )}
@@ -194,25 +192,10 @@ export default function HomeScreen({
             {myName} &amp; {joined ? partnerName : "…"}
           </i>
         </span>
-        <button
-          className="roundbtn"
-          type="button"
-          onClick={onProfile}
-          aria-label={t("Profile & settings", "Profil et réglages")}
-        >
-          <IconSettings size={18} />
-        </button>
       </div>
 
       <h1 className="greet serif">
-        {greeting}
-        <br />
-        {myName}
-        <small>
-          {joined
-            ? t("Where you left off, together.", "Là où vous en étiez, ensemble.")
-            : t("Start whenever you like: your partner can join anytime.", "Commencez quand vous voulez, votre partenaire peut vous rejoindre à tout moment.")}
-        </small>
+        {greeting} {myName}
       </h1>
       {justJoined && (
         <div className="joinnote" style={{ margin: "6px 2px 0" }}>
@@ -220,93 +203,28 @@ export default function HomeScreen({
         </div>
       )}
 
-      {!joined && (
-        <div className="banner" style={{ marginTop: 16 }}>
-          {t(
-            "Share your code so your partner can join:",
-            "Partagez votre code pour que votre partenaire vous rejoigne :",
-          )}{" "}
-          <button
-            className={`codechip${copied ? " copied" : ""}`}
-            type="button"
-            onClick={share}
-          >
-            {copied ? t("Copied ✓", "Copié ✓") : code}
-          </button>
-          <button
-            className="btn out"
-            type="button"
-            style={{ marginTop: 14 }}
-            onClick={sendInviteLink}
-            disabled={inviteBusy}
-          >
-            {inviteBusy
-              ? t("Creating link…", "Création du lien…")
-              : t("Send an invite link instead", "Envoyer plutôt un lien d’invitation")}
-          </button>
-          {inviteMsg && (
-            <div style={{ marginTop: 8, fontSize: 13 }}>{inviteMsg}</div>
-          )}
-          {waiting > 0 && (
-            <div className="waitline">
-              {/* Always pre-join here, so the full "your partner" reads right
-                  (the header's first-name form would clip it to "your"). */}
-              {t(
-                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved, waiting for your partner`,
-                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"}, en attente de votre partenaire`,
-              )}
-            </div>
-          )}
-        </div>
+      {/* Between the two of you: soft, light, two small rings kept apart. The
+          encouragement line stays on the reveal and Together. */}
+      {rows.length > 0 && (
+        <button className="card hscores" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
+          <span className="hscores-top">
+            <span className="eyebrow">{t("Between the two of you", "Entre vous deux")}</span>
+            <span aria-hidden="true">&#8250;</span>
+          </span>
+          <span className="hscores-rings">
+            <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`based on ${basis} question${basis === 1 ? "" : "s"}`, `sur ${basis} question${basis === 1 ? "" : "s"}`)} />
+            <SoftRing
+              pct={knownPct}
+              colour="var(--app-rose-soft)"
+              name={t("Known", "Connus")}
+              count={made ? t(`${right} of ${made} guesses`, `${right} intuitions sur ${made}`) : t("no guesses yet", "pas encore d’intuitions")}
+            />
+          </span>
+        </button>
       )}
 
-      <div className="tiles">
-        <div className="tile">
-          <span className="tile-ic">
-            <IconDecks size={15} />
-          </span>
-          <span className="tile-lb">
-            {t("Conversations", "Conversations")}
-            <br />
-            {t("complete", "terminées")}
-          </span>
-          <div>
-            <b className="serif">{decksComplete}</b>
-            <span className="tile-u">
-              {t(`of ${ORDER.length}`, `sur ${ORDER.length}`)}
-            </span>
-          </div>
-        </div>
-        <div className="tile">
-          <span className="tile-ic">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          </span>
-          <span className="tile-lb">
-            {t("Between", "Entre")}
-            <br />
-            {t("the two of you", "vous deux")}
-          </span>
-          <div className="tilepair">
-            <span className="tp">
-              <b className="serif agreed">{overallPct ?? "—"}</b>
-              {overallPct != null && <span className="tile-u">%</span>}
-              <i>{t("agreed", "d’accord")}</i>
-            </span>
-            <span className="tp">
-              <b className="serif known">{knownPct ?? "—"}</b>
-              {knownPct != null && <span className="tile-u">%</span>}
-              <i>{t("known", "connus")}</i>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* The reveal that's waiting. Claret on a light screen — the only dark
-          card Home ever shows, so it reads as an event, not another row.
-          Nothing announced this before: a couple who'd wandered off had no way
-          to learn their reveal had unlocked. */}
+      {/* The reveal that's waiting: the one claret moment, before your next
+          step. */}
       {pending.length > 0 && onOpenReveal && (
         <button
           className="readycard"
@@ -321,176 +239,128 @@ export default function HomeScreen({
               </span>
               <span className="readycard-nm">
                 {deckName(pending[0].slug, lang)}
-                {nLevels(pending[0].slug) > 1 &&
-                  t(` · Part ${pending[0].level + 1}`, ` · Partie ${pending[0].level + 1}`)}
+                {nLevels(pending[0].slug) > 1 && ` · ${partName(pending[0].slug, pending[0].level)}`}
               </span>
             </span>
           </span>
           <span className="readycard-sub">
-            {joined
-              ? t(
-                  `You and ${partnerName} have both answered. Best opened side by side.`,
-                  `${partnerName} et vous avez tous deux répondu. Mieux vaut l’ouvrir côte à côte.`,
-                )
-              : t("You've both answered.", "Vous avez tous les deux répondu.")}
+            {t("You’ve both finished. Open it whenever suits you both.", "Vous avez tous deux terminé. Ouvrez-la quand cela vous convient.")}
           </span>
           <span className="readycard-cta">
-            {t("Open your reveal →", "Ouvrir votre révélation →")}
+            {t("Open the reveal →", "Ouvrir la révélation →")}
           </span>
         </button>
       )}
 
-      {/* The Path, if they've laid one. Home and Results were Path-blind: the
-          flagship's "next lamp" pull only existed if you happened to open the
-          tab. Where you are, never what you owe — no streak, no debt. */}
-      {onPath && pathReady(session) && (
-        <button className="pathcard" type="button" onClick={onPath}>
-          <span className="pathcard-glyph">
-            <PathGlyph id={pathStep?.glyph ?? "g-lamp"} size={30} />
+      {/* Your next step: the part you're in, one honey button. */}
+      <div className="card hnext">
+        <div className="hnext-top">
+          <span className="tg-icon" aria-hidden="true">
+            <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={24} />
           </span>
-          <span className="pathcard-txt">
-            <span className="pathcard-eyebrow">
-              {atLookout
-                ? t("THE PATH · JOURNEY'S END", "LE CHEMIN · FIN DU VOYAGE")
-                : t("CONTINUE THE PATH", "CONTINUER LE CHEMIN")}
-            </span>
-            <span className="pathcard-nm">
-              {atLookout
-                ? t("The Lookout", "Le Belvédère")
-                : t(
-                    `Step ${pathCur + 1} · ${pathStep?.name ?? ""}`,
-                    `Étape ${pathCur + 1} · ${pathStep?.name ?? ""}`,
-                  )}
-            </span>
-            <span className="pathcard-sub">
-              {atLookout
-                ? t("Your whole road is lit.", "Toute votre route est éclairée.")
-                : lamps === 0
-                  ? t("The trail starts here.", "Le sentier commence ici.")
-                  : t(
-                      `${lamps} lamp${lamps === 1 ? "" : "s"} lit behind you`,
-                      `${lamps} lampe${lamps === 1 ? "" : "s"} allumée${lamps === 1 ? "" : "s"} derrière vous`,
-                    )}
+          <span>
+            <span className="hnext-nm">{deckName(slug, lang)}</span>
+            <span className="hnext-sub">
+              {allDone
+                ? t("All parts revealed", "Toutes les parties révélées")
+                : L > 1
+                  ? t(`Part ${lvl + 1} of ${L} · ${partName(slug, lvl)}`, `Partie ${lvl + 1} sur ${L} · ${partName(slug, lvl)}`)
+                  : partName(slug, lvl)}
             </span>
           </span>
-          <span className="pathcard-go" aria-hidden="true">&rarr;</span>
-        </button>
-      )}
-
-      {/* Featured deck: the orb meter — one orb per question this level. */}
-      <div className="feat">
-        <div className="featrow">
-          <button className="featleft" type="button" onClick={onBrowse}>
-            <span className="fchip">
-              <IconDecks size={16} />
-            </span>
-            <span>
-              <span className="featnm">{deckName(slug, lang)} &#9662;</span>
-              <span className="featmt">
-                {allDone
-                  ? t("All parts revealed", "Toutes les parties révélées")
-                  : L > 1
-                    ? t(`Part ${lvl + 1} of ${L}`, `Partie ${lvl + 1} sur ${L}`) +
-                      (joined ? t(` · with ${partnerName}`, ` · avec ${partnerName}`) : "")
-                    : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
-              </span>
-            </span>
-          </button>
         </div>
-        <div className="qprog featprog" aria-hidden="true">
-          <i
-            style={{
-              width: `${allDone ? 100 : lvlTotal ? Math.round((mine / lvlTotal) * 100) : 0}%`,
-            }}
-          />
-        </div>
-        <div className="capline">
-          {allDone ? (
-            t("Finished together", "Terminé ensemble")
-          ) : (
-            <>
-              <b>
-                {t(`${mine} of ${lvlTotal}`, `${mine} sur ${lvlTotal}`)}
-              </b>{" "}
-              {t("answered", "répondues")}
+        {!allDone && (
+          <>
+            <div className="qprog featprog" aria-hidden="true">
+              <i style={{ width: `${lvlTotal ? Math.round((mine / lvlTotal) * 100) : 0}%` }} />
+            </div>
+            <div className="capline">
+              <b>{t(`${mine} of ${lvlTotal}`, `${mine} sur ${lvlTotal}`)}</b> {t("answered", "répondues")}
               {joined && (
                 <>
                   {" · "}
-                  {theirs === 0
-                    ? t(
-                        `${partnerName} hasn’t started this part yet`,
-                        `${partnerName} n’a pas encore commencé cette partie`,
-                      )
-                    : t(`${partnerName} is ${theirs} in`, `${partnerName} en a fait ${theirs}`)}
+                  {!theyStarted
+                    ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
+                    : theyFinished
+                      ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
+                      : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
                 </>
               )}
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
         <button className="btn pill" type="button" onClick={() => onPlay(slug)}>
           {cta}
         </button>
+        <button className="btn ghost" type="button" onClick={onBrowse}>
+          {t("Choose another conversation", "Choisir une autre conversation")}
+        </button>
       </div>
 
-      {rows.length > 0 && (
-        <>
-          <div className="shead">{t("Recent reveals", "Dernières révélations")}</div>
-          {rows.length >= 2 && lowest.slug !== closest.slug ? (
-            <>
-              <HomeRow
-                slug={closest.slug}
-                pct={closest.pct}
-                sub={t("Closest agreement", "Accord le plus fort")}
-                onOpen={onReview}
-                lang={lang}
-              />
-              <HomeRow
-                slug={lowest.slug}
-                pct={lowest.pct}
-                sub={t("Most worth a conversation", "À aborder en priorité")}
-                onOpen={onReview}
-                lang={lang}
-              />
-            </>
-          ) : (
-            <HomeRow
-              slug={ranked[0].slug}
-              pct={ranked[0].pct}
-              sub={t("Revealed together", "Révélé ensemble")}
-              onOpen={onReview}
-              lang={lang}
-            />
+      {/* Before your partner joins: one card, the code and one link. */}
+      {!joined && (
+        <div className="card hinvite">
+          <h2 className="ktitle">{t("Invite your partner", "Invitez votre partenaire")}</h2>
+          <p className="helper">
+            {t("Share your code so they can join. Your answers stay private until you've both finished a part.", "Partagez votre code pour qu’il ou elle vous rejoigne. Vos réponses restent privées jusqu’à ce que vous ayez tous deux terminé une partie.")}
+          </p>
+          <button className={`codechip${copied ? " copied" : ""}`} type="button" onClick={share} aria-label={t(`Copy the code ${code}`, `Copier le code ${code}`)}>
+            {copied ? t("Copied ✓", "Copié ✓") : code}
+          </button>
+          <button className="btn out" type="button" onClick={sendInviteLink} disabled={inviteBusy}>
+            {inviteBusy ? t("Creating link…", "Création du lien…") : t("Send an invite link", "Envoyer un lien d’invitation")}
+          </button>
+          {inviteMsg && <p className="helper" role="status">{inviteMsg}</p>}
+          {waiting > 0 && (
+            <p className="helper">
+              {t(
+                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved, waiting for your partner`,
+                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"}, en attente de votre partenaire`,
+              )}
+            </p>
           )}
-        </>
+        </div>
       )}
 
-      <div className="link center" style={{ display: "block", marginTop: 18, fontSize: 14 }} onClick={onBrowse}>
-        {t("Browse all conversations", "Parcourir toutes les conversations")}
-      </div>
+      {/* The Path: its scene, the road leading to this step's landmark. Its
+          button is white: Continue above is the screen's one honey action. */}
+      {onPath && pathReady(session) && (
+        <div className="hpath">
+          <PathScene
+            stepKey={sceneKey}
+            lit={lamps}
+            className="hpath-scene"
+            label={atLookout ? t("The Lookout", "Le Belvédère") : t(`Step ${pathCur + 1}, ${pathStep?.name ?? ""}`, `Étape ${pathCur + 1}, ${pathStep?.name ?? ""}`)}
+          />
+          <span className="hpath-txt">
+            <span className="eyebrow">{t("The Path", "Le Chemin")}</span>
+            <span className="hpath-nm">
+              {atLookout
+                ? t("The Lookout", "Le Belvédère")
+                : t(`Step ${pathCur + 1} · ${pathStep?.name ?? ""}`, `Étape ${pathCur + 1} · ${pathStep?.name ?? ""}`)}
+            </span>
+          </span>
+          <button className="btn out hpath-go" type="button" onClick={onPath}>
+            {t("Continue the Path", "Continuer le Chemin")}
+          </button>
+        </div>
+      )}
     </section>
   );
 }
 
-function HomeRow({
-  slug,
-  pct,
-  sub,
-  onOpen,
-  lang,
-}: {
-  slug: string;
-  pct: number;
-  sub: string;
-  onOpen: (slug: string) => void;
-  lang: Lang;
-}) {
+function SoftRing({ pct, colour, name, count }: { pct: number | null; colour: string; name: string; count: string }) {
   return (
-    <button className="arow" type="button" onClick={() => onOpen(slug)}>
-      <span className="arow-t">
-        <b>{deckName(slug, lang)}</b>
-        <span>{sub}</span>
+    <span className="softring">
+      {pct == null ? (
+        <span className="softring-none" aria-hidden="true">—</span>
+      ) : (
+        <PctRing pct={pct} size={72} sw={7} color={colour} label="" ink="var(--ta-ink)" />
+      )}
+      <span className="softring-txt">
+        <b>{name}</b>
+        <span>{count}</span>
       </span>
-      <span className="pctpill">{pct}%</span>
-    </button>
+    </span>
   );
 }

@@ -12,10 +12,20 @@ export interface DeckData {
   answers?: Record<string, RoleMap<AnswerValue>>;
   guesses?: Record<string, RoleMap<AnswerValue>>;
   done?: Record<string, RoleMap<boolean>>;
+  // Shared partner status (recommendation 5): who has begun a part, and which
+  // parts the server has published. Answers themselves stay in each author's
+  // private space until both have finished the part.
+  started?: Record<string, RoleMap<boolean>>;
+  published?: Record<string, boolean>;
+  /** The reveal's line and verse, picked by the server when a part opens. */
+  pick?: Record<string, { line: number; verse: number }>;
   importance?: Record<string, RoleMap<number>>; // 1..5, asked on tier-3 + DEAL-*
   // The talk loop: a question either partner has pinned to discuss, and each
   // partner's confirmation that they have. Both confirmations retire it.
-  talks?: Record<string, { pinned?: RoleMap<boolean>; talked?: RoleMap<boolean> }>;
+  talks?: Record<
+    string,
+    { pinned?: RoleMap<boolean>; talked?: RoleMap<boolean>; note?: RoleMap<string>; at?: RoleMap<number> }
+  >;
 }
 
 export type Verdict = "Shared" | "Agreed" | "Close" | "Worth a chat" | "Complementary";
@@ -100,13 +110,26 @@ export function weightedStats(
   return { weighted, weight };
 }
 
-// Some flagged questions score as fully aligned even when answers differ.
-const COMPLEMENT = new Set(["PAR-004"]);
+// A question flagged `complement` in the bank scores as fully aligned even when
+// answers differ. Scoring version 2 (design refresh, item 4) dropped the one
+// hard-coded exception, PAR-004: firm against gentle discipline is exactly the
+// kind of difference the app exists to surface. No question carries the flag.
 export function isComplement(q: Question): boolean {
-  return (
-    (q.complement || COMPLEMENT.has(q.id)) &&
-    (q.type === "scale" || q.type === "mc")
-  );
+  return !!q.complement && (q.type === "scale" || q.type === "mc");
+}
+
+// A mirrored scale's ends are the two of you ("I give more" … "you give more"),
+// so the same answer from both partners means they disagree. The partner's
+// answer is flipped into your frame (1↔5, 2↔4) before comparing. Guesses are
+// not flipped: you guess the answer your partner gave, in their words.
+export function isMirror(q: Question): boolean {
+  return !!q.mirror && q.type === "scale";
+}
+
+/** Your partner's scale answer as it reads from your side (flipped when mirrored). */
+export function inMyFrame(q: Question, th: AnswerValue | undefined): number {
+  const n = Number(th);
+  return isMirror(q) ? 6 - n : n;
 }
 
 // unevenStakes (brief §4b): both partners rated importance and the gap is ≥3.
@@ -159,7 +182,7 @@ export function scoreQ(q: Question, deck: DeckData, role: Role): ScoreResult {
   let verdict: Verdict;
   let score: number;
   if (q.type === "scale") {
-    const diff = Math.abs(Number(me) - Number(th));
+    const diff = Math.abs(Number(me) - inMyFrame(q, th));
     score = 1 - diff / 4;
     verdict = diff === 0 ? "Agreed" : diff === 1 ? "Close" : "Worth a chat";
   } else {
@@ -221,6 +244,13 @@ export function jointQuestions(qs: Question[], deck: DeckData): Question[] {
       !isNotYet(a.guest)
     );
   });
+}
+
+// How many questions an Agree score stands on: the ones you both answered
+// that can be scored (written answers and "Not yet" are left out). Every score
+// on screen carries this count ("Based on 22 questions you both answered").
+export function agreeBasis(qs: Question[], deck: DeckData): number {
+  return jointQuestions(qs, deck).filter((q) => q.type !== "open").length;
 }
 
 // Overall agreement % across the given (scoreable) joint questions — a weighted

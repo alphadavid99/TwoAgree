@@ -1,9 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-// The floating pill nav. The honey pill is a single indicator element that
+// The floating pill nav: five tabs, always labelled (item 10), so none has to
+// be learned by its icon. The honey pill is a single indicator element that
 // SLIDES to whichever tab you pick (left/width transition, measured after
-// layout so it lands exactly under the grown active button). Buttons sit
-// above it on their own layer.
+// layout). Buttons sit above it on their own layer.
 export type NavItem = {
   key: string;
   label: string;
@@ -46,11 +46,10 @@ export function PillNav({
             type="button"
             className={`bnav-item ${on ? "on" : ""}`}
             onClick={() => onSelect(key)}
-            aria-label={label}
             aria-current={on ? "page" : undefined}
           >
-            <Icon size={on ? 17 : 21} />
-            {on && <span>{label}</span>}
+            <Icon size={22} />
+            <span>{label}</span>
           </button>
         );
       })}

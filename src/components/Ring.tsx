@@ -81,11 +81,19 @@ export function PctRing({
   label = "agreed",
   drawMs,
   delayMs = 0,
+  ink = "var(--berry)",
+  track = "var(--track)",
+  sw = 12,
 }: {
+  /** Stroke width; thinner on Home's small soft rings. */
+  sw?: number;
   pct: number;
   size?: number;
   color?: string;
   label?: string;
+  /** The number's colour (light on a claret ground). */
+  ink?: string;
+  track?: string;
   // The ceremony draws slower and staggers its second ring, so the couple
   // watches the number climb rather than meeting it already settled.
   drawMs?: number;
@@ -94,7 +102,6 @@ export function PctRing({
   const p = useDraw(drawMs ?? 900, delayMs);
   // The number is an animating <text> node inside an SVG — assistive tech got
   // either nothing or a changing fragment. Announce the settled value.
-  const sw = 12;
   const r = size / 2 - sw;
   const circ = 2 * Math.PI * r;
   const dash = ((circ * pct) / 100) * p;
@@ -109,7 +116,7 @@ export function PctRing({
       // nothing or a number that changes under it mid-announcement.
       aria-label={`${pct}% ${label}`}
     >
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth={sw} />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={track} strokeWidth={sw} />
       {/* Same round-cap guard as ProgressRing: at 0% the cap alone paints a dot. */}
       {pct > 0 && (
         <circle
@@ -132,7 +139,7 @@ export function PctRing({
         fontSize={Math.round(size * 0.3)}
         fontWeight="700"
         letterSpacing="-0.5"
-        fill="var(--berry)"
+        fill={ink}
         fontFamily="var(--font-ui)"
       >
         {shown}%

@@ -20,7 +20,8 @@ import {
   writeProfile,
 } from "../lib/session";
 import { redeemInvite, joinByCode, createInvite } from "../lib/functions";
-import type { Invite } from "../lib/invite";
+import { inviteLink, type Invite } from "../lib/invite";
+import { optValue, withNames } from "../lib/who";
 import {
   getOnbCheckpoint,
   setOnbCheckpoint,
@@ -28,18 +29,20 @@ import {
   setActiveCode,
 } from "../lib/local";
 import { prettyError } from "../lib/errors";
-import { fileToAvatarDataUrl } from "../lib/device/photo";
 import { DECKS, type Question } from "../lib/questions";
 import { ONB_STAGES, STARTER_QIDS, type OnbStage } from "../lib/onboarding";
 import type { Stage } from "../types";
 import { Mark } from "../brand/Mark";
 import { Wordmark } from "../brand/Wordmark";
 import { TopBar } from "../components/TopBar";
+import { ScriptureNotice } from "../components/ScriptureNotice";
+import { PasswordField, FieldError, ErrorPanel, cleanEmail, looksLikeEmail } from "../components/AuthBits";
 import StartMenu from "./StartMenu";
 import RevealScreen from "./RevealScreen";
 import AuthScreen from "./AuthScreen";
 import type { DeckData } from "../lib/scoring";
 import { useT } from "../lib/i18n";
+import { scaleText } from "../lib/answerWords";
 
 // The onboarding starter: a hand-picked set of warm "Who's more likely to…?"
 // questions (STARTER_QIDS in ../lib/onboarding — chosen so every couple fits an
@@ -74,7 +77,6 @@ type T = (en: string, fr: string) => string;
 type AStep =
   | "welcome"
   | "names"
-  | "stage"
   | "consent"
   | "questions"
   | "profile"
@@ -82,6 +84,7 @@ type AStep =
   | "menu";
 type BStep =
   | "arrive"
+  | "about"
   | "name"
   | "consent"
   | "questions"
@@ -131,14 +134,19 @@ export default function Onboarding({
   // Deliberately asking to sign in (front door link) — same screen as the
   // anonymous-auth fallback, different framing, and it has a way back.
   const [signIn, setSignIn] = useState(false);
+  // "Sign in instead" from the account step carries the email typed there.
+  const [signInEmail, setSignInEmail] = useState("");
 
   const [stepA, setStepA] = useState<AStep>(
-    saved?.flow === "a" ? (saved.step as AStep) : "welcome",
+    saved?.flow === "a" ? (saved.step === "stage" ? "names" : (saved.step as AStep)) : "welcome",
   );
   const [stepB, setStepB] = useState<BStep>(
     saved?.flow === "b" ? (saved.step as BStep) : "arrive",
   );
-  const [initiatorName, setInitiatorName] = useState(saved?.initiatorName ?? "");
+  // Known before joining when the invite link carries the inviter's first name.
+  const [initiatorName, setInitiatorName] = useState(
+    saved?.initiatorName ?? invite?.from ?? "",
+  );
   const [bankedCount, setBankedCount] = useState(0);
 
   const partner = partnerName.trim() || t("your partner", "votre partenaire");
@@ -239,12 +247,10 @@ export default function Onboarding({
         // The path screen after the reveal is stage-keyed — inherit the stage
         // the initiator set so the invitee sees the same tailored conversations.
         if (val?.stage) setStage(val.stage as OnbStage);
-        const decks = (val.decks ?? {}) as Record<string, { answers?: Record<string, { host?: unknown }> }>;
-        let n = 0;
-        for (const s in decks)
-          for (const qid in decks[s].answers ?? {})
-            if (decks[s].answers![qid].host != null) n++;
-        setBankedCount(n);
+        // Their answers stay private until you've both finished, so this
+        // reads only the shared "done" flag on the starter questions.
+        const decks = (val.decks ?? {}) as Record<string, { done?: Record<string, { host?: boolean }> }>;
+        setBankedCount(decks[STARTER_SLUG]?.done?.[0]?.host === true ? STARTER_QS.length : 0);
       } catch {
         /* count is a nicety */
       }
@@ -276,6 +282,8 @@ export default function Onboarding({
   );
 
   if (fallback || signIn) {
+    // One heading per screen: AuthScreen says "Welcome back" or "Create your
+    // account" itself, so nothing is added above it here.
     return (
       <section className={enter}>
         {signIn ? (
@@ -285,15 +293,7 @@ export default function Onboarding({
             <Wordmark size={32} />
           </div>
         )}
-        <p className="sub center" style={{ margin: "14px 24px 0" }}>
-          {signIn
-            ? t("Welcome back: sign in to pick up where you left off.", "Bon retour, connectez-vous pour reprendre où vous en étiez.")
-            : t(
-                "Let's set up a quick account to save your answers.",
-                "Créons un compte rapide pour enregistrer vos réponses.",
-              )}
-        </p>
-        <AuthScreen />
+        <AuthScreen initialMode={signIn ? "signin" : "signup"} initialEmail={signInEmail} />
       </section>
     );
   }
@@ -302,25 +302,53 @@ export default function Onboarding({
   // FLOW B — the joiner: arrive → name → consent → answer → reveal
   // =========================================================================
   if (joining) {
+    // The invitation (item 1): named, warm, and with a way to find out more
+    // before joining. "Catch up" read as being behind; this is a beginning.
+    const inviter = initiatorName.trim();
+    const joinLabel = inviter
+      ? t(`Join ${inviter} →`, `Rejoindre ${inviter} →`)
+      : t("Join →", "Rejoindre →");
     if (stepB === "arrive") {
       return shell(
         <>
           <div className="eyebrow center" style={{ marginTop: 30 }}>
-            {t("You've been invited", "Vous êtes invité·e")}
+            {inviter
+              ? t(`${inviter} invited you`, `${inviter} vous a invité·e`)
+              : t("You've been invited", "Vous êtes invité·e")}
           </div>
           <h1 className="h1 center" style={{ margin: "10px 24px 6px" }}>
-            {t("Someone has started something.", "Quelqu'un a commencé quelque chose.")}
+            {t("Begin your walk together.", "Commencez votre marche ensemble.")}
           </h1>
           <p className="sub serif center" style={{ fontStyle: "italic", margin: "10px 24px 26px" }}>
-            {t(
-              "It doesn't work without you. Answer the same questions and you'll see where you two land.",
-              "Ça ne marche pas sans vous. Répondez aux mêmes questions et vous verrez où vous en êtes.",
-            )}
+            {inviter
+              ? t(
+                  `This journey is meant for two. Answer the same questions as ${inviter} to see where you align and spark the conversations that matter most.`,
+                  `Ce chemin se fait à deux. Répondez aux mêmes questions que ${inviter} pour voir où vous vous rejoignez et ouvrir les conversations qui comptent le plus.`,
+                )
+              : t(
+                  "This journey is meant for two. Answer the same questions to see where you align and spark the conversations that matter most.",
+                  "Ce chemin se fait à deux. Répondez aux mêmes questions pour voir où vous vous rejoignez et ouvrir les conversations qui comptent le plus.",
+                )}
           </p>
           <button className="btn pill" type="button" onClick={() => setStepB("name")}>
-            {t("Catch up →", "Rattraper →")}
+            {joinLabel}
+          </button>
+          <button className="btn ghost" type="button" onClick={() => setStepB("about")}>
+            {t("What is TwoAgree?", "Qu’est-ce que TwoAgree ?")}
           </button>
         </>,
+      );
+    }
+    if (stepB === "about") {
+      return shell(
+        <AboutBody
+          onJoin={() => setStepB("name")}
+          joinLabel={joinLabel}
+          onBack={() => setStepB("arrive")}
+          t={t}
+        />,
+        undefined,
+        "obwel",
       );
     }
     if (stepB === "name") {
@@ -359,6 +387,7 @@ export default function Onboarding({
           role={role}
           t={t}
           partnerName={initiatorName || partner}
+          myName={myName.trim() || t("You", "Vous")}
           heading={
             bankedCount > 0
               ? t(
@@ -403,6 +432,7 @@ export default function Onboarding({
           )}
           onDone={() => (setStepB("path"), checkpoint("b", "path"))}
           onFallback={() => setFallback(true)}
+          onSignIn={(em) => (setSignInEmail(em), setSignIn(true))}
         />
       );
     }
@@ -462,13 +492,22 @@ export default function Onboarding({
     return shell(
       <>
         <h1 className="h1 center" style={{ marginTop: 22 }}>
-          {t("What should we call you?", "Comment doit-on vous appeler ?")}
+          {t("Let’s begin", "Commençons")}
         </h1>
+        {/* Names and stage on one screen (item 8): three facts, one tap. */}
         <label htmlFor="me">{t("Your name", "Votre nom")}</label>
         <input className="input" id="me" maxLength={20} value={myName} onChange={(e) => setMyName(e.target.value)} placeholder={t("e.g. Sarah", "p. ex. Sarah")} />
         <label htmlFor="them">{t("And who are you doing this with?", "Et avec qui faites-vous ceci ?")}</label>
         <input className="input" id="them" maxLength={20} value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder={t("e.g. Judah", "p. ex. Judah")} />
-        <button className="btn pill" type="button" disabled={!myName.trim() || !partnerName.trim()} onClick={() => setStepA("stage")}>
+        <div className="fieldlabel" id="stage-l">{t("Where are you two right now?", "Où en êtes-vous tous les deux ?")}</div>
+        <div className="stagegrid stagerow" role="group" aria-labelledby="stage-l">
+          {ONB_STAGES.map((s) => (
+            <button key={s.key} type="button" className={`stagechip ${stage === s.key ? "on" : ""}`} onClick={() => setStage(s.key)} aria-pressed={stage === s.key}>
+              {t(s.en, s.fr)}
+            </button>
+          ))}
+        </div>
+        <button className="btn pill" type="button" disabled={!myName.trim() || !partnerName.trim() || !stage} onClick={() => setStepA("consent")}>
           {t("Continue →", "Continuer →")}
         </button>
       </>,
@@ -476,31 +515,10 @@ export default function Onboarding({
     );
   }
 
-  if (stepA === "stage") {
-    return shell(
-      <>
-        <h1 className="h1 center" style={{ marginTop: 24 }}>
-          {t("Where are you two right now?", "Où en êtes-vous tous les deux ?")}
-        </h1>
-        <div className="stagegrid" style={{ marginTop: 20, gridTemplateColumns: "1fr" }}>
-          {ONB_STAGES.map((s) => (
-            <button key={s.key} type="button" className={`stagechip ${stage === s.key ? "on" : ""}`} onClick={() => setStage(s.key)} aria-pressed={stage === s.key}>
-              {t(s.en, s.fr)}
-            </button>
-          ))}
-        </div>
-        <button className="btn pill" type="button" disabled={!stage} onClick={() => setStepA("consent")}>
-          {t("Continue →", "Continuer →")}
-        </button>
-      </>,
-      () => setStepA("names"),
-    );
-  }
-
   if (stepA === "consent") {
     return shell(
       <ConsentBody partner={partner} busy={busy} onStart={startFlowA} t={t} />,
-      () => setStepA("stage"),
+      () => setStepA("names"),
     );
   }
 
@@ -511,6 +529,7 @@ export default function Onboarding({
         role={role}
         t={t}
         partnerName={partner}
+        myName={myName.trim() || t("You", "Vous")}
         heading={t("A few to start with.", "Quelques-unes pour commencer.")}
         onDone={() => (setStepA("profile"), checkpoint("a", "profile"))}
       />
@@ -526,6 +545,7 @@ export default function Onboarding({
         t={t}
         onDone={() => (setStepA("invite"), checkpoint("a", "invite"))}
         onFallback={() => setFallback(true)}
+        onSignIn={(em) => (setSignInEmail(em), setSignIn(true))}
       />
     );
   }
@@ -615,12 +635,77 @@ function ConsentBody({
   );
 }
 
+// ---- "What is TwoAgree?" (item 1) ------------------------------------------
+// Opened from the invitation, so an invitee can find out what this is before
+// joining. Reuses the welcome screen's verse and list styling. The privacy
+// line is literally true: answers are published only once both partners have
+// finished a part (server-side, recommendation 5).
+function AboutBody({
+  onJoin,
+  joinLabel,
+  onBack,
+  t,
+}: {
+  onJoin: () => void;
+  joinLabel: string;
+  onBack: () => void;
+  t: T;
+}) {
+  return (
+    <>
+      <div className="eyebrow center" style={{ marginTop: 22 }}>
+        {t("About TwoAgree", "À propos de TwoAgree")}
+      </div>
+      <h1 className="h1 center" style={{ margin: "8px 24px 0" }}>
+        {t("Two people, the same questions.", "Deux personnes, les mêmes questions.")}
+      </h1>
+      <div className="obwelcome">
+        <p className="verse serif center" style={{ marginTop: 24 }}>
+          {t(
+            "“Can two walk together, unless they are agreed?”",
+            "« Deux hommes marchent-ils ensemble, sans s'être concertés ? »",
+          )}
+          <span className="verse-ref">Amos 3:3</span>
+        </p>
+        <ul className="obfacts">
+          <li>
+            {t(
+              "You each answer the same questions about faith, values and life together.",
+              "Vous répondez chacun aux mêmes questions sur la foi, les valeurs et la vie à deux.",
+            )}
+          </li>
+          <li>
+            {t(
+              "Your answers stay private until you’ve both finished a part.",
+              "Vos réponses restent privées jusqu’à ce que vous ayez tous deux terminé une partie.",
+            )}
+          </li>
+          <li>
+            {t(
+              "Then you see where you agree, where you differ, and what’s worth talking about, with Christ at the centre.",
+              "Puis vous voyez où vous êtes d’accord, où vous différez, et ce qui mérite d’en parler, avec le Christ au centre.",
+            )}
+          </li>
+        </ul>
+      </div>
+      <button className="btn pill" type="button" onClick={onJoin}>
+        {joinLabel}
+      </button>
+      <button className="btn ghost" type="button" onClick={onBack}>
+        {t("Back to the invitation", "Retour à l’invitation")}
+      </button>
+      <ScriptureNotice />
+    </>
+  );
+}
+
 // ---- Answer + predict-your-partner sequence --------------------------------
 function OnbQuestions({
   code,
   role,
   heading,
   partnerName,
+  myName,
   onDone,
   t,
 }: {
@@ -628,6 +713,7 @@ function OnbQuestions({
   role: "host" | "guest";
   heading: string;
   partnerName: string;
+  myName: string;
   onDone: () => void;
   t: T;
 }) {
@@ -636,7 +722,14 @@ function OnbQuestions({
   const [pendGuess, setPendGuess] = useState<number | null>(null);
   const [guessing, setGuessing] = useState(false);
   const [busy, setBusy] = useState(false);
-  const q = STARTER_QS[idx];
+  // "Who's more likely…?" options are the two of you by name, in the same
+  // order on both phones (host first), stored as who was picked (lib/who.ts).
+  const names = {
+    host: role === "host" ? myName : partnerName,
+    guest: role === "guest" ? myName : partnerName,
+  };
+  const q = STARTER_QS[idx] ? withNames(STARTER_QS[idx], names) : undefined;
+  const stored = (v: number) => (q ? optValue(q, v) : v);
   const last = idx + 1 >= STARTER_QS.length;
   const guessable = !!q && q.guessable && q.type !== "open";
   // Arrival on the first question only; the other ~9 answer/guess screens are
@@ -661,7 +754,7 @@ function OnbQuestions({
   const submitAnswer = async () => {
     if (pend == null || busy || !q) return;
     setBusy(true);
-    await writeAnswer(code, STARTER_SLUG, q.id, role, pend);
+    await writeAnswer(code, STARTER_SLUG, q.id, role, q.type === "mc" ? stored(pend) : pend);
     setBusy(false);
     // Guessable → predict the partner before advancing; otherwise move on.
     if (guessable) {
@@ -675,7 +768,7 @@ function OnbQuestions({
   const lockGuess = async () => {
     if (pendGuess == null || busy || !q) return;
     setBusy(true);
-    await writeGuess(code, STARTER_SLUG, q.id, role, pendGuess);
+    await writeGuess(code, STARTER_SLUG, q.id, role, q.type === "mc" ? stored(pendGuess) : pendGuess);
     setBusy(false);
     await advance();
   };
@@ -732,7 +825,7 @@ function OnbQuestions({
 
   // ---- Guess step: predict the partner's answer ----
   if (guessing) {
-    const yourText = q.type === "scale" ? `${pend} / 5` : q.opts?.[pend as number];
+    const yourText = q.type === "scale" ? scaleText(q, pend, t) : q.opts?.[pend as number];
     return (
       <section className={enter}>
         <div className="brandhead">
@@ -751,7 +844,7 @@ function OnbQuestions({
           <div className="qtext">{q.q}</div>
           <div className="yousaid">
             <div>
-              <div className="eyebrow" style={{ fontSize: 10 }}>
+              <div className="eyebrow">
                 {t("YOU SAID", "VOUS AVEZ DIT")}
               </div>
               <div className="yousaid-val">{yourText}</div>
@@ -856,6 +949,7 @@ function RevealStep({
       level={0}
       role={role}
       deck={deck ?? {}}
+      pick={deck?.pick?.[0]}
       myName={myName}
       partnerName={partnerName}
       onDone={onDone}
@@ -870,6 +964,7 @@ function ProfileStep({
   code,
   onDone,
   onFallback,
+  onSignIn,
   t,
   heading,
   sub,
@@ -879,33 +974,50 @@ function ProfileStep({
   code: string;
   onDone: () => void;
   onFallback: () => void;
+  /** "Sign in instead", carrying the email typed here. */
+  onSignIn: (email: string) => void;
   t: T;
   heading?: string;
   sub?: string;
 }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [photo, setPhoto] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [fieldErr, setFieldErr] = useState<{ email?: string; pw?: string }>({});
+  const [taken, setTaken] = useState(false);
 
+  // No photo at sign-up (item 8): it slowed the account step for no gain. It
+  // lives in Edit profile instead.
   const finish = async (emailUsed?: string) => {
     const u = auth.currentUser;
-    if (u) await writeProfile(u.uid, { name, email: emailUsed, photo: photo ?? undefined });
+    if (u) await writeProfile(u.uid, { name, email: emailUsed });
     onDone();
   };
 
   const withEmail = async () => {
-    if (!email.trim() || pw.length < 6 || busy) return;
-    setBusy(true);
+    if (busy) return;
+    const addr = cleanEmail(email);
+    // Errors under the field they belong to; the email is always kept.
+    const next: { email?: string; pw?: string } = {};
+    if (!looksLikeEmail(addr)) next.email = t("Enter your email address.", "Saisissez votre adresse e-mail.");
+    if (pw.length < 6) next.pw = t("Use at least 6 characters.", "Utilisez au moins 6 caractères.");
+    setFieldErr(next);
+    setTaken(false);
     setErr("");
+    if (next.email || next.pw) return;
+    setBusy(true);
     try {
       const u = auth.currentUser;
       if (!u) return onFallback();
-      await linkWithCredential(u, EmailAuthProvider.credential(email.trim(), pw));
-      await finish(email.trim());
+      await linkWithCredential(u, EmailAuthProvider.credential(addr, pw));
+      await finish(addr);
     } catch (e) {
-      setErr(prettyError(e));
+      const code = String((e as { code?: string })?.code ?? "");
+      if (code === "auth/email-already-in-use" || code === "auth/credential-already-in-use") setTaken(true);
+      else if (code === "auth/invalid-email") setFieldErr({ email: prettyError(e) });
+      else if (code === "auth/weak-password") setFieldErr({ pw: prettyError(e) });
+      else setErr(prettyError(e));
       setBusy(false);
     }
   };
@@ -931,17 +1043,6 @@ function ProfileStep({
   const withGoogle = () => withProvider(linkWithGoogleSmart);
   const withApple = () => withProvider(linkWithAppleSmart);
 
-  const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      setPhoto(await fileToAvatarDataUrl(file));
-    } catch {
-      /* ignore — photo is optional */
-    }
-  };
-
-  const initial = (name || "?").trim().charAt(0).toUpperCase() || "?";
   void code;
   return (
     <section className="pane-in">
@@ -949,29 +1050,16 @@ function ProfileStep({
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       <h1 className="h1 center" style={{ marginTop: 16 }}>
-        {heading ??
-          t(`Set up your profile to invite ${partner}.`, `Créez votre profil pour inviter ${partner}.`)}
+        {heading ?? t("Save your place", "Gardez votre place")}
       </h1>
-      {/* This promised "this is how we let you know when they answer" — there
-          is no notification channel in the app: no push, no email, no badge.
-          The account's real job here is keeping the answers, which is true. */}
+      {/* The account's real job here is keeping the answers, which is true. */}
       <p className="sub center" style={{ margin: "8px 24px 10px" }}>
         {sub ??
           t(
-            "It keeps your answers safe and lets you pick this back up on any device.",
-            "Il garde vos réponses en sécurité et vous permet de reprendre sur n’importe quel appareil.",
+            `Create an account to keep your answers and invite ${partner}.`,
+            `Créez un compte pour garder vos réponses et inviter ${partner}.`,
           )}
       </p>
-
-      <div className="avatarwrap" style={{ marginTop: 6 }}>
-        <div className="avatar" style={{ width: 76, height: 76 }}>
-          {photo ? <img src={photo} alt="" /> : initial}
-        </div>
-        <label className="photobtn" style={{ cursor: "pointer" }}>
-          {photo ? t("Change photo", "Changer la photo") : t("Add a photo (optional)", "Ajouter une photo (facultatif)")}
-          <input type="file" accept="image/*" hidden onChange={onPhoto} />
-        </label>
-      </div>
 
       <button className="btn out google" type="button" onClick={withGoogle} disabled={busy} style={{ marginTop: 14 }}>
         {t("Continue with Google", "Continuer avec Google")}
@@ -991,13 +1079,55 @@ function ProfileStep({
       <div className="authdiv">{t("or use email", "ou par e-mail")}</div>
 
       <label htmlFor="oe">{t("Email", "E-mail")}</label>
-      <input className="input" id="oe" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+      <input
+        className="input"
+        id="oe"
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@example.com"
+        aria-invalid={!!fieldErr.email || taken || undefined}
+        aria-describedby="oe-err"
+      />
+      <FieldError id="oe-err">
+        {taken ? t("That email already has a TwoAgree account.", "Cette adresse a déjà un compte TwoAgree.") : fieldErr.email}
+      </FieldError>
       <label htmlFor="op">{t("Password", "Mot de passe")}</label>
-      <input className="input" id="op" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder={t("At least 6 characters", "Au moins 6 caractères")} />
-      {err && <div className="err">{err}</div>}
-      <button className={busy ? "btn pill busy" : "btn pill"} type="button" disabled={!email.trim() || pw.length < 6 || busy} onClick={withEmail}>
-        {busy ? t("One moment…", "Un instant…") : t("Create profile →", "Créer le profil →")}
-      </button>
+      <PasswordField
+        id="op"
+        value={pw}
+        onChange={setPw}
+        autoComplete="new-password"
+        placeholder={t("At least 6 characters", "Au moins 6 caractères")}
+        invalid={!!fieldErr.pw}
+        describedBy="op-err"
+      />
+      <FieldError id="op-err">{fieldErr.pw}</FieldError>
+      {err && <ErrorPanel>{err}</ErrorPanel>}
+      {taken ? (
+        <>
+          {/* The way forward is the main button, not a hint. */}
+          <button className="btn pill" type="button" onClick={() => onSignIn(cleanEmail(email))}>
+            {t("Sign in instead →", "Se connecter →")}
+          </button>
+          <button
+            className="btn ghost"
+            type="button"
+            onClick={() => {
+              setTaken(false);
+              setEmail("");
+            }}
+          >
+            {t("Use a different email", "Utiliser une autre adresse")}
+          </button>
+        </>
+      ) : (
+        <button className={busy ? "btn pill busy" : "btn pill"} type="button" disabled={busy} onClick={withEmail}>
+          {busy ? t("One moment…", "Un instant…") : t("Create account →", "Créer le compte →")}
+        </button>
+      )}
     </section>
   );
 }
@@ -1031,12 +1161,12 @@ function InviteStep({
     let link = "";
     try {
       const res = await createInvite({ code });
-      link = `${window.location.origin}/?t=${res.data.token}`;
+      link = inviteLink(window.location.origin, { token: res.data.token }, myName);
     } catch {
       // Fallback: the bare-code link. This used to be a dead URL — nothing in
       // the app read `c`, so the partner landed on the front door with no join
       // context and could start a SECOND session. invite.ts reads it now.
-      link = `${window.location.origin}/?c=${code}`;
+      link = inviteLink(window.location.origin, { code }, myName);
     }
     const text = `${msg}${link}`;
     try {

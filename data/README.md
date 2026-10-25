@@ -29,6 +29,13 @@ the bank through `src/lib/questions.ts`, which just re-exports the generated fil
   // "lo": "...", "hi": "...",   // scale only (endpoint labels)
   "guessable": true,         // supports the predict-your-partner layer
   // "complement": true,      // optional: scores aligned even when answers differ
+  // "mirror": true,          // optional, scale only: the ends are the two of you
+  //                          // ("I give more" … "you give more"); one answer is
+  //                          // flipped before scoring
+  // "who": true,             // mc only: opts[0]/[1] are "{A}"/"{B}", your two names
+  // "followsId": "FIN-020",  // authoring: a follow-up, asked straight after this question
+  // "steps": ["…", …],       // authoring, scale only: the five reviewed step labels
+  //                          // (the app shows lo/hi today)
   "ref": "Romans 12:13",     // optional linked verse
   "note": "...",             // discussion note shown on reveal
   "subcat": "",              // optional authoring metadata below this line

@@ -3,6 +3,7 @@
 // Pure: operates on a deck's DeckData rather than the global SESS.
 import { type Role, other, type DeckData } from "./scoring";
 import { nLevels, lvlQs } from "./leveling";
+import { DECKS } from "./questions";
 
 export function levelDone(
   deck: DeckData | undefined,
@@ -77,6 +78,7 @@ export function readyReveals(
 ): { slug: string; level: number }[] {
   const out: { slug: string; level: number }[] = [];
   for (const slug in decks ?? {}) {
+    if (!DECKS[slug]) continue; // synthetic decks (e.g. the Path's at-table) have no levels
     for (const level of completedLevels(slug, decks![slug], role)) {
       out.push({ slug, level });
     }

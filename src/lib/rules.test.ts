@@ -108,7 +108,7 @@ describe("sessions/{code} — membership gating", () => {
     );
   });
 
-  it("lets a seated guest read and write their own answers", async () => {
+  it("lets a seated guest read the session and write their own answers privately", async () => {
     await seed();
     await env.withSecurityRulesDisabled(async (ctx) => {
       // Server-side join (redeemInvite) seats the guest.
@@ -120,6 +120,11 @@ describe("sessions/{code} — membership gating", () => {
     const db = env.authenticatedContext(GUEST).database();
     await assertSucceeds(get(ref(db, `sessions/${CODE}`)));
     await assertSucceeds(
+      set(ref(db, `private/${GUEST}/${CODE}/decks/faith/answers/q1`), 3),
+    );
+    // Answers no longer go into the shared session from a client at all; the
+    // server publishes them once both partners have finished the part.
+    await assertFails(
       set(ref(db, `sessions/${CODE}/decks/faith/answers/q1/guest`), "3"),
     );
   });

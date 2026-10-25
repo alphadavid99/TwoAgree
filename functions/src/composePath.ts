@@ -79,6 +79,8 @@ export interface PathStructure {
   version: number;
   questionCount: number;
   steps: Record<number, PathStep>;
+  /** Only the Trailhead is laid: the rest waits for both intakes. */
+  partial?: boolean;
 }
 
 const SPEC_VERSION = 1;
@@ -179,11 +181,32 @@ function capSteps(raw: number[]): number[] {
 }
 
 /**
+ * The Trailhead on its own (design refresh, item 14), laid before both of you
+ * have answered the path questions so nobody lands on a dead end. Its
+ * questions depend on no intake except how deep you want to start, so it
+ * takes the gentle start. Pure + deterministic: the same for every couple.
+ */
+export function composeTrailhead(): PathStructure {
+  const step = STEPS[0];
+  const qids = selectForStep(step, step.spine + (step.fixedWeighted ?? 0), 0, new Set());
+  return {
+    version: SPEC_VERSION,
+    questionCount: qids.length,
+    steps: { 0: { key: step.key, mechanic: step.mechanic, qids } },
+    partial: true,
+  };
+}
+
+/**
  * Compose a couple's path from both intakes. Pure + deterministic.
  * The output is only a list of existing question ids per step + the mechanic —
  * the sequencer over the existing engine, never a new question store.
+ *
+ * `trailhead`: a Trailhead already laid early (composeTrailhead). It is kept
+ * exactly as it is, since one of you may already have walked it, and none of
+ * its questions is used again further down the trail.
  */
-export function composePath(host: Intake, guest: Intake): PathStructure {
+export function composePath(host: Intake, guest: Intake, trailhead?: PathStep): PathStructure {
   const tw = topicWeights(host, guest);
   const offset = startOffset(host, guest);
 
@@ -205,10 +228,15 @@ export function composePath(host: Intake, guest: Intake): PathStructure {
 
   const counts = capSteps(STEPS.map((s, i) => s.spine + weightedAlloc[i]));
 
-  const used = new Set<string>();
+  const used = new Set<string>(trailhead?.qids ?? []);
   const steps: Record<number, PathStep> = {};
   let questionCount = 0;
   STEPS.forEach((step, i) => {
+    if (i === 0 && trailhead) {
+      steps[0] = { key: trailhead.key, mechanic: trailhead.mechanic, qids: [...trailhead.qids] };
+      questionCount += trailhead.qids.length;
+      return;
+    }
     const qids = selectForStep(step, counts[i], offset, used);
     steps[i] = { key: step.key, mechanic: step.mechanic, qids };
     questionCount += qids.length;

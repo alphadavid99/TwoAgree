@@ -28,7 +28,50 @@ before deploying.**
 Plus a regression pass: create a session, join by code, answer, mark a part done,
 reveal — all still work.
 
-## Staged, NOT yet active: the both-answered READ gate (§9)
+## Answers private until you've both finished a part (design refresh, item 5)
+
+Built and emulator-tested (`npm run test:rules`, `src/lib/privacy.rules.test.ts`).
+This replaces the per-answer read gate that used to be staged here.
+
+- **Your answers, guesses and importance ratings** are written to
+  `private/{uid}/{code}/decks/{slug}/{answers|guesses|importance}/{qid}`.
+  Only you can read or write it; entries are scalars, only for a session
+  you're a member of, and you can revise them until the part opens (the guess
+  screen's "change").
+- **The shared session holds no answers until a part opens.** No client can
+  write `sessions/{code}/decks/{slug}/{answers|guesses|importance}` at all, nor
+  the `published` / `pathPublished` stamps, nor create a session that already
+  carries answers, flags, a path or a guest.
+- **A part opens when both "done" flags are in.** The `publishPart` callable
+  (and the reveal-email trigger, once that's deployed) copies exactly that
+  part's entries for both partners into the shared session and stamps it
+  published, in one atomic update. An entry already in the shared session is
+  never rewritten, so once a part opens its answers can't change. Each partner can only write their own role's
+  `done` / `started` / `pathDone` flag, so neither can open the other's answers
+  early. Path steps use `pathDone/{step}/{role}` and `pathPublished/{step}`.
+- **Partner status** ("Judah hasn't started this part yet") reads only the
+  shared `started` and `done` flags.
+- **Export and delete** include and purge the private space.
+- **Talk it through** (item 13): `decks/{slug}/talks/{qid}/{pinned|talked|at|note}/{role}`.
+  Each partner writes only their own role. `at` is a timestamp no later than
+  now; `note` ("One thing we'll try") is a 1–280 character string, readable by
+  both members, never by an outsider. Export returns only your own; delete
+  removes yours and keeps your partner's. Emulator-tested.
+- **Existing sessions** need the one-off move in
+  `scripts/migrate-private-answers.mjs` (dry run by default; emulator-tested).
+
+### Deploy order (Dave)
+
+1. `firebase deploy --only functions` (adds `publishPart`).
+2. `firebase deploy --only database` (the new rules).
+3. Deploy Hosting (the client that writes to the private space).
+4. Run the migration dry run against live, check it, then `--apply`.
+
+Between 2 and 3, a client still on the old build cannot save answers (the old
+write path is closed), so do 2 and 3 back to back.
+
+## Superseded: the both-answered READ gate (kept for history)
+
 
 The spec also wants a partner's answer to be **unreadable until both roles have
 answered it** — enforced server-side, not in the client. That is intentionally

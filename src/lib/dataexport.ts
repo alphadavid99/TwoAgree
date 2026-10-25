@@ -17,6 +17,8 @@
 import { DECKS, ORDER } from "./questions";
 import { deckName } from "./questions.fr";
 import { questionOf, AT_TABLE_SLUG, stepMeta } from "./path";
+import { optText, withNames, type Names } from "./who";
+import type { AnswerValue } from "./scoring";
 import { INTAKE } from "../data/path.generated";
 import type { Lang } from "./i18n";
 
@@ -62,9 +64,11 @@ const esc = (s: unknown): string =>
 const date = (ms?: number): string =>
   ms ? new Date(ms).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) : "—";
 
-// A stored answer back into the words the person actually saw.
-function answerText(qid: string, v: unknown): string {
-  const q = questionOf(qid);
+// A stored answer back into the words the person actually saw ("which of
+// you" options with the two names filled in).
+function answerText(qid: string, v: unknown, names?: Names): string {
+  const raw = questionOf(qid);
+  const q = raw && names ? withNames(raw, names) : raw;
   if (v == null) return "—";
   if (!q) return String(v);
   if (q.type === "scale") {
@@ -79,8 +83,7 @@ function answerText(qid: string, v: unknown): string {
       .join(" › ");
   }
   if (q.type === "open") return String(v);
-  const n = Number(v);
-  return q.opts?.[n] ?? String(v);
+  return optText(q, v as AnswerValue) ?? String(v);
 }
 
 /**
@@ -163,6 +166,11 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
   }
   for (const [code, s] of sessions) {
     const role = s.yourRole ?? null;
+    const you = data.profile?.name ?? T("You", "Vous");
+    const them = s.partnerName ?? T("Your partner", "Votre partenaire");
+    const names: Names | undefined = role
+      ? ({ [role]: you, [role === "host" ? "guest" : "host"]: them } as Names)
+      : undefined;
     const partner = s.partnerName;
     out.push(`<h3>${T("Session", "Session")} ${esc(code)}</h3>`);
     out.push(
@@ -199,9 +207,9 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
         const imp = deck.importance?.[q.id];
         if (mine == null && guess == null && imp == null) continue;
         rows.push(
-          `<tr><td>${esc(q.q)}</td><td>${esc(answerText(q.id, mine))}${
+          `<tr><td>${esc(q.q)}</td><td>${esc(answerText(q.id, mine, names))}${
             imp != null ? `<span class="q-src">${T("matters", "importance")} ${esc(imp)}/5</span>` : ""
-          }</td><td>${guess == null ? "—" : esc(answerText(q.id, guess))}</td></tr>`,
+          }</td><td>${guess == null ? "—" : esc(answerText(q.id, guess, names))}</td></tr>`,
         );
       }
       if (!rows.length) continue;

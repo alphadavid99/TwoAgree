@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { lvlQs, nLevels } from "../lib/leveling";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { lvlQs, partName } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, markLevelDone } from "../lib/session";
+import { optIndex, optValue, withNames, type Names } from "../lib/who";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
@@ -32,9 +33,59 @@ const SCALE_WORDS_FR = [
 const asksImportance = (q: Question): boolean =>
   q.type !== "open" && (Number(q.depth) >= 4 || q.id.startsWith("DEAL-"));
 
-// The answering flow for one level: answer each question, and for guessable
-// (non-open) questions, predict your partner. Ported from the legacy question
-// flow. When the level is exhausted, mark it done and hand back to the shell.
+// Importance as three plain choices (item 12), stored as 1, 3 and 5 so the
+// weighting in scoring.ts is unchanged.
+const IMPORTANCE: [number, string, string][] = [
+  [1, "A little", "Un peu"],
+  [3, "Somewhat", "Assez"],
+  [5, "A lot", "Beaucoup"],
+];
+
+type SaveState = "idle" | "saving" | "saved" | "failed";
+
+// Saving never blocks moving on (UX laws: Doherty). Each write runs in the
+// background; the header says "Saving…", then "✓ Saved", or "Not saved" with
+// Try again. A failed write is kept and retried, never dropped: finishing the
+// part waits until every answer is in.
+function useSaveQueue() {
+  const [state, setState] = useState<SaveState>("idle");
+  const pending = useRef(new Set<Promise<void>>());
+  const failed = useRef<(() => Promise<void>)[]>([]);
+
+  const settle = () =>
+    setState(failed.current.length ? "failed" : pending.current.size ? "saving" : "saved");
+
+  const run = (job: () => Promise<void>) => {
+    setState("saving");
+    const p = job().catch(() => {
+      failed.current.push(job);
+    });
+    pending.current.add(p);
+    void p.finally(() => {
+      pending.current.delete(p);
+      settle();
+    });
+  };
+
+  const retry = () => {
+    const jobs = failed.current;
+    failed.current = [];
+    jobs.forEach(run);
+  };
+
+  // Resolves true once everything queued so far has saved.
+  const flush = async (): Promise<boolean> => {
+    while (pending.current.size) await Promise.allSettled([...pending.current]);
+    return failed.current.length === 0;
+  };
+
+  return { state, run, retry, flush };
+}
+
+// The answering flow for one part (item 12): a calm header with the part's
+// name, "3 of 6" and the save state; the question; and the main button pinned
+// in the same place at the bottom, with room kept for Skip or Not yet so it
+// never moves. Guessable questions get a guess on their own screen.
 export default function PlayScreen({
   code,
   slug,
@@ -42,6 +93,7 @@ export default function PlayScreen({
   role,
   deck,
   partnerName,
+  names,
   onFinish,
   onExit,
 }: {
@@ -51,12 +103,16 @@ export default function PlayScreen({
   role: Role;
   deck: DeckData | undefined;
   partnerName: string;
+  /** Both first names by role, for "which of you" questions. */
+  names?: Names;
   onFinish: () => void;
   onExit: () => void;
 }) {
   const t = useT();
   const lang = useLang();
   const qs = useMemo(() => lvlQs(slug, level), [slug, level]);
+  const saves = useSaveQueue();
+  const partnerFirst = partnerName.trim().split(/\s+/)[0] || partnerName;
 
   // Start at the first question this role hasn't answered.
   const firstUnanswered = useMemo(() => {
@@ -67,9 +123,7 @@ export default function PlayScreen({
   }, [slug, level]);
 
   // Leaving between banking an answer and locking the guess used to forfeit
-  // that guess for good: resume position is computed from answers alone, and
-  // advance() skips anything answered — so the Known score quietly lost a data
-  // point with no trace. If the question just before the resume point is
+  // that guess for good. If the question just before the resume point is
   // answered but unguessed, resume INTO its guess step.
   const resumeGuess = useMemo(() => {
     const q = qs[firstUnanswered - 1];
@@ -77,43 +131,75 @@ export default function PlayScreen({
     const mine = deck?.answers?.[q.id]?.[role];
     if (mine == null || isNotYet(mine)) return null;
     if (deck?.guesses?.[q.id]?.[role] != null) return null;
-    return { at: firstUnanswered - 1, answer: mine };
+    // Recap state holds the option position, so map a stored who-answer back.
+    return { at: firstUnanswered - 1, answer: q.type === "mc" ? (optIndex(q, mine) ?? mine) : mine };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, level]);
 
   const [idx, setIdx] = useState(resumeGuess ? resumeGuess.at : firstUnanswered);
   const [guessPhase, setGuessPhase] = useState(!!resumeGuess);
-  // Seeded on a guess-resume so the "YOU SAID" recap has the banked answer.
   const [pendAns, setPendAns] = useState<AnswerValue | null>(resumeGuess?.answer ?? null);
   const [pendImp, setPendImp] = useState<number | null>(null);
   const [pendGuess, setPendGuess] = useState<AnswerValue | null>(null);
-  const [rankOrder, setRankOrder] = useState<number[]>([]);
-  const [busy, setBusy] = useState(false);
+  const [finishing, setFinishing] = useState(false);
 
-  const advance = async (fromIdx: number) => {
+  // Questions already answered in this visit, so advancing never depends on
+  // the save having landed yet.
+  const done = useRef(new Set<string>());
+  const answered = (q: Question) => done.current.has(q.id) || deck?.answers?.[q.id]?.[role] != null;
+
+  const finish = async () => {
+    setFinishing(true);
+    // Every answer must be in before the part is marked done: finishing is
+    // what shares them.
+    if (!(await saves.flush())) {
+      setFinishing(false);
+      return;
+    }
+    try {
+      await markLevelDone(code, slug, level, role, { wait: false });
+      onFinish();
+    } catch {
+      setFinishing(false);
+      saves.run(() => markLevelDone(code, slug, level, role, { wait: false }));
+    }
+  };
+
+  const advance = (fromIdx: number) => {
     setGuessPhase(false);
     setPendAns(null);
     setPendImp(null);
     setPendGuess(null);
-    setRankOrder([]);
     let n = fromIdx + 1;
-    while (n < qs.length && deck?.answers?.[qs[n].id]?.[role] != null) n++;
+    while (n < qs.length && answered(qs[n])) n++;
     if (n >= qs.length) {
-      setBusy(true);
-      await markLevelDone(code, slug, level, role);
-      onFinish();
+      void finish();
       return;
     }
     setIdx(n);
   };
 
   if (idx >= qs.length) return null;
-  const q = localizeQuestion(qs[idx], lang);
+  const localized = localizeQuestion(qs[idx], lang);
+  const q = names ? withNames(localized, names) : localized;
+  // An mc pick is held as its position; it's stored as who was picked on a
+  // "which of you" question (lib/who.ts).
+  const stored = (v: AnswerValue): AnswerValue => (q.type === "mc" ? optValue(q, v as number) : v);
+  const last = (() => {
+    let n = idx + 1;
+    while (n < qs.length && answered(qs[n])) n++;
+    return n >= qs.length;
+  })();
 
-  // After the answer is banked: qualifying questions get the importance ask
-  // first, then (if guessable) the guess step, then advance. Non-qualifying
-  // questions skip straight to the guess step or the next question.
-  const afterAnswer = () => {
+  const submitAnswer = () => {
+    if (pendAns == null || finishing) return;
+    const value = stored(pendAns);
+    const imp = asksImportance(q) ? pendImp : null;
+    saves.run(async () => {
+      await writeAnswer(code, slug, q.id, role, value);
+      if (imp != null) await writeImportance(code, slug, q.id, role, imp);
+    });
+    done.current.add(q.id);
     if (q.guessable && q.type !== "open") {
       setGuessPhase(true);
       setPendGuess(null);
@@ -122,72 +208,66 @@ export default function PlayScreen({
     }
   };
 
-  const submitAnswer = async () => {
-    if (pendAns == null || busy) return;
-    setBusy(true);
-    await writeAnswer(code, slug, q.id, role, pendAns);
-    // Importance used to be its own screen, shown AFTER the answer with no
-    // reference to the question — on Deal-breakers all 23 questions produced
-    // the same context-free card, so people rated on muscle memory, and those
-    // ratings weight the headline score. It now rides on the answer card, which
-    // also removes a third of the screens from the heaviest decks.
-    if (asksImportance(q) && pendImp != null) {
-      await writeImportance(code, slug, q.id, role, pendImp);
-    }
-    setBusy(false);
-    afterAnswer();
-  };
-
   // "Not yet" — a deliberate, unscored answer (only on flagged questions). It
-  // banks a sentinel and moves on, skipping the importance and guess steps
-  // entirely: there's nothing to weight and nothing to predict.
-  const answerNotYet = async () => {
-    if (busy) return;
-    setBusy(true);
-    await writeAnswer(code, slug, q.id, role, NOT_YET);
-    setBusy(false);
+  // banks a sentinel and moves on: there's nothing to weight or predict.
+  const answerNotYet = () => {
+    saves.run(() => writeAnswer(code, slug, q.id, role, NOT_YET));
+    done.current.add(q.id);
     advance(idx);
   };
 
-  const lockGuess = async () => {
-    if (pendGuess == null || busy) return;
-    setBusy(true);
-    await writeGuess(code, slug, q.id, role, pendGuess);
-    setBusy(false);
+  const lockGuess = () => {
+    if (pendGuess == null) return;
+    const value = stored(pendGuess);
+    saves.run(() => writeGuess(code, slug, q.id, role, value));
     advance(idx);
   };
 
-  const multi = nLevels(slug) > 1;
-  const eyebrow =
-    deckName(slug, lang).toUpperCase() +
-    (multi
-      ? t(
-          ` · PART ${level + 1} OF ${nLevels(slug)}`,
-          ` · PARTIE ${level + 1} SUR ${nLevels(slug)}`,
-        )
-      : "");
+  const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ").toUpperCase();
 
-  // One stone per question in this part, present in EVERY phase. The old bar
-  // unmounted during the guess step — and 336 of 399 questions are guessable,
-  // so couples spent roughly half the loop with no sense of where they were.
-  // It also filled on arrival (~17% before the first answer, 100% during the
-  // last question); a stone only fills once its answer is actually banked.
-  const stones = (
-    <div className="qstones" aria-hidden="true">
-      {qs.map((_, i) => (
-        <i
-          key={i}
-          className={
-            i < idx ? "full" : i === idx ? (guessPhase ? "half cur" : "cur") : ""
-          }
-        />
-      ))}
-    </div>
+  // The calm header: one stone per question, "3 of 6", and what happened to
+  // the last answer.
+  const header = (
+    <>
+      <TopBar onExit={onExit} />
+      <div className="qstones" aria-hidden="true">
+        {qs.map((_, i) => (
+          <i
+            key={i}
+            className={i < idx ? "full" : i === idx ? (guessPhase ? "half cur" : "cur") : ""}
+          />
+        ))}
+      </div>
+      <div className="qstatus">
+        <span>{t(`${idx + 1} of ${qs.length}`, `${idx + 1} sur ${qs.length}`)}</span>
+        <span className={`savestate ${saves.state}`} role="status">
+          {saves.state === "saving"
+            ? t("Saving…", "Enregistrement…")
+            : saves.state === "saved"
+              ? t("✓ Saved", "✓ Enregistré")
+              : saves.state === "failed"
+                ? t("! Not saved", "! Non enregistré")
+                : ""}
+        </span>
+      </div>
+      {saves.state === "failed" && (
+        <div className="savefail" role="alert">
+          <span>
+            {t(
+              "Your last answer didn’t save. You can keep going.",
+              "Votre dernière réponse n’a pas été enregistrée. Vous pouvez continuer.",
+            )}
+          </span>
+          <button className="btn out" type="button" onClick={saves.retry}>
+            {t("Try again", "Réessayer")}
+          </button>
+        </div>
+      )}
+    </>
   );
 
   if (guessPhase) {
-    // A bare "4 / 5" made people re-decode their own answer before predicting
-    // their partner's. Say it the way the orb label does.
+    // Say the answer the way it reads, not as a number.
     const yourText =
       q.type === "scale"
         ? `${t(SCALE_WORDS[Number(pendAns) - 1], SCALE_WORDS_FR[Number(pendAns) - 1])} — ${
@@ -195,171 +275,125 @@ export default function PlayScreen({
           }`.replace(/ — $/, "")
         : q.opts?.[pendAns as number];
     return (
-      <section className="screenfill">
-        <TopBar onExit={onExit} />
-        {stones}
-        <div
-          key={`${q.id}-guess`}
-          className="qcard pane-in"
-          style={{ borderColor: "var(--app-honey-line)" }}
-        >
+      <section className="screenfill playscreen">
+        {header}
+        <div key={`${q.id}-guess`} className="qcard pane-in guesscard">
           <div className="qrow">
-            <div className="eyebrow">{deckName(slug, lang).toUpperCase()}</div>
+            <div className="eyebrow">{eyebrow}</div>
             <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
           </div>
           <div className="qtext">{q.q}</div>
-          {/* Writes are immediate and the flow is forward-only, so a mis-tap
-              used to be permanent — discovered here, one screen too late, with
-              nothing to do about it. Re-submitting overwrites by path. */}
-          <button
-            type="button"
-            className="yousaid yousaid-edit"
-            onClick={() => setGuessPhase(false)}
-          >
+          {/* Not shared until the part opens, so a mis-tap can still be put
+              right here. */}
+          <div className="yousaid yousaid-edit">
             <div>
-              <div className="eyebrow" style={{ fontSize: 10 }}>
-                {t("YOU SAID", "VOUS AVEZ DIT")}
-              </div>
+              <div className="eyebrow">{t("YOU SAID", "VOUS AVEZ DIT")}</div>
               <div className="yousaid-val">{yourText}</div>
             </div>
-            <span className="yousaid-change">{t("change", "modifier")}</span>
-          </button>
-          <p style={{ margin: "18px 0 14px", fontWeight: 600 }}>
+            <button type="button" className="yousaid-change" onClick={() => setGuessPhase(false)}>
+              {t("change", "modifier")}
+            </button>
+          </div>
+          <p className="guessask">
             {t("Now: what will ", "Maintenant : que va répondre ")}
-            <span style={{ color: "var(--amber)" }}>{partnerName}</span>
+            <span className="guessname">{partnerFirst}</span>
             {t(" say?", " ?")}
           </p>
-          <QuestionInput
-            q={q}
-            value={pendGuess}
-            guess
-            onPick={setPendGuess}
-            rankOrder={rankOrder}
-            setRankOrder={setRankOrder}
-            setPend={setPendGuess}
-          />
+          <QuestionInput q={q} value={pendGuess} guess onPick={setPendGuess} />
         </div>
-        <button
-          className={busy ? "btn honey busy" : "btn honey"}
-          type="button"
-          disabled={pendGuess == null || busy}
-          onClick={lockGuess}
-        >
-          {/* "Lock it in" was the one game-show idiom in a devotional app —
-              and the French already said the calmer thing. */}
-          {t("That’s my guess →", "Je valide →")}
-        </button>
-        <button className="btn ghost" type="button" onClick={() => advance(idx)}>
-          {t("Skip", "Passer")}
-        </button>
+        <div className="playfoot">
+          <button className="btn pill" type="button" disabled={pendGuess == null} onClick={lockGuess}>
+            {t("That’s my guess →", "Je valide →")}
+          </button>
+          <div className="playfoot-slot">
+            <button className="btn ghost" type="button" onClick={() => advance(idx)}>
+              {t("Skip", "Passer")}
+            </button>
+          </div>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="screenfill">
-      <TopBar onExit={onExit} />
-      {stones}
+    <section className="screenfill playscreen">
+      {header}
       <div key={q.id} className="qcard glide-in">
-        <div className="qrow">
-          <div className="eyebrow">{eyebrow}</div>
-          {/* The numeric TIER badge is gone (brief 2 §A7c) — depth is never a
-              number in the UI. The eyebrow's Part label carries the ramp. */}
-        </div>
+        <div className="eyebrow">{eyebrow}</div>
         <div className="qtext">{q.q}</div>
-        <QuestionInput
-          q={q}
-          value={pendAns}
-          onPick={setPendAns}
-          rankOrder={rankOrder}
-          setRankOrder={setRankOrder}
-          setPend={setPendAns}
-        />
+        <QuestionInput q={q} value={pendAns} onPick={setPendAns} />
 
-        {/* Importance, on the same card as the answer it weights — it opens
-            once they've chosen, so it never greets an empty question. Leaving
-            it untouched is a valid skip; the tier default rides underneath. */}
+        {/* Importance, on the same card as the answer it weights; it opens
+            once they've chosen. Leaving it is a valid skip. */}
         {asksImportance(q) && pendAns != null && (
           <div className="impinline">
-            <div className="impinline-q">
-              {t("How much does this matter to you?", "À quel point est-ce important pour vous ?")}
+            <div className="impinline-head">
+              <span>{t("How much does this matter to you?", "À quel point est-ce important pour vous ?")}</span>
+              <span className="impinline-opt">{t("Optional", "Facultatif")}</span>
             </div>
-            <div className="impinline-row">
-              {[1, 2, 3, 4, 5].map((i) => (
+            <div className="impbtns" role="group">
+              {IMPORTANCE.map(([v, en, fr]) => (
                 <button
-                  key={i}
+                  key={v}
                   type="button"
-                  className={`impdot${pendImp === i ? " on" : ""}`}
-                  onClick={() => setPendImp(i)}
-                  aria-pressed={pendImp === i}
-                  aria-label={t(`Matters ${i} of 5`, `Importance ${i} sur 5`)}
+                  className={`impbtn${pendImp === v ? " on" : ""}`}
+                  aria-pressed={pendImp === v}
+                  onClick={() => setPendImp(pendImp === v ? null : v)}
                 >
-                  {i}
+                  {t(en, fr)}
                 </button>
               ))}
-              <span className="impinline-ends">
-                {pendImp == null
-                  ? t("Not much → a great deal", "Peu → énormément")
-                  : pendImp >= 4
-                    ? t("A great deal", "Énormément")
-                    : pendImp <= 2
-                      ? t("Not much", "Peu")
-                      : t("Somewhat", "Moyennement")}
-              </span>
             </div>
           </div>
         )}
       </div>
-      <button
-        className={busy ? "btn busy" : "btn"}
-        type="button"
-        disabled={pendAns == null || busy}
-        onClick={submitAnswer}
-      >
-        {idx + 1 === qs.length
-          ? t("Finish part →", "Terminer la partie →")
-          : t("Next →", "Suivant →")}
-      </button>
-      {q.notYet && (
+      <div className="playfoot">
+        {last && (
+          <p className="lastline">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path
+                d="M4 5h16v10H9l-5 4V5z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {t(
+              "Once you’ve both finished this part, you’re ready to talk it through together.",
+              "Une fois que vous aurez tous deux terminé cette partie, vous serez prêts à en parler ensemble.",
+            )}
+          </p>
+        )}
         <button
-          className="btn ghost"
+          className={finishing ? "btn busy" : "btn"}
           type="button"
-          onClick={answerNotYet}
-          disabled={busy}
+          disabled={pendAns == null || finishing}
+          onClick={submitAnswer}
         >
-          {t("Not yet", "Pas encore")}
+          {finishing
+            ? t("Saving your answers…", "Enregistrement de vos réponses…")
+            : last
+              ? t("Finish part →", "Terminer la partie →")
+              : q.type === "rank"
+                ? t("This is my order →", "C’est mon ordre →")
+                : t("Next →", "Suivant →")}
         </button>
-      )}
-      {/* Open questions demand typed text to advance, and not one of them
-          carries the "Not yet" flag — so someone who isn't ready to write about
-          their past had no way forward but the ×, which abandons the whole
-          part. They never score (scoring.ts), so skipping costs nothing. */}
-      {q.type === "open" && !q.notYet && (
-        <button
-          className="btn ghost"
-          type="button"
-          onClick={() => advance(idx)}
-          disabled={busy}
-        >
-          {t("Skip for now", "Passer pour l’instant")}
-        </button>
-      )}
-      <div className="hint">
-        {t(`${idx + 1} OF ${qs.length}`, `${idx + 1} SUR ${qs.length}`)}
-        {pendAns != null
-          ? t(" · TAP NEXT WHEN READY", " · APPUYEZ SUR SUIVANT")
-          : q.type === "open"
-            ? t(" · OPEN REFLECTION", " · RÉFLEXION LIBRE")
-            : q.type === "rank"
-              ? // Ranking is the one input where "how far along am I?" isn't
-                // obvious, and Next just sat dead until the last tap.
-                rankOrder.length > 0
-                ? t(
-                    ` · RANKED ${rankOrder.length} OF ${q.opts?.length ?? 0}`,
-                    ` · ${rankOrder.length} SUR ${q.opts?.length ?? 0} CLASSÉS`,
-                  )
-                : t(" · RANK YOUR ORDER", " · CLASSEZ PAR ORDRE")
-              : t(" · TAP TO ANSWER", " · APPUYEZ POUR RÉPONDRE")}
+        {/* Always the same height, so the main button never moves when a
+            question offers Skip or Not yet. */}
+        <div className="playfoot-slot">
+          {q.notYet ? (
+            <button className="btn ghost" type="button" onClick={answerNotYet} disabled={finishing}>
+              {t("Not yet", "Pas encore")}
+            </button>
+          ) : q.type === "open" ? (
+            // Open questions never score, so skipping costs nothing; without
+            // this the only way past one was the ×, abandoning the part.
+            <button className="btn ghost" type="button" onClick={() => advance(idx)} disabled={finishing}>
+              {t("Skip for now", "Passer pour l’instant")}
+            </button>
+          ) : null}
+        </div>
       </div>
     </section>
   );
@@ -370,17 +404,11 @@ function QuestionInput({
   value,
   guess,
   onPick,
-  rankOrder,
-  setRankOrder,
-  setPend,
 }: {
   q: Question;
   value: AnswerValue | null;
   guess?: boolean;
-  onPick: (v: AnswerValue) => void;
-  rankOrder: number[];
-  setRankOrder: (v: number[]) => void;
-  setPend: (v: AnswerValue | null) => void;
+  onPick: (v: AnswerValue | null) => void;
 }) {
   const t = useT();
   if (q.type === "scale") {
@@ -404,17 +432,14 @@ function QuestionInput({
             </button>
           ))}
         </div>
-        {/* Live label anchored under the chosen orb — names the middle so the
-            user never has to work out "is 3 neutral or a lean?" (Pillar 3). */}
+        {/* Live label under the chosen orb, so the middle is never a puzzle. */}
         <div className="orblabels" aria-hidden={value == null}>
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="orblabel-cell">
               {value === i && (
                 <>
                   <span className="caret" />
-                  <span className="orblabel">
-                    {t(SCALE_WORDS[i - 1], SCALE_WORDS_FR[i - 1])}
-                  </span>
+                  <span className="orblabel">{t(SCALE_WORDS[i - 1], SCALE_WORDS_FR[i - 1])}</span>
                 </>
               )}
             </div>
@@ -433,59 +458,11 @@ function QuestionInput({
           "Écrivez autant ou aussi peu que vous le souhaitez…",
         )}
         value={(value as string) ?? ""}
-        onChange={(e) => setPend(e.target.value.trim() === "" ? null : e.target.value)}
+        onChange={(e) => onPick(e.target.value.trim() === "" ? null : e.target.value)}
       />
     );
   }
-  if (q.type === "rank") {
-    return (
-      <>
-        <div className="muted" style={{ fontSize: 13, marginBottom: 12 }}>
-          {t(
-            "Tap in order of priority, 1 = most important. Tap a number again to remove it.",
-            "Appuyez par ordre de priorité, 1 = le plus important. Appuyez à nouveau pour retirer.",
-          )}
-        </div>
-        {q.opts?.map((o, i) => {
-          const pos = rankOrder.indexOf(i);
-          const ranked = pos >= 0;
-          return (
-            <button
-              key={i}
-              type="button"
-              aria-pressed={ranked}
-              aria-label={
-                ranked
-                  ? t(`${o}, ranked ${pos + 1}`, `${o}, classé ${pos + 1}`)
-                  : t(`${o}, not ranked`, `${o}, non classé`)
-              }
-              className={`opt rankopt ${ranked ? "sel" : ""}`}
-              onClick={() => {
-                const next = [...rankOrder];
-                const p = next.indexOf(i);
-                if (p >= 0) next.splice(p, 1);
-                else next.push(i);
-                // The final tap was pure ceremony — with one option left there
-                // is only one possible order, so complete it for them.
-                const total = q.opts!.length;
-                if (next.length === total - 1) {
-                  const last = q.opts!.findIndex((_, k) => !next.includes(k));
-                  if (last >= 0) next.push(last);
-                }
-                setRankOrder(next);
-                setPend(next.length === total ? next.join(",") : null);
-              }}
-            >
-              <span className="rankno" key={pos}>
-                {ranked ? pos + 1 : ""}
-              </span>
-              <span style={{ flex: 1 }}>{o}</span>
-            </button>
-          );
-        })}
-      </>
-    );
-  }
+  if (q.type === "rank") return <RankInput q={q} onPick={onPick} />;
   // mc
   return (
     <div style={{ marginTop: 4 }} role="group" aria-label={q.q}>
@@ -502,5 +479,69 @@ function QuestionInput({
         </button>
       ))}
     </div>
+  );
+}
+
+// Rank (item 12): a numbered list moved with up and down, confirmed with
+// "This is my order". Fixing one item never means starting over. Stored as the
+// option positions in order, most important first ("2,0,1,3").
+function RankInput({ q, onPick }: { q: Question; onPick: (v: AnswerValue) => void }) {
+  const t = useT();
+  const n = q.opts?.length ?? 0;
+  const [order, setOrder] = useState(() => Array.from({ length: n }, (_, i) => i));
+  const [moved, setMoved] = useState<number | null>(null);
+  useEffect(() => {
+    onPick(order.join(","));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order]);
+  const move = (at: number, by: -1 | 1) => {
+    const to = at + by;
+    if (to < 0 || to >= n) return;
+    const next = [...order];
+    [next[at], next[to]] = [next[to], next[at]];
+    setOrder(next);
+    setMoved(next[to]);
+  };
+  return (
+    <>
+      <p className="helper rankhelp">
+        {t("Put these in order, most important first.", "Classez-les, le plus important en premier.")}
+      </p>
+      <ol className="ranklist">
+        {order.map((oi, pos) => {
+          const label = q.opts![oi];
+          return (
+            <li key={oi} className={`opt rankrow${moved === oi ? " moved" : ""}`}>
+              <span className="rankno on" aria-hidden="true">
+                {pos + 1}
+              </span>
+              <span className="rankrow-t">{label}</span>
+              <button
+                type="button"
+                className="rankmove"
+                disabled={pos === 0}
+                onClick={() => move(pos, -1)}
+                aria-label={t(`Move ${label} up`, `Monter ${label}`)}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="rankmove"
+                disabled={pos === n - 1}
+                onClick={() => move(pos, 1)}
+                aria-label={t(`Move ${label} down`, `Descendre ${label}`)}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+    </>
   );
 }

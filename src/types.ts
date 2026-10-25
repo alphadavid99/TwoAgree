@@ -37,6 +37,9 @@ export interface SessionPath {
   version?: number;
   questionCount?: number;
   steps?: Record<string, PathStepData>;
+  /** Only the Trailhead is laid so far: the rest is chosen once you've both
+   *  answered the path questions (item 14). */
+  partial?: boolean;
 }
 
 export interface Session {
@@ -47,4 +50,10 @@ export interface Session {
   decks?: Record<string, DeckData>;
   path?: SessionPath;
   pathLamps?: Record<string, boolean>;
+  /** Each partner's "I've walked this step" flag, keyed by step index. */
+  pathDone?: Record<string, Partial<Record<Role, boolean>>>;
+  /** Steps the server has published (both walked them). */
+  pathPublished?: Record<string, boolean>;
+  /** Each published step's reveal line and verse (lib/reveal.ts). */
+  pathPick?: Record<string, { line: number; verse: number }>;
 }

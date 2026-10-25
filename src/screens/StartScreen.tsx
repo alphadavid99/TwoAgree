@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createSession } from "../lib/session";
-import { joinByCode } from "../lib/functions";
+import { joinByCode, redeemInvite } from "../lib/functions";
+import { parseCodeInput } from "../lib/invite";
 import { setActiveCode } from "../lib/local";
 import { prettyError } from "../lib/errors";
 import { useT } from "../lib/i18n";
@@ -50,9 +51,22 @@ export default function StartScreen({
     }
   };
 
+  const parsed = parseCodeInput(code);
   const join = async () => {
     setErr("");
-    const c = code.trim().toUpperCase();
+    // A pasted single-use invite link is redeemed as the invite it is.
+    if (parsed.kind === "token") {
+      setBusy(true);
+      try {
+        const res = await redeemInvite({ token: parsed.token });
+        enter(res.data.code);
+      } catch (e) {
+        setErr(prettyError(e));
+        setBusy(false);
+      }
+      return;
+    }
+    const c = parsed.kind === "code" ? parsed.code : "";
     if (c.length < 4) {
       setErr(
         t(
@@ -161,16 +175,42 @@ export default function StartScreen({
       ) : (
         <>
           <label htmlFor="code">{t("Partner’s code", "Code du partenaire")}</label>
+          {/* No maxLength: "ab-cd" or a whole pasted link must fit, then be
+              tidied (lib/invite.ts parseCodeInput). */}
           <input
             className="input"
             id="code"
-            maxLength={4}
             autoCapitalize="characters"
+            autoComplete="off"
             placeholder="ABCD"
-            style={{ textTransform: "uppercase", letterSpacing: 4 }}
+            style={{ letterSpacing: 4 }}
             value={code}
             onChange={(e) => setCode(e.target.value)}
+            aria-describedby="code-read"
           />
+          <p id="code-read" className="codeinfo" aria-live="polite">
+            {parsed.kind === "code" && parsed.how === "tidied" && parsed.code.length > 0 && (
+              <>
+                <span className="codeinfo-tick" aria-hidden="true">✓</span>
+                {t(
+                  `You typed ${code.trim()}, we’ve read it as ${parsed.code}.`,
+                  `Vous avez saisi ${code.trim()}, nous l’avons lu comme ${parsed.code}.`,
+                )}
+              </>
+            )}
+            {parsed.kind === "code" && parsed.how === "from-link" && (
+              <>
+                <span className="codeinfo-tick" aria-hidden="true">✓</span>
+                {t(`Found the code in your invite link: ${parsed.code}`, `Code trouvé dans votre lien : ${parsed.code}`)}
+              </>
+            )}
+            {parsed.kind === "token" && (
+              <>
+                <span className="codeinfo-tick" aria-hidden="true">✓</span>
+                {t("That’s an invite link: Join will use it.", "C’est un lien d’invitation : Rejoindre l’utilisera.")}
+              </>
+            )}
+          </p>
           {err && <div className="err">{err}</div>}
           <button className={busy ? "btn pill busy" : "btn pill"} type="button" onClick={join} disabled={busy}>
             {busy ? t("Joining…", "Connexion…") : t("Join →", "Rejoindre →")}

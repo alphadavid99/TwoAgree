@@ -144,10 +144,13 @@ Dave is not a lawyer; flag legal specifics for him to confirm, don't invent them
 
 - `data/questions.json` is a flat array, one object per question. Fields: `id`, `deck` (slug), `type`, `tier` ("1"–"3"), `level` (1–5), `q`, plus `opts` (mc/rank) or `lo`+`hi` (scale), `guessable` (bool), optional `complement`, `ref`, `note`, and authoring metadata `subcat`/`status`/`source`/`dateAdded`.
 - **Build:** `npm run build:questions` validates the bank and regenerates the typed `src/data/questions.generated.ts` (a discriminated bank keyed by deck). The app imports from `src/lib/questions.ts`, which just re-exports the generated file — do not hand-edit either generated file. `prebuild`/`pretest` run `--check`, which fails the build if the JSON is invalid **or** the generated file is stale, so the two can never drift.
-- **Validation (fails loudly with the offending ID):** unique IDs; ID prefix matches its deck; mc/rank have ≥2 options; scale has `lo`+`hi` (no opts); open has neither; `tier` 1–3; `level` 1–5.
-- **Adding questions (the only workflow now):** drop new objects into `data/questions.json` and run `npm run build:questions`. IDs are allocated as the next free number per prefix by reading the current bank, so a hand-supplied block can't collide. Runtime types (`SCALE`/`MC`/`RANK`/`OPEN`) — legacy `HHB` folds into `mc`. `OPEN` is kept deliberately for disclosure/identity prompts and cannot feed alignment scores.
-- A **Guessable** flag marks questions that support the "predict your partner" scoring layer. All 16 `RANK` questions are non-guessable.
-- **Complementary scoring:** some flagged questions score as fully aligned even when answers differ (shown with a purple "Complementary" verdict). No question in the current bank carries the `complement` flag yet; `scoring.ts` also holds a `COMPLEMENT` id-set. `PAR-004` is the intended flag; candidates `SELF-018, SELF-004, SELF-013, CONF-017` are pending Dave's confirmation.
+- **Validation (fails loudly with the offending ID):** unique IDs; ID prefix matches its deck; mc/rank have ≥2 options; scale has `lo`+`hi` (no opts); open has neither; `tier` 1–3; `level` 1–5; **every question in exactly one named part**.
+- **Parts are fixed (design refresh, item 11):** each deck in `data/decks.json` has `parts: [{ name, qids }]`, in order. A deck's questions run in part order and the app's "levels" are these parts, so adding a question never shifts anyone's progress. The publish Cloud Function reads the same parts (`LEVELS` in `functions/src/questionBank.generated.ts`).
+- **Adding questions (the only workflow now):** drop new objects into `data/questions.json` and run `npm run build:questions`. IDs are allocated as the next free number per prefix by reading the current bank, so a hand-supplied block can't collide. The run then stops with "in no part" for each new ID: add it to a part (or a new named part) in `data/decks.json` and run it again. Runtime types (`SCALE`/`MC`/`RANK`/`OPEN`) — legacy `HHB` folds into `mc`. `OPEN` is kept deliberately for disclosure/identity prompts and cannot feed alignment scores.
+- A **Guessable** flag marks questions that support the "predict your partner" scoring layer. No `RANK` question is guessable: the app can't score a guess on a ranking.
+- **Mirrored scales:** `mirror: true` marks a scale whose ends are the two of you ("I give more" … "you give more"); scoring flips one partner's answer before comparing. A pick-one question about the two of you is a `who` question instead (`{A}`/`{B}`, stored by person).
+- **The Oct 2026 overhaul** (558 questions, 78 parts) is recorded in `docs/bank-review/` (`grouping.json` holds every decision). Follow-ups carry `followsId` and always sit straight after their main question in the same part.
+- **Complementary scoring:** a question flagged `complement` in the bank scores as fully aligned even when answers differ (shown with a purple "Complementary" verdict). No question carries the flag. Scoring version 2 (design refresh, item 4, Oct 2026) **dropped the PAR-004 exception**: firm against gentle discipline counts as a difference. The Agree score stays weighted, and every score shows its count ("Based on 22 questions you both answered") with a How scores work sheet.
 - Question principle: don't take a prompt literally — extract the underlying value. Don't be too quick to dismiss as duplicate/unscoreable; re-mine harder when challenged.
 
 ---
@@ -193,6 +196,8 @@ Palette (from the pack README):
 ---
 
 ## 11. Working rules for Claude Code
+
+- **Before building or changing any UI, read `docs/design-system.md`** (the kit, type, spacing, contrast and the “never” list). The design refresh in progress is planned in `docs/DESIGN-REFRESH-PLAN.md`, with every decision and mockup in `docs/refresh/`.
 
 - **Port the brain, rebuild the body.** The scoring math, complementary-verdict logic, deck leveling, guess/predict layer, and data model are pure logic — lift them out of `index.html` **verbatim** into typed functions/modules; do not reinterpret or re-derive them. Only the hand-rolled `innerHTML` rendering gets rebuilt as React components. Preserve the reveal-screen fixes (rev1/rev2 kept out of the FLOW nav logic so bottom nav shows on reveal).
 - **Test rules and flows in the emulator before any deploy.**

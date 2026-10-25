@@ -4,6 +4,7 @@ import {
   overall,
   knowScore,
   isComplement,
+  agreeBasis,
   jointQuestions,
   weightOf,
   combinedImportance,
@@ -86,17 +87,75 @@ describe("scoreQ — open", () => {
   });
 });
 
-describe("complementary (PAR-004)", () => {
+describe("PAR-004 (scoring version 2: no exception)", () => {
   const par: Question = { id: "PAR-004", q: "", type: "scale", depth: 3 };
-  it("is flagged", () => expect(isComplement(par)).toBe(true));
-  it("differing answers still score 1, verdict Complementary", () => {
+  it("is no longer complementary", () => expect(isComplement(par)).toBe(false));
+  it("firm against gentle counts as a difference", () => {
     const r = scoreQ(par, deck({ "PAR-004": { host: 1, guest: 5 } }), "host");
+    expect(r.score).toBe(0);
+    expect(r.verdict).toBe("Worth a chat");
+  });
+  it("equal answers are Agreed", () => {
+    const r = scoreQ(par, deck({ "PAR-004": { host: 3, guest: 3 } }), "host");
+    expect(r.verdict).toBe("Agreed");
+  });
+});
+
+describe("a question flagged complement in the bank", () => {
+  const q: Question = { id: "X-001", q: "", type: "scale", depth: 3, complement: true };
+  it("still scores differing answers as aligned, verdict Complementary", () => {
+    const r = scoreQ(q, deck({ "X-001": { host: 1, guest: 5 } }), "host");
     expect(r.score).toBe(1);
     expect(r.verdict).toBe("Complementary");
   });
-  it("equal answers are simply Agreed", () => {
-    const r = scoreQ(par, deck({ "PAR-004": { host: 3, guest: 3 } }), "host");
+});
+
+describe("a mirrored scale (I give more … you give more)", () => {
+  const q: Question = { id: "G", q: "", type: "scale", depth: 4, mirror: true };
+  it("the same answer from both is a disagreement", () => {
+    const r = scoreQ(q, deck({ G: { host: 1, guest: 1 } }), "host");
+    expect(r.score).toBe(0);
+    expect(r.verdict).toBe("Worth a chat");
+  });
+  it("mirrored answers agree: I give more / you give more", () => {
+    const r = scoreQ(q, deck({ G: { host: 1, guest: 5 } }), "host");
+    expect(r.score).toBe(1);
     expect(r.verdict).toBe("Agreed");
+  });
+  it("balanced from both sides agrees", () => {
+    expect(scoreQ(q, deck({ G: { host: 3, guest: 3 } }), "host").verdict).toBe("Agreed");
+  });
+  it("one step off is Close, and reads the same from either side", () => {
+    const d = deck({ G: { host: 2, guest: 5 } });
+    expect(scoreQ(q, d, "host").verdict).toBe("Close");
+    expect(scoreQ(q, d, "guest").score).toBe(scoreQ(q, d, "host").score);
+  });
+  it("guesses are not flipped: you guess your partner's own answer", () => {
+    const r = scoreQ(q, deck({ G: { host: 2, guest: 4 } }, { G: { host: 4 } }), "host");
+    expect(r.guessRight).toBe(true);
+  });
+  it("an unflagged scale is unchanged", () => {
+    expect(scoreQ(scale(), deck({ S: { host: 1, guest: 1 } }), "host").verdict).toBe("Agreed");
+  });
+});
+
+describe("agreeBasis — the count under every score", () => {
+  const qs: Question[] = [
+    { id: "A", q: "", type: "scale", depth: 3 },
+    { id: "B", q: "", type: "mc", depth: 3, opts: ["x", "y"] },
+    { id: "C", q: "", type: "open", depth: 1 },
+    { id: "D", q: "", type: "mc", depth: 3, opts: ["x", "y"] },
+    { id: "E", q: "", type: "scale", depth: 3 },
+  ];
+  it("counts scoreable questions you both answered, leaving out written, one-sided and Not yet", () => {
+    const d = deck({
+      A: { host: 1, guest: 2 },
+      B: { host: 0, guest: 0 },
+      C: { host: "x", guest: "y" },
+      D: { host: 0 },
+      E: { host: NOT_YET, guest: 3 },
+    });
+    expect(agreeBasis(qs, d)).toBe(2);
   });
 });
 

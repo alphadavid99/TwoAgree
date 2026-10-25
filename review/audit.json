@@ -1,0 +1,653 @@
+{
+  "screens": 108,
+  "results": [
+    {
+      "id": "kit-sheet",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "kit-scenes",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "boot-checking",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "boot-crash",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-welcome",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-names",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-stage",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-consent",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-consent-ticked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-consent-error",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-q-answer",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-q-guess",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-profile",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-profile-error",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-invite",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "onb-menu",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-arrive",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-about",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-name",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-consent",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-questions",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-reveal",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-account",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-menu",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-redeeming",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "join-invite-failed",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signup",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signup-validation",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signin",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signin-error",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signin-busy",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signup-fields",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signup-taken",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-signin-shown",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "auth-reset",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-profile-loading",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-firstrun",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-choose",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-stage",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join-tidy",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join-link",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-join-error",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "start-settings",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "session-loading",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "session-loading-still",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "session-loading-slow",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "session-denied",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-new",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-invite-busy",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-solo",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-joined",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-herald",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "home-path",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "talk-decks",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "talk-decks-deeper",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "talk-picker",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-scale",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-mc",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-mc-saved",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-save-failed",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-guess",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-rank",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-rank-moved",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-last",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-open",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-importance",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "wait-partner",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "wait-unlock",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-t0",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-t1",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-t2",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-t3",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-t4",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-share",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-share-names",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-first",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-notyet",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-answers",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "reveal-flags",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-empty",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-results",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-guide",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-sharecard",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-howscores",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-talk",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-ticked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "together-talked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-loading",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-intro",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-intake",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-waiting",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-start",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-start-walked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-map",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-step-arrival",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-step-play",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-step-walked",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "path-lookout",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-loading",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-main",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-edit",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-sees",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-close",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-data",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-export-error",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-delete",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "profile-delete-busy",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    }
+  ]
+}

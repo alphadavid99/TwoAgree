@@ -8,17 +8,19 @@
 // and another collapsed Home's stat tiles — both caught only because a human
 // looked at a screenshot. These are not a replacement for looking; they are the
 // floor beneath it.
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { ORDER } from "../lib/questions";
-import { lvlQs, nLevels, stageOf } from "../lib/leveling";
+import { lvlQs, nLevels, partName } from "../lib/leveling";
+import { readyReveals } from "../lib/progress";
 import type { DeckData } from "../lib/scoring";
 import type { Session } from "../types";
 import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
+import PartPicker from "./PartPicker";
+import userEvent from "@testing-library/user-event";
 import ResultsScreen from "./ResultsScreen";
 import PlayScreen from "./PlayScreen";
-import { CoreScore } from "./CoreScore";
 
 // The DOM is the subject here, not Firebase. src/firebase.ts calls getAuth()
 // at module load, which throws `auth/invalid-api-key` wherever VITE_FIREBASE_*
@@ -39,6 +41,11 @@ vi.mock("../lib/functions", () => ({
   redeemInvite: vi.fn(),
   generatePath: vi.fn(),
 }));
+
+// Unmount after every test: a screen left mounted keeps its timers, which then
+// fire after this file's jsdom is torn down ("window is not defined" under a
+// loaded parallel run).
+afterEach(cleanup);
 
 const t = (en: string) => en;
 const noop = () => {};
@@ -94,15 +101,21 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
     expect(screen.getByText("Sarah & Judah")).toBeTruthy();
-    // The stat tile collapsed once when a label's font-size changed. Both units
-    // must survive as their own elements, not merge into one run of text.
-    expect(screen.getByText("agreed")).toBeTruthy();
-    expect(screen.getByText("known")).toBeTruthy();
+    // The soft scores card: two rings, each named with its count.
+    expect(screen.getByText("Agree")).toBeTruthy();
+    expect(screen.getByText("Known")).toBeTruthy();
+    expect(screen.getByText(/^based on \d+ questions?$/)).toBeTruthy();
+  });
+
+  it("has one honey button: the next step (item 10)", () => {
+    const { container } = render(
+      <HomeScreen code="ABCD" session={session} role="host" slug={slugA} onPlay={noop} onBrowse={noop} onTogether={noop} onPath={noop} />,
+    );
+    expect(container.querySelectorAll(".btn.pill, .btn.honey").length).toBe(1);
   });
 
   it("shows the code to share while the partner hasn't joined", () => {
@@ -115,11 +128,38 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
-    expect(screen.getByRole("button", { name: "WXYZ" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /WXYZ/ }).textContent).toBe("WXYZ");
+  });
+
+  it("loads with both partners' Path at-the-table answers in the session", () => {
+    // The at-table deck is synthetic (not in the bank). readyReveals once
+    // crashed SessionApp on it; Home and its reveal list must just skip it.
+    const withTable = {
+      ...session,
+      decks: {
+        ...session.decks,
+        "at-table": { answers: { table: { host: "Something honest.", guest: "Mine too." } } },
+      },
+    } as unknown as Session;
+    const pending = readyReveals(withTable.decks, "host");
+    expect(pending.every((r) => r.slug !== "at-table")).toBe(true);
+    render(
+      <HomeScreen
+        code="ABCD"
+        session={withTable}
+        role="host"
+        slug={slugA}
+        pending={pending}
+        onOpenReveal={noop}
+        onPlay={noop}
+        onBrowse={noop}
+        onTogether={noop}
+      />,
+    );
+    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
   });
 
   it("omits the Path card when the Path is behind its flag", () => {
@@ -131,8 +171,7 @@ describe("HomeScreen", () => {
         slug={slugA}
         onPlay={noop}
         onBrowse={noop}
-        onReview={noop}
-        onProfile={noop}
+        onTogether={noop}
       />,
     );
     expect(screen.queryByText(/CONTINUE THE PATH/i)).toBeNull();
@@ -140,35 +179,43 @@ describe("HomeScreen", () => {
 });
 
 describe("DecksScreen", () => {
-  it("lists every conversation as a real button", () => {
+  it("lists every conversation as a real button, grouped by subject", () => {
     const { container } = render(
       <DecksScreen session={session} role="host" onPlay={noop} />,
     );
     // They were click-divs — a keyboard user could not open one at all.
-    const rows = container.querySelectorAll("button.row");
+    const rows = container.querySelectorAll("button.cv-row");
     expect(rows.length).toBe(ORDER.length);
+    expect(screen.getByRole("heading", { name: "Light to start" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Deeper and honest" })).toBeTruthy();
   });
 
-  it("puts what you're in the middle of above what you've finished", () => {
-    // A completed deck used to sit above an in-progress one, so the list gave
-    // no answer to "where was I?".
-    const [doneSlug, partialSlug] = twoInOneStage();
-    const partial: DeckData = { answers: {} };
-    partial.answers![lvlQs(partialSlug, 0)[0].id] = { host: 0 };
-    const s = {
-      ...session,
-      decks: {
-        [doneSlug]: revealed(doneSlug, nLevels(doneSlug)),
-        [partialSlug]: partial,
-      },
-    } as unknown as Session;
-    const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} />);
-    const labels = [...container.querySelectorAll("button.row")].map((b) => b.textContent ?? "");
-    const iComplete = labels.findIndex((l) => l.includes("complete"));
-    const iPartial = labels.findIndex((l) => l.includes("1 of"));
-    expect(iComplete).toBeGreaterThanOrEqual(0);
-    expect(iPartial).toBeGreaterThanOrEqual(0);
-    expect(iComplete).toBeGreaterThan(iPartial);
+  it("talks in parts, never question counts (item 11)", () => {
+    const { container } = render(<DecksScreen session={empty} role="host" onPlay={noop} />);
+    expect(container.textContent).not.toMatch(/\d+ questions/);
+    expect(container.textContent).toMatch(/\d+ parts?/);
+  });
+
+  it("puts where you left off first, and search narrows the list", async () => {
+    const partialSlug = slugA;
+    const partial: DeckData = { answers: { [lvlQs(partialSlug, 0)[0].id]: { host: 0 } } };
+    const s = { ...session, decks: { [partialSlug]: partial } } as unknown as Session;
+    const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} current={partialSlug} />);
+    expect(screen.getByText("Pick up where you left off")).toBeTruthy();
+    await userEvent.type(screen.getByRole("searchbox"), "  MONEY ");
+    expect(container.querySelectorAll("button.cv-row").length).toBe(1);
+  });
+});
+
+describe("PartPicker", () => {
+  it("names every part and shows both of you on each", () => {
+    const { container } = render(
+      <PartPicker slug={slugA} deck={revealed(slugA)} role="host" myName="Sarah" partnerName="Judah" onSelect={noop} onExit={noop} />,
+    );
+    for (let i = 0; i < nLevels(slugA); i++) expect(screen.getByText(partName(slugA, i))).toBeTruthy();
+    expect(container.textContent).not.toMatch(/Part \d/);
+    expect(container.querySelectorAll(".pp-row .pp-avs").length).toBe(nLevels(slugA));
+    expect(screen.getByText(/Opened together/)).toBeTruthy();
   });
 });
 
@@ -183,42 +230,8 @@ describe("ResultsScreen", () => {
 
   it("switches to the real scoreboard once something is revealed", () => {
     render(<ResultsScreen session={session} role="host" code="ABCD" onOpen={noop} />);
-    expect(screen.getByText("Where you landed")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Sarah & Judah" })).toBeTruthy();
     expect(screen.getByText("Known")).toBeTruthy();
-  });
-});
-
-describe("CoreScore", () => {
-  it("keeps Known as the hero — larger than Agreed", () => {
-    // A `span` selector once matched the number as well as its unit and shrank
-    // the hero below the secondary stat, inverting the whole hierarchy.
-    const { container } = render(
-      <CoreScore
-        agreed={{ pct: 67, done: 8, total: 70 }}
-        known={{ pct: 70, done: 8, total: 63 }}
-        myName="Sarah"
-        partnerName="Judah"
-        t={t}
-      />,
-    );
-    const hero = container.querySelector(".corestat.hero");
-    expect(hero).not.toBeNull();
-    expect(within(hero as HTMLElement).getByText("Known")).toBeTruthy();
-    // The unit carries its own class so it can be sized apart from the number.
-    expect(hero!.querySelector(".corenum .pc")?.textContent).toBe("%");
-  });
-
-  it("states the denominator, so a big number can't mislead", () => {
-    render(
-      <CoreScore
-        agreed={{ pct: 94, done: 9, total: 70 }}
-        known={{ pct: 90, done: 9, total: 63 }}
-        myName="Sarah"
-        partnerName="Judah"
-        t={t}
-      />,
-    );
-    expect(screen.getByText("9 / 70")).toBeTruthy();
   });
 });
 
@@ -258,5 +271,35 @@ describe("PlayScreen", () => {
     );
     const cta = container.querySelector("button.btn:not(.ghost)") as HTMLButtonElement;
     expect(cta.disabled).toBe(true);
+  });
+});
+
+describe("which-of-you questions show names, in the same order for both", () => {
+  // HOME-012 opens part 1 of Home: "How would you want us to divide the cooking at home?"
+  const names = { host: "Sarah Placeholder", guest: "Judah Placeholder" };
+  const optionsFor = (role: "host" | "guest") => {
+    const { container, unmount } = render(
+      <PlayScreen
+        code="ABCD"
+        slug="in-the-home"
+        level={0}
+        role={role}
+        deck={undefined}
+        partnerName={role === "host" ? "Judah" : "Sarah"}
+        names={names}
+        onFinish={noop}
+        onExit={noop}
+      />,
+    );
+    const texts = [...container.querySelectorAll("button.opt")].map((b) => b.textContent?.trim());
+    unmount();
+    return texts;
+  };
+  it("lists Sarah then Judah on both phones, never Him / Her", () => {
+    const host = optionsFor("host");
+    const guest = optionsFor("guest");
+    expect(host.slice(0, 2)).toEqual(["Mostly Sarah", "Mostly Judah"]);
+    expect(guest).toEqual(host);
+    expect(host.join(" ")).not.toMatch(/\b(him|her)\b/i);
   });
 });

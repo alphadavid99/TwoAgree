@@ -65,19 +65,52 @@
   --app-opt-hover:    #DCC0CB;  /* option border on hover */
   --app-row-hover:    #FDF7F9;  /* result row hover ground */
 
+  /* The thick-card kit (design refresh, item 16; docs/design-system.md). */
+  --kit-card-edge:    #F0E3DC;  /* card's 2px edge */
+  --kit-card-base:    #E8D3C7;  /* card's 5px base */
+  --kit-claret-base:  #23101B;  /* base under claret cards and buttons */
+  --kit-honey-base:   #C38A2A;  /* base under the honey button */
+  --kit-red:          #A32D45;  /* deleting only. white on it 6.9:1 */
+  --kit-sel-bg:       #FBF5F7;  /* a selected answer row's light blush */
+  --kit-close-bg:     #F7EEF1;  /* "Close" badge ground; claret-hover text 9.6:1 */
+  --kit-chat-ink:     #F3D58E;  /* "Worth a chat" badge text on claret, 10.6:1 */
+
+  /* --- The Path scene (item 10/14): code-drawn sky, hills, road, lamps and
+     landmarks. Decorative only — no text sits on these. --- */
+  --scene-sky-top:    #FDF6EC;
+  --scene-sky-bot:    #F9E6E6;
+  --scene-sun:        #F9DFA6;
+  --scene-hill-far:   #EED3DC;
+  --scene-hill-mid:   #DFB6C6;
+  --scene-hill-near:  #4A2138;
+  --scene-road:       #F8EBD2;
+  --scene-lamp:       #F6C46B;
+  --scene-lamp-off:   #E4D5DB;
+  --scene-post:       #6B5A61;
+  --scene-wood:       #7A4A3A;
+  --scene-leaf:       #A9BC9A;
+  --scene-leaf-deep:  #8FA780;
+  --scene-water:      #C3DBE0;
+  --scene-rose:       #D98BA6;
+  --scene-peak:       #C7839E;
+
   /* Ground gradient (blush field the white cards float on) */
   --app-ground-top:   #FBF2F5;
   --app-ground-bot:   #F8E9EC;
 
   /* State + verdict colours */
   --app-danger:       #B23A48;
-  --app-sage:         #5E7A4E;  /* calm agree/ok green */
-  --app-guess-ok:     #2FA96B;  /* brighter "guessed right" green */
+  /* Both taken to text-safe values (item 16): the old greens measured 4.1:1
+     on blush and 3.0:1 on white. */
+  --app-sage:         #4E6A3F;  /* calm agree/ok green. 6.1:1 white, 5.2:1 blush */
+  --app-guess-ok:     #2A6E45;  /* "guessed right" / "Saved" green. 6.2:1 white */
   --app-complement:   #8250B8;  /* complementary verdict purple */
   --app-verdict-grey: #6A5A66;  /* "worth a chat" verdict */
   --app-banner-ink:   #6B4A16;  /* text on honey banner/knowpill */
   --app-banner-line:  #EAD3B2;  /* honey banner/knowpill border */
   --app-rose:         #9C4A6E;
+  --app-rose-light:   #E7B9CB;  /* Known's ring on a claret ground */
+  --app-rose-soft:    #C97F9E;  /* Known's ring on Home's soft scores card */
 
   /* Decorative — reveal ceremony glints/sparks/petals */
   --app-glint:        #FFE9BD;
@@ -132,7 +165,7 @@
   --eyebrow-size:     0.75rem;
   --eyebrow-track:    0.18em;
   --eyebrow-weight:   600;
-  --tag-size:         0.6875rem;   /* 11px — the floor for uppercase text */
+  --tag-size:         0.75rem;     /* 12px — the label floor (design system) */
   --tag-track:        0.05em;
   --tag-weight:       700;
 
@@ -147,8 +180,13 @@
 }
 
 /* Focus ring — honey reads clearly on both claret and white grounds. */
+/* Focus ring — a 2px claret outline with a 3px gap (design system); gold on
+   claret grounds, where claret would vanish (brand rule 1). */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--ta-honey);
+  outline: 2px solid var(--ta-claret);
   outline-offset: 3px;
   border-radius: 4px;
+}
+:where(.ceremony.lit, .claret-ground, .kcard-claret) :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: var(--ta-honey);
 }

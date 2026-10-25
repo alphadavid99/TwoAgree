@@ -20,7 +20,8 @@ import PartPicker from "./screens/PartPicker";
 import Onboarding from "./screens/Onboarding";
 import StartMenu from "./screens/StartMenu";
 import PathStep from "./screens/PathStep";
-import { PathMap, PathIntro, PathFlow } from "./screens/PathScreen";
+import { PathIntro, PathFlow } from "./screens/PathScreen";
+import { PathMap } from "./screens/PathMap";
 import ResultsScreen from "./screens/ResultsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RevealScreen from "./screens/RevealScreen";
@@ -256,8 +257,7 @@ function Preview() {
           slug={slugA}
           onPlay={noop}
           onBrowse={noop}
-          onReview={noop}
-          onProfile={noop}
+          onTogether={noop}
           // home-ready: the herald card, for a reveal that has just unlocked.
           pending={view === "home-ready" ? [{ slug: slugB, level: 0 }] : []}
           onOpenReveal={noop}
@@ -307,8 +307,7 @@ function Preview() {
           slug={slugC}
           onPlay={noop}
           onBrowse={noop}
-          onReview={noop}
-          onProfile={noop}
+          onTogether={noop}
         />
         <FakeNav on="home" />
       </div>
@@ -322,6 +321,7 @@ function Preview() {
         slug={slugA}
         deck={pdeck}
         role="host"
+        myName="Sarah"
         partnerName="Judah"
         onSelect={noop}
         onExit={noop}
@@ -425,7 +425,7 @@ function Preview() {
         role="host"
         session={s}
         index={1}
-        step={{ key: "fork", mechanic: "guess", qids: ["CONF-001", "CONF-002"] }}
+        step={{ key: "fork", mechanic: "guess", qids: ["CONF-038", "CONF-002"] }}
         myName="Sarah"
         partnerName="Judah"
         onExit={noop}

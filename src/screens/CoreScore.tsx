@@ -1,104 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDraw } from "../lib/motion";
 import { renderShareCard, shareCardImage } from "../lib/sharecard";
+import { revealWords } from "../lib/reveal";
 
 type T = (en: string, fr: string) => string;
-type Stat = { pct: number | null; done: number; total: number };
-
-// The Core headline (brief 2 §C). Two numbers computed over the fixed 70-question
-// instrument, each with its denominator on screen (§C7) — a 71% over 70 is a
-// brag, a 94% over 9 is not, and the denominator keeps them apart. Known is the
-// hero (§C8): Agreed has a ceiling problem (100% = two identical people), Known
-// doesn't. So Known leads, larger and warmer.
-export function CoreScore({
-  agreed,
-  known,
-  myName,
-  partnerName,
-  conversations,
-  closest,
-  t,
-}: {
-  agreed: Stat;
-  known: Stat;
-  myName: string;
-  partnerName: string;
-  /** Conversations finished / total — the card's headline, never a score. */
-  conversations?: { done: number; total: number };
-  closest?: string;
-  t: T;
-}) {
-  const [sharing, setSharing] = useState(false);
-  const complete = agreed.done >= agreed.total;
-  // The reveal rings were the only numbers in the app that were alive; the
-  // Core headline — the thing a couple comes back to — sat inert. Same curve,
-  // shorter (this is a return visit, not a ceremony), Agreed a beat behind so
-  // the two numbers land as two events rather than one blur.
-  const dK = useDraw(700);
-  const dA = useDraw(700, 160);
-  const climb = (pct: number | null, p: number) =>
-    pct == null ? "—" : Math.round(pct * p);
-  return (
-    <div className="core">
-      <div className="core-stats">
-        <div className="corestat hero known">
-          {/* The animating value is invisible to assistive tech; the settled
-              one is announced here. */}
-          <div className="corenum" aria-label={`${known.pct ?? 0}%`}>
-            <span aria-hidden="true">{climb(known.pct, dK)}</span>
-            <span className="pc">%</span>
-          </div>
-          <div className="corelb">{t("Known", "Connus")}</div>
-          <div className="coredenom">
-            {known.done} / {known.total}
-          </div>
-        </div>
-        <div className="corestat agreed">
-          <div className="corenum" aria-label={`${agreed.pct ?? 0}%`}>
-            <span aria-hidden="true">{climb(agreed.pct, dA)}</span>
-            <span className="pc">%</span>
-          </div>
-          <div className="corelb">{t("Agreed", "D’accord")}</div>
-          <div className="coredenom">
-            {agreed.done} / {agreed.total}
-          </div>
-        </div>
-      </div>
-
-      {/* Coverage is the flex, not a hedge. It used to read "it isn't yours
-          until you finish it" — telling a couple that something they've partly
-          earned is being withheld is loss-aversion, which CLAUDE.md §1 rules
-          out. Same pull, phrased as an invitation. */}
-      <p className="core-pull">
-        {complete
-          ? t("You’ve finished the Core together.", "Vous avez terminé le Cœur ensemble.")
-          : t(
-              `${agreed.done} of ${agreed.total}: the picture fills in as you answer.`,
-              `${agreed.done} sur ${agreed.total}, le tableau se complète à mesure que vous répondez.`,
-            )}
-      </p>
-
-      {agreed.done > 0 && (
-        <button className="btn out" type="button" onClick={() => setSharing(true)}>
-          {t("Share your card", "Partager votre carte")}
-        </button>
-      )}
-
-      {sharing && (
-        <ShareCard
-          agreed={agreed}
-          known={known}
-          myName={myName}
-          partnerName={partnerName}
-          conversations={conversations ?? { done: 0, total: 21 }}
-          closest={closest}
-          t={t}
-          onClose={() => setSharing(false)}
-        />
-      )}
-    </div>
-  );
-}
+type Stat = { pct: number | null; done: number; total: number; right?: number; made?: number };
 
 // The share card (brief 2 §C9). Leads with Known; denominator shown; no
 // leaderboard, ever (the no-competition constant). A couple screenshots this.
@@ -142,9 +47,17 @@ export function ShareCard({
     conversationsDone: conversations.done,
     conversationsTotal: conversations.total,
     story,
-    known: withKnown && known.pct != null ? { pct: known.pct, done: known.done, total: known.total } : undefined,
+    known:
+      withKnown && known.pct != null
+        ? { pct: known.pct, done: known.done, total: known.total, right: known.right, made: known.made }
+        : undefined,
     agreed: withAgreed && agreed.pct != null ? { pct: agreed.pct, done: agreed.done, total: agreed.total } : undefined,
     closest: withClosest ? closest : undefined,
+    // The encouragement line and verse ride only with the Agree score (item 2).
+    words:
+      withAgreed && agreed.pct != null
+        ? revealWords(agreed.pct, null, `${myName}|${partnerName}|card`)
+        : undefined,
   };
   const key = JSON.stringify(fields);
 

@@ -16,7 +16,12 @@ const session: RawSession = {
       importance: { "INT-019": { host: 5, guest: 3 } },
       done: { "0": { host: true, guest: true } },
       talks: {
-        "INT-019": { pinned: { host: true }, talked: { host: true, guest: true } },
+        "INT-019": {
+          pinned: { host: true },
+          talked: { host: true, guest: true },
+          at: { host: 1700, guest: 1800 },
+          note: { host: "Sarah's note", guest: "Judah's note" },
+        },
       },
     },
     "finances-money": {
@@ -57,13 +62,13 @@ describe("redactSessionForSubject", () => {
     expect(forGuest.decks["finances-money"].answers).toEqual({ "FIN-009": 3 });
   });
 
-  it("flattens talk flags to the subject's own two booleans", () => {
+  it("keeps only the subject's own talk flags, date and note", () => {
     expect(forHost.decks["intimacy-physical"].talks).toEqual({
-      "INT-019": { pinned: true, talked: true },
+      "INT-019": { pinned: true, talked: true, at: 1700, note: "Sarah's note" },
     });
-    // The guest never pinned it, so their copy carries only `talked`.
+    // The guest never pinned it, so their copy carries no `pinned`.
     expect(forGuest.decks["intimacy-physical"].talks).toEqual({
-      "INT-019": { talked: true },
+      "INT-019": { talked: true, at: 1800, note: "Judah's note" },
     });
   });
 
@@ -99,5 +104,23 @@ describe("redactSessionForSubject", () => {
     );
     expect(bare.decks).toEqual({});
     expect(bare.yourRole).toBe("host");
+  });
+});
+
+describe("withUnpublished — answers still private go in your export", () => {
+  it("adds your private answers to the deck lists without touching published ones", async () => {
+    const { withUnpublished } = await import("./redact.js");
+    const base = {
+      yourRole: "host" as const,
+      decks: { faith: { answers: { "FAITH-001": 2 } } },
+      note: "",
+    };
+    const out = withUnpublished(base, {
+      decks: { faith: { answers: { "FAITH-009": 4 }, importance: { "FAITH-009": 5 } }, money: { guesses: { "MON-001": 1 } } },
+    });
+    expect(out.decks.faith.answers).toEqual({ "FAITH-001": 2, "FAITH-009": 4 });
+    expect(out.decks.faith.importance).toEqual({ "FAITH-009": 5 });
+    expect(out.decks.money.guesses).toEqual({ "MON-001": 1 });
+    expect(withUnpublished(base, null)).toEqual(base);
   });
 });

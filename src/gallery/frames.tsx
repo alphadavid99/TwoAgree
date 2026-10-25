@@ -1,0 +1,549 @@
+// The frame catalogue: every routed screen and major state, in user-journey
+// order. Most frames mount the app's REAL top-level components (App,
+// SessionApp, Onboarding…) against a fixture database, then script the same
+// taps a person would make to reach the state — so what's reviewed is what
+// ships, not a redrawn imitation.
+import type { ReactNode } from 'react'
+import App from '../App'
+import Onboarding from '../screens/Onboarding'
+import RevealScreen from '../screens/RevealScreen'
+import PlayScreen from '../screens/PlayScreen'
+import PathStep, { WalkedScreen } from '../screens/PathStep'
+import { PathFlow } from '../screens/PathScreen'
+import SessionApp from '../screens/SessionApp'
+import { ErrorBoundary } from '../components/ErrorBoundary'
+import { ORDER, DECKS, type Question } from '../lib/questions'
+import { lvlQs, nLevels } from '../lib/leveling'
+import { revealKey } from '../lib/progress'
+import { NOT_YET } from '../lib/scoring'
+import { PathScene, SCENE_KEYS } from '../components/PathScene'
+import { KitSheet } from './KitSheet'
+import type { DeckData } from '../lib/scoring'
+import {
+  markRevealSeen,
+  setActiveCode,
+  setLastDeck,
+  setOnbCheckpoint,
+  type OnbCheckpoint,
+} from '../lib/local'
+import type { Session } from '../types'
+import type { Step } from './actions'
+import type { Ctx, FrameDef } from './Frame'
+import { CODE } from './Frame'
+import type { FrameRuntime } from './mock/runtime'
+import {
+  FIRST, FULL, GUEST_EMAIL, GUEST_NAME, HOST_EMAIL, HOST_NAME, MULTI, PATH_KEYS, SINGLE,
+  STARTER_SLUG, answerFor, fakeDeck, flagDeck, hostOnlyDeck, pathOf, profileOf, sessionOf,
+  starterDeck, talkDeck, tunedReveal,
+} from './fixtures'
+
+const never = () => new Promise<never>(() => {})
+const fail = (code: string, message = code) => () => {
+  throw Object.assign(new Error(message), { code })
+}
+
+// ---- database helpers -------------------------------------------------------
+const people = (c: Ctx) => ({
+  [c.uid]: profileOf(HOST_NAME, HOST_EMAIL),
+  [c.partnerUid]: profileOf(GUEST_NAME, GUEST_EMAIL),
+})
+const seat = (c: Ctx) => ({ host: c.uid, guest: c.partnerUid })
+const dbWith =
+  (mk: (c: Ctx) => Session | null, extra?: (c: Ctx) => Record<string, unknown>) =>
+  (c: Ctx) => ({
+    users: people(c),
+    ...(mk(c) ? { sessions: { [c.code]: mk(c) } } : {}),
+    ...extra?.(c),
+  })
+
+// A joined couple part-way through: one deck mid-way, one finished, one part in.
+const couple = (c: Ctx, o: Parameters<typeof sessionOf>[1] = {}) =>
+  sessionOf(seat(c), {
+    decks: { [MULTI]: fakeDeck(MULTI, 1, 4), [FULL]: fakeDeck(FULL, nLevels(FULL)), [FIRST]: fakeDeck(FIRST, 1) },
+    ...o,
+  })
+
+// ---- App-hosted frames (signed in, in a session) ----------------------------
+type AppOpts = Partial<Omit<FrameDef, 'render' | 'bare' | 'db'>> & {
+  id: string
+  title: string
+  flow: string
+  session?: (c: Ctx) => Session | null
+  tab?: 'Talk' | 'Together' | 'You' | 'Path'
+  /** Reveals not marked "seen" show the herald card on Home. */
+  heraldFor?: boolean
+  extraDb?: (c: Ctx) => Record<string, unknown>
+  openSlug?: string
+  lastDeck?: string
+}
+
+function inSession(o: AppOpts): FrameDef {
+  const { session, tab, heraldFor, extraDb, openSlug, lastDeck, steps, seed, ...rest } = o
+  return {
+    ...rest,
+    db: dbWith((c) => (session ? session(c) : couple(c)), extraDb),
+    seed: (c) => {
+      setActiveCode(c.uid, c.code)
+      if (lastDeck) setLastDeck(c.uid, c.code, lastDeck)
+      if (!heraldFor)
+        for (const slug of ORDER)
+          for (let l = 0; l < nLevels(slug); l++) markRevealSeen(c.uid, c.code, revealKey(slug, l))
+      seed?.(c)
+    },
+    steps: [...(tab ? ([{ wait: 150 }, { click: tab }] as Step[]) : []), ...(steps ?? [])],
+    bare: !openSlug,
+    render: (c) =>
+      openSlug ? (
+        <div className="phone">
+          <SessionApp code={c.code} user={c.user!} onLeave={() => {}} openSlug={openSlug} />
+        </div>
+      ) : (
+        <App />
+      ),
+  }
+}
+
+// ---- Onboarding-hosted frames -------------------------------------------------
+const cp = (o: Partial<OnbCheckpoint> & Pick<OnbCheckpoint, 'flow' | 'step'>) => (c: Ctx) =>
+  setOnbCheckpoint(c.uid, {
+    code: c.code,
+    role: o.flow === 'a' ? 'host' : 'guest',
+    myName: o.flow === 'a' ? 'Sarah' : 'Judah',
+    partnerName: o.flow === 'a' ? 'Judah' : 'Sarah',
+    initiatorName: o.flow === 'b' ? 'Sarah' : undefined,
+    stage: 'dating',
+    ...o,
+  })
+
+const INVITE = { kind: 'token', value: 'FIXTURE-TOKEN', from: 'Sarah' } as const
+const starterDb = (c: Ctx) => ({
+  users: people(c),
+  sessions: {
+    [c.code]: sessionOf(seat(c), { decks: { [STARTER_SLUG]: starterDeck() } }),
+  },
+})
+const onboarding = (invite: boolean, extra: Partial<FrameDef> & Pick<FrameDef, 'id' | 'title'> & { flow?: string }): FrameDef => ({
+  flow: invite ? 'join' : 'welcome',
+  user: 'anon',
+  db: starterDb,
+  render: () => <Onboarding invite={invite ? INVITE : null} onDone={() => {}} />,
+  ...extra,
+})
+
+const toConsent: Step[] = [
+  { click: /^Start$/ },
+  { type: '#me', value: 'Sarah' },
+  { type: '#them', value: 'Judah' },
+  { click: /In a relationship/ },
+  { click: /^Continue/ },
+]
+const tick: Step[] = [{ sel: 'input[type=checkbox]', nth: 0 }, { sel: 'input[type=checkbox]', nth: 1 }]
+
+// Find the first question matching a predicate, then answer everything before it
+// so a PlayScreen opens exactly there.
+function playAt(pred: (q: Question) => boolean): { slug: string; level: number; deck: DeckData } | null {
+  for (const slug of ORDER)
+    for (let level = 0; level < nLevels(slug); level++) {
+      const qs = lvlQs(slug, level)
+      const i = qs.findIndex(pred)
+      if (i < 0) continue
+      // Earlier questions are fully done (answer + guess) so the screen opens
+      // on this one rather than resuming into a half-finished guess.
+      const answers: NonNullable<DeckData['answers']> = {}
+      const guesses: NonNullable<DeckData['guesses']> = {}
+      qs.slice(0, i).forEach((q, n) => {
+        answers[q.id] = { host: answerFor(q, 'host', n) }
+        if (q.guessable && q.type !== 'open') guesses[q.id] = { host: answerFor(q, 'guest', n) }
+      })
+      return { slug, level, deck: { answers, guesses } }
+    }
+  return null
+}
+// Open the last question of the first part that ends on a question matching
+// `pred`, with everything before it answered.
+function playLast(pred: (q: Question) => boolean): { slug: string; level: number; deck: DeckData } | null {
+  for (const slug of ORDER)
+    for (let level = 0; level < nLevels(slug); level++) {
+      const qs = lvlQs(slug, level)
+      if (!pred(qs[qs.length - 1])) continue
+      const answers: NonNullable<DeckData['answers']> = {}
+      const guesses: NonNullable<DeckData['guesses']> = {}
+      qs.slice(0, -1).forEach((q, n) => {
+        answers[q.id] = { host: answerFor(q, 'host', n) }
+        if (q.guessable && q.type !== 'open') guesses[q.id] = { host: answerFor(q, 'guest', n) }
+      })
+      return { slug, level, deck: { answers, guesses } }
+    }
+  return null
+}
+const asksImportance = (q: Question) => q.type !== 'open' && (Number(q.depth) >= 4 || q.id.startsWith('DEAL-'))
+const playFrame = (
+  id: string,
+  title: string,
+  at: ReturnType<typeof playAt>,
+  steps: Step[] = [],
+  note?: string,
+  extra: Partial<FrameDef> = {},
+): FrameDef =>
+  at
+    ? {
+        id, flow: 'play', title, note, steps, ...extra,
+        db: dbWith((c) => sessionOf(seat(c))),
+        render: (c) => (
+          <PlayScreen code={c.code} slug={at.slug} level={at.level} role="host" deck={at.deck}
+            partnerName="Judah" names={{ host: HOST_NAME, guest: GUEST_NAME }} onFinish={() => {}} onExit={() => {}} />
+        ),
+      }
+    : { id, flow: 'play', title, render: () => null, unrenderable: 'No such question type in the bank.' }
+
+// A deck just finished by the host, partner not yet: the waiting screen.
+const partnerFinishes = (slug: string) => (rt: FrameRuntime) => {
+  const s = (rt.db.sessions as Record<string, Session>)[CODE]
+  const d = fakeDeck(slug, nLevels(slug))
+  // ...and the server publishes it (functions/src/publish.ts).
+  d.published = Object.fromEntries(Array.from({ length: nLevels(slug) }, (_, l) => [l, true]))
+  s.decks![slug] = d
+  rt.listeners.forEach((fn) => fn())
+}
+const deckLabel = (slug: string) => new RegExp(DECKS[slug].name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+
+// ---- Reveal ladder ------------------------------------------------------------
+const revealTier = (id: string, title: string, hit: number, note: string, firstEver = false, more: Step[] = []): FrameDef => {
+  const tuned = tunedReveal('fun-icebreakers', hit)
+  return {
+    id, flow: 'reveal', title, note,
+    db: dbWith((c) => sessionOf(seat(c))),
+    steps: [{ wait: 3800 }, ...more],
+    render: (c) => (
+      <RevealScreen slug="fun-icebreakers" level={0} role="host" deck={tuned.deck} myName="Sarah"
+        partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}} />
+    ),
+  }
+}
+
+// No synthetic 'at-table' deck in these sessions: readyReveals() once crashed
+// SessionApp on it (fixed in cfad38d; covered by screens.test.tsx).
+const pathSession = (c: Ctx, lamps = 9): Session =>
+  sessionOf(seat(c), { path: true, lamps })
+
+// Only the Trailhead laid: the other path questions aren't in yet (item 14).
+const partialSession = (c: Ctx, walked = false): Session => ({
+  ...sessionOf(seat(c)),
+  path: { generatedAt: 1, version: 1, questionCount: 7, partial: true, steps: { 0: { key: 'trailhead', mechanic: 'guess', qids: [] } } },
+  ...(walked ? { pathLamps: { 0: true } } : {}),
+})
+
+const intakeDone = (c: Ctx) => ({ intake: { [c.uid]: { updated: 1, answers: { fixture: 0 } } } })
+
+const FLOW_TITLES: [string, string][] = [
+  ['kit', '0 · The kit (design system)'],
+  ['boot', '1 · Boot & errors'],
+  ['welcome', '2 · Welcome & onboarding (the person who arrives first)'],
+  ['join', '3 · Joining by invite (the person they bring)'],
+  ['auth', '4 · Sign in & account'],
+  ['start', '5 · Signed in, no session yet'],
+  ['sessionstate', '6 · Session loading & access'],
+  ['home', '7 · Home'],
+  ['talk', '8 · Talk (conversations)'],
+  ['play', '9 · Answering'],
+  ['wait', '10 · Waiting & unlocking'],
+  ['reveal', '11 · Reveal'],
+  ['together', '12 · Together (results)'],
+  ['path', '13 · The Path'],
+  ['profile', '14 · Profile & settings'],
+]
+export const FLOWS = FLOW_TITLES.map(([id, title]) => ({ id, title }))
+
+const Boom = (): ReactNode => {
+  throw new Error('Fixture render error (intentional, to show the fallback screen)')
+}
+
+export const FRAMES: FrameDef[] = [
+  // ============ 0 · The kit ============
+  { id: 'kit-sheet', flow: 'kit', title: 'Every kit piece', note: 'docs/design-system.md. Pressing a button drops its base.', render: () => <KitSheet /> },
+  {
+    id: 'kit-scenes', flow: 'kit', title: 'The Path: ten code-drawn landmarks', note: 'One per step, the lamps lit so far. Illustrated versions drop into the same spot later.',
+    render: () => (
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, padding: 12 }}>
+        {SCENE_KEYS.map((k, i) => <PathScene key={k} stepKey={k} lit={i} label={k} className="scene-thumb" />)}
+      </div>
+    ),
+  },
+
+  // ============ 1 · Boot & errors ============
+  { id: 'boot-checking', flow: 'boot', title: 'Checking your account', authPending: true, bare: true, render: () => <App /> },
+  {
+    id: 'boot-crash', flow: 'boot', title: 'Render-error fallback (ErrorBoundary)',
+    note: 'The app’s last line of defence. console.error is expected here.',
+    render: () => (<ErrorBoundary><Boom /></ErrorBoundary>),
+  },
+
+  // ============ 2 · Welcome & onboarding (initiator) ============
+  onboarding(false, { id: 'onb-welcome', title: 'Welcome', user: null }),
+  onboarding(false, { id: 'onb-names', title: 'Names and stage, one screen', steps: [{ click: /^Start$/ }] }),
+  onboarding(false, { id: 'onb-stage', title: 'Names and stage, filled in', steps: [{ click: /^Start$/ }, { type: '#me', value: 'Sarah' }, { type: '#them', value: 'Judah' }, { click: /In a relationship/ }] }),
+  onboarding(false, { id: 'onb-consent', title: 'Consent (two ticks)', steps: toConsent }),
+  onboarding(false, { id: 'onb-consent-ticked', title: 'Consent, both ticked', steps: [...toConsent, ...tick] }),
+  onboarding(false, {
+    id: 'onb-consent-error', title: 'Consent: save failed',
+    note: 'Database write denied → friendly error.',
+    denyWrites: ['consents'], steps: [...toConsent, ...tick, { click: /Start →/ }, { wait: 150 }],
+  }),
+  onboarding(false, { id: 'onb-q-answer', title: 'Starter question: answer', seed: cp({ flow: 'a', step: 'questions' }), steps: [{ sel: '.opt' }] }),
+  onboarding(false, { id: 'onb-q-guess', title: 'Starter question: guess your partner', seed: cp({ flow: 'a', step: 'questions' }), steps: [{ sel: '.opt' }, { click: /Next/ }, { wait: 200 }, { sel: '.opt', nth: 1 }] }),
+  onboarding(false, { id: 'onb-profile', title: 'Create your profile (account)', seed: cp({ flow: 'a', step: 'profile' }) }),
+  onboarding(false, {
+    id: 'onb-profile-error', title: 'Create your profile: email taken',
+    seed: cp({ flow: 'a', step: 'profile' }), authError: 'auth/email-already-in-use',
+    steps: [{ type: '#oe', value: 'sarah.placeholder@example.invalid' }, { type: '#op', value: 'fixture-password' }, { click: /Create account/ }, { wait: 150 }],
+  }),
+  onboarding(false, { id: 'onb-invite', title: 'Invite your partner', seed: cp({ flow: 'a', step: 'invite' }) }),
+  onboarding(false, { id: 'onb-menu', title: 'Where would you like to start?', seed: cp({ flow: 'a', step: 'menu' }) }),
+
+  // ============ 3 · Joining by invite ============
+  onboarding(true, { id: 'join-arrive', title: 'You’ve been invited' }),
+  onboarding(true, { id: 'join-about', title: 'What is TwoAgree?', note: 'Opened from the invitation; Back returns to it.', steps: [{ click: /What is TwoAgree/ }] }),
+  onboarding(true, { id: 'join-name', title: 'Your name', steps: [{ click: /^Join Sarah/ }] }),
+  onboarding(true, { id: 'join-consent', title: 'Consent', steps: [{ click: /^Join Sarah/ }, { type: '#nm', value: 'Judah' }, { click: /^Continue/ }] }),
+  onboarding(true, { id: 'join-questions', title: 'Their turn to answer', seed: cp({ flow: 'b', step: 'questions' }) }),
+  onboarding(true, { id: 'join-reveal', title: 'First reveal', note: 'The warm-up reveal the invitee sees before making an account.', seed: cp({ flow: 'b', step: 'reveal' }), steps: [{ wait: 3800 }] }),
+  onboarding(true, { id: 'join-account', title: 'Make it yours (account)', seed: cp({ flow: 'b', step: 'account' }) }),
+  onboarding(true, { id: 'join-menu', title: 'Where would you like to start?', seed: cp({ flow: 'b', step: 'path' }) }),
+  {
+    id: 'join-redeeming', flow: 'join', title: 'Joining your partner’s session…',
+    render: () => null,
+    unrenderable: 'Driven by the invite link in the page URL, which is module-level state shared by every frame (src/lib/invite.ts). Showing it here would put every other frame in "joining" too.',
+  },
+  {
+    id: 'join-invite-failed', flow: 'join', title: 'Invite link failed (banner)',
+    render: () => null,
+    unrenderable: 'Same cause as the frame above: it needs a real ?t= link on the page URL.',
+  },
+
+  // ============ 4 · Sign in & account ============
+  ...(
+    [
+      ['auth-signup', 'Create account', false, [{ click: /Create one/ }], undefined],
+      ['auth-signup-validation', 'Create account: validation', false, [{ click: /Create one/ }, { click: /Create account →/ }], undefined],
+      ['auth-signin', 'Sign in (a phone that has never signed in)', false, [], undefined],
+      ['auth-signin-error', 'Sign in: wrong password', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-wrong' }, { click: /Sign in →/ }, { wait: 150 }], { authError: 'auth/invalid-credential' }],
+      ['auth-signin-busy', 'Sign in: waiting on the server', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Sign in →/ }], { authHang: true }],
+      ['auth-signup-fields', 'Create account: errors under each field', false, [{ click: /Create one/ }, { type: '#email', value: 'sarah@' }, { type: '#pw', value: 'abc' }, { click: /Create account →/ }], undefined],
+      ['auth-signup-taken', 'Create account: email already has an account', false, [{ click: /Create one/ }, { sel: 'input[type=checkbox]', nth: 0 }, { type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Create account →/ }, { wait: 150 }], { authError: 'auth/email-already-in-use' }],
+      ['auth-signin-shown', 'Sign in: password shown', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { type: '#pw', value: 'fixture-password' }, { click: /Show password/ }], undefined],
+      ['auth-reset', 'Password reset sent: Check your email', true, [{ type: '#email', value: 'sarah.placeholder@example.invalid' }, { click: /Forgot password/ }, { wait: 150 }], undefined],
+    ] as [string, string, boolean, Step[], Partial<FrameDef> | undefined][]
+  ).map(([id, title, returning, steps, extra]): FrameDef => ({
+    id, flow: 'auth', title, user: null,
+    note: id === 'auth-signup' ? 'Reached via “Already have an account? Sign in” on Welcome, then “Create one”.' : undefined,
+    // "Sign in" opens sign-in whatever the device's history; the returning
+    // flag is still set per frame so both kinds of phone are exercised.
+    steps: [
+      [
+        { run: () => (returning ? localStorage.setItem('aligned_returning', '1') : localStorage.removeItem('aligned_returning')) },
+        { click: /Already have an account/ },
+      ],
+      ...steps,
+    ],
+    render: () => <Onboarding invite={null} onDone={() => {}} />,
+    ...extra,
+  })),
+
+  // ============ 5 · Signed in, no session yet ============
+  { id: 'start-profile-loading', flow: 'start', title: 'Loading your profile', pending: (c) => [`users/${c.uid}`], db: dbWith(() => null), bare: true, render: () => <App /> },
+  { id: 'start-firstrun', flow: 'start', title: 'First run: set up your profile', db: () => ({}), bare: true, render: () => <App /> },
+  { id: 'start-choose', flow: 'start', title: 'Start a session', db: dbWith(() => null), bare: true, render: () => <App /> },
+  { id: 'start-stage', flow: 'start', title: 'Start a session: stage picked', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /In a relationship|Engaged|Married/ }], bare: true, render: () => <App /> },
+  { id: 'start-join', flow: 'start', title: 'Join with a code', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }], bare: true, render: () => <App /> },
+  { id: 'start-join-tidy', flow: 'start', title: 'Join with a code: typed messily', note: 'Any case, spaces or dashes; it says how it read it.', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }, { type: '#code', value: 'ab-cd' }], bare: true, render: () => <App /> },
+  { id: 'start-join-link', flow: 'start', title: 'Join with a code: a pasted link', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /I have a code/ }, { type: '#code', value: 'https://twoagree.app/?c=abcd&n=Sarah' }], bare: true, render: () => <App /> },
+  {
+    id: 'start-join-error', flow: 'start', title: 'Join with a code: not found',
+    db: dbWith(() => null), callables: { joinByCode: fail('functions/not-found', 'No session with that code.') },
+    steps: [{ wait: 150 }, { click: /I have a code/ }, { type: '#code', value: 'ZZZZ' }, { click: /Join →/ }, { wait: 150 }],
+    bare: true, render: () => <App />,
+  },
+  { id: 'start-settings', flow: 'start', title: 'Settings from the landing screen', db: dbWith(() => null), steps: [{ wait: 150 }, { click: /Settings/ }], bare: true, render: () => <App /> },
+
+  // ============ 6 · Session loading & access ============
+  inSession({ id: 'session-loading', flow: 'sessionstate', title: 'Opening your session', note: 'The outline of Home, not a spinner.', pending: ['sessions'] }),
+  inSession({ id: 'session-loading-still', flow: 'sessionstate', title: 'Opening your session: after 5 seconds', pending: ['sessions'], steps: [{ wait: 5300 }] }),
+  inSession({ id: 'session-loading-slow', flow: 'sessionstate', title: 'Opening your session: after 10 seconds', note: 'Try again, and a way back.', pending: ['sessions'], steps: [{ wait: 10300 }] }),
+  inSession({ id: 'session-denied', flow: 'sessionstate', title: 'Session unavailable', denied: ['sessions'], note: 'Wrong code, closed session, or not a member.' }),
+
+  // ============ 7 · Home ============
+  inSession({ id: 'home-new', flow: 'home', title: 'Partner not yet joined', session: (c) => sessionOf({ host: c.uid }) }),
+  inSession({
+    id: 'home-invite-busy', flow: 'home', title: 'Partner not yet joined: creating invite link',
+    session: (c) => sessionOf({ host: c.uid }), callables: { createInvite: never },
+    steps: [{ click: /Send an invite link/ }],
+  }),
+  inSession({
+    id: 'home-solo', flow: 'home', title: 'Partner not yet joined: answers banked',
+    session: (c) => sessionOf({ host: c.uid }, { decks: { [FIRST]: hostOnlyDeck(FIRST) } }), lastDeck: FIRST,
+  }),
+  inSession({ id: 'home-joined', flow: 'home', title: 'Both joined, mid-way', lastDeck: MULTI }),
+  inSession({ id: 'home-herald', flow: 'home', title: 'A reveal is ready (herald card)', heraldFor: true, lastDeck: MULTI }),
+  inSession({ id: 'home-path', flow: 'home', title: 'Home with the Path card', session: (c) => couple(c, { path: true, lamps: 3 }), lastDeck: MULTI }),
+
+  // ============ 8 · Talk ============
+  inSession({ id: 'talk-decks', flow: 'talk', title: 'Conversations: pick up where you left off, then by subject', tab: 'Talk', lastDeck: MULTI }),
+  inSession({ id: 'talk-decks-deeper', flow: 'talk', title: 'Conversations: further down, Deeper and honest', tab: 'Talk', steps: [{ wait: 200 }, { scrollToText: /Deeper and honest/ }] }),
+  inSession({
+    id: 'talk-picker', flow: 'talk', title: 'Choose a part: named parts, both of you on each', note: 'Known and what surprised you sit underneath once a part is open.',
+    session: (c) => sessionOf(seat(c), { decks: { [MULTI]: { ...fakeDeck(MULTI, 1), done: { 0: { host: true, guest: true }, 1: { host: true } } } } }),
+    openSlug: MULTI,
+  }),
+
+  // ============ 9 · Answering ============
+  playFrame('play-scale', 'Scale question', playAt((q) => q.type === 'scale' && !q.guessable) ?? playAt((q) => q.type === 'scale'), [{ sel: '.orb', nth: 3 }]),
+  playFrame('play-mc', 'Multiple choice: which of you, by name', playAt((q) => q.type === 'mc' && !!q.who && !asksImportance(q)), [{ sel: '.opt', nth: 0 }]),
+  playFrame('play-mc-saved', 'After Next: the guess at once, ✓ Saved', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }]),
+  playFrame('play-save-failed', 'An answer didn’t save', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }], 'Write denied: you can keep going; Try again resends it.', { denyWrites: ['private'] }),
+  playFrame('play-guess', 'Guess your partner', playAt((q) => q.type === 'mc' && !!q.guessable && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }, { sel: '.opt', nth: 1 }]),
+  playFrame('play-rank', 'Rank question', playAt((q) => q.type === 'rank')),
+  playFrame('play-rank-moved', 'Rank: one moved down', playAt((q) => q.type === 'rank'), [{ click: /^Move .* down$/ }]),
+  playFrame('play-last', 'Last question of a part', playLast((q) => q.type === 'mc' && asksImportance(q)) ?? playLast((q) => q.type === 'mc'), [{ sel: '.opt', nth: 0 }, { click: /^Somewhat$/ }]),
+  playFrame('play-open', 'Open question', playAt((q) => q.type === 'open'), [{ sel: 'textarea', nth: 0 }].slice(0, 0)),
+  playFrame('play-importance', 'Answer + importance (tier-3 / deal-breaker)', playAt(asksImportance), [{ sel: '.opt', nth: 0 }]),
+
+  // ============ 10 · Waiting & unlocking ============
+  inSession({
+    id: 'wait-partner', flow: 'wait', title: 'Your answers are saved (waiting on partner)',
+    session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }), openSlug: SINGLE,
+  }),
+  inSession({
+    id: 'wait-unlock', flow: 'wait', title: 'Ready to open (you’ve both finished)',
+    note: 'Scripted: open the deck, wait, then the fixture partner finishes live.',
+    session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }),
+    steps: [{ click: 'Talk' }, { wait: 200 }, { click: deckLabel(SINGLE) }, { wait: 200 }, { run: partnerFinishes(SINGLE) }, { wait: 300 }],
+  }),
+
+  // ============ 11 · Reveal ============
+  revealTier('reveal-t0', 'Reveal: 0–33%, the discovery stage', 27, 'Claret room, gold ripples. Line and verse for this range.'),
+  revealTier('reveal-t1', 'Reveal: 34–60%, finding your rhythm', 50, 'Claret room, gold ripples.'),
+  revealTier('reveal-t2', 'Reveal: 61–90%, a strong stride', 77, '+ falling petals'),
+  revealTier('reveal-t3', 'Reveal: 91–99%, deeply in sync', 95, '+ gold rays and sparks'),
+  revealTier('reveal-t4', 'Reveal: 100%, complete alignment', 100, 'Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line.'),
+  revealTier('reveal-share', 'Share your score: the preview', 77, 'Names are off until switched on.', false, [{ click: /Share your score/ }, { wait: 600 }]),
+  revealTier('reveal-share-names', 'Share your score: names on', 77, '', false, [{ click: /Share your score/ }, { wait: 300 }, { click: /Include our names/ }, { wait: 600 }]),
+  revealTier('reveal-first', 'Reveal: the couple’s first ever', 77, 'Adds the first-reveal line', true),
+  inSession({
+    id: 'reveal-notyet', flow: 'reveal', title: 'A “Not yet” answer, shown and unscored',
+    session: (c) => {
+      const slug = ORDER.find((sl) => DECKS[sl].questions.some((q) => q.notYet))!
+      const deck = fakeDeck(slug, nLevels(slug))
+      const q = DECKS[slug].questions.find((x) => x.notYet)!
+      deck.answers![q.id] = { host: q.type === 'scale' ? 3 : deck.answers![q.id].host!, guest: NOT_YET }
+      return sessionOf(seat(c), { decks: { [slug]: deck } })
+    },
+    openSlug: ORDER.find((sl) => DECKS[sl].questions.some((q) => q.notYet)),
+    steps: [{ wait: 500 }, { scrollToText: /Not yet/ }],
+  }),
+  inSession({ id: 'reveal-answers', flow: 'reveal', title: 'Every answer, side by side (review)', session: (c) => sessionOf(seat(c), { decks: { [FULL]: fakeDeck(FULL, nLevels(FULL)) } }), openSlug: FULL, steps: [{ wait: 500 }] }),
+  {
+    id: 'reveal-flags', flow: 'reveal', title: 'Worth a closer look, inside the card', note: 'The reason sits in the card. No banner.',
+    db: dbWith((c) => sessionOf(seat(c))),
+    render: (c) => (
+      <RevealScreen slug={FULL} level={0} role="host" deck={flagDeck(FULL)} myName="Sarah" partnerName="Judah"
+        questions={lvlQs(FULL, 0)} review code={c.code} onDone={() => {}} />
+    ),
+  },
+
+  // ============ 12 · Together ============
+  inSession({ id: 'together-empty', flow: 'together', title: 'Nothing revealed yet', session: (c) => sessionOf(seat(c)), tab: 'Together' }),
+  inSession({ id: 'together-results', flow: 'together', title: 'Four sections: who, where you stand, talk about next, your conversations', note: 'Nothing on the list yet, so Talk about next suggests where you were furthest apart.', tab: 'Together' }),
+  inSession({ id: 'together-guide', flow: 'together', title: 'Talk it through: the guide', tab: 'Together', steps: [{ wait: 200 }, { click: 'Talk it through' }] }),
+  inSession({ id: 'together-sharecard', flow: 'together', title: 'Progress card, with Agree ticked', note: 'Opened from the share icon. The wordmark; the range line and verse ride only with the Agree score.', tab: 'Together', steps: [{ wait: 200 }, { click: 'Share your card' }, { wait: 300 }, { click: /We agree|agree/i }, { wait: 800 }] }),
+  inSession({ id: 'together-howscores', flow: 'together', title: 'How scores work', note: 'Opened from the scores; the same sheet opens from every reveal.', tab: 'Together', steps: [{ wait: 200 }, { click: /How scores work/ }] }),
+  inSession({ id: 'together-talk', flow: 'together', title: '“Have you talked this through yet?”', note: 'Judah ticked it first. Sarah is asked, never told who ticked.', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
+  inSession({ id: 'together-ticked', flow: 'together', title: 'After you tick it', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL, 'ticked'), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together' }),
+  inSession({ id: 'together-talked', flow: 'together', title: 'Talked about together, with the date and the note', session: (c) => sessionOf(seat(c), { decks: { [FULL]: talkDeck(FULL), [FIRST]: fakeDeck(FIRST, 1) } }), tab: 'Together', steps: [{ wait: 300 }, { scrollToText: /Talked about together/ }] }),
+
+  // ============ 13 · The Path ============
+  inSession({ id: 'path-loading', flow: 'path', title: 'Path: checking your progress', pending: (c) => [`intake/${c.uid}`], tab: 'Path' }),
+  inSession({ id: 'path-intro', flow: 'path', title: 'Path: intro', session: (c) => sessionOf(seat(c)), tab: 'Path' }),
+  inSession({ id: 'path-intake', flow: 'path', title: 'Path: private intake', session: (c) => sessionOf(seat(c)), tab: 'Path', steps: [{ click: /Begin my part/ }] }),
+  inSession({ id: 'path-waiting', flow: 'path', title: 'Path: laying your path', note: 'Only for a moment: the server lays the Trailhead as soon as your path questions are in.', session: (c) => sessionOf(seat(c)), extraDb: intakeDone, callables: { generatePath: () => ({ status: 'waiting', reason: 'partner-missing' }) }, tab: 'Path' }),
+  inSession({ id: 'path-start', flow: 'path', title: 'Path: start with the Trailhead', note: 'Before Judah has answered the path questions. No dead end.', session: (c) => partialSession(c), extraDb: intakeDone, tab: 'Path' }),
+  inSession({ id: 'path-start-walked', flow: 'path', title: 'Path: Trailhead walked, the rest still being chosen', session: (c) => partialSession(c, true), extraDb: intakeDone, tab: 'Path' }),
+  inSession({ id: 'path-map', flow: 'path', title: 'Path: the map, opened where you are', session: (c) => pathSession(c, 3), extraDb: intakeDone, tab: 'Path' }),
+  {
+    id: 'path-step-arrival', flow: 'path', title: 'Path: arriving at a step', note: 'The step’s scene, what it’s about, what to expect, the verse.',
+    db: dbWith((c) => pathSession(c, 1)),
+    render: (c) => (
+      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-038', 'CONF-002'] }}
+        myName="Sarah" partnerName="Judah" onExit={() => {}} />
+    ),
+  },
+  {
+    id: 'path-step-play', flow: 'path', title: 'Path: a waypoint question',
+    db: dbWith((c) => pathSession(c, 1)), steps: [{ click: /Take the step/ }],
+    render: (c) => (
+      <PathStep code={c.code} role="host" session={pathSession(c, 1)} index={1} step={{ key: 'fork', mechanic: 'guess', qids: ['CONF-038', 'CONF-002'] }}
+        myName="Sarah" partnerName="Judah" onExit={() => {}} />
+    ),
+  },
+  {
+    id: 'path-step-walked', flow: 'path', title: 'Path: “You’ve walked The Table together”', note: 'In place of “Light the lamp”.',
+    db: dbWith((c) => pathSession(c, 4)),
+    render: () => (
+      <WalkedScreen index={3} stepKey="table" name="The Table" lit={4} partnerName="Judah" onDone={() => {}} t={(en) => en}
+        next={{ index: 4, key: 'garden', name: 'The Garden', theme: 'Intimacy & affection', laid: true }} />
+    ),
+  },
+  {
+    id: 'path-lookout', flow: 'path', title: 'Path: The Lookout', note: 'Rings, two highlights, one verse.',
+    db: dbWith((c) => pathSession(c)),
+    render: (c) => (
+      <PathFlow code={c.code} role="host" session={lookoutSession(c)} index={PATH_KEYS.length} myName="Sarah" partnerName="Judah" onExit={() => {}} />
+    ),
+  },
+
+  // ============ 14 · Profile & settings ============
+  inSession({
+    id: 'profile-loading', flow: 'profile', title: 'Profile: loading',
+    note: 'Profile reads stall after the app shell has loaded.',
+    steps: [{ wait: 150 }, { run: (rt) => rt.pending.push(`users/${rt.user!.uid}`) }, { click: 'You' }],
+  }),
+  inSession({ id: 'profile-main', flow: 'profile', title: 'You: a settings list', tab: 'You' }),
+  inSession({ id: 'profile-edit', flow: 'profile', title: 'Edit profile, on its own screen', note: 'Says plainly who sees what: Judah sees the name the session started with, never the photo or line.', tab: 'You', steps: [{ click: 'Edit' }] }),
+  inSession({ id: 'profile-sees', flow: 'profile', title: 'What Judah sees', tab: 'You', steps: [{ click: /^What Judah sees/ }] }),
+  inSession({ id: 'profile-close', flow: 'profile', title: 'Close this session on this device (sheet)', tab: 'You', steps: [{ click: /^Close this session on this device/ }] }),
+  inSession({ id: 'profile-data', flow: 'profile', title: 'Download my data', tab: 'You', steps: [{ click: /^Download my data/ }] }),
+  inSession({
+    id: 'profile-export-error', flow: 'profile', title: 'Download my data: a real error, and Try again',
+    note: 'The success state triggers a real file download, so it is not shown.',
+    tab: 'You', callables: { exportMyData: fail('auth/network-request-failed') },
+    steps: [{ click: /^Download my data/ }, { wait: 150 }, { click: 'Download' }, { wait: 200 }],
+  }),
+  inSession({ id: 'profile-delete', flow: 'profile', title: 'Delete your account and answers?', tab: 'You', steps: [{ click: 'Delete my account' }] }),
+  inSession({ id: 'profile-delete-busy', flow: 'profile', title: 'Deleting: no Cancel once it has started', tab: 'You', callables: { deleteMyAccount: never }, steps: [{ click: 'Delete my account' }, { wait: 150 }, { click: 'Delete my account' }] }),
+]
+
+// A finished journey: real answers behind every waypoint so the finale's numbers
+// are the real scoring, not a mock.
+function lookoutSession(c: Ctx): Session {
+  const SRC = ['fun-icebreakers', 'conflict-communication', 'finances-money', 'in-the-home', 'intimacy-physical', 'past-baggage', 'faith-worship-practice', 'dreams-future', 'values-convictions']
+  const decks: Record<string, DeckData> = { 'at-table': { answers: {}, guesses: {} } }
+  const steps: Record<string, { key: string; mechanic: 'guess' | 'noguess'; qids: string[] }> = {}
+  PATH_KEYS.forEach((key, i) => {
+    const slug = SRC[i]
+    const qs = (DECKS[slug]?.questions ?? []).filter((q) => q.type !== 'open').slice(0, 5)
+    decks[slug] ??= { answers: {}, guesses: {} }
+    qs.forEach((q, n) => {
+      const apart = i >= 5 && n % 2 === 0
+      const hi = q.type === 'scale' ? 5 : (q.opts?.length ?? 2) - 1
+      decks[slug].answers![q.id] = { host: q.type === 'scale' ? 3 : 0, guest: apart ? hi : q.type === 'scale' ? 3 : 0 }
+      if (q.guessable) decks[slug].guesses![q.id] = { host: q.type === 'scale' ? 3 : 0, guest: q.type === 'scale' ? 3 : 0 }
+    })
+    decks['at-table'].answers![key] = { host: 'Sample answer (fixture)', guest: 'Sample answer (fixture)' }
+    steps[i] = { key, mechanic: i === 8 ? 'noguess' : 'guess', qids: qs.map((q) => q.id) }
+  })
+  return {
+    ...sessionOf(seat(c)),
+    decks,
+    path: { ...pathOf(45), steps },
+    pathLamps: Object.fromEntries(PATH_KEYS.map((_, i) => [i, true])),
+  }
+}

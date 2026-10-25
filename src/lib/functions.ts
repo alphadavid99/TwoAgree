@@ -44,3 +44,11 @@ export const generatePath = httpsCallable<
   { code: string; regenerate?: boolean },
   { status: "ready" | "waiting"; reason?: "partner-missing" | "intake-missing" }
 >(functions, "generatePath");
+
+// Publish a part (or Path step) once both partners have finished it: copies
+// both sets of answers from their private spaces into the shared session.
+// "waiting" until both "done" flags are in. See functions/src/publish.ts.
+export const publishPart = httpsCallable<
+  { code: string; slug?: string; level?: number; step?: number },
+  { status: "published" | "waiting"; reason?: string }
+>(functions, "publishPart");

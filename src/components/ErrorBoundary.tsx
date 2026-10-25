@@ -4,7 +4,7 @@
 // class component, so this is the one class in the app.
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { reportError } from "../lib/observability";
-import { Wordmark } from "../brand/Wordmark";
+import { Mark } from "../brand/Mark";
 
 type Props = { children: ReactNode };
 type State = { failed: boolean };
@@ -24,33 +24,26 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (!this.state.failed) return this.props.children;
+    // Short, calm, two ways forward (UX laws: Peak-End). "Your saved answers
+    // are safe" is exactly true: the question screen says when each one saved.
     return (
-      <section className="screen-enter" style={{ textAlign: "center" }}>
-        <div className="brandhead" style={{ marginTop: 40 }}>
-          <Wordmark size={28} />
-        </div>
-        <h1 className="h1 center" style={{ marginTop: 28 }}>
-          Something went wrong on our side.
+      <section className="screen-enter crashscreen">
+        <Mark height={56} title="TwoAgree" colour="var(--berry)" />
+        <h1 className="h1 center" style={{ marginTop: 24 }}>
+          We couldn’t open this screen
         </h1>
-        {/* No blame, no jargon, and the reassurance that matters most here:
-            their answers are written per question, so nothing is lost. */}
-        <p className="sub center" style={{ margin: "12px 24px 0", maxWidth: 340 }}>
-          Nothing you answered has been lost — every answer is saved the moment
-          you tap. Try again, and if it keeps happening, tell Dave what you were
-          doing.
+        <p className="sub center" style={{ margin: "10px 16px 0" }}>
+          Your saved answers are safe. Try again to carry on from where you were.
         </p>
-        <div style={{ marginTop: 28 }}>
-          <button
-            className="btn pill"
-            type="button"
-            onClick={() => this.setState({ failed: false })}
-          >
-            Try again
-          </button>
-          <button className="btn ghost" type="button" onClick={() => window.location.reload()}>
-            Reload the app
-          </button>
-        </div>
+        <button className="btn pill" type="button" onClick={() => this.setState({ failed: false })}>
+          Try again
+        </button>
+        <button className="btn out" type="button" onClick={() => window.location.reload()}>
+          Reload the app
+        </button>
+        <a className="btn ghost" href="mailto:hello@twoagree.app?subject=TwoAgree%3A%20a%20screen%20wouldn%E2%80%99t%20open">
+          Still stuck? Contact us
+        </a>
       </section>
     );
   }

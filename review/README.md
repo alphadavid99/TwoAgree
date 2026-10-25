@@ -38,8 +38,8 @@ gamification, no "you vs them".
 | # | Screen | Image | Notes |
 |---|---|---|---|
 | 04 | Welcome | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/04-onb-welcome.png) |  |
-| 05 | Names | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/05-onb-names.png) |  |
-| 06 | Relationship stage | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/06-onb-stage.png) |  |
+| 05 | Names and stage, one screen | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/05-onb-names.png) |  |
+| 06 | Names and stage, filled in | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/06-onb-stage.png) |  |
 | 07 | Consent (two ticks) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/07-onb-consent.png) |  |
 | 08 | Consent, both ticked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/08-onb-consent-ticked.png) |  |
 | 09 | Consent: save failed | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/09-onb-consent-error.png) | Database write denied → friendly error. |
@@ -73,12 +73,15 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 26 | Create account | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/26-auth-signup.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/26-auth-signup.png) | Reached via “Already have an account? Sign in” on Welcome, then “Create one”. |
-| 27 | Create account: validation | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/27-auth-signup-validation.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/27-auth-signup-validation.png) |  |
+| 26 | Create account | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/26-auth-signup.png) | Reached via “Already have an account? Sign in” on Welcome, then “Create one”. |
+| 27 | Create account: validation | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/27-auth-signup-validation.png) |  |
 | 28 | Sign in (a phone that has never signed in) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/28-auth-signin.png) |  |
 | 29 | Sign in: wrong password | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/29-auth-signin-error.png) |  |
 | 30 | Sign in: waiting on the server | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/30-auth-signin-busy.png) |  |
-| 31 | Password reset sent | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/31-auth-reset.png) |  |
+| 31 | Create account: errors under each field | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/31-auth-signup-fields.png) |  |
+| 32 | Create account: email already has an account | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/32-auth-signup-taken.png) |  |
+| 33 | Sign in: password shown | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/33-auth-signin-shown.png) |  |
+| 34 | Password reset sent: Check your email | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/34-auth-reset.png) |  |
 
 ## 5 · Signed in, no session yet
 
@@ -86,13 +89,15 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 32 | Loading your profile | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/32-start-profile-loading.png) |  |
-| 33 | First run: set up your profile | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/33-start-firstrun.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/33-start-firstrun.png) |  |
-| 34 | Start a session | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/34-start-choose.png) |  |
-| 35 | Start a session: stage picked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/35-start-stage.png) |  |
-| 36 | Join with a code | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/36-start-join.png) |  |
-| 37 | Join with a code: not found | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/37-start-join-error.png) |  |
-| 38 | Settings from the landing screen | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/38-start-settings.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/38-start-settings.png) |  |
+| 35 | Loading your profile | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/35-start-profile-loading.png) |  |
+| 36 | First run: set up your profile | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/36-start-firstrun.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/36-start-firstrun.png) |  |
+| 37 | Start a session | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/37-start-choose.png) |  |
+| 38 | Start a session: stage picked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/38-start-stage.png) |  |
+| 39 | Join with a code | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/39-start-join.png) |  |
+| 40 | Join with a code: typed messily | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/40-start-join-tidy.png) | Any case, spaces or dashes; it says how it read it. |
+| 41 | Join with a code: a pasted link | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/41-start-join-link.png) |  |
+| 42 | Join with a code: not found | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/42-start-join-error.png) |  |
+| 43 | Settings from the landing screen | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/43-start-settings.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/43-start-settings.png) |  |
 
 ## 6 · Session loading & access
 
@@ -100,10 +105,10 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 39 | Opening your session | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/39-session-loading.png) | The outline of Home, not a spinner. |
-| 40 | Opening your session: after 5 seconds | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/40-session-loading-still.png) |  |
-| 41 | Opening your session: after 10 seconds | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/41-session-loading-slow.png) | Try again, and a way back. |
-| 42 | Session unavailable | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/42-session-denied.png) | Wrong code, closed session, or not a member. |
+| 44 | Opening your session | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/44-session-loading.png) | The outline of Home, not a spinner. |
+| 45 | Opening your session: after 5 seconds | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/45-session-loading-still.png) |  |
+| 46 | Opening your session: after 10 seconds | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/46-session-loading-slow.png) | Try again, and a way back. |
+| 47 | Session unavailable | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/47-session-denied.png) | Wrong code, closed session, or not a member. |
 
 ## 7 · Home
 
@@ -111,12 +116,12 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 43 | Partner not yet joined | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/43-home-new.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/43-home-new.png) |  |
-| 44 | Partner not yet joined: creating invite link | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/44-home-invite-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/44-home-invite-busy.png) |  |
-| 45 | Partner not yet joined: answers banked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/45-home-solo.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/45-home-solo.png) |  |
-| 46 | Both joined, mid-way | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/46-home-joined.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/46-home-joined.png) |  |
-| 47 | A reveal is ready (herald card) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/47-home-herald.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/47-home-herald.png) |  |
-| 48 | Home with the Path card | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/48-home-path.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/48-home-path.png) |  |
+| 48 | Partner not yet joined | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/48-home-new.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/48-home-new.png) |  |
+| 49 | Partner not yet joined: creating invite link | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/49-home-invite-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/49-home-invite-busy.png) |  |
+| 50 | Partner not yet joined: answers banked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/50-home-solo.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/50-home-solo.png) |  |
+| 51 | Both joined, mid-way | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/51-home-joined.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/51-home-joined.png) |  |
+| 52 | A reveal is ready (herald card) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/52-home-herald.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/52-home-herald.png) |  |
+| 53 | Home with the Path card | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/53-home-path.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/53-home-path.png) |  |
 
 ## 8 · Talk (conversations)
 
@@ -124,8 +129,8 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 49 | All conversations | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/49-talk-decks.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/49-talk-decks.png) |  |
-| 50 | Choose a part (multi-part deck) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/50-talk-picker.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/50-talk-picker.png) |  |
+| 54 | All conversations | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/54-talk-decks.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/54-talk-decks.png) |  |
+| 55 | Choose a part (multi-part deck) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/55-talk-picker.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/55-talk-picker.png) |  |
 
 ## 9 · Answering
 
@@ -133,12 +138,16 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 51 | Scale question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/51-play-scale.png) |  |
-| 52 | Multiple choice | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/52-play-mc.png) |  |
-| 53 | Guess your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/53-play-guess.png) |  |
-| 54 | Rank question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/54-play-rank.png) |  |
-| 55 | Open question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/55-play-open.png) |  |
-| 56 | Answer + importance (tier-3 / deal-breaker) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/56-play-importance.png) |  |
+| 56 | Scale question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/56-play-scale.png) |  |
+| 57 | Multiple choice: which of you, by name | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/57-play-mc.png) |  |
+| 58 | After Next: the guess at once, ✓ Saved | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/58-play-mc-saved.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/58-play-mc-saved.png) |  |
+| 59 | An answer didn’t save | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/59-play-save-failed.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/59-play-save-failed.png) | Write denied: you can keep going; Try again resends it. |
+| 60 | Guess your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/60-play-guess.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/60-play-guess.png) |  |
+| 61 | Rank question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/61-play-rank.png) |  |
+| 62 | Rank: one moved down | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/62-play-rank-moved.png) |  |
+| 63 | Last question of a part | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/63-play-last.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/63-play-last.png) |  |
+| 64 | Open question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/64-play-open.png) |  |
+| 65 | Answer + importance (tier-3 / deal-breaker) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/65-play-importance.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/65-play-importance.png) |  |
 
 ## 10 · Waiting & unlocking
 
@@ -146,8 +155,8 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 57 | Your answers are saved (waiting on partner) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/57-wait-partner.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/57-wait-partner.png) |  |
-| 58 | Ready to open (you’ve both finished) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/58-wait-unlock.png) | Scripted: open the deck, wait, then the fixture partner finishes live. |
+| 66 | Your answers are saved (waiting on partner) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/66-wait-partner.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/66-wait-partner.png) |  |
+| 67 | Ready to open (you’ve both finished) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/67-wait-unlock.png) | Scripted: open the deck, wait, then the fixture partner finishes live. |
 
 ## 11 · Reveal
 
@@ -155,13 +164,13 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 59 | Reveal: low agreement (no celebration) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/59-reveal-t0.png) | 27% agreed: plain |
-| 60 | Reveal: warm (claret room) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/60-reveal-t1.png) | 65% agreed |
-| 61 | Reveal: strong (petals) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/61-reveal-t2.png) | 76% agreed |
-| 62 | Reveal: grand bloom | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/62-reveal-t3.png) | 100% agreed |
-| 63 | Reveal: the couple’s first ever | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/63-reveal-first.png) | Adds the first-reveal line |
-| 64 | Every answer, side by side (review) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/64-reveal-answers.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/64-reveal-answers.png) |  |
-| 65 | Worth a closer look (flags) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/65-reveal-flags.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/65-reveal-flags.png) |  |
+| 68 | Reveal: low agreement (no celebration) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/68-reveal-t0.png) | 27% agreed: plain |
+| 69 | Reveal: warm (claret room) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/69-reveal-t1.png) | 65% agreed |
+| 70 | Reveal: strong (petals) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/70-reveal-t2.png) | 76% agreed |
+| 71 | Reveal: grand bloom | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/71-reveal-t3.png) | 100% agreed |
+| 72 | Reveal: the couple’s first ever | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/72-reveal-first.png) | Adds the first-reveal line |
+| 73 | Every answer, side by side (review) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/73-reveal-answers.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/73-reveal-answers.png) |  |
+| 74 | Worth a closer look (flags) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/74-reveal-flags.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/74-reveal-flags.png) |  |
 
 ## 12 · Together (results)
 
@@ -169,10 +178,10 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 66 | Nothing revealed yet | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/66-together-empty.png) |  |
-| 67 | Where you agree | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/67-together-results.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/67-together-results.png) |  |
-| 68 | How scores work | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/68-together-howscores.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/68-together-howscores.png) | Opened from the scores; the same sheet opens from every reveal. |
-| 69 | Your agenda & discoveries | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/69-together-talk.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/69-together-talk.png) |  |
+| 75 | Nothing revealed yet | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/75-together-empty.png) |  |
+| 76 | Where you agree | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/76-together-results.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/76-together-results.png) |  |
+| 77 | How scores work | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/77-together-howscores.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/77-together-howscores.png) | Opened from the scores; the same sheet opens from every reveal. |
+| 78 | Your agenda & discoveries | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/78-together-talk.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/78-together-talk.png) |  |
 
 ## 13 · The Path
 
@@ -180,14 +189,14 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 70 | Path: checking your progress | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/70-path-loading.png) |  |
-| 71 | Path: intro | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/71-path-intro.png) |  |
-| 72 | Path: private intake | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/72-path-intake.png) |  |
-| 73 | Path: waiting for your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/73-path-waiting.png) |  |
-| 74 | Path: the map | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/74-path-map.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/74-path-map.png) |  |
-| 75 | Path: arriving at a waypoint | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/75-path-step-arrival.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/75-path-step-arrival.png) |  |
-| 76 | Path: a waypoint question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/76-path-step-play.png) |  |
-| 77 | Path: The Lookout (finale) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/77-path-lookout.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/77-path-lookout.png) |  |
+| 79 | Path: checking your progress | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/79-path-loading.png) |  |
+| 80 | Path: intro | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/80-path-intro.png) |  |
+| 81 | Path: private intake | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/81-path-intake.png) |  |
+| 82 | Path: waiting for your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/82-path-waiting.png) |  |
+| 83 | Path: the map | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/83-path-map.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/83-path-map.png) |  |
+| 84 | Path: arriving at a waypoint | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/84-path-step-arrival.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/84-path-step-arrival.png) |  |
+| 85 | Path: a waypoint question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/85-path-step-play.png) |  |
+| 86 | Path: The Lookout (finale) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/86-path-lookout.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/86-path-lookout.png) |  |
 
 ## 14 · Profile & settings
 
@@ -195,9 +204,9 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 78 | Profile: loading | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/78-profile-loading.png) | Profile reads stall after the app shell has loaded. |
-| 79 | Profile & settings | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/79-profile-main.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/79-profile-main.png) |  |
-| 80 | Leave this session? (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/80-profile-leave.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/80-profile-leave.png) |  |
-| 81 | Delete account (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/81-profile-delete.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/81-profile-delete.png) |  |
-| 82 | Delete account: deleting… | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/82-profile-delete-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/82-profile-delete-busy.png) |  |
-| 83 | Data export: offline error | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/83-profile-export-error.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/83-profile-export-error.png) | The success state triggers a real file download, so it is not shown. |
+| 87 | Profile: loading | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/87-profile-loading.png) | Profile reads stall after the app shell has loaded. |
+| 88 | Profile & settings | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/88-profile-main.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/88-profile-main.png) |  |
+| 89 | Leave this session? (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/89-profile-leave.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/89-profile-leave.png) |  |
+| 90 | Delete account (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/90-profile-delete.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/90-profile-delete.png) |  |
+| 91 | Delete account: deleting… | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/91-profile-delete-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/91-profile-delete-busy.png) |  |
+| 92 | Data export: offline error | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/92-profile-export-error.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/92-profile-export-error.png) | The success state triggers a real file download, so it is not shown. |

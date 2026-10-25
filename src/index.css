@@ -6754,19 +6754,128 @@ a.btn {
    and spacing. Later in the file on purpose, so it wins over the kit above.
    ========================================================================== */
 
-/* Long questions step down a size so the answers still fit on the screen. */
-.qtext.qtext-long {
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.75rem;
-}
-.qtext.qtext-longer {
-  font-size: 1.125rem; /* 18px */
+/* Type, a step smaller (feedback 16): questions 19px, 18px when long;
+   answers 15px. Helper text stays at the 14px floor and every target stays
+   48px or more. */
+.qtext {
+  font-size: 1.1875rem; /* 19px */
   line-height: 1.625rem;
+  margin-top: 8px;
+}
+.qtext.qtext-long {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.5625rem;
+}
+.opt {
+  min-height: 52px;
+  margin-top: 8px;
+  padding: 12px 44px 12px 16px;
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.375rem;
 }
 
-/* What the chosen point on a scale means: a caret up at its orb, then the
-   words, leaning to the side that was picked. Room is kept for one line so
-   picking doesn't shove the card. */
+/* The answering screen (feedback 17): the top (bar, stones, "3 of 8", the
+   question) and the bottom (importance, the main button) stay put; only the
+   answers scroll between them. The screen is exactly the phone's height, so
+   the page itself never scrolls. */
+.playscreen.pfix {
+  display: flex;
+  flex-direction: column;
+  /* The phone frame's padding is 28 top and 36 bottom; the footer takes 20
+     of the bottom back so the button sits nearer the thumb. */
+  height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 44px);
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 44px);
+  min-height: 460px;
+  margin-bottom: -20px;
+}
+.pfix > .phead {
+  flex: none;
+}
+.pfix .qstones {
+  margin-top: 8px;
+}
+.pfix .qstatus {
+  margin: 6px 0 10px;
+}
+.pfix > .qframe {
+  position: relative;
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 16px 16px 4px;
+}
+.qframe > .qhead {
+  flex: none;
+  padding-bottom: 6px;
+}
+.qframe .guessask {
+  margin: 10px 0 0;
+}
+.qframe > .qbody {
+  flex: 1 1 auto;
+  min-height: 96px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 -8px;
+  padding: 0 8px 12px;
+}
+/* More below: the answers fade out at the bottom edge of their area. */
+.qframe > .qbody.more {
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 56px), transparent);
+  mask-image: linear-gradient(to bottom, black calc(100% - 56px), transparent);
+}
+.qbody > .yousaid {
+  margin-top: 4px;
+}
+.pfix > .playfoot {
+  flex: none;
+  position: static;
+  margin-top: auto;
+  padding: 12px 0 0;
+  background: none;
+}
+.playfoot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.playfoot-row > .btn {
+  flex: 1 1 auto;
+  width: auto;
+  margin: 0;
+}
+.playfoot-row > .btn.ghost {
+  flex: 0 0 auto;
+  padding: 0 14px;
+}
+.pfix .lastline {
+  margin: 0 4px 10px;
+}
+/* Importance sits with the button, so it's always in view without scrolling;
+   it rises in once an answer is chosen. */
+.impfoot {
+  margin-bottom: 12px;
+  animation: riseIn var(--dur-enter) var(--ease-glide) both;
+}
+.impfoot .impinline-head {
+  margin-bottom: 8px;
+}
+
+/* End labels: short, and never close enough to read as one sentence. */
+.slabels {
+  margin-top: 14px;
+}
+.slabels > span {
+  max-width: 45%;
+}
+
+/* What the chosen point means: one line in one style, in a bubble sized to
+   its words that points up at the chosen orb. Text always reads from the
+   left; the bubble sits on the chosen side, and for the inner points it is
+   wide enough to reach back under its orb. Room is kept for one line so
+   picking doesn't shove the answers. */
 .orbsay {
   display: flex;
   flex-direction: column;
@@ -6794,36 +6903,34 @@ a.btn {
   animation: caretIn var(--dur-select) var(--ease-spring) both;
 }
 .orbsay-text {
+  width: fit-content;
   max-width: 100%;
-  min-width: 46%;
   margin: 0;
   padding: 8px 12px;
   border-radius: 12px;
   background: var(--app-honey-bg);
   color: var(--ta-ink);
   font-size: 0.875rem;
+  font-weight: 500;
   line-height: 1.25rem;
+  text-align: left;
   animation: sayIn var(--dur-select) var(--ease-glide) both;
 }
-.orbsay-text b {
-  color: var(--app-amber);
-  font-weight: 700;
-}
-.orbsay-text span {
-  display: block;
-  margin-top: 2px;
-}
-.orbsay-text.lo {
+.orbsay-text.p1,
+.orbsay-text.p2 {
   align-self: flex-start;
-  text-align: left;
 }
-.orbsay-text.mid {
+.orbsay-text.p3 {
   align-self: center;
-  text-align: center;
 }
-.orbsay-text.hi {
+.orbsay-text.p4,
+.orbsay-text.p5 {
   align-self: flex-end;
-  text-align: right;
+}
+/* An inner orb's centre is a quarter of the way in, plus half an orb. */
+.orbsay-text.p2,
+.orbsay-text.p4 {
+  min-width: calc(25% + 44px);
 }
 @keyframes sayIn {
   from {
@@ -6846,25 +6953,11 @@ a.btn {
   }
 }
 
-/* The pinned button sits on solid ground. When the card runs on underneath
-   it, the card fades out above the button and "More below" says so. */
-.playscreen > .playfoot {
-  background: var(--app-ground-bot);
-}
-.playscreen > .playfoot.covering::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  height: 56px;
-  background: linear-gradient(to bottom, rgba(248, 233, 236, 0), var(--app-ground-bot) 85%);
-  pointer-events: none;
-}
+/* "More below", over the faded bottom edge of the answers. */
 .morebelow {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 6px);
+  bottom: 8px;
   z-index: 1;
   display: inline-flex;
   align-items: center;
@@ -7022,6 +7115,7 @@ a.btn {
   .orbsay-cell .caret,
   .morebelow,
   .morebelow svg,
+  .impfoot,
   .opt.sel .dot::after,
   .impbtn.on {
     animation: none !important;
@@ -7085,4 +7179,9 @@ a.btn {
    was setting it 4px in on each side). */
 .cv-search {
   margin: 0;
+}
+/* A not-yet-tappable main button on the answering screen reads as a button,
+   not loose text: a well a shade darker than the ground. */
+.pfix .playfoot-row > .btn[disabled]:not(.ghost) {
+  background: var(--app-track);
 }

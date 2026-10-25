@@ -144,6 +144,10 @@ for (const q of questions) {
   } else if (q.type === "scale") {
     if (!q.lo || !q.hi) bad("scale needs both lo and hi endpoint labels");
     if (q.opts) bad("scale must not have opts");
+    // End labels are short markers for the two ends; the full wording of each
+    // point lives in steps (shown when that point is picked).
+    for (const e of [q.lo, q.hi])
+      if (e && (e.length > 40 || /[:(]/.test(e))) bad(`scale end "${e}" must be a short label (40 characters, no colon or brackets); put the full wording in steps`);
     if (q.steps && (!Array.isArray(q.steps) || q.steps.length !== 5 || q.steps.some((x) => typeof x !== "string" || !x.trim())))
       bad("scale steps must be five non-empty labels, lo to hi");
   } else if (q.type === "open") {

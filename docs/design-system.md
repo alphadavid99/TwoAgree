@@ -35,7 +35,7 @@ Build from these. Don't hand-style a one-off when a kit piece fits.
 | White button | Secondary. 2px `--ta-line` edge, 4px base. Claret text. |
 | Red button | Deleting only. `#A32D45`, white text. |
 | Text button | Grey, no fill, still 48px tall to tap. |
-| Answer row | At least 56px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
+| Answer row | At least 52px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
 | Filter pill | 40px. Selected: claret fill, white text. |
 | Importance button | Three in a row, white with the card's base. Selected: fills claret from its centre with a small spring, white text. |
 | Badge | A label, not a button. Agreed `#FBEBDC`/`#8F5A12` · Close `#F7EEF1`/`#5C2E45` · Worth a chat claret/`#F3D58E`. |
@@ -53,9 +53,10 @@ In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.o
 |---|---|
 | Hero | Fraunces 32/38 |
 | Screen heading | Fraunces 28/34 |
-| Question | Fraunces 22/30; 20/28 over 90 characters, 18/26 over 120, so the answers still fit |
+| Question | Fraunces 19/26; 18/25 over 90 characters |
 | Card title | Fraunces 18/24 |
-| Body and answers | Hanken Grotesk 16/24 |
+| Body | Hanken Grotesk 16/24 |
+| Answers | Hanken Grotesk 15/22 |
 | Helper | Hanken 14/20. The floor for anything you need to read to act. |
 | Label | Hanken 12, uppercase, tracked. Labels only, never instructions. |
 
@@ -73,8 +74,9 @@ Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows
 ## Interaction
 
 - Tap targets at least 48×48px (44pt on iOS).
-- On question screens, the main button is pinned in the same place at the bottom, with space kept for "Skip for now" so it never moves. When the card runs on underneath it, the card fades out above the button and a "More below" chip glides it into view. Opening "How much does this matter?" brings it up above the button.
-- Scale ends show the short half of a label that has a colon ("My relationship"); picking a point shows what it means in full under that orb.
+- Question screens are exactly the phone's height. The top (back, close, the stones, "3 of 8", the question) and the bottom (importance, the main button) stay put; only the answers scroll between them, fading at the bottom edge with a "More below" chip when there's more. "How much does this matter?" rises in above the main button once an answer is chosen, so it never needs scrolling. Skip, Not yet and Skip for now sit beside the main button in the same row.
+- Back (top left, opposite close) steps through earlier questions and guesses with their answers still picked; any of them can be changed until the part is finished.
+- Scale ends are short labels (at most 40 characters, no colon), the same kind of thing at both ends. Picking a point shows one plain line saying what it means, in a bubble sized to its words, pointing at the chosen orb.
 - Every screen opens at the top. Going back (closing a conversation, Back in You) returns to where you were.
 - Never make someone wait on the server to move on. Show the next step at once, then "Saving…", "✓ Saved", or "Try again" if it fails. Never lose an answer.
 - Loading shows the outline of the screen, not a spinner. After 5 seconds add "Still loading…"; after 10, offer Try again and a way back.

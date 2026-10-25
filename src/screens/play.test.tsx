@@ -122,3 +122,33 @@ describe("importance and the last question", () => {
     expect(onFinish).toHaveBeenCalled();
   });
 });
+
+describe("going back (feedback 15)", () => {
+  it("steps back to the guess, then the answer, with both still picked, and a change is saved", async () => {
+    const at = find((q, i) => i === 0 && q.type === "mc" && !q.who && !!q.guessable && q.depth < 4);
+    play(at);
+    const first = lvlQs(at.slug, at.level)[0];
+    expect(screen.queryByRole("button", { name: /Back to the previous question/ })).toBeNull();
+    // Answer the first question with its second option, and guess its third.
+    await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
+    await userEvent.click(screen.getByRole("button", { name: /Next/ }));
+    await userEvent.click(screen.getAllByRole("button", { pressed: false })[2]);
+    await userEvent.click(screen.getByRole("button", { name: /my guess/ }));
+    expect(screen.getByText(/^2 of/)).toBeTruthy();
+
+    // Back lands on the guess with it still chosen…
+    await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
+    expect(screen.getByText(/what will/)).toBeTruthy();
+    expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![2]);
+    // …and again on the answer, still chosen.
+    await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
+    expect(screen.queryByText(/what will/)).toBeNull();
+    expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![1]);
+
+    // Changing it saves the new answer.
+    await userEvent.click(screen.getAllByRole("button", { pressed: false })[0]);
+    await userEvent.click(screen.getByRole("button", { name: /Next/ }));
+    expect(writes.writeAnswer).toHaveBeenCalledTimes(2);
+    expect(writes.writeAnswer.mock.calls[1][4]).not.toEqual(writes.writeAnswer.mock.calls[0][4]);
+  });
+});

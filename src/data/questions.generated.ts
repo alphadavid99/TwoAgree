@@ -253,8 +253,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Very little: as long as it's comfortable and functional",
-        "hi": "A lot: creating a beautiful home would be a real priority",
+        "lo": "Very little",
+        "hi": "A lot",
         "steps": [
           "Very little: as long as it's comfortable and functional",
           "A little",
@@ -294,8 +294,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "ref": "Romans 12:13",
         "guessable": true,
-        "lo": "Mostly private: home would mainly be our space",
-        "hi": "Very open: I'd love our home to be a place people regularly gather",
+        "lo": "Mostly private",
+        "hi": "Very open",
         "steps": [
           "Mostly private: home would mainly be our space",
           "Occasionally welcoming people in",
@@ -478,8 +478,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Very flexible: I wouldn't want much of a budget",
-        "hi": "Very structured: I'd want us to plan and track our money closely",
+        "lo": "Very flexible",
+        "hi": "Very structured",
         "steps": [
           "Very flexible: I wouldn't want much of a budget",
           "Mostly flexible",
@@ -518,8 +518,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Mostly enjoy it now",
-        "hi": "Strongly prioritise the future",
+        "lo": "Enjoy it now",
+        "hi": "Save for the future",
         "steps": [
           "Mostly enjoy it now",
           "Lean towards enjoying it now",
@@ -534,8 +534,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Very little: I'd rather keep life simple and use the extra elsewhere",
-        "hi": "A lot: I'd want our lifestyle to reflect what we can comfortably afford",
+        "lo": "Very little",
+        "hi": "A lot",
         "steps": [
           "Very little: I'd rather keep life simple and use the extra elsewhere",
           "A little",
@@ -564,8 +564,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "ref": "Proverbs 21:20",
         "guessable": true,
-        "lo": "Not very important: we can deal with problems as they come",
-        "hi": "Essential: I'd want us to build a strong financial safety net",
+        "lo": "Not very important",
+        "hi": "Essential",
         "steps": [
           "Not very important: we can deal with problems as they come",
           "Slightly important",
@@ -592,8 +592,8 @@ export const DECKS: Record<string, Deck> = {
         "q": "How important is it that we're aligned on money?",
         "type": "scale",
         "depth": 3,
-        "lo": "Not important: we can differ freely on money",
-        "hi": "Essential: we need to agree on how we handle money",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not important: we can differ freely on money",
           "Slightly important",
@@ -1158,8 +1158,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "My partner: I'd usually choose time with my partner",
-        "hi": "Time with God: even when my relationship needs attention",
+        "lo": "My partner",
+        "hi": "Time with God",
         "steps": [
           "My partner: I'd usually choose time with my partner",
           "Mostly my partner: I'd usually choose my partner, but it depends",
@@ -1185,8 +1185,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "ref": "1 Thessalonians 5:11",
         "guessable": true,
-        "lo": "Not involved: my faith is mainly personal",
-        "hi": "Highly involved: actively help me grow in my faith",
+        "lo": "Not involved",
+        "hi": "Highly involved",
         "steps": [
           "Not involved: my faith is mainly personal",
           "A little involved: support me when I need it",
@@ -1212,8 +1212,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "core": true,
-        "lo": "Not important: we can have quite different views",
-        "hi": "Essential: we need to share the same core beliefs",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not important: we can have quite different views",
           "Slightly important: some differences are fine",
@@ -1325,8 +1325,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "Still share them equally",
-        "hi": "Share them by how much free time each of us has",
+        "lo": "Share equally",
+        "hi": "By free time",
         "steps": [
           "Still share them equally",
           "Mostly equal, with some changes",
@@ -1341,14 +1341,14 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "No: income should never determine authority",
-        "hi": "Providing financially should come with greater decision-making responsibility",
+        "lo": "No",
+        "hi": "Yes",
         "steps": [
-          "No: income should never determine authority",
+          "No: income should never decide who has authority",
           "Very little",
           "Sometimes, especially on financial matters",
           "The main provider should usually have greater say financially",
-          "Providing financially should come with greater decision-making responsibility"
+          "Yes: providing financially should bring more say in decisions"
         ]
       },
       {
@@ -1399,8 +1399,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "Not at all: parenting should be equally shared",
-        "hi": "I believe caring for young children is primarily the mother's role",
+        "lo": "Equally shared",
+        "hi": "Mainly the mother",
         "steps": [
           "Not at all: parenting should be equally shared",
           "Slight preference for the mother taking more responsibility",
@@ -1415,8 +1415,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "I don't believe their roles should differ because of gender",
-        "hi": "I strongly believe God designed distinct roles for husbands and wives",
+        "lo": "Same roles",
+        "hi": "Distinct roles",
         "steps": [
           "I don't believe their roles should differ because of gender",
           "Mostly the same roles, with a few differences",
@@ -1508,8 +1508,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "core": true,
-        "lo": "I don't: those responsibilities should be equally shared",
-        "hi": "Very strongly: I see providing and protecting as central responsibilities of the husband",
+        "lo": "Equally shared",
+        "hi": "Mainly the husband",
         "steps": [
           "I don't: those responsibilities should be equally shared",
           "Slightly: I naturally see the husband doing somewhat more",
@@ -1524,8 +1524,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "I don't: responsibility should be shared without gender expectations",
-        "hi": "Very strongly: I see caring for the home and family as a central responsibility of the wife",
+        "lo": "Equally shared",
+        "hi": "Mainly the wife",
         "steps": [
           "I don't: responsibility should be shared without gender expectations",
           "Slightly: I naturally see the wife doing somewhat more",
@@ -1657,7 +1657,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I'd want us firmly within the same tradition",
+        "hi": "Essential",
         "steps": [
           "Not important",
           "Slightly important",
@@ -1973,7 +1973,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Not open at all",
-        "hi": "I'd actively love for us to live abroad",
+        "hi": "I'd love it",
         "steps": [
           "Not open at all",
           "Possibly for a short period",
@@ -2079,8 +2079,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Very little: I'd strongly prefer stability",
-        "hi": "A lot: I'd rather take the chance than wonder what could have been",
+        "lo": "Very little",
+        "hi": "A lot",
         "steps": [
           "Very little: I'd strongly prefer stability",
           "Only small, calculated risks",
@@ -2115,8 +2115,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Very little: I don't want marriage to cost me my dreams",
-        "hi": "Whatever it takes: marriage and family come first",
+        "lo": "Very little",
+        "hi": "Whatever it takes",
         "steps": [
           "Very little: I don't want marriage to cost me my dreams",
           "Some, but I'd protect my main goals",
@@ -2261,8 +2261,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "notYet": true,
-        "lo": "Not important: I'm equally open to other ways of building a family",
-        "hi": "Essential to me",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not important: I'm equally open to other ways of building a family",
           "Slightly important",
@@ -2322,8 +2322,8 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Ephesians 1:5",
         "guessable": true,
         "notYet": true,
-        "lo": "Not open to it",
-        "hi": "I would actively want to adopt",
+        "lo": "Not open",
+        "hi": "I'd want to adopt",
         "steps": [
           "Not open to it",
           "Slightly open",
@@ -2397,8 +2397,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "notYet": true,
-        "lo": "Not important: we could live wherever works for us",
-        "hi": "A major priority: I'd want family nearby",
+        "lo": "Not important",
+        "hi": "A major priority",
         "steps": [
           "Not important: we could live wherever works for us",
           "Slightly important",
@@ -2556,8 +2556,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Not very important: understanding and discussion matter more",
-        "hi": "Extremely important: children should normally obey their parents promptly",
+        "lo": "Not very important",
+        "hi": "Extremely important",
         "steps": [
           "Not very important: understanding and discussion matter more",
           "Slightly important",
@@ -2588,8 +2588,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Not comfortable at all",
-        "hi": "Comfortable trusting their judgement",
+        "lo": "Not comfortable",
+        "hi": "Comfortable",
         "steps": [
           "Not comfortable at all",
           "Mostly uncomfortable",
@@ -2604,8 +2604,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Mostly let them choose for themselves",
-        "hi": "Very careful: actively restrict content that conflicts with our faith and values",
+        "lo": "Let them choose",
+        "hi": "Very careful",
         "steps": [
           "Mostly let them choose for themselves",
           "Light boundaries",
@@ -2636,8 +2636,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Not important: faith can mainly be taught at home and church",
-        "hi": "Essential: I'd want their education to actively support our faith",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not important: faith can mainly be taught at home and church",
           "Slightly important",
@@ -2667,8 +2667,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "notYet": true,
-        "lo": "Very little: teach them to judge wisely, and let them see most things",
-        "hi": "Very strongly: keep them away from many mainstream influences",
+        "lo": "Very little",
+        "hi": "Very strongly",
         "steps": [
           "Very little: teach them to judge wisely, and let them see most things",
           "Some limits",
@@ -2873,8 +2873,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "core": true,
-        "lo": "Not particularly important",
-        "hi": "Essential: I need strong physical attraction to my spouse",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not particularly important",
           "Slightly important",
@@ -3069,8 +3069,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 5,
         "guessable": true,
-        "lo": "I'd find those conversations very difficult",
-        "hi": "Completely open: nothing about our sex life should be difficult to discuss",
+        "lo": "Very difficult",
+        "hi": "Completely open",
         "steps": [
           "I'd find those conversations very difficult",
           "Somewhat uncomfortable",
@@ -3167,8 +3167,15 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "note": "The honest anxiety underneath the conviction. Someone can hold the conviction firmly and still rate this high — that combination is worth a conversation, not a score.",
         "guessable": true,
-        "lo": "No risk: it works itself out",
-        "hi": "A real risk I think about"
+        "lo": "No risk",
+        "hi": "A real risk",
+        "steps": [
+          "No risk: it works itself out",
+          "A small risk",
+          "Some risk",
+          "A big risk",
+          "A real risk I think about"
+        ]
       },
       {
         "id": "INT-001",
@@ -3387,8 +3394,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Not important: we'll spend time together naturally",
-        "hi": "Essential: we should make time even when we're busy",
+        "lo": "Not important",
+        "hi": "Essential",
         "steps": [
           "Not important: we'll spend time together naturally",
           "Slightly important",
@@ -3811,8 +3818,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "ref": "Ephesians 4:15",
         "guessable": true,
-        "lo": "Not important: I'd rather work things out myself",
-        "hi": "Extremely important: I want my partner to challenge me when needed",
+        "lo": "Not important",
+        "hi": "Extremely important",
         "steps": [
           "Not important: I'd rather work things out myself",
           "Slightly important",
@@ -3842,8 +3849,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "ref": "Proverbs 11:13",
         "guessable": true,
-        "lo": "Not comfortable at all: I'd keep it between us",
-        "hi": "Completely comfortable: I'd have no issue talking it through with others",
+        "lo": "Not comfortable",
+        "hi": "Completely comfortable",
         "steps": [
           "Not comfortable at all: I'd keep it between us",
           "Slightly comfortable: only with someone very close to us",
@@ -3950,8 +3957,8 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Genesis 2:24",
         "guessable": true,
         "core": true,
-        "lo": "Quite separate: our married life would mainly be our own",
-        "hi": "Deeply involved: I'd want family to be a major part of our everyday life",
+        "lo": "Quite separate",
+        "hi": "Deeply involved",
         "steps": [
           "Quite separate: our married life would mainly be our own",
           "Some involvement, but with plenty of space",
@@ -4094,7 +4101,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "lo": "Not willing",
-        "hi": "I would see it as our responsibility if needed",
+        "hi": "Our responsibility",
         "steps": [
           "Not willing",
           "Reluctant, except in extreme circumstances",
@@ -4109,8 +4116,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "Very little: our household has to come first",
-        "hi": "Whatever is reasonably necessary to honour and care for them",
+        "lo": "Very little",
+        "hi": "Whatever it takes",
         "steps": [
           "Very little: our household has to come first",
           "Some adjustment",
@@ -4125,8 +4132,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Not important: respect is enough",
-        "hi": "Extremely important: I'd want my spouse to feel like part of my family",
+        "lo": "Not important",
+        "hi": "Extremely important",
         "steps": [
           "Not important: respect is enough",
           "Slightly important",
@@ -4332,8 +4339,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "I love having things planned well in advance",
-        "hi": "I love deciding what to do in the moment",
+        "lo": "Planned ahead",
+        "hi": "In the moment",
         "steps": [
           "I love having things planned well in advance",
           "Mostly planned",
@@ -4376,7 +4383,7 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "I really don't care who wins",
+        "lo": "Don't care who wins",
         "hi": "I really want to win",
         "steps": [
           "I really don't care who wins",
@@ -4540,8 +4547,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "I'd love us to do most things together",
-        "hi": "I'd want us both to have lots of our own hobbies",
+        "lo": "Most things together",
+        "hi": "Lots of our own",
         "steps": [
           "I'd love us to do most things together",
           "Mostly together",
@@ -5086,8 +5093,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "Very relaxed: enjoyment and convenience matter most",
-        "hi": "Very health-conscious: nutrition would be a major priority",
+        "lo": "Very relaxed",
+        "hi": "Very health-conscious",
         "steps": [
           "Very relaxed: enjoyment and convenience matter most",
           "Mostly relaxed",
@@ -5102,8 +5109,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "Mostly relaxed: exercise wouldn't be a big part of our lifestyle",
-        "hi": "Fitness and physical activity would be a major part of our lifestyle",
+        "lo": "Mostly relaxed",
+        "hi": "Fitness is central",
         "steps": [
           "Mostly relaxed: exercise wouldn't be a big part of our lifestyle",
           "Lightly active",
@@ -5133,8 +5140,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "Not much: I like life busy and full",
-        "hi": "A lot: regular rest should be a real priority",
+        "lo": "Not much",
+        "hi": "A lot",
         "steps": [
           "Not much: I like life busy and full",
           "A little",
@@ -5189,7 +5196,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 1,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I'd want regular time together without phones",
+        "hi": "Essential",
         "steps": [
           "Not important",
           "Slightly important",
@@ -5623,8 +5630,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 1,
         "guessable": true,
-        "lo": "Very little: most of it is behind me",
-        "hi": "A lot: I know my past still shapes how I react",
+        "lo": "Very little",
+        "hi": "A lot",
         "steps": [
           "Very little: most of it is behind me",
           "A little",
@@ -6716,8 +6723,15 @@ export const DECKS: Record<string, Deck> = {
         "ref": "Ecclesiastes 3:1",
         "note": "Surfaces a pace mismatch directly; gap between answers is the signal.",
         "guessable": true,
-        "lo": "Too slow for me",
-        "hi": "Too fast for me  (3 = just right)"
+        "lo": "Too slow",
+        "hi": "Too fast",
+        "steps": [
+          "Too slow for me",
+          "A little slow",
+          "Just right",
+          "A little fast",
+          "Too fast for me"
+        ]
       },
       {
         "id": "US-061",
@@ -6806,8 +6820,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "Very uncomfortable: I'd keep giving it time",
-        "hi": "Very comfortable: if we're not moving towards marriage, I wouldn't want to waste our time",
+        "lo": "Very uncomfortable",
+        "hi": "Very comfortable",
         "steps": [
           "Very uncomfortable: I'd keep giving it time",
           "I'd find it hard to walk away",
@@ -7076,7 +7090,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 2,
         "guessable": true,
         "lo": "Mostly just us",
-        "hi": "Very connected: community would be a big part of our life",
+        "hi": "Very connected",
         "steps": [
           "Mostly just us",
           "A small circle, with plenty of privacy",
@@ -7249,8 +7263,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 2,
         "guessable": true,
-        "lo": "Very little: I expect most of my life to stay much the same",
-        "hi": "Completely: becoming one household should fundamentally change how I make decisions and live",
+        "lo": "Very little",
+        "hi": "Completely",
         "steps": [
           "Very little: I expect most of my life to stay much the same",
           "Some adjustments",
@@ -7265,8 +7279,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Very independent: I think each person should handle most of their own needs and responsibilities",
-        "hi": "Deeply interdependent: I would want us to function as one team across almost every area of life",
+        "lo": "Very independent",
+        "hi": "Fully one team",
         "steps": [
           "Very independent: I think each person should handle most of their own needs and responsibilities",
           "Mostly independent: support each other, but keep plenty separate",
@@ -7282,8 +7296,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 3,
         "guessable": true,
         "core": true,
-        "lo": "Very little: we should assume the person we marry is largely the person we'll live with",
-        "hi": "I expect marriage to change people significantly",
+        "lo": "Very little",
+        "hi": "Significantly",
         "steps": [
           "Very little: we should assume the person we marry is largely the person we'll live with",
           "Some small changes",
@@ -7593,8 +7607,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 4,
         "guessable": true,
-        "lo": "I have serious doubts",
-        "hi": "I'm completely sure: I'd choose you for life",
+        "lo": "Serious doubts",
+        "hi": "Completely sure",
         "steps": [
           "I have serious doubts",
           "I have some real doubts",
@@ -8032,8 +8046,8 @@ export const DECKS: Record<string, Deck> = {
         "type": "scale",
         "depth": 3,
         "guessable": true,
-        "lo": "Not particularly important",
-        "hi": "Extremely important: I believe Christians should have clear standards of modesty",
+        "lo": "Not important",
+        "hi": "Extremely important",
         "steps": [
           "Not particularly important",
           "Slightly important",
@@ -8078,7 +8092,7 @@ export const DECKS: Record<string, Deck> = {
         "depth": 5,
         "guessable": true,
         "lo": "Not important",
-        "hi": "Essential: I couldn't comfortably use a method that goes against my beliefs",
+        "hi": "Essential",
         "steps": [
           "Not important",
           "Slightly important",
@@ -8692,8 +8706,8 @@ export const DECKS: Record<string, Deck> = {
         "depth": 4,
         "guessable": true,
         "mirror": true,
-        "lo": "I feel like I give significantly more",
-        "hi": "I feel like you give significantly more",
+        "lo": "I give more",
+        "hi": "You give more",
         "steps": [
           "I feel like I give significantly more",
           "I feel like I give somewhat more",
@@ -8733,8 +8747,15 @@ export const DECKS: Record<string, Deck> = {
         "note": "The heaviest question in the category and correctly placed last. A low answer from either side is the whole point of an app called Aligned.",
         "guessable": true,
         "notYet": true,
-        "lo": "Less: I'm somehow smaller in it",
-        "hi": "More: I'm most myself in it"
+        "lo": "Less",
+        "hi": "More",
+        "steps": [
+          "Less: I'm somehow smaller in it",
+          "A little less",
+          "About the same",
+          "A little more",
+          "More: I'm most myself in it"
+        ]
       },
       {
         "id": "NOW-012",

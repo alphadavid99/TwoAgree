@@ -61,7 +61,7 @@ gamification, no "you vs them".
 | 18 | Your name | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/18-join-name.png) |  |
 | 19 | Consent | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/19-join-consent.png) |  |
 | 20 | Their turn to answer | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/20-join-questions.png) |  |
-| 21 | First reveal | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/21-join-reveal.png) | The warm-up reveal the invitee sees before making an account. |
+| 21 | First reveal | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/21-join-reveal.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/21-join-reveal.png) | The warm-up reveal the invitee sees before making an account. |
 | 22 | Make it yours (account) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/22-join-account.png) |  |
 | 23 | Where would you like to start? | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/23-join-menu.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/23-join-menu.png) |  |
 | 24 | Joining your partner’s session… | (not rendered) | Driven by the invite link in the page URL, which is module-level state shared by every frame (src/lib/invite.ts). Showing it here would put every other frame in "joining" too. |
@@ -164,13 +164,17 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 68 | Reveal: low agreement (no celebration) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/68-reveal-t0.png) | 27% agreed: plain |
-| 69 | Reveal: warm (claret room) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/69-reveal-t1.png) | 65% agreed |
-| 70 | Reveal: strong (petals) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/70-reveal-t2.png) | 76% agreed |
-| 71 | Reveal: grand bloom | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/71-reveal-t3.png) | 100% agreed |
-| 72 | Reveal: the couple’s first ever | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/72-reveal-first.png) | Adds the first-reveal line |
-| 73 | Every answer, side by side (review) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/73-reveal-answers.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/73-reveal-answers.png) |  |
-| 74 | Worth a closer look (flags) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/74-reveal-flags.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/74-reveal-flags.png) |  |
+| 68 | Reveal: 0–33%, the discovery stage | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/68-reveal-t0.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/68-reveal-t0.png) | Claret room, gold ripples. Line and verse for this range. |
+| 69 | Reveal: 34–60%, finding your rhythm | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/69-reveal-t1.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/69-reveal-t1.png) | Claret room, gold ripples. |
+| 70 | Reveal: 61–90%, a strong stride | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/70-reveal-t2.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/70-reveal-t2.png) | + falling petals |
+| 71 | Reveal: 91–99%, deeply in sync | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/71-reveal-t3.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/71-reveal-t3.png) | + gold rays and sparks |
+| 72 | Reveal: 100%, complete alignment | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/72-reveal-t4.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/72-reveal-t4.png) | Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line. |
+| 73 | Share your score: the preview | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/73-reveal-share.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/73-reveal-share.png) | Names are off until switched on. |
+| 74 | Share your score: names on | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/74-reveal-share-names.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/74-reveal-share-names.png) |  |
+| 75 | Reveal: the couple’s first ever | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/75-reveal-first.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/75-reveal-first.png) | Adds the first-reveal line |
+| 76 | A “Not yet” answer, shown and unscored | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/76-reveal-notyet.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/76-reveal-notyet.png) |  |
+| 77 | Every answer, side by side (review) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/77-reveal-answers.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/77-reveal-answers.png) |  |
+| 78 | Worth a closer look, inside the card | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/78-reveal-flags.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/78-reveal-flags.png) | The reason sits in the card. No banner. |
 
 ## 12 · Together (results)
 
@@ -178,10 +182,14 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 75 | Nothing revealed yet | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/75-together-empty.png) |  |
-| 76 | Where you agree | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/76-together-results.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/76-together-results.png) |  |
-| 77 | How scores work | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/77-together-howscores.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/77-together-howscores.png) | Opened from the scores; the same sheet opens from every reveal. |
-| 78 | Your agenda & discoveries | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/78-together-talk.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/78-together-talk.png) |  |
+| 79 | Nothing revealed yet | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/79-together-empty.png) |  |
+| 80 | Four sections: who, where you stand, talk about next, your conversations | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/80-together-results.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/80-together-results.png) | Nothing on the list yet, so Talk about next suggests where you were furthest apart. |
+| 81 | Talk it through: the guide | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/81-together-guide.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/81-together-guide.png) |  |
+| 82 | Progress card, with Agree ticked | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/82-together-sharecard.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/82-together-sharecard.png) | Opened from the share icon. The wordmark; the range line and verse ride only with the Agree score. |
+| 83 | How scores work | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/83-together-howscores.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/83-together-howscores.png) | Opened from the scores; the same sheet opens from every reveal. |
+| 84 | “Have you talked this through yet?” | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/84-together-talk.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/84-together-talk.png) | Judah ticked it first. Sarah is asked, never told who ticked. |
+| 85 | After you tick it | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/85-together-ticked.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/85-together-ticked.png) |  |
+| 86 | Talked about together, with the date and the note | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/86-together-talked.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/86-together-talked.png) |  |
 
 ## 13 · The Path
 
@@ -189,14 +197,14 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 79 | Path: checking your progress | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/79-path-loading.png) |  |
-| 80 | Path: intro | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/80-path-intro.png) |  |
-| 81 | Path: private intake | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/81-path-intake.png) |  |
-| 82 | Path: waiting for your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/82-path-waiting.png) |  |
-| 83 | Path: the map | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/83-path-map.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/83-path-map.png) |  |
-| 84 | Path: arriving at a waypoint | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/84-path-step-arrival.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/84-path-step-arrival.png) |  |
-| 85 | Path: a waypoint question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/85-path-step-play.png) |  |
-| 86 | Path: The Lookout (finale) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/86-path-lookout.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/86-path-lookout.png) |  |
+| 87 | Path: checking your progress | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/87-path-loading.png) |  |
+| 88 | Path: intro | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/88-path-intro.png) |  |
+| 89 | Path: private intake | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/89-path-intake.png) |  |
+| 90 | Path: waiting for your partner | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/90-path-waiting.png) |  |
+| 91 | Path: the map | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/91-path-map.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/91-path-map.png) |  |
+| 92 | Path: arriving at a waypoint | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/92-path-step-arrival.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/92-path-step-arrival.png) |  |
+| 93 | Path: a waypoint question | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/93-path-step-play.png) |  |
+| 94 | Path: The Lookout (finale) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/94-path-lookout.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/94-path-lookout.png) |  |
 
 ## 14 · Profile & settings
 
@@ -204,9 +212,9 @@ gamification, no "you vs them".
 
 | # | Screen | Image | Notes |
 |---|---|---|---|
-| 87 | Profile: loading | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/87-profile-loading.png) | Profile reads stall after the app shell has loaded. |
-| 88 | Profile & settings | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/88-profile-main.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/88-profile-main.png) |  |
-| 89 | Leave this session? (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/89-profile-leave.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/89-profile-leave.png) |  |
-| 90 | Delete account (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/90-profile-delete.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/90-profile-delete.png) |  |
-| 91 | Delete account: deleting… | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/91-profile-delete-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/91-profile-delete-busy.png) |  |
-| 92 | Data export: offline error | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/92-profile-export-error.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/92-profile-export-error.png) | The success state triggers a real file download, so it is not shown. |
+| 95 | Profile: loading | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/95-profile-loading.png) | Profile reads stall after the app shell has loaded. |
+| 96 | Profile & settings | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/96-profile-main.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/96-profile-main.png) |  |
+| 97 | Leave this session? (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/97-profile-leave.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/97-profile-leave.png) |  |
+| 98 | Delete account (confirm) | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/98-profile-delete.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/98-profile-delete.png) |  |
+| 99 | Delete account: deleting… | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/99-profile-delete-busy.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/99-profile-delete-busy.png) |  |
+| 100 | Data export: offline error | [screen](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/screens/100-profile-export-error.png) · [full length](https://raw.githubusercontent.com/alphadavid99/TwoAgree/claude/design-refresh/review/full/100-profile-export-error.png) | The success state triggers a real file download, so it is not shown. |

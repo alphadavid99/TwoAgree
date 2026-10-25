@@ -93,6 +93,9 @@ function guardWrite(r: Ref) {
 
 export async function update(r: Ref, patch: Record<string, Json>): Promise<void> {
   guardWrite(r)
+  // A multi-path update is denied if any path in it is (as in RTDB, where the
+  // whole update fails).
+  for (const k of Object.keys(patch)) guardWrite({ ...r, path: segs(`${r.path}/${k}`).join('/') })
   for (const [k, v] of Object.entries(patch)) writeAt(r.frame, `${r.path}/${k}`, v)
   notify(r.frame)
 }

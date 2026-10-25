@@ -4956,3 +4956,204 @@ textarea.input {
     opacity: 0.55;
   }
 }
+
+/* ---- The question screens (design refresh, item 12) ---- */
+.playscreen > .qcard {
+  margin-top: auto;
+}
+/* The main button is pinned: same place on every question, always in reach,
+   with a fixed-height slot under it for Skip / Not yet so it never moves. */
+.playscreen > .playfoot {
+  margin-top: 20px;
+  margin-bottom: 0;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 4px;
+  background: linear-gradient(to bottom, rgba(248, 233, 236, 0), var(--app-ground-bot) 24px);
+  z-index: 2;
+}
+.playfoot > .btn {
+  margin-top: 0;
+}
+.playfoot-slot {
+  min-height: 52px;
+}
+.playfoot-slot > .btn.ghost {
+  margin-top: 4px;
+}
+.qstatus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -10px 0 16px;
+  font-size: 0.875rem;
+  color: var(--ta-grey);
+  min-height: 20px;
+}
+.savestate {
+  font-weight: 600;
+}
+.savestate.saved {
+  color: var(--app-guess-ok);
+}
+.savestate.failed {
+  color: var(--kit-red);
+}
+.savefail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--kit-sel-bg);
+  border: 2px solid var(--kit-close-bg);
+  color: var(--kit-red);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.savefail > span {
+  flex: 1;
+}
+.savefail > .btn.out {
+  width: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  color: var(--kit-red);
+}
+.lastline {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0 4px 14px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--ta-grey);
+}
+.lastline svg {
+  flex: 0 0 auto;
+  color: var(--app-amber);
+}
+/* Scale labels: bigger and darker (item 12). */
+.playscreen .slabels,
+.slabels {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.guessask {
+  margin: 18px 0 14px;
+  font-weight: 600;
+}
+.guessname {
+  color: var(--app-amber);
+}
+.yousaid-change {
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  min-height: 48px;
+  min-width: 48px;
+}
+/* Importance: three plain choices, marked optional. */
+.impinline-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ta-ink);
+  margin-bottom: 10px;
+}
+.impinline-opt {
+  font-weight: 400;
+  color: var(--ta-grey);
+}
+.impbtns {
+  display: flex;
+  gap: 8px;
+}
+.impbtn {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 2px solid var(--kit-card-edge);
+  border-bottom-width: 4px;
+  border-bottom-color: var(--kit-card-base);
+  background: var(--ta-white);
+  color: var(--ta-ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.impbtn.on {
+  border-color: var(--ta-claret);
+  background: var(--kit-sel-bg);
+}
+/* Rank: a numbered list with up and down. */
+.rankhelp {
+  margin: 6px 0 12px;
+}
+.ranklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rankrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 12px;
+  cursor: default;
+}
+.rankrow.moved {
+  border-color: var(--app-honey);
+  border-bottom-color: var(--kit-honey-base);
+}
+.rankrow-t {
+  flex: 1;
+  min-width: 0;
+}
+.rankno.on {
+  background: var(--app-honey);
+  border-color: var(--app-honey);
+  color: var(--app-honey-ink);
+}
+.rankmove {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  border: 2px solid var(--kit-card-edge);
+  background: var(--ta-white);
+  color: var(--ta-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.rankmove[disabled] {
+  color: var(--app-track);
+  cursor: default;
+}
+/* The question card is the kit's thick card. */
+.qcard {
+  border: 2px solid var(--kit-card-edge);
+  border-bottom: 5px solid var(--kit-card-base);
+  border-radius: 20px;
+  box-shadow: none;
+  padding: 20px 16px;
+}
+.qcard.guesscard {
+  border-color: var(--app-honey-line);
+  border-bottom-color: var(--kit-card-base);
+}
+.rankrow-t {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}

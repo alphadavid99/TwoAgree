@@ -1,5 +1,5 @@
 {
-  "screens": 83,
+  "screens": 87,
   "results": [
     {
       "id": "kit-sheet",
@@ -314,6 +314,18 @@
       "contrast": []
     },
     {
+      "id": "play-mc-saved",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-save-failed",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
       "id": "play-guess",
       "small": [],
       "taps": [],
@@ -321,6 +333,18 @@
     },
     {
       "id": "play-rank",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-rank-moved",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-last",
       "small": [],
       "taps": [],
       "contrast": []

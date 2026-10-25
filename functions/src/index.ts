@@ -23,6 +23,7 @@ import {
   stepSlots,
   publishUpdates,
   type PrivateSpace,
+  type SharedDecks,
   type Slot,
 } from "./publish.js";
 
@@ -339,11 +340,16 @@ async function publishSlots(
     db.ref(`private/${hostUid}/${code}`).once("value"),
     db.ref(`private/${guestUid}/${code}`).once("value"),
   ]);
-  const updates = publishUpdates(code, slots, {
-    host: hostSnap.val() as PrivateSpace | null,
-    guest: guestSnap.val() as PrivateSpace | null,
-  });
-  // Idempotent: answers are write-once, so re-copying writes the same values.
+  const updates = publishUpdates(
+    code,
+    slots,
+    {
+      host: hostSnap.val() as PrivateSpace | null,
+      guest: guestSnap.val() as PrivateSpace | null,
+    },
+    s.decks as SharedDecks | undefined,
+  );
+  // Idempotent: an entry already shared is never rewritten (publish.ts).
   // The marker lands in the same atomic update as the answers it vouches for.
   updates[marker] = true;
   await db.ref().update(updates);

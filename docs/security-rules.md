@@ -35,8 +35,9 @@ This replaces the per-answer read gate that used to be staged here.
 
 - **Your answers, guesses and importance ratings** are written to
   `private/{uid}/{code}/decks/{slug}/{answers|guesses|importance}/{qid}`.
-  Only you can read or write it; each entry is write-once, scalar, and only for
-  a session you're a member of.
+  Only you can read or write it; entries are scalars, only for a session
+  you're a member of, and you can revise them until the part opens (the guess
+  screen's "change").
 - **The shared session holds no answers until a part opens.** No client can
   write `sessions/{code}/decks/{slug}/{answers|guesses|importance}` at all, nor
   the `published` / `pathPublished` stamps, nor create a session that already
@@ -44,7 +45,8 @@ This replaces the per-answer read gate that used to be staged here.
 - **A part opens when both "done" flags are in.** The `publishPart` callable
   (and the reveal-email trigger, once that's deployed) copies exactly that
   part's entries for both partners into the shared session and stamps it
-  published, in one atomic update. Each partner can only write their own role's
+  published, in one atomic update. An entry already in the shared session is
+  never rewritten, so once a part opens its answers can't change. Each partner can only write their own role's
   `done` / `started` / `pathDone` flag, so neither can open the other's answers
   early. Path steps use `pathDone/{step}/{role}` and `pathPublished/{step}`.
 - **Partner status** ("Judah hasn't started this part yet") reads only the

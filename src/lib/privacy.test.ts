@@ -21,10 +21,11 @@ describe("mergePrivate", () => {
     expect(m.decks![SLUG].started).toEqual({ 0: { host: true } });
   });
 
-  it("keeps published answers from both of you", () => {
+  it("keeps published answers from both of you, over any later private revision", () => {
     const shared = base({ [SLUG]: { answers: { [q0]: { host: 2, guest: 3 } }, done: { 0: { host: true, guest: true } }, published: { 0: true } } });
+    // Judah's private copy says 2, but 3 is what was shared: that's what both see.
     const m = mergePrivate(shared, { decks: { [SLUG]: { answers: { [q0]: 2, [q1]: 0 } } } }, "guest")!;
-    expect(m.decks![SLUG].answers![q0]).toEqual({ host: 2, guest: 2 });
+    expect(m.decks![SLUG].answers![q0]).toEqual({ host: 2, guest: 3 });
     expect(m.decks![SLUG].answers![q1]).toEqual({ guest: 0 });
     expect(levelComplete(m.decks![SLUG], 0, "guest")).toBe(true);
   });

@@ -205,17 +205,21 @@ export function writeTalked(
 
 // Finishing a part is when you agree to share it (recommendation 6). If your
 // partner has already finished, this is the second "done": the part opens.
+// `wait: false` returns once the flag is saved and publishes in the background
+// (the question flow moves on at once; useSession re-asks if it didn't land).
 export async function markLevelDone(
   code: string,
   slug: string,
   lvl: number,
   role: Role,
+  { wait = true }: { wait?: boolean } = {},
 ): Promise<void> {
   track("part finished", { deck: slug, part: lvl + 1 });
   await update(ref(db, `sessions/${code}/decks/${slug}/done/${lvl}`), {
     [role]: true,
   });
-  await requestPublish(code, { slug, level: lvl });
+  const published = requestPublish(code, { slug, level: lvl });
+  if (wait) await published;
 }
 
 // The Path's equivalent: you've walked every question of step `index`.

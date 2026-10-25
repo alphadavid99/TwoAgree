@@ -158,6 +158,23 @@ function playAt(pred: (q: Question) => boolean): { slug: string; level: number; 
     }
   return null
 }
+// Open the last question of the first part that ends on a question matching
+// `pred`, with everything before it answered.
+function playLast(pred: (q: Question) => boolean): { slug: string; level: number; deck: DeckData } | null {
+  for (const slug of ORDER)
+    for (let level = 0; level < nLevels(slug); level++) {
+      const qs = lvlQs(slug, level)
+      if (!pred(qs[qs.length - 1])) continue
+      const answers: NonNullable<DeckData['answers']> = {}
+      const guesses: NonNullable<DeckData['guesses']> = {}
+      qs.slice(0, -1).forEach((q, n) => {
+        answers[q.id] = { host: answerFor(q, 'host', n) }
+        if (q.guessable && q.type !== 'open') guesses[q.id] = { host: answerFor(q, 'guest', n) }
+      })
+      return { slug, level, deck: { answers, guesses } }
+    }
+  return null
+}
 const asksImportance = (q: Question) => q.type !== 'open' && (Number(q.depth) >= 4 || q.id.startsWith('DEAL-'))
 const playFrame = (
   id: string,
@@ -165,14 +182,15 @@ const playFrame = (
   at: ReturnType<typeof playAt>,
   steps: Step[] = [],
   note?: string,
+  extra: Partial<FrameDef> = {},
 ): FrameDef =>
   at
     ? {
-        id, flow: 'play', title, note, steps,
+        id, flow: 'play', title, note, steps, ...extra,
         db: dbWith((c) => sessionOf(seat(c))),
         render: (c) => (
           <PlayScreen code={c.code} slug={at.slug} level={at.level} role="host" deck={at.deck}
-            partnerName="Judah" onFinish={() => {}} onExit={() => {}} />
+            partnerName="Judah" names={{ host: HOST_NAME, guest: GUEST_NAME }} onFinish={() => {}} onExit={() => {}} />
         ),
       }
     : { id, flow: 'play', title, render: () => null, unrenderable: 'No such question type in the bank.' }
@@ -357,9 +375,13 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 9 · Answering ============
   playFrame('play-scale', 'Scale question', playAt((q) => q.type === 'scale' && !q.guessable) ?? playAt((q) => q.type === 'scale'), [{ sel: '.orb', nth: 3 }]),
-  playFrame('play-mc', 'Multiple choice', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 1 }]),
+  playFrame('play-mc', 'Multiple choice: which of you, by name', playAt((q) => q.type === 'mc' && !!q.who && !asksImportance(q)), [{ sel: '.opt', nth: 0 }]),
+  playFrame('play-mc-saved', 'After Next: the guess at once, ✓ Saved', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }]),
+  playFrame('play-save-failed', 'An answer didn’t save', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }], 'Write denied: you can keep going; Try again resends it.', { denyWrites: ['private'] }),
   playFrame('play-guess', 'Guess your partner', playAt((q) => q.type === 'mc' && !!q.guessable && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }, { sel: '.opt', nth: 1 }]),
   playFrame('play-rank', 'Rank question', playAt((q) => q.type === 'rank')),
+  playFrame('play-rank-moved', 'Rank: one moved down', playAt((q) => q.type === 'rank'), [{ click: /^Move .* down$/ }]),
+  playFrame('play-last', 'Last question of a part', playLast((q) => q.type === 'mc' && asksImportance(q)) ?? playLast((q) => q.type === 'mc'), [{ sel: '.opt', nth: 0 }, { click: /^Somewhat$/ }]),
   playFrame('play-open', 'Open question', playAt((q) => q.type === 'open'), [{ sel: 'textarea', nth: 0 }].slice(0, 0)),
   playFrame('play-importance', 'Answer + importance (tier-3 / deal-breaker)', playAt(asksImportance), [{ sel: '.opt', nth: 0 }]),
 

@@ -67,3 +67,16 @@ describe("publishUpdates", () => {
     expect(u).toEqual({});
   });
 });
+
+describe("a shared answer never changes", () => {
+  it("skips entries already in the shared session", () => {
+    const q = l0[0];
+    const u = publishUpdates(
+      "ABCD",
+      levelSlots(slug, 0)!,
+      { host: { decks: { [slug]: { answers: { [q]: 4 } } } }, guest: { decks: { [slug]: { answers: { [q]: 1 } } } } },
+      { [slug]: { answers: { [q]: { host: 2 } } } },
+    );
+    expect(u).toEqual({ [`sessions/ABCD/decks/${slug}/answers/${q}/guest`]: 1 });
+  });
+});

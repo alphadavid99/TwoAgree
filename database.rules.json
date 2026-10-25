@@ -32,7 +32,7 @@
             "$slug": {
               "$kind": {
                 "$qid": {
-                  ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()",
+                  ".write": "auth != null && auth.uid === $uid && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()",
                   ".validate": "($kind === 'answers' || $kind === 'guesses' || $kind === 'importance') && (newData.isString() || newData.isNumber())"
                 }
               }

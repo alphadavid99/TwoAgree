@@ -51,6 +51,8 @@ export async function publishInFrame(data: { code: string; slug?: string; level?
     for (const { slug, qid } of slots)
       for (const kind of PRIVATE_KINDS) {
         const v = mine?.[slug]?.[kind]?.[qid]
+        // Same rule as the server: a shared answer never changes.
+        if (s.decks?.[slug]?.[kind]?.[qid]?.[role] != null) continue
         if (v != null) patch[`sessions/${data.code}/decks/${slug}/${kind}/${qid}/${role}`] = v
       }
   }

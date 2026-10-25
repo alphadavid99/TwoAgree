@@ -23,6 +23,9 @@ export interface PrivateSpace {
   decks?: Record<string, Partial<Record<Kind, Record<string, unknown>>>>;
 }
 
+/** sessions/{code}/decks as read before publishing. */
+export type SharedDecks = Record<string, Partial<Record<Kind, Record<string, Partial<Record<Role, unknown>>>>>>;
+
 /** One question's place: its deck slug and the key it is stored under. */
 export interface Slot {
   slug: string;
@@ -56,12 +59,14 @@ export function stepSlots(step: { key?: string; qids?: string[] }): Slot[] {
  * The multi-path update that publishes `slots` for both partners. Only entries
  * that exist are copied (never a null or {} leaf, CLAUDE.md §6), and only for
  * the slots named — a private space holding answers to other parts keeps them.
- * Paths are relative to the database root.
+ * Paths are relative to the database root. Entries already in `shared` are
+ * left as they are.
  */
 export function publishUpdates(
   code: string,
   slots: Slot[],
   spaces: Partial<Record<Role, PrivateSpace | null>>,
+  shared?: SharedDecks,
 ): Record<string, unknown> {
   const updates: Record<string, unknown> = {};
   for (const role of ["host", "guest"] as Role[]) {
@@ -71,6 +76,10 @@ export function publishUpdates(
       for (const kind of KINDS) {
         const v = decks[slug]?.[kind]?.[qid];
         if (v === undefined || v === null || typeof v === "object") continue;
+        // Once an answer is shared it never changes. Your private copy can be
+        // revised until the part opens; after that it no longer moves the
+        // shared one, so both of you always see the same answer.
+        if (shared?.[slug]?.[kind]?.[qid]?.[role] != null) continue;
         updates[`sessions/${code}/decks/${slug}/${kind}/${qid}/${role}`] = v;
       }
     }

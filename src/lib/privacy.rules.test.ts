@@ -174,14 +174,33 @@ describe("an unopened part: nobody reads the other's answers", () => {
     await assertFails(set(ref(db, `private/${HOST}/${CODE}/decks/${SLUG}/answers/${part0[1].id}`), 1));
   });
 
-  it("an answer is write-once, and only for a session you're in", async () => {
+  it("you can revise your own answer until the part opens, only in a session you're in, only as a value", async () => {
+    // The guess screen's "change" (item 12): before the part opens, your
+    // private answer is yours to correct.
     await playPart(HOST, "host", 0, false);
     const db = asUser(HOST);
     const q = part0[0].id;
-    await assertFails(set(ref(db, `private/${HOST}/${CODE}/decks/${SLUG}/answers/${q}`), 4));
+    await assertSucceeds(set(ref(db, `private/${HOST}/${CODE}/decks/${SLUG}/answers/${q}`), 4));
     await assertFails(set(ref(db, `private/${HOST}/ELSE/decks/${SLUG}/answers/${q}`), 1));
     await assertFails(set(ref(db, `private/${HOST}/${CODE}/decks/${SLUG}/notes/${q}`), 1));
     await assertFails(set(ref(db, `private/${HOST}/${CODE}/decks/${SLUG}/answers/${part1[0].id}`), { x: 1 }));
+    // Still nobody else's to read.
+    await assertCannotSee(GUEST, HOST, "host", 0);
+  });
+
+  it("once a part opens, a shared answer never changes, whatever the private copy says", async () => {
+    await playPart(HOST, "host", 0, true);
+    await playPart(GUEST, "guest", 0, true);
+    await call(GUEST, { code: CODE, slug: SLUG, level: 0 });
+    const q = part0.find((x) => x.type !== "open")!.id;
+    const before = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/answers/${q}`))).val();
+    // Sarah revises her private copy after the reveal and asks to publish again.
+    await assertSucceeds(set(ref(asUser(HOST), `private/${HOST}/${CODE}/decks/${SLUG}/answers/${q}`), 4));
+    expect(await call(HOST, { code: CODE, slug: SLUG, level: 0 })).toEqual({ status: "published" });
+    const after = (await get(ref(asUser(GUEST), `sessions/${CODE}/decks/${SLUG}/answers/${q}`))).val();
+    expect(after).toEqual(before);
+    // And no client can write the shared copy directly.
+    await assertFails(set(ref(asUser(HOST), `sessions/${CODE}/decks/${SLUG}/answers/${q}/host`), 4));
   });
 
   it("a new session can't be created with answers, flags or a guest already in it", async () => {

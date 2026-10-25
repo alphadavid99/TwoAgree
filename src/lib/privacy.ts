@@ -47,6 +47,9 @@ export function mergePrivate(
       if (!entries) continue;
       const merged: Record<string, Record<string, unknown>> = { ...(d[kind] ?? {}) };
       for (const [qid, v] of Object.entries(entries)) {
+        // A published answer is the one both of you see; a later private
+        // revision never shows over it (it can't change the shared copy).
+        if (merged[qid]?.[role] != null) continue;
         merged[qid] = { ...(merged[qid] ?? {}), [role]: v };
       }
       (d as Record<string, unknown>)[kind] = merged;

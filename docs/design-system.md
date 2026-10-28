@@ -35,14 +35,15 @@ Build from these. Don't hand-style a one-off when a kit piece fits.
 | White button | Secondary. 2px `--ta-line` edge, 4px base. Claret text. |
 | Red button | Deleting only. `#A32D45`, white text. |
 | Text button | Grey, no fill, still 48px tall to tap. |
-| Answer row | At least 52px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
+| Answer row | At least 48px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
 | Filter pill | 40px. Selected: claret fill, white text. |
 | Importance control | A soft segmented control on a light track (A little · Somewhat · A lot). Selected: a white segment with a claret edge and a small spring, never a filled button. Optional; tapping the choice clears it. |
 | Badge | A label, not a button. Agreed `#FBEBDC`/`#8F5A12` · Close `#F7EEF1`/`#5C2E45` · Worth a chat claret/`#F3D58E`. |
 | Avatar | Host: white on claret. Guest: ink `#3A2410` on `#D9963A`. Each person keeps their colour on both phones. Side by side, never overlapping. |
-| Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. They shrink into a slim bar as you scroll on Review and Together. |
+| Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. On Review and Together they ease down as you scroll and a slim one-line bar slides in at the top with the same stretch of scroll; the bar never wraps (a long part name ends in "…"), never sits inside a card, and never widens the page. |
+| Same answer on a scale | When you both picked the same point, that point is one claret circle with the gold mark, not two avatars. |
 
-All buttons are 52px tall with radius 16. Pressing drops the base from 4px to 1px over 120ms.
+All buttons are 48px tall with radius 16. Pressing drops the base from 4px to 1px over 120ms.
 The colours above are tokens in `tokens.css` (`--kit-card-edge`, `--kit-card-base`, `--kit-claret-base`, `--kit-honey-base`, `--kit-red`, `--kit-sel-bg`, `--kit-close-bg`, `--kit-chat-ink`); use the tokens, not the hex.
 
 In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.out` (white), `.btn.red`, `.btn.ghost` (text), `.opt` (answer row), `.fpill` (filter pill, `aria-pressed`), `.kbadge.agreed|close|chat`, `<Avatar tone={toneFor(role)}>`, `<Loading>` (the loading rule), `<HowScores>` (sheet). Type: `.hero`, `.h1`, `.qtext`, `.ktitle`, `.helper`, `.eyebrow`. All of them are on one screen in the gallery: flow 0, "The kit".
@@ -51,16 +52,16 @@ In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.o
 
 | Use | Font |
 |---|---|
-| Hero | Fraunces 32/38 |
-| Screen heading | Fraunces 28/34 |
-| Question | Fraunces 19/26; 18/25 over 90 characters |
-| Card title | Fraunces 18/24 |
-| Body | Hanken Grotesk 16/24 |
-| Answers | Hanken Grotesk 15/22 |
-| Helper | Hanken 14/20. The floor for anything you need to read to act. |
+| Hero | Fraunces 26/32 |
+| Screen heading | Fraunces 22.5/28 |
+| Question | Fraunces 18/24; 17/23 over 90 characters |
+| Card title | Fraunces 17/22.5 |
+| Body | Hanken Grotesk 15/22 |
+| Answers | Hanken Grotesk 14/21 |
+| Helper | Hanken 13/19. The floor for anything you need to read to act. |
 | Label | Hanken 12, uppercase, tracked. Labels only, never instructions. |
 
-Sizes in rem, so the phone's text-size setting scales them. At large sizes, rows wrap and stack; nothing truncates.
+The root is 15px (`html { font-size: 93.75% }`, feedback 27: the app read big next to other apps). Sizes are in rem against that root, so the phone's text-size setting still scales them; the label floor is `0.8rem`, which is 12px. At large sizes, rows wrap and stack; nothing truncates.
 
 ## Layout and spacing
 

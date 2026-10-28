@@ -139,24 +139,23 @@ export default function ResultsScreen({
 
   return (
     <section>
+      {/* One centred stack, the share button tucked top right (feedback 26). */}
       <header className="tg-head">
         <span className="tg-avs">
-          <Avatar name={me.name} tone={me.tone} size={42} />
-          <Avatar name={them.name} tone={them.tone} size={42} />
+          <Avatar name={me.name} tone={me.tone} size={40} />
+          <Avatar name={them.name} tone={them.tone} size={40} />
         </span>
-        <span className="tg-title">
-          <span className="eyebrow">{t("Together", "Ensemble")}</span>
-          <h1 className="h1">
-            {firstOf(myName)} &amp; {firstOf(partnerName)}
-          </h1>
-        </span>
+        <span className="eyebrow">{t("Together", "Ensemble")}</span>
+        <h1 className="h1 tg-names">
+          {firstOf(myName)} &amp; {firstOf(partnerName)}
+        </h1>
         <button
           className="roundbtn tg-share"
           type="button"
           onClick={() => setSharing(true)}
           aria-label={t("Share your card", "Partager votre carte")}
         >
-          <IconShare size={22} />
+          <IconShare size={20} />
         </button>
       </header>
 

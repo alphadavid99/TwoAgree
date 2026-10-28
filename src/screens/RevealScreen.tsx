@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Mark } from "../brand/Mark";
 import { lvlQs, nLevels } from "../lib/leveling";
 import {
   overall,
@@ -788,7 +789,13 @@ function AnswerTrack({
           const here = [n === mv ? me : null, n === tvHere ? them : null].filter((x): x is Who => !!x);
           return (
             <span key={n} className="atrack-step">
-              {here.length ? (
+              {here.length === 2 ? (
+                // The same point: one circle wearing the mark, not two
+                // avatars jostling for one step (feedback 24).
+                <span className="atrack-both">
+                  <Mark height={20} colour="var(--ta-honey)" />
+                </span>
+              ) : here.length ? (
                 <span className="atrack-pair">
                   {here.map((w) => (
                     <Avatar key={w.tone} name={w.name} tone={w.tone} size={30} ring={false} />

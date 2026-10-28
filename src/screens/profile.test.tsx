@@ -62,7 +62,7 @@ describe("You", () => {
   it("Edit profile never claims Judah sees the photo or line", async () => {
     show();
     await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-    expect(screen.getByText(/Judah sees you as “Sarah” in this one/)).toBeTruthy();
+    expect(screen.getByText(/Judah sees this name too/)).toBeTruthy();
     expect(screen.getByText(/Judah doesn’t see them/)).toBeTruthy();
   });
 });

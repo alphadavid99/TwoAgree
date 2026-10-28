@@ -412,14 +412,10 @@ function EditProfile({
           setSaved(false);
         }}
       />
-      {/* The session keeps the name you had when it started, so say so: a
-          change here doesn't reach a session that's already running. */}
+      {/* The session follows your profile name (SessionApp keeps it in step). */}
       <p className="helper you-hint">
         {nameHere
-          ? t(
-              `Used when you start or join a session. ${cap(them)} sees you as “${nameHere}” in this one.`,
-              `Utilisé quand vous commencez ou rejoignez une session. ${cap(them)} vous voit comme « ${nameHere} » dans celle-ci.`,
-            )
+          ? t(`${cap(them)} sees this name too.`, `${cap(them)} voit aussi ce nom.`)
           : t("Used when you start or join a session.", "Utilisé quand vous commencez ou rejoignez une session.")}
       </p>
 

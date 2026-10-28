@@ -40,6 +40,36 @@ Admin** role in Google Cloud Console → IAM.)
 Functions + rules stay manual (they change rarely and deploying them from CI
 needs broader IAM). Deploy them with `firebase deploy --only functions,database`.
 
+## A function the app can't call
+
+A Cloud Function that CI deploys for the **first** time can't be made public by the deploy
+service account. The log says `Unable to set the invoker for the IAM policy on the following
+functions`, and the app's calls to it are refused. Later deploys skip it as unchanged, so it
+stays that way. The deploy's "Check every callable is reachable" step now fails and names it.
+
+This is what happened to `publishPart` (Oct 2026): every part both partners finished stayed
+"waiting", and Together stayed empty. Fix it once, as a project owner:
+
+1. Google Cloud console, project **twoagreeapp** → **Cloud Run** → **Services**.
+2. Open the function's service (lower case, e.g. **publishpart**, europe-west1) → **Security**.
+3. Under Authentication choose **Allow public access** (older consoles: "Allow unauthenticated
+   invocations") → **Save**.
+
+Or in Cloud Shell:
+
+```
+gcloud run services add-iam-policy-binding publishpart \
+  --region=europe-west1 --member=allUsers --role=roles/run.invoker --project=twoagreeapp
+```
+
+"Public" only means the request reaches the function: every callable still checks who is
+signed in and whether they belong to the session before doing anything.
+
+So the next new function deploys correctly by itself, give the deploy service account the
+**Cloud Run Admin** role (IAM & Admin → IAM → the deploy service account → Edit → Add role).
+
+Parts finished while it was broken publish on their own the next time either partner opens the app.
+
 ## Turning on the partner-finished email
 
 The reveal-ready email (`onLevelDone`) is the app's only notification. It ships

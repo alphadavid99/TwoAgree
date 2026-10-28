@@ -252,6 +252,39 @@ describe("sessions/{code}/live — asking your partner to start a part now", () 
   });
 });
 
+describe("sessions/{code}/members/{role}/name — your name follows your profile", () => {
+  const seedPair = async () =>
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await set(ref(ctx.database(), `sessions/${CODE}`), {
+        created: 1,
+        members: { host: { name: "Sarah", uid: HOST }, guest: { name: "Guest", uid: GUEST } },
+        uids: { [HOST]: true, [GUEST]: true },
+      });
+    });
+  const nameRef = (uid: string, role: string) => ref(env.authenticatedContext(uid).database(), `sessions/${CODE}/members/${role}/name`);
+
+  it("lets you rename yourself in the session", async () => {
+    await seedPair();
+    await assertSucceeds(set(nameRef(GUEST, "guest"), "Judah"));
+    await assertSucceeds(set(nameRef(HOST, "host"), "Sarah B"));
+  });
+
+  it("forbids renaming your partner, a stranger renaming anyone, or an empty or overlong name", async () => {
+    await seedPair();
+    await assertFails(set(nameRef(HOST, "guest"), "Not you"));
+    await assertFails(set(nameRef(STRANGER, "guest"), "Nope"));
+    await assertFails(set(nameRef(GUEST, "guest"), ""));
+    await assertFails(set(nameRef(GUEST, "guest"), "x".repeat(61)));
+  });
+
+  it("still forbids taking over a member slot", async () => {
+    await seedPair();
+    const db = env.authenticatedContext(STRANGER).database();
+    await assertFails(set(ref(db, `sessions/${CODE}/members/guest/uid`), STRANGER));
+    await assertFails(set(ref(env.authenticatedContext(GUEST).database(), `sessions/${CODE}/members/guest/uid`), STRANGER));
+  });
+});
+
 describe("invites — server-only", () => {
   it("denies all client access", async () => {
     const db = env.authenticatedContext(HOST).database();

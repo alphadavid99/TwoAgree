@@ -135,6 +135,30 @@ jobs:
             --non-interactive
           rm -f "$RUNNER_TEMP/sa.json"
 
+      # Every callable must be callable from the app. A NEW function that CI
+      # deploys can't be made public by the deploy account ("Unable to set the
+      # invoker for the IAM policy"); the deploy then still reads as done on a
+      # retry, and every call from a phone is refused. That is exactly how
+      # publishPart sat unusable after #46: every finished part stayed
+      # "waiting" for both partners. A public callable answers an unsigned
+      # request with 401/400; one that isn't public answers 403 from Google's
+      # front end, so 403 (or 404) fails the job and names the function.
+      - name: Check every callable is reachable
+        if: ${{ !cancelled() && steps.gate.outputs.ready == 'true' }}
+        run: |
+          bad=""
+          for fn in $(grep -oE '^export const [A-Za-z]+ = onCall' functions/src/index.ts | awk '{print $3}'); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -X POST \
+              -H 'Content-Type: application/json' -d '{"data":{}}' \
+              "https://europe-west1-twoagreeapp.cloudfunctions.net/$fn")
+            echo "$fn -> $code"
+            if [ "$code" = "403" ] || [ "$code" = "404" ]; then bad="$bad $fn($code)"; fi
+          done
+          if [ -n "$bad" ]; then
+            echo "::error title=Callable not reachable from the app::$bad. A project owner must allow public invocation (docs/DEPLOY.md, 'A function the app can't call')."
+            exit 1
+          fi
+
       # Say what actually shipped. A red job with no explanation is how "the
       # deploy failed" gets misread as "nothing went out" — or worse, how a
       # green-looking PR check gets misread as "it's live".

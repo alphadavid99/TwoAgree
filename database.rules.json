@@ -54,6 +54,14 @@
         "meetAt": {
           ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()"
         },
+        "members": {
+          "$role": {
+            "name": {
+              ".write": "auth != null && root.child('sessions/'+$code+'/members/'+$role+'/uid').val() === auth.uid",
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+            }
+          }
+        },
         "live": {
           ".write": "auth != null && root.child('sessions/'+$code+'/uids/'+auth.uid).exists()",
           ".validate": "newData.hasChildren(['from','slug','level','status','at']) && (newData.child('from').val() === 'host' || newData.child('from').val() === 'guest') && newData.child('slug').isString() && newData.child('slug').val().length > 0 && newData.child('slug').val().length <= 64 && newData.child('level').isNumber() && newData.child('at').isNumber() && newData.child('at').val() <= now && root.child('sessions/'+$code+'/members/guest/uid').exists() && (((newData.child('status').val() === 'asked' || newData.child('status').val() === 'cancelled') && root.child('sessions/'+$code+'/members/'+newData.child('from').val()+'/uid').val() === auth.uid) || ((newData.child('status').val() === 'accepted' || newData.child('status').val() === 'declined') && !(root.child('sessions/'+$code+'/members/'+newData.child('from').val()+'/uid').val() === auth.uid) && data.child('status').val() === 'asked' && data.child('from').val() === newData.child('from').val() && data.child('slug').val() === newData.child('slug').val() && data.child('level').val() === newData.child('level').val() && data.child('at').val() === newData.child('at').val()))",

@@ -162,10 +162,10 @@
        TAG      a tight label riding on a chip, row or badge.
      Sizes are rem so they scale with the reader's OS text size.
      ========================================================================== */
-  --eyebrow-size:     0.75rem;
+  --eyebrow-size:     0.8rem;      /* 12px on the 15px root */
   --eyebrow-track:    0.18em;
   --eyebrow-weight:   600;
-  --tag-size:         0.75rem;     /* 12px — the label floor (design system) */
+  --tag-size:         0.8rem;      /* 12px on the 15px root: the label floor (design system) */
   --tag-track:        0.05em;
   --tag-weight:       700;
 

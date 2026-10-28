@@ -60,6 +60,10 @@
 /* The blush ground — every white card floats on this warm field. */
 html {
   background: var(--app-ground-bot);
+  /* The type scale's root: 15px on the default (feedback 27, everything felt
+     big next to other apps). A percentage, so the reader's own text-size
+     setting still scales every rem size from here. */
+  font-size: 93.75%;
 }
 body {
   background: linear-gradient(170deg, var(--app-ground-top) 0%, var(--app-ground-bot) 100%) fixed;
@@ -81,8 +85,12 @@ body {
 .phone {
   max-width: 440px;
   margin: 0 auto;
+  /* Nothing may make the page wider than the screen: a sideways scroll knocks
+     the fixed tab bar off centre (feedback 25c). clip, not hidden, so sticky
+     headers inside still stick. */
+  overflow-x: clip;
   min-height: 100dvh;
-  padding: calc(env(safe-area-inset-top, 0px) + 28px) 22px
+  padding: calc(env(safe-area-inset-top, 0px) + 24px) 20px
     calc(env(safe-area-inset-bottom, 0px) + 36px);
 }
 
@@ -333,7 +341,7 @@ textarea.input {
 }
 .datahint {
   margin: 6px 2px 0;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1.45;
   color: var(--sub);
 }
@@ -391,7 +399,7 @@ textarea.input {
   margin-top: 10px;
   text-align: center;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   letter-spacing: 0.02em;
   color: var(--mut);
   opacity: 0.55;
@@ -871,7 +879,7 @@ textarea.input {
   background: none;
   border: none;
   font-family: inherit;
-  font-size: 0.75rem; /* 12px: the label floor */
+  font-size: 0.8rem; /* 12px: the label floor */
   font-weight: 600;
   color: var(--ta-grey);
   cursor: pointer;
@@ -1280,6 +1288,29 @@ textarea.input {
   border: 2px solid var(--ta-line);
   background: var(--ta-white);
 }
+/* You both landed here: one claret circle with the gold mark (gold sits on
+   claret only, brand rule 1). */
+.atrack-both {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ta-claret);
+  box-shadow: 0 0 0 3px var(--app-honey-bg);
+  animation: atrack-pop 0.42s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+@keyframes atrack-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atrack-both {
+    animation: none;
+  }
+}
 /* Side by side, never overlapping (design system: Avatar). */
 .atrack-pair {
   display: inline-flex;
@@ -1343,7 +1374,7 @@ textarea.input {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 /* Results: two colour-coded chips */
@@ -2430,7 +2461,7 @@ textarea.input {
 }
 .tile-lb {
   float: right;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   font-weight: 600;
   color: var(--sub);
   text-align: right;
@@ -2443,7 +2474,7 @@ textarea.input {
   color: var(--ink);
 }
 .tile-u {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--sub);
   margin-left: 4px;
 }
@@ -2484,7 +2515,7 @@ textarea.input {
 }
 .featmt {
   display: block;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-top: 1px;
 }
@@ -2542,7 +2573,7 @@ textarea.input {
   color: var(--ink);
 }
 .arow-t span {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--mut);
 }
 .pctpill {
@@ -2848,7 +2879,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--ta-white);
 }
@@ -2866,7 +2897,7 @@ textarea.input {
   margin: 8px 0 6px;
 }
 .cmp2-guess {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 .cmp2-guess b {
@@ -3010,7 +3041,7 @@ textarea.input {
   align-items: flex-end;
 }
 .ptick {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   white-space: nowrap;
 }
@@ -3461,7 +3492,7 @@ textarea.input {
 }
 .lk-txt i {
   font-style: normal;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--ce-sub);
 }
 .lk-pct {
@@ -3567,7 +3598,7 @@ textarea.input {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 30px;
+  font-size: 26px;
   line-height: 1.04;
   color: var(--ink);
 }
@@ -3584,7 +3615,7 @@ textarea.input {
 .pi-vref {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   letter-spacing: 0.05em;
   color: var(--sub);
 }
@@ -3650,7 +3681,7 @@ textarea.input {
   gap: 6px;
   margin: clamp(10px, 1.5vh, 16px) 8px 0;
   text-align: center;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   line-height: 1.4;
   color: var(--app-mut);
 }
@@ -3763,7 +3794,7 @@ textarea.input {
 }
 .readycard-eyebrow {
   display: block;
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--ce-gold);
@@ -3934,7 +3965,7 @@ textarea.input {
   flex-direction: column;
 }
 .pathcard-eyebrow {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--app-amber);
@@ -3948,7 +3979,7 @@ textarea.input {
   white-space: nowrap;
 }
 .pathcard-sub {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--sub);
   margin-top: 2px;
 }
@@ -4343,7 +4374,7 @@ textarea.input {
   color: var(--app-honey-ink);
 }
 .impinline-ends {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-left: 2px;
 }
@@ -4361,7 +4392,7 @@ textarea.input {
   cursor: pointer;
 }
 .yousaid-change {
-  font-size: 0.75rem; /* 12px: the label floor (design system) */
+  font-size: 0.8rem; /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--berry);
   text-decoration: underline;
@@ -4427,7 +4458,7 @@ textarea.input {
    grey: present and legible, never competing with the page. */
 .scripture-notice {
   margin: 28px 24px 8px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1.5;
   color: var(--ta-grey);
   text-align: center;
@@ -4514,8 +4545,8 @@ textarea.input {
 }
 .sheet-title {
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  line-height: 2.125rem;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
   color: var(--ta-ink);
   margin: 0;
 }
@@ -4525,7 +4556,7 @@ textarea.input {
   border: none;
   background: none;
   color: var(--ta-grey);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   line-height: 1;
   border-radius: 50%;
   cursor: pointer;
@@ -4559,7 +4590,7 @@ textarea.input {
   justify-content: space-between;
 }
 .kcard-label {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -4567,7 +4598,7 @@ textarea.input {
 }
 .kcard-num {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -4618,7 +4649,7 @@ textarea.input {
   color: var(--ta-blush);
 }
 .tile-basis {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1rem;
   color: var(--app-sub);
   margin: 6px 0 0;
@@ -4631,10 +4662,10 @@ textarea.input {
    already uses; new screens build from these and nothing else.
    ========================================================================== */
 
-/* Buttons: 52px tall, radius 16, a 4px base that drops to 1px when pressed. */
+/* Buttons: 48px tall, radius 16, a 4px base that drops to 1px when pressed. */
 .btn {
-  min-height: 52px;
-  padding: 14px 16px;
+  min-height: 48px;
+  padding: 12px 16px;
   border-radius: 16px;
   font-size: 1rem;
   font-weight: 600;
@@ -4833,18 +4864,18 @@ textarea.input {
    it: hero 32/38 · screen heading 28/34 · question 22/30 · card title 18/24 ·
    body 16/24 · helper 14/20 · label 12. */
 .h1 {
-  font-size: 1.75rem;
-  line-height: 2.125rem;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
 }
 .hero {
   font-family: var(--font-display);
-  font-size: 2rem;
-  line-height: 2.375rem;
+  font-size: 1.75rem;
+  line-height: 2.125rem;
   font-weight: 600;
 }
 .qtext {
-  font-size: 1.375rem;
-  line-height: 1.875rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 .ktitle {
   font-family: var(--font-display);
@@ -5266,8 +5297,8 @@ a.btn {
 /* ---- The reveal (design refresh, item 2) ---- */
 .reveal-line {
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  line-height: 2.125rem;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
   font-weight: 600;
   text-align: center;
   color: var(--ta-white);
@@ -5344,7 +5375,7 @@ a.btn {
   color: var(--ta-honey-raised);
 }
 .medal-pc {
-  font-size: 2rem;
+  font-size: 1.75rem;
   vertical-align: top;
 }
 .medal-lb {
@@ -5535,15 +5566,15 @@ a.btn {
   text-align: center;
 }
 .sring-none {
-  width: 124px;
-  height: 124px;
+  width: 108px;
+  height: 108px;
   border-radius: 50%;
   border: 12px solid var(--track);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ta-grey);
-  font-size: 1.5rem;
+  font-size: 1.375rem;
 }
 .sring-name {
   margin-top: 8px;
@@ -5566,38 +5597,53 @@ a.btn {
 .howlink.on-claret {
   color: var(--ta-blush);
 }
-/* The slim bar the rings shrink into, pinned with the filters. */
-.sbarwrap {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  margin: 0 -4px;
-  padding: 8px 4px 6px;
-  background: var(--app-ground-top);
+/* As the rings scroll away they ease down and fade (--q runs 0 to 1); the
+   unscaled .srings-zone around them is what gets measured... */
+.srings {
+  transform-origin: 50% 0;
+  transform: scale(calc(1 - 0.18 * var(--q, 0)));
+  opacity: calc(1 - 0.7 * var(--q, 0));
 }
+/* ...while the slim bar slides in over the same stretch (--p, 0 to 1). It is
+   fixed to the top of the phone column and never takes part in layout, so
+   nothing below jumps and nothing can widen the page (feedback 25). */
 .sbarslim {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 6;
+  width: min(100%, 440px);
+  padding: calc(env(safe-area-inset-top, 0px) + 8px) 20px 8px;
+  background: var(--app-ground-top);
+  box-shadow: 0 10px 14px -14px rgba(62, 26, 46, 0.4);
+  transform: translate(-50%, calc((var(--p, 0) - 1) * 110%));
+  opacity: var(--p, 0);
+  will-change: transform, opacity;
+}
+.sbarslim-card {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  min-width: 0;
   padding: 6px 14px;
-  margin-bottom: 6px;
   background: var(--ta-white);
   border: 2px solid var(--kit-card-edge);
-  border-bottom-width: 5px;
+  border-bottom-width: 4px;
   border-bottom-color: var(--kit-card-base);
-  border-radius: 20px;
+  border-radius: 999px;
 }
 .sbarslim svg text {
   display: none;
 }
 .sbarslim-item {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 6px;
 }
 .sbarslim-item b {
   font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--ta-ink);
 }
 .sbarslim-item i {
@@ -5607,14 +5653,29 @@ a.btn {
   text-transform: uppercase;
   color: var(--ta-grey);
 }
+/* One line, always: a long part name ends in "…" rather than wrapping the bar
+   tall or pushing it past the screen edge. */
 .sbarslim-label {
-  margin-left: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-align: right;
   font-size: var(--tag-size);
   letter-spacing: var(--tag-track);
   text-transform: uppercase;
   font-weight: 700;
   color: var(--app-amber);
+}
+/* The filters ride under the slim bar; `top` follows it in (set inline). */
+.sbarwrap {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 0 -4px;
+  padding: 8px 4px 6px;
+  background: var(--app-ground-top);
 }
 .fpills {
   display: flex;
@@ -5631,30 +5692,33 @@ a.btn {
 /* ---- Together (items 3 and 13): who, where you stand, talk about next,
    your conversations. ---- */
 .tg-head {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 20px 0 16px;
+  gap: 4px;
+  margin: 8px 0 20px;
+  padding: 0 52px;
+  text-align: center;
 }
 .tg-avs {
   display: inline-flex;
-  gap: 4px;
-  flex: 0 0 auto;
+  gap: 6px;
+  margin-bottom: 8px;
 }
-.tg-title {
-  flex: 1;
-  min-width: 0;
-}
-.tg-title .h1 {
-  margin: 2px 0 0;
-  font-size: 1.625rem;
+.tg-names {
+  margin: 0;
+  font-size: 1.375rem;
   line-height: 1.2;
+  text-wrap: balance;
   overflow-wrap: anywhere;
 }
 .tg-share {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
   border: 2px solid var(--kit-card-edge);
   border-bottom-width: 4px;
   border-bottom-color: var(--kit-card-base);
@@ -5692,7 +5756,7 @@ a.btn {
 .tg-h {
   margin: 28px 0 12px;
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   line-height: 1.3;
   color: var(--ta-ink);
 }
@@ -5860,7 +5924,7 @@ a.btn {
 }
 .tg-pct b {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   line-height: 1.1;
 }
 .tg-pct i {
@@ -5900,7 +5964,7 @@ a.btn {
   border: 2px dashed var(--ta-grey);
   display: grid;
   place-items: center;
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   color: var(--ta-grey);
 }
 /* The guide sheet (Talk it through). */
@@ -5953,8 +6017,8 @@ a.btn {
 
 /* ---- Home (item 10): one next step ---- */
 .greet {
-  font-size: 1.875rem;
-  margin: 18px 2px 16px;
+  font-size: 1.625rem;
+  margin: 14px 2px 14px;
 }
 .hscores {
   display: block;
@@ -6027,7 +6091,7 @@ a.btn {
 .hnext-nm {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   line-height: 1.2;
   color: var(--ta-ink);
 }
@@ -6084,7 +6148,7 @@ a.btn {
 }
 .hpath-nm {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   line-height: 1.25;
   color: var(--ta-ink);
 }
@@ -6218,7 +6282,7 @@ a.btn {
   background: var(--app-honey);
 }
 .cv-go {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   color: var(--ta-grey);
 }
 /* Choose a part */
@@ -6346,7 +6410,7 @@ a.btn {
   line-height: 1.2;
 }
 .pmap-stop span {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--ta-grey);
 }
 .pmap-stop.ahead {
@@ -6519,7 +6583,7 @@ a.btn {
 }
 .lk-card-pct {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   color: var(--ta-ink);
 }
 
@@ -6537,7 +6601,7 @@ a.btn {
 }
 .you-head-txt b {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -6637,7 +6701,7 @@ a.btn {
 .you-code .codebig {
   margin: 0;
   padding: 8px 18px;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
 }
 .you-code .btn.out {
   width: auto;
@@ -6745,9 +6809,9 @@ a.btn {
   line-height: 1.5625rem;
 }
 .opt {
-  min-height: 52px;
+  min-height: 48px;
   margin-top: 8px;
-  padding: 12px 44px 12px 16px;
+  padding: 11px 44px 11px 16px;
   font-size: 0.9375rem; /* 15px */
   line-height: 1.375rem;
 }
@@ -7200,7 +7264,7 @@ a.btn {
   flex: 1;
   max-width: 56px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--ta-grey);
 }
@@ -7219,7 +7283,7 @@ a.btn {
   border: 1.5px dashed var(--ta-claret-hover);
   background: var(--kit-close-bg);
   color: var(--ta-claret-hover);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.25rem;
   vertical-align: 1px;

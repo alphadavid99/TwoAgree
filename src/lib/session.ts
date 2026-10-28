@@ -3,7 +3,7 @@
 // written into the host/guest member slot so the host/guest scoring layer is
 // untouched. Every write is a scalar leaf (never {}) so RTDB auto-creates
 // intermediates — the hard-won gotcha in §6.
-import { ref, update, serverTimestamp } from "firebase/database";
+import { ref, set, update, serverTimestamp } from "firebase/database";
 import { auth, db } from "../firebase";
 import type { Role, AnswerValue } from "./scoring";
 import type { Stage } from "../types";
@@ -157,6 +157,13 @@ export function writeImportance(
   value: number,
 ): Promise<void> {
   return writePrivate(code, slug, "importance", qid, role, value);
+}
+
+// Your name in a session follows your profile (feedback: a partner who joined
+// as "Guest" and then set her name stayed "Guest"). Rules let you write only
+// your own name.
+export function renameInSession(code: string, role: Role, name: string): Promise<void> {
+  return set(ref(db, `sessions/${code}/members/${role}/name`), name);
 }
 
 // Take an importance rating back off, so a cleared choice is really gone

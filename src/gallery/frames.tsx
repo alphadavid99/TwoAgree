@@ -544,7 +544,7 @@ export const FRAMES: FrameDef[] = [
     steps: [{ wait: 150 }, { run: (rt) => rt.pending.push(`users/${rt.user!.uid}`) }, { click: 'You' }],
   }),
   inSession({ id: 'profile-main', flow: 'profile', title: 'You: a settings list', tab: 'You' }),
-  inSession({ id: 'profile-edit', flow: 'profile', title: 'Edit profile, on its own screen', note: 'Says plainly who sees what: Judah sees the name the session started with, never the photo or line.', tab: 'You', steps: [{ click: 'Edit' }] }),
+  inSession({ id: 'profile-edit', flow: 'profile', title: 'Edit profile, on its own screen', note: 'Says plainly who sees what: Judah sees your name (it follows your profile), never the photo or line.', tab: 'You', steps: [{ click: 'Edit' }] }),
   inSession({ id: 'profile-sees', flow: 'profile', title: 'What Judah sees', tab: 'You', steps: [{ click: /^What Judah sees/ }] }),
   inSession({ id: 'profile-close', flow: 'profile', title: 'Close this session on this device (sheet)', tab: 'You', steps: [{ click: /^Close this session on this device/ }] }),
   inSession({ id: 'profile-data', flow: 'profile', title: 'Download my data', tab: 'You', steps: [{ click: /^Download my data/ }] }),

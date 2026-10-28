@@ -14,6 +14,8 @@ import {
 } from "../lib/progress";
 import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
+import { useProfile } from "../hooks/useProfile";
+import { renameInSession } from "../lib/session";
 import {
   getLastDeck,
   setLastDeck,
@@ -170,6 +172,16 @@ function SessionScreens({
   const [flowReturn, setFlowReturn] = useState<Tab>("home");
   // The Path step being walked (full-screen, no bottom nav), or null on the map.
   const [pathStep, setPathStep] = useState<number | null>(null);
+
+  // Your name in the session follows your profile: someone who joined as
+  // "Guest" and then set their name shows as that name to their partner.
+  const { profile } = useProfile(user.uid);
+  const profileName = profile?.name?.trim();
+  const sessionName = role ? session?.members?.[role]?.name : undefined;
+  useEffect(() => {
+    if (!role || !profileName || profileName === sessionName) return;
+    void renameInSession(code, role, profileName).catch(() => {});
+  }, [code, role, profileName, sessionName]);
 
   // Doing a part together, now (lib/live.ts). A ticking clock while a request
   // is open, so it lapses on screen after ten minutes.

@@ -57,6 +57,22 @@ const dbWith =
   })
 
 // A joined couple part-way through: one deck mid-way, one finished, one part in.
+// For you: Judah's invite kept for later, a part he's finished, one under way,
+// and Sarah's own invite he hasn't started.
+const forYouSession = (c: Ctx): Session => {
+  const [a, b, d] = ORDER.filter((x) => nLevels(x) > 1 && ![MULTI, FULL, FIRST, SINGLE].includes(x))
+  return {
+    ...couple(c),
+    invites: {
+      [`${a}~0`]: { from: 'guest', slug: a, level: 0, status: 'later', at: Date.now() - 3_600_000 },
+      [`${d}~0`]: { from: 'host', slug: d, level: 0, status: 'asked', at: Date.now() - 600_000 },
+    },
+    decks: {
+      ...couple(c).decks,
+      [b]: { started: { 0: { guest: true }, 1: { guest: true } }, done: { 0: { guest: true } } },
+    },
+  }
+}
 const couple = (c: Ctx, o: Parameters<typeof sessionOf>[1] = {}) =>
   sessionOf(seat(c), {
     decks: { [MULTI]: fakeDeck(MULTI, 1, 4), [FULL]: fakeDeck(FULL, nLevels(FULL)), [FIRST]: fakeDeck(FIRST, 1) },
@@ -415,19 +431,32 @@ export const FRAMES: FrameDef[] = [
     steps: [{ wait: 300 }, { sel: '.pp-row', nth: 0 }, { wait: 300 }, { click: /Do it with Judah now/ }, { wait: 500 }],
   }),
   inSession({
-    id: 'live-request', flow: 'talk', title: 'Judah’s request, as Sarah sees it',
-    note: 'Over whatever screen is open. Start now goes straight into the part.',
-    session: (c) => ({ ...couple(c), live: { from: 'guest', slug: FRESH, level: 0, status: 'asked', at: Date.now() } }),
+    id: 'live-request', flow: 'talk', title: 'Judah’s invite, as Sarah sees it',
+    note: 'Over whatever screen is open. Not right now keeps it in For you.',
+    session: (c) => ({ ...couple(c), invites: { [`${FRESH}~0`]: { from: 'guest', slug: FRESH, level: 0, status: 'asked', at: Date.now() } } }),
     steps: [{ wait: 500 }],
   }),
   inSession({
-    id: 'live-declined', flow: 'talk', title: 'Judah can’t right now',
+    id: 'live-later', flow: 'talk', title: 'Judah will do it later',
     session: (c) => couple(c), openSlug: FRESH,
     steps: [
       { wait: 300 }, { sel: '.pp-row', nth: 0 }, { wait: 300 }, { click: /Do it with Judah now/ }, { wait: 300 },
-      { run: (rt) => { const s = (rt.db.sessions as Record<string, Session>)[CODE]; if (s.live) s.live = { ...s.live, status: 'declined' }; rt.listeners.forEach((fn) => fn()) } },
+      { run: (rt) => { const s = (rt.db.sessions as Record<string, Session>)[CODE]; const k = `${FRESH}~0`; if (s.invites?.[k]) s.invites[k] = { ...s.invites[k], status: 'later' }; rt.listeners.forEach((fn) => fn()) } },
       { wait: 400 },
     ],
+  }),
+
+  // For you (feedback 28): invites kept for later, and what Judah has started.
+  inSession({
+    id: 'foryou-talk', flow: 'talk', title: 'Talk: For you, at the top', tab: 'Talk',
+    note: 'An invite Sarah kept for later, a part Judah finished, one he is part way through.',
+    session: (c) => forYouSession(c),
+  }),
+  inSession({
+    id: 'foryou-sheet', flow: 'talk', title: 'The bell: For you',
+    note: 'The dot shows for anything new on this phone; opening the list clears it.',
+    session: (c) => forYouSession(c),
+    steps: [{ wait: 300 }, { sel: '.fy-bell' }, { wait: 400 }],
   }),
 
   // ============ 9 · Answering ============

@@ -1,5 +1,5 @@
 {
-  "screens": 118,
+  "screens": 119,
   "results": [
     {
       "id": "kit-sheet",
@@ -327,6 +327,12 @@
     },
     {
       "id": "talk-decks",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "talk-pickup",
       "small": [],
       "taps": [],
       "contrast": []

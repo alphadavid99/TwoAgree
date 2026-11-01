@@ -5653,21 +5653,6 @@ a.btn {
   text-transform: uppercase;
   color: var(--ta-grey);
 }
-/* One line, always: a long part name ends in "…" rather than wrapping the bar
-   tall or pushing it past the screen edge. */
-.sbarslim-label {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: right;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--app-amber);
-}
 /* The filters ride under the slim bar; `top` follows it in (set inline). */
 .sbarwrap {
   position: sticky;
@@ -5775,12 +5760,20 @@ a.btn {
   flex-direction: column;
   gap: 0;
 }
-.tg-next-tag {
-  align-self: flex-start;
-  white-space: normal;
+/* The deck as a label on the left, the verdict as a short badge on the
+   right; on a narrow screen the badge drops under, never squashed. */
+.tg-next-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+}
+.tg-next-head .kbadge {
+  white-space: nowrap;
 }
 .tg-next-q {
-  margin: 12px 0 4px;
+  margin: 10px 0 6px;
 }
 .tg-next .btn.pill {
   margin-top: 16px;
@@ -6043,24 +6036,28 @@ a.btn {
 .hscores-rings {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 12px;
 }
+/* Ring above, name and count centred under it: the count never wraps beside
+   a ring, at any text size, so the two halves always line up. */
 .softring {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
+  text-align: center;
 }
 .softring svg {
   flex: 0 0 auto;
 }
 .softring-none {
   flex: 0 0 auto;
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  border: 7px solid var(--track);
+  border: 6px solid var(--track);
   display: grid;
   place-items: center;
   color: var(--ta-grey);
@@ -6068,11 +6065,13 @@ a.btn {
 .softring-txt {
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-width: 0;
 }
 .softring-txt b {
   font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
+  line-height: 1.3;
   font-weight: 600;
 }
 .softring-txt span {
@@ -6192,17 +6191,31 @@ a.btn {
   margin-top: 14px;
 }
 .cv-pick-nm {
-  margin-top: 4px;
+  margin-top: 8px;
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  line-height: 1.25;
+  font-size: 1.125rem;
+  line-height: 1.3;
   color: var(--ta-ink);
 }
-.cv-pick .featprog {
-  margin: 12px 0 0;
+.cv-pick-part {
+  margin-top: 2px;
+}
+/* The bar with its count beside it, rather than a third line of text. */
+.cv-pick-prog {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  color: var(--ta-grey);
+  white-space: nowrap;
+}
+.cv-pick .cv-pick-prog .featprog {
+  flex: 1;
+  margin: 0;
 }
 .cv-pick .btn.pill {
-  margin-top: 14px;
+  margin-top: 16px;
 }
 .cv-group {
   display: flex;

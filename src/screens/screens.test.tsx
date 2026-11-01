@@ -108,7 +108,7 @@ describe("HomeScreen", () => {
     // The soft scores card: two rings, each named with its count.
     expect(screen.getByText("Agree")).toBeTruthy();
     expect(screen.getByText("Known")).toBeTruthy();
-    expect(screen.getByText(/^based on \d+ questions?$/)).toBeTruthy();
+    expect(screen.getByText(/^\d+ questions?$/)).toBeTruthy();
   });
 
   it("has one honey button: the next step (item 10)", () => {

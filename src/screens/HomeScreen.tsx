@@ -212,7 +212,7 @@ export default function HomeScreen({
             <span aria-hidden="true">&#8250;</span>
           </span>
           <span className="hscores-rings">
-            <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`based on ${basis} question${basis === 1 ? "" : "s"}`, `sur ${basis} question${basis === 1 ? "" : "s"}`)} />
+            <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)} />
             <SoftRing
               pct={knownPct}
               colour="var(--app-rose-soft)"
@@ -355,7 +355,7 @@ function SoftRing({ pct, colour, name, count }: { pct: number | null; colour: st
       {pct == null ? (
         <span className="softring-none" aria-hidden="true">—</span>
       ) : (
-        <PctRing pct={pct} size={72} sw={7} color={colour} label="" ink="var(--ta-ink)" />
+        <PctRing pct={pct} size={64} sw={6} color={colour} label="" ink="var(--ta-ink)" />
       )}
       <span className="softring-txt">
         <b>{name}</b>

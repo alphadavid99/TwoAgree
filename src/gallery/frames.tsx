@@ -391,6 +391,10 @@ export const FRAMES: FrameDef[] = [
 
   // ============ 8 · Talk ============
   inSession({ id: 'talk-decks', flow: 'talk', title: 'Conversations: pick up where you left off, then by subject', tab: 'Talk', lastDeck: MULTI }),
+  inSession({
+    id: 'talk-pickup', flow: 'talk', title: 'Conversations: pick up a part you are part way through', tab: 'Talk',
+    session: (c) => sessionOf(seat(c), { decks: { [FRESH]: fakeDeck(FRESH, 1, 3) } }), lastDeck: FRESH,
+  }),
   inSession({ id: 'talk-decks-deeper', flow: 'talk', title: 'Conversations: further down, Deeper and honest', tab: 'Talk', steps: [{ wait: 200 }, { scrollToText: /Deeper and honest/ }] }),
   inSession({
     id: 'talk-picker', flow: 'talk', title: 'Choose a part: named parts, both of you on each', note: 'Known and what surprised you sit underneath once a part is open.',

@@ -21,6 +21,8 @@ import {
   setLastDeck,
   getSeenReveals,
   markRevealSeen,
+  getSeenForYou,
+  setSeenForYou,
 } from "../lib/local";
 import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
@@ -44,7 +46,10 @@ import { Route } from "lucide-react";
 import { useLang, useT } from "../lib/i18n";
 import { track } from "../lib/observability";
 import { useScrollMemory } from "../lib/scroll";
-import { askLive, replyLive, incoming, isOpen, LIVE_OPEN_MS, type LiveRequest } from "../lib/live";
+import { sendInvite, replyInvite, inviteFor, invitesOf, isFresh, POPUP_MS, type Invite } from "../lib/invites";
+import { forYou } from "../lib/foryou";
+import { startedLevel } from "../lib/privacy";
+import { ForYouBell, ForYouList } from "../components/ForYou";
 import { Sheet } from "../components/Sheet";
 
 type Tab = "home" | "decks" | "path" | "results" | "profile";
@@ -183,24 +188,27 @@ function SessionScreens({
     void renameInSession(code, role, profileName).catch(() => {});
   }, [code, role, profileName, sessionName]);
 
-  // Doing a part together, now (lib/live.ts). A ticking clock while a request
-  // is open, so it lapses on screen after ten minutes.
-  const liveReq: LiveRequest | undefined = session?.live;
+  // Doing a part together (lib/invites.ts). A ticking clock while an invite is
+  // fresh, so its pop-up and the sender's waiting screen lapse on time.
+  const invites = invitesOf(session);
+  const anyAsked = invites.some((i) => i.status === "asked");
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    if (liveReq?.status !== "asked") return;
+    if (!anyAsked) return;
     setNow(Date.now());
     const id = setInterval(() => setNow(Date.now()), 15_000);
     return () => clearInterval(id);
-  }, [liveReq?.status, liveReq?.at]);
+  }, [anyAsked]);
+  // For you: what's there, and what this device has already shown.
+  const [seenFy, setSeenFy] = useState<string[]>(() => getSeenForYou(user.uid, code));
   // The part you've just picked, while you choose: with your partner, or alone.
   const [choose, setChoose] = useState<{ slug: string; level: number } | null>(null);
   // Asking: the moment your partner says yes, you're both in.
+  const myInvite = inviteFor(session, slug, level);
   useEffect(() => {
-    if (flow !== "liveWait" || !liveReq || !role) return;
-    if (liveReq.from === role && liveReq.status === "accepted" && liveReq.slug === slug && liveReq.level === level)
-      setFlow("play");
-  }, [flow, liveReq, role, slug, level]);
+    if (flow !== "liveWait" || !myInvite || !role) return;
+    if (myInvite.from === role && myInvite.status === "accepted") setFlow("play");
+  }, [flow, myInvite, role]);
   const [linkCopied, setLinkCopied] = useState(false);
 
   // Every screen opens at the top. Coming back out of a conversation returns
@@ -319,7 +327,7 @@ function SessionScreens({
     track("live asked", { deck: s });
     setChoose(null);
     setLinkCopied(false);
-    void askLive(code, role, s, lvl).catch(() => {});
+    void sendInvite(code, role, s, lvl).catch(() => {});
     setSlug(s);
     setLevel(lvl);
     setOpenReveal(false);
@@ -333,15 +341,44 @@ function SessionScreens({
   };
 
   // Saying yes to your partner's request: straight into that part.
-  const acceptLive = (r: LiveRequest) => {
+  const acceptLive = (r: Invite) => {
     track("live accepted", { deck: r.slug });
-    void replyLive(code, r, "accepted").catch(() => {});
+    void replyInvite(code, r, "accepted").catch(() => {});
     setPathStep(null);
     setChoose(null);
     if (!flow) setFlowReturn(tab);
     setSlug(r.slug);
     setLastDeck(user.uid, code, r.slug);
     enterFlow(levelDone(session.decks?.[r.slug], r.level, role) ? "review" : "play", r.slug, r.level, false);
+  };
+
+  // For you (feedback 28): invites, and what your partner has started or
+  // finished. Opening an item goes straight to that part; an invite starts it.
+  const fyItems = forYou(session, role, now);
+  const fyFresh = fyItems.some((i) => !seenFy.includes(i.id));
+  const fyProps = {
+    items: fyItems,
+    role,
+    partnerName,
+    label: partLabel,
+    onOpen: (s: string, lvl: number, invite?: Invite) => {
+      if (invite) {
+        acceptLive(invite);
+        return;
+      }
+      setPathStep(null);
+      setChoose(null);
+      if (!flow) setFlowReturn(tab);
+      setSlug(s);
+      setLastDeck(user.uid, code, s);
+      enterFlow(levelDone(session.decks?.[s], lvl, role) ? "review" : "play", s, lvl, false);
+    },
+    onTakeBack: (i: Invite) => void replyInvite(code, i, "cancelled").catch(() => {}),
+  };
+  const markFySeen = () => {
+    const ids = fyItems.map((i) => i.id);
+    setSeenFy(ids);
+    setSeenForYou(user.uid, code, ids);
   };
 
   // The link for when your partner's app isn't open: opening it shows them
@@ -373,8 +410,13 @@ function SessionScreens({
 
   // The sheets that can open over any screen: choosing how to start a part,
   // and your partner's request to start one now.
-  const req = liveReq;
-  const showIncoming = incoming(req, role, now);
+  // The pop-up: the freshest invite from your partner for a part you haven't
+  // begun. Not right now keeps it in For you.
+  const req = invites
+    .filter((i) => isFresh(i, role, now) && !startedLevel(session.decks?.[i.slug], i.level, role))
+    .sort((a, b) => b.at - a.at)[0];
+  const showIncoming = !!req;
+  const later = (i: Invite) => void replyInvite(code, i, "later").catch(() => {});
   const sheets = (
     <>
       {choose && !showIncoming && (
@@ -422,7 +464,7 @@ function SessionScreens({
             `${partnerFirst} wants to start ${partLabel(req.slug, req.level)} with you`,
             `${partnerFirst} veut commencer ${partLabel(req.slug, req.level)} avec vous`,
           )}
-          onClose={() => void replyLive(code, req, "declined").catch(() => {})}
+          onClose={() => later(req)}
         >
           <p className="sub livereq-text">
             {t(
@@ -433,9 +475,12 @@ function SessionScreens({
           <button className="btn pill" type="button" onClick={() => acceptLive(req)}>
             {t("Start now", "Commencer")}
           </button>
-          <button className="btn ghost" type="button" onClick={() => void replyLive(code, req, "declined").catch(() => {})}>
+          <button className="btn ghost" type="button" onClick={() => later(req)}>
             {t("Not right now", "Pas maintenant")}
           </button>
+          <p className="helper center livechoice-note">
+            {t("It stays in For you until you’re ready.", "Elle reste dans Pour vous jusqu’à ce que vous soyez prêt.")}
+          </p>
         </Sheet>
       )}
     </>
@@ -459,27 +504,19 @@ function SessionScreens({
 
     // Asking your partner to start this part now: waiting for their answer.
     if (flow === "liveWait") {
-      const r = liveReq && liveReq.from === role && liveReq.slug === slug && liveReq.level === level ? liveReq : null;
-      const state = !r
+      const r = myInvite && myInvite.from === role ? myInvite : null;
+      const state = !r || r.status === "cancelled"
         ? "lapsed"
-        : r.status === "declined"
-          ? "declined"
-          : r.status === "asked" && !isOpen(r, now)
+        : r.status === "later"
+          ? "later"
+          : r.status === "asked" && now - r.at >= POPUP_MS
             ? "lapsed"
-            : r.status === "cancelled"
-              ? "lapsed"
-              : "asking";
-      const cancel = () => {
-        if (r && r.status === "asked") void replyLive(code, r, "cancelled").catch(() => {});
-      };
+            : "asking";
+      // Leaving the waiting screen keeps the invite: it waits in your
+      // partner's For you, and in yours, where you can take it back.
       return (
         <section key={state} className="screen-enter">
-          <TopBar
-            onExit={() => {
-              cancel();
-              exitFlow();
-            }}
-          />
+          <TopBar onExit={exitFlow} />
           <div className="unlock">
             <div className={state === "asking" ? "liveglow" : "pair-apart"}>
               <span className="pair-apart">
@@ -503,34 +540,27 @@ function SessionScreens({
                     ? t("Link copied: paste it to them", "Lien copié : collez-le-lui")
                     : t(`Send ${partnerFirst} a link`, `Envoyer un lien à ${partnerFirst}`)}
                 </button>
-                <button
-                  className="btn ghost"
-                  type="button"
-                  onClick={() => {
-                    cancel();
-                    startAlone(slug, level);
-                  }}
-                >
+                <button className="btn ghost" type="button" onClick={() => startAlone(slug, level)}>
                   {t("Start on my own instead", "Commencer seul")}
                 </button>
                 <p className="helper center">
                   {t(
-                    `The request stays open for ${LIVE_OPEN_MS / 60000} minutes.`,
-                    `La demande reste ouverte ${LIVE_OPEN_MS / 60000} minutes.`,
+                    `If ${partnerFirst} isn’t free now, it waits in their For you.`,
+                    `Si ${partnerFirst} n’est pas libre, elle l’attend dans Pour vous.`,
                   )}
                 </p>
               </>
             ) : (
               <>
                 <h2 className="h1 center" style={{ fontSize: 26 }}>
-                  {state === "declined"
-                    ? t(`${partnerFirst} can’t right now`, `${partnerFirst} ne peut pas maintenant`)
+                  {state === "later"
+                    ? t(`${partnerFirst} will do it later`, `${partnerFirst} le fera plus tard`)
                     : t(`No answer from ${partnerFirst} yet`, `Pas encore de réponse de ${partnerFirst}`)}
                 </h2>
                 <p className="sub center" style={{ margin: "10px 24px 0" }}>
                   {t(
-                    `You can start it on your own, and ${partnerFirst} can do it whenever suits them.`,
-                    `Vous pouvez commencer seul, et ${partnerFirst} pourra le faire quand cela lui convient.`,
+                    `Your invite waits in ${partnerFirst}’s For you. You can start on your own now, or come back to it.`,
+                    `Votre invitation attend dans Pour vous de ${partnerFirst}. Vous pouvez commencer seul maintenant, ou y revenir.`,
                   )}
                 </p>
                 <button className="btn pill" type="button" onClick={() => startAlone(slug, level)}>
@@ -754,6 +784,12 @@ function SessionScreens({
               )}
             </div>
           )}
+          {/* For you, top right on every tab but You. */}
+          {tab !== "profile" && (
+            <div className="fy-bellslot">
+              <ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />
+            </div>
+          )}
           {/* keyed per tab so each pane rises in on switch */}
           <div key={tab} className="pane-in">
             {tab === "home" && (
@@ -771,7 +807,24 @@ function SessionScreens({
               />
             )}
             {tab === "decks" && (
-              <DecksScreen session={session} role={role} onPlay={openDeck} current={slug} />
+              <DecksScreen
+                session={session}
+                role={role}
+                onPlay={openDeck}
+                current={slug}
+                top={
+                  fyItems.length > 0 && (
+                    <section className="fy-talk" aria-label={t("For you", "Pour vous")}>
+                      <div className="cv-group">
+                        <h2>{t("For you", "Pour vous")}</h2>
+                      </div>
+                      <div className="card fy-card">
+                        <ForYouList {...fyProps} />
+                      </div>
+                    </section>
+                  )
+                }
+              />
             )}
             {PATH_ENABLED && tab === "path" && (
               <PathScreen

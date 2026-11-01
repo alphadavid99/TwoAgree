@@ -146,3 +146,24 @@ export function markReturning(): void {
 export function hasReturned(): boolean {
   return localStorage.getItem(RETURNING_KEY) === "1";
 }
+
+// What's in For you that this person has already looked at, so the bell only
+// shows its dot for something new. Per device, like the reveals above.
+const forYouKey = (uid: string, code: string) => `aligned_foryou_${uid}_${code}`;
+
+export function getSeenForYou(uid: string, code: string): string[] {
+  try {
+    const raw = localStorage.getItem(forYouKey(uid, code));
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function setSeenForYou(uid: string, code: string, ids: string[]): void {
+  try {
+    localStorage.setItem(forYouKey(uid, code), JSON.stringify(ids));
+  } catch {
+    // storage full or blocked: the dot just shows again next time
+  }
+}

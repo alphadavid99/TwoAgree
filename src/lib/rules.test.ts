@@ -200,7 +200,7 @@ describe("sessions/{code} — membership gating", () => {
   });
 });
 
-describe("sessions/{code}/live — asking your partner to start a part now", () => {
+describe("sessions/{code}/invites — inviting your partner to do a part together", () => {
   const seedPair = async () =>
     await env.withSecurityRulesDisabled(async (ctx) => {
       await set(ref(ctx.database(), `sessions/${CODE}`), {
@@ -210,45 +210,62 @@ describe("sessions/{code}/live — asking your partner to start a part now", () 
       });
     });
   const ask = { from: "host", slug: "home", level: 0, status: "asked", at: 1 };
-  const live = (uid: string) => ref(env.authenticatedContext(uid).database(), `sessions/${CODE}/live`);
+  const inv = (uid: string, key = "home~0") =>
+    ref(env.authenticatedContext(uid).database(), `sessions/${CODE}/invites/${key}`);
 
-  it("lets a partner ask, and the other partner say yes", async () => {
+  it("lets a partner invite, and the other start it", async () => {
     await seedPair();
-    await assertSucceeds(set(live(HOST), ask));
-    await assertSucceeds(set(live(GUEST), { ...ask, status: "accepted" }));
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertSucceeds(set(inv(GUEST), { ...ask, status: "accepted" }));
   });
 
-  it("lets the other partner say not now, and the asker cancel their own", async () => {
+  it("keeps an invite for later, which can still be started after", async () => {
     await seedPair();
-    await assertSucceeds(set(live(HOST), ask));
-    await assertSucceeds(set(live(GUEST), { ...ask, status: "declined" }));
-    await assertSucceeds(set(live(HOST), ask));
-    await assertSucceeds(set(live(HOST), { ...ask, status: "cancelled" }));
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertSucceeds(set(inv(GUEST), { ...ask, status: "later" }));
+    await assertSucceeds(set(inv(GUEST), { ...ask, status: "accepted" }));
   });
 
-  it("forbids asking in your partner's name, or answering your own request", async () => {
+  it("lets the sender take an invite back, or send it again", async () => {
     await seedPair();
-    await assertFails(set(live(GUEST), ask)); // guest posing as host
-    await assertSucceeds(set(live(HOST), ask));
-    await assertFails(set(live(HOST), { ...ask, status: "accepted" }));
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertSucceeds(set(inv(GUEST), { ...ask, status: "later" }));
+    await assertSucceeds(set(inv(HOST), { ...ask, status: "cancelled" }));
+    await assertSucceeds(set(inv(HOST), { ...ask, at: 2 }));
   });
 
-  it("forbids saying yes to a different part than was asked", async () => {
+  it("holds an invite per part, from either partner", async () => {
     await seedPair();
-    await assertSucceeds(set(live(HOST), ask));
-    await assertFails(set(live(GUEST), { ...ask, status: "accepted", slug: "faith" }));
-    await assertFails(set(live(GUEST), { ...ask, status: "accepted", level: 1 }));
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertSucceeds(set(inv(GUEST, "money~1"), { ...ask, from: "guest", slug: "money", level: 1 }));
   });
 
-  it("denies a stranger, a request before the partner has joined, and stray fields", async () => {
+  it("forbids inviting in your partner's name, or answering your own invite", async () => {
     await seedPair();
-    await assertFails(set(live(STRANGER), ask));
-    await assertFails(set(live(HOST), { ...ask, note: "hi" }));
-    await assertFails(set(live(HOST), { ...ask, at: Date.now() + 3_600_000 }));
+    await assertFails(set(inv(GUEST), ask)); // guest posing as host
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertFails(set(inv(HOST), { ...ask, status: "accepted" }));
+    await assertFails(set(inv(HOST), { ...ask, status: "later" }));
+  });
+
+  it("forbids starting a different part than was invited, or one taken back", async () => {
+    await seedPair();
+    await assertSucceeds(set(inv(HOST), ask));
+    await assertFails(set(inv(GUEST), { ...ask, status: "accepted", slug: "faith" }));
+    await assertFails(set(inv(GUEST), { ...ask, status: "accepted", level: 1 }));
+    await assertSucceeds(set(inv(HOST), { ...ask, status: "cancelled" }));
+    await assertFails(set(inv(GUEST), { ...ask, status: "accepted" }));
+  });
+
+  it("denies a stranger, an invite before the partner has joined, and stray fields", async () => {
+    await seedPair();
+    await assertFails(set(inv(STRANGER), ask));
+    await assertFails(set(inv(HOST), { ...ask, note: "hi" }));
+    await assertFails(set(inv(HOST), { ...ask, at: Date.now() + 3_600_000 }));
     await env.withSecurityRulesDisabled(async (ctx) => {
       await set(ref(ctx.database(), `sessions/${CODE}/members/guest`), null);
     });
-    await assertFails(set(live(HOST), ask));
+    await assertFails(set(inv(HOST), ask));
   });
 });
 

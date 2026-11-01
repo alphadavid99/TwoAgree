@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName, deckDepthWord } from "../lib/leveling";
 import { catComplete, curLevel, doneInLevel, levelComplete } from "../lib/progress";
@@ -18,12 +18,15 @@ export default function DecksScreen({
   role,
   onPlay,
   current,
+  top,
 }: {
   session: Session;
   role: Role;
   onPlay: (slug: string) => void;
   /** The conversation you were last in, for "Pick up where you left off". */
   current?: string;
+  /** For you: invites and your partner's progress, above everything else. */
+  top?: ReactNode;
 }) {
   const t = useT();
   const lang = useLang();
@@ -62,6 +65,7 @@ export default function DecksScreen({
         />
       </label>
 
+      {!q && top}
       {pick && !q && <PickUp slug={pick} session={session} role={role} onPlay={onPlay} />}
 
       {SUBJECTS.map((g) => {

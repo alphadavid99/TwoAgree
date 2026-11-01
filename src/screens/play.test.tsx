@@ -54,7 +54,7 @@ describe("moving on never waits for the server", () => {
     play(find((q) => q.type === "mc" && !!q.guessable && q.depth < 4));
     await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
     await userEvent.click(screen.getByRole("button", { name: /Next/ }));
-    expect(screen.getByText(/what will/i)).toBeTruthy();
+    expect(screen.getByText(/was asked:|’s answer/)).toBeTruthy();
     expect(screen.getByRole("status").textContent).toBe("Saving…");
     await act(async () => land());
     expect(screen.getByRole("status").textContent).toBe("✓ Saved");
@@ -66,7 +66,7 @@ describe("moving on never waits for the server", () => {
     await userEvent.click(screen.getAllByRole("button", { pressed: false })[1]);
     await userEvent.click(screen.getByRole("button", { name: /Next/ }));
     expect(await screen.findByText(/didn’t save/)).toBeTruthy();
-    expect(screen.getByText(/what will/i)).toBeTruthy(); // still moving on
+    expect(screen.getByText(/was asked:|’s answer/)).toBeTruthy(); // still moving on
     await userEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(writes.writeAnswer).toHaveBeenCalledTimes(2);
     expect(await screen.findByText("✓ Saved")).toBeTruthy();
@@ -107,9 +107,9 @@ describe("importance can be taken back off", () => {
     await userEvent.click(screen.getByRole("button", { name: "A lot" }));
     await userEvent.click(screen.getByRole("button", { name: /Next|Finish part/ }));
     // On to the next screen and back again (past the guess, if it has one).
-    if (screen.queryByText(/what will/i)) await userEvent.click(screen.getByRole("button", { name: "Skip" }));
+    if (screen.queryByText(/was asked:|’s answer/)) await userEvent.click(screen.getByRole("button", { name: "Skip" }));
     await back();
-    if (screen.queryByText(/what will/i)) await back();
+    if (screen.queryByText(/was asked:|’s answer/)) await back();
     expect(screen.getByText("Your earlier answer")).toBeTruthy();
     expect(screen.getByRole("button", { name: "A lot" }).getAttribute("aria-pressed")).toBe("true");
     await userEvent.click(screen.getByRole("button", { name: "A lot" }));
@@ -174,11 +174,11 @@ describe("going back (feedback 15)", () => {
 
     // Back lands on the guess with it still chosen…
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
-    expect(screen.getByText(/what will/i)).toBeTruthy();
+    expect(screen.getByText(/was asked:|’s answer/)).toBeTruthy();
     expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![2]);
     // …and again on the answer, still chosen.
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
-    expect(screen.queryByText(/what will/i)).toBeNull();
+    expect(screen.queryByText(/was asked:|’s answer/)).toBeNull();
     expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![1]);
 
     // Changing it saves the new answer.

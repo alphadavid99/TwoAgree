@@ -210,7 +210,7 @@ const playFrame = (
         db: dbWith((c) => sessionOf(seat(c))),
         render: (c) => (
           <PlayScreen code={c.code} slug={at.slug} level={at.level} role="host" deck={at.deck}
-            partnerName="Judah" names={{ host: HOST_NAME, guest: GUEST_NAME }} onFinish={() => {}} onExit={() => {}} />
+            partnerName="Judah" names={{ host: HOST_NAME, guest: GUEST_NAME, me: "host" }} onFinish={() => {}} onExit={() => {}} />
         ),
       }
     : { id, flow: 'play', title, render: () => null, unrenderable: 'No such question type in the bank.' }
@@ -465,6 +465,11 @@ export const FRAMES: FrameDef[] = [
   playFrame('play-mc-saved', 'After Next: the guess at once, ✓ Saved', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }]),
   playFrame('play-save-failed', 'An answer didn’t save', playAt((q) => q.type === 'mc' && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }], 'Write denied: you can keep going; Try again resends it.', { denyWrites: ['private'] }),
   playFrame('play-guess', 'Guess your partner', playAt((q) => q.type === 'mc' && !!q.guessable && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }, { sel: '.opt', nth: 1 }]),
+  playFrame('play-named', 'Your partner by name, never "me"', playAt((q) => q.id === 'US-053'), [{ sel: '.opt', nth: 0 }],
+    'The app asks, so Judah is named. In the choices, "I" is you.'),
+  playFrame('play-named-guess', 'The guess, about Judah, in Judah’s words', playAt((q) => q.id === 'US-053'), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }, { sel: '.opt', nth: 1 }],
+    'The question turns to Judah and the choices read as he would say them.'),
+  playFrame('play-was-asked', 'Guessing a plain question: Judah was asked', playAt((q) => q.type === 'mc' && !!q.guessable && !q.qGuess && !asksImportance(q)), [{ sel: '.opt', nth: 0 }, { click: /Next/ }, { wait: 250 }]),
   playFrame('play-rank', 'Rank question', playAt((q) => q.type === 'rank')),
   playFrame('play-rank-moved', 'Rank: two tapped, numbered in order', playAt((q) => q.type === 'rank'), [{ sel: '.rankpick', nth: 2 }, { sel: '.rankpick', nth: 0 }]),
   playFrame('play-last', 'Last question of a part', playLast((q) => q.type === 'mc' && asksImportance(q)) ?? playLast((q) => q.type === 'mc'), [{ sel: '.opt', nth: 0 }, { click: /^Somewhat$/ }]),

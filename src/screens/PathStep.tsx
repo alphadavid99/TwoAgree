@@ -106,6 +106,7 @@ export default function PathStep({
         names={{
           host: role === "host" ? myName : partnerName,
           guest: role === "guest" ? myName : partnerName,
+          me: role,
         }}
         onDone={() => setPhase("reveal")}
         onExit={onExit}

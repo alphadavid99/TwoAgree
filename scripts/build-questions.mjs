@@ -129,6 +129,22 @@ for (const q of questions) {
   } else if ("who" in q) bad("who must be true or absent");
   else if ([q.q, ...(q.opts ?? [])].some((o) => /\{[AB]\}/.test(o ?? ""))) bad("{A}/{B} placeholders need who: true");
 
+  // Who's speaking (feedback, Nov 2026): the app asks, so a question never
+  // talks as the partner ("understood by me?"). The partner is {P}, shown as
+  // their first name; in a choice, "I" is whoever's answer it is and {P} is
+  // their partner. A guessable question that names {P} needs qGuess: the same
+  // question about the partner, for the guess screen ("How well does {P} feel
+  // you understand them?").
+  const asker = /\b(I|me|my|mine|myself)\b|\bI['’](m|ve|d|ll)\b/;
+  if (asker.test(q.q)) bad(`question speaks as "I/me": name the partner with {P} instead`);
+  if ("qGuess" in q) {
+    if (typeof q.qGuess !== "string" || !q.qGuess.trim()) bad("qGuess must be text");
+    else if (q.guessable !== true) bad("qGuess is only for guessable questions");
+    else if (asker.test(q.qGuess)) bad(`qGuess speaks as "I/me": name the partner with {P} instead`);
+  } else if (q.guessable === true && q.q.includes("{P}")) bad("a guessable question that names {P} needs qGuess for the guess screen");
+  if (/\{(?![ABP]\})[^}]*\}/.test(JSON.stringify([q.q, q.qGuess, q.opts, q.lo, q.hi, q.steps])))
+    bad("unknown placeholder: only {P}, and {A}/{B} on who questions");
+
   // Mirrored scales: the ends are the two of you ("I give more" … "you give
   // more"), so the same answer from both means opposite things. An mc about
   // the two of you is a who question instead, stored by person.
@@ -147,7 +163,7 @@ for (const q of questions) {
     // End labels are short markers for the two ends; the full wording of each
     // point lives in steps (shown when that point is picked).
     for (const e of [q.lo, q.hi])
-      if (e && (e.length > 40 || /[:(]/.test(e))) bad(`scale end "${e}" must be a short label (40 characters, no colon or brackets); put the full wording in steps`);
+      if (e && (e.replace("{P}", "X".repeat(12)).length > 40 || /[:(]/.test(e))) bad(`scale end "${e}" must be a short label (40 characters, no colon or brackets); put the full wording in steps`);
     if (q.steps && (!Array.isArray(q.steps) || q.steps.length !== 5 || q.steps.some((x) => typeof x !== "string" || !x.trim())))
       bad("scale steps must be five non-empty labels, lo to hi");
   } else if (q.type === "open") {
@@ -202,6 +218,7 @@ const byDeck = new Map(
 
 function runtimeQuestion(q) {
   const o = { id: q.id, q: q.q, type: q.type, depth: q.depth };
+  if (q.qGuess) o.qGuess = q.qGuess;
   if (q.ref) o.ref = q.ref;
   if (q.note) o.note = q.note;
   if (q.guessable === true) o.guessable = true;
@@ -268,6 +285,8 @@ export interface Question {
   showIf?: string;
   /** Reserved: id of a complementary question (brief 2 §A3). */
   complementary?: string;
+  /** The question about your partner, for the guess screen ({P} = partner). */
+  qGuess?: string;
   /** Options for mc / rank questions. */
   opts?: string[];
   /** Scale endpoint labels (type === "scale"). */

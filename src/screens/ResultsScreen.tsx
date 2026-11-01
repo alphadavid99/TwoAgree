@@ -10,7 +10,7 @@ import { DeckIcon, IconShare } from "../components/icons";
 import { Avatar, toneFor } from "../components/Avatar";
 import { ScoreRings } from "../components/ScoreRings";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import { namesFor } from "../lib/who";
+import { asTheirs, namesFor } from "../lib/who";
 import { answerText } from "../lib/discoveries";
 import { shareTopic } from "../lib/shareTopic";
 import { revealWords } from "../lib/reveal";
@@ -363,7 +363,7 @@ function NextCard({
   onMore: () => void;
 }) {
   const q = localizeQuestion(s.q, lang, names);
-  const say = (v: unknown) => (v == null ? "—" : cap(answerText(q, v as never)));
+  const say = (v: unknown, as = q) => (v == null ? "—" : cap(answerText(as, v as never)));
   const verdict = landed(s, t);
   return (
     <div className="card tg-next">
@@ -375,7 +375,7 @@ function NextCard({
       {q.type !== "open" && q.type !== "rank" && (
         <>
           <Row who={me} text={say(s.r.me)} />
-          <Row who={them} text={say(s.r.th)} />
+          <Row who={them} text={say(s.r.th, asTheirs(q))} />
         </>
       )}
       {s.talkedByMe ? (

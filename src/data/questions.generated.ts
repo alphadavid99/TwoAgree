@@ -28,6 +28,8 @@ export interface Question {
   showIf?: string;
   /** Reserved: id of a complementary question (brief 2 §A3). */
   complementary?: string;
+  /** The question about your partner, for the guess screen ({P} = partner). */
+  qGuess?: string;
   /** Options for mc / rank questions. */
   opts?: string[];
   /** Scale endpoint labels (type === "scale"). */
@@ -620,7 +622,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FIN-033",
-        "q": "What debts, payments or money worries do you have right now that I should know about?",
+        "q": "What debts, payments or money worries do you have right now that {P} should know about?",
         "type": "open",
         "depth": 3,
         "ref": "Proverbs 22:7"
@@ -3449,9 +3451,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CONF-037",
-        "q": "When I make plans with friends, should you be invited by default?",
+        "q": "When {P} makes plans with friends, should you be invited by default?",
         "type": "mc",
         "depth": 3,
+        "qGuess": "When you make plans with friends, should {P} be invited by default?",
         "note": "Everyday default inclusion, distinct from CONF-007 (solo trips, a big event) and US-030 (whether you get along with them).",
         "guessable": true,
         "opts": [
@@ -3554,9 +3557,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CONF-036",
-        "q": "How readily would you ask me for help?",
+        "q": "How readily would you ask {P} for help?",
         "type": "scale",
         "depth": 3,
+        "qGuess": "How readily would {P} ask you for help?",
         "ref": "Galatians 6:2",
         "note": "SELF-023 lists prayer, Scripture, counsel and own judgment as what you lean on — but never the partner. This fills that gap.",
         "guessable": true,
@@ -3798,17 +3802,18 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "CONF-032",
-        "q": "When I go quiet to process something on my own, how does that land for you?",
+        "q": "When {P} goes quiet to process something alone, how does that land for you?",
         "type": "mc",
         "depth": 3,
+        "qGuess": "When you go quiet to process something alone, how does that land for {P}?",
         "note": "The reception side of a processing style. The bank asks how each person behaves (CONF-003, SELF-017) but never how their partner's behaviour lands on them.",
         "guessable": true,
         "core": true,
         "opts": [
-          "Fine: I'd give you space",
+          "Fine: I'd give {P} space",
           "I'd worry something was wrong",
           "I'd feel shut out",
-          "I'd keep asking until you talked"
+          "I'd keep asking until {P} talked"
         ]
       },
       {
@@ -4365,14 +4370,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-028",
-        "q": "How do you feel about surprises from me?",
+        "q": "How do you feel about surprises from {P}?",
         "type": "mc",
         "depth": 1,
+        "qGuess": "How does {P} feel about surprises from you?",
         "guessable": true,
         "opts": [
           "I love being surprised",
           "I like small surprises, but not big ones",
-          "I like surprises if you know it's something I'll enjoy",
+          "I like surprises if {P} knows it's something I'll enjoy",
           "I'd usually rather know what's happening",
           "It depends on the situation"
         ]
@@ -4634,9 +4640,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-007",
-        "q": "You've got a free evening and I'm busy. What's your instinct?",
+        "q": "You've got a free evening and {P} is busy. What's your instinct?",
         "type": "mc",
         "depth": 1,
+        "qGuess": "{P} has a free evening and you're busy. What's their instinct?",
         "note": "A light, behavioural read on independence that lands the same construct as the solitude scales without asking anyone to rate themselves.",
         "guessable": true,
         "opts": [
@@ -4692,9 +4699,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "FUN-018",
-        "q": "What's the most annoying thing you could do that I'd have to live with?",
+        "q": "What's the most annoying thing you could do that {P} would have to live with?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "What's the most annoying thing {P} could do that you'd have to live with?",
         "note": "Self-deprecating, funny, and genuinely predictive of daily friction. Asks for a flaw in a frame where naming one is the fun part.",
         "guessable": true,
         "opts": [
@@ -4971,24 +4979,26 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DEAL-010",
-        "q": "If I walked away from my faith after we married, what would you do?",
+        "q": "If {P} walked away from the faith after you married, what would you do?",
         "type": "mc",
         "depth": 5,
+        "qGuess": "If you walked away from the faith after you married, what would {P} do?",
         "ref": "1 Corinthians 7:12-14",
         "note": "The single biggest hole in the bank. DEAL-004 asks whether you'd marry an unbeliever; it never asks what happens if you marry a believer who stops being one. For this audience that is the most common catastrophe there is, and almost no couple discusses it because it feels like inviting it.",
         "guessable": true,
         "opts": [
           "It would change everything between us",
-          "I'd stay, and pray you back",
+          "I'd stay, and pray {P} back",
           "We'd find a way to live with it",
           "It wouldn't change how I feel about us"
         ]
       },
       {
         "id": "DEAL-017",
-        "q": "If you changed your mind about wanting children after we married, what would you expect of me?",
+        "q": "If you changed your mind about wanting children after you married, what would you expect of {P}?",
         "type": "mc",
         "depth": 5,
+        "qGuess": "If {P} changed their mind about children after you married, what would they expect of you?",
         "note": "DEAL-007 handles the mismatch you know about before the wedding. This is the one that appears afterwards, which is both more common and far more destructive.",
         "guessable": true,
         "opts": [
@@ -5000,9 +5010,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DEAL-019",
-        "q": "If I changed a lot physically over the years, how honest can you be about what that would do?",
+        "q": "If {P} changed a lot physically over the years, how honest can you be about what that would do?",
         "type": "scale",
         "depth": 5,
+        "qGuess": "If you changed a lot physically over the years, how honest can {P} be about what that would do?",
         "note": "INT-003 rates how much attraction matters now. This asks whether it's durable, which is the uncomfortable half and the half that gets tested by every pregnancy, illness and decade.",
         "guessable": true,
         "lo": "It genuinely wouldn't change anything",
@@ -5010,23 +5021,25 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "DEAL-014",
-        "q": "If something serious from my past surfaced years into our marriage, what would matter most to you?",
+        "q": "If something serious from {P}'s past came to light after you married, what would matter most?",
         "type": "mc",
         "depth": 5,
+        "qGuess": "If something serious from your past came to light after you married, what would matter most to {P}?",
         "note": "Pairs directly with PAST-002, which asks people to disclose. This asks what the reaction would be — and the reaction is what determines whether the disclosure ever happens at all.",
         "guessable": true,
         "opts": [
-          "That you told me yourself, even years late",
+          "That {P} told me, even years late",
           "What it actually was",
-          "Why you kept it from me",
+          "Why {P} kept it from me",
           "Nothing: the hiding would be the end of it"
         ]
       },
       {
         "id": "DEAL-013",
-        "q": "If you found out I'd hidden significant debt from you, what would that be?",
+        "q": "If you found out {P} had hidden significant debt from you, what would that be?",
         "type": "mc",
         "depth": 4,
+        "qGuess": "If {P} found out you'd hidden significant debt from them, what would that be?",
         "ref": "Ephesians 4:25",
         "note": "FIN-013 asks people to disclose their debt. This asks what happens if they didn't — and the framing puts the weight on the concealment rather than the number, which is where it belongs.",
         "guessable": true,
@@ -5252,9 +5265,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "HEALTH-021",
-        "q": "When you're ill or feeling unwell, how would you most want me to care for you?",
+        "q": "When you're ill or feeling unwell, how would you most want {P} to care for you?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "When {P} is ill or feeling unwell, how would they most want you to care for them?",
         "guessable": true,
         "opts": [
           "Give me space and let me rest",
@@ -5266,28 +5280,29 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "HEALTH-022",
-        "q": "If I'm ill, what do you think your natural instinct would be?",
+        "q": "If {P} is ill, what do you think your natural instinct would be?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "If you're ill, what do you think {P}'s natural instinct would be?",
         "guessable": true,
         "opts": [
-          "Take care of everything for me",
+          "Take care of everything for {P}",
           "Check in and offer help",
-          "Give me space unless I ask",
-          "Stay close and keep me company",
-          "I'd probably need you to tell me what you need"
+          "Give {P} space unless asked",
+          "Stay close and keep {P} company",
+          "I'd probably need {P} to tell me what they need"
         ]
       },
       {
         "id": "HEALTH-005",
-        "q": "Is there anything about your physical or mental health, past or present, that I should know?",
+        "q": "Is there anything about your physical or mental health, past or present, that {P} should know?",
         "type": "open",
         "depth": 4,
         "note": "A gentle prompt for important health disclosure."
       },
       {
         "id": "HEALTH-006",
-        "q": "Is there anything about alcohol, drugs or addictive habits, past or present, that I should know?",
+        "q": "Is there anything about alcohol, drugs or addictive habits, past or present, that {P} should know?",
         "type": "open",
         "depth": 4,
         "note": "Surfaces substance history honestly and without shame."
@@ -5442,7 +5457,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-018",
-        "q": "What would you most want me to understand about you and the people who raised you?",
+        "q": "What would you most want {P} to understand about you and the people who raised you?",
         "type": "open",
         "depth": 3
       },
@@ -5465,7 +5480,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-020",
-        "q": "What did those experiences teach you that you'd want to do differently with me?",
+        "q": "What did those experiences teach you that you'd want to do differently with {P}?",
         "type": "open",
         "depth": 3
       },
@@ -5681,13 +5696,13 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "PAST-034",
-        "q": "Is there anything in your past you fear would change how I see you, if I knew everything?",
+        "q": "Is there anything in your past you fear would change how {P} sees you, if they knew everything?",
         "type": "open",
         "depth": 5
       },
       {
         "id": "PAST-035",
-        "q": "Is there any abuse, violence, serious addiction or major trauma in your past I should know about?",
+        "q": "Any abuse, violence, serious addiction or major trauma in your past that {P} should know about?",
         "type": "open",
         "depth": 5
       }
@@ -6106,7 +6121,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "SELF-016",
-        "q": "What would the people who know you best say I should know about you?",
+        "q": "What would the people who know you best say {P} should know about you?",
         "type": "open",
         "depth": 2,
         "note": "Surfaces self-awareness through others' eyes."
@@ -6356,7 +6371,7 @@ export const DECKS: Record<string, Deck> = {
     "icon": "heart",
     "hook": {
       "id": "US-120",
-      "q": "How much would you need me to change from who I am today for you to be happy marrying me as I am?"
+      "q": "How much would {P} need to change from who they are today for you to be happy marrying them?"
     },
     "parts": [
       {
@@ -6527,16 +6542,17 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-008",
-        "q": "What about me makes you proud?",
+        "q": "What about {P} makes you proud?",
         "type": "open",
         "depth": 1,
         "note": "An affirming prompt that builds each other up."
       },
       {
         "id": "US-052",
-        "q": "When do you feel closest to me?",
+        "q": "When do you feel closest to {P}?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "When does {P} feel closest to you?",
         "guessable": true,
         "opts": [
           "When we're having a deep conversation",
@@ -6544,24 +6560,25 @@ export const DECKS: Record<string, Deck> = {
           "When we're physically affectionate",
           "When we're praying, worshipping or talking about God",
           "When we're doing something or going somewhere together",
-          "When you support me through something difficult",
+          "When {P} supports me through something difficult",
           "When we're simply relaxing together"
         ]
       },
       {
         "id": "US-053",
-        "q": "What makes you feel most emotionally chosen by me?",
+        "q": "What makes you feel most emotionally chosen by {P}?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "What makes {P} feel most emotionally chosen by you?",
         "guessable": true,
         "opts": [
-          "When you prioritise time with me",
-          "When you defend or stand up for me",
-          "When you ask what I'm thinking or feeling",
-          "When you show affection without me asking",
-          "When you include me in your plans and decisions",
-          "When you speak positively about me to other people",
-          "When you make sacrifices for me"
+          "When {P} prioritises time with me",
+          "When {P} defends or stands up for me",
+          "When {P} asks what I'm thinking or feeling",
+          "When {P} shows affection without me asking",
+          "When {P} includes me in their plans and decisions",
+          "When {P} speaks well of me to other people",
+          "When {P} makes sacrifices for me"
         ]
       },
       {
@@ -6576,7 +6593,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-016",
-        "q": "What's something you've always wanted to ask me but never have?",
+        "q": "What's something you've always wanted to ask {P} but never have?",
         "type": "open",
         "depth": 3,
         "note": "A trust-builder that opens hidden doors."
@@ -6832,9 +6849,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-067",
-        "q": "If you were sure you wanted to marry me, how long would you want to wait before getting engaged?",
+        "q": "If you were sure you wanted to marry {P}, how long would you want to wait before getting engaged?",
         "type": "mc",
         "depth": 2,
+        "qGuess": "If {P} were sure they wanted to marry you, how long would they want to wait to get engaged?",
         "guessable": true,
         "opts": [
           "Less than 6 months",
@@ -7047,9 +7065,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-030",
-        "q": "How important is it to you that I get along with your closest friends?",
+        "q": "How important is it to you that {P} gets along with your closest friends?",
         "type": "scale",
         "depth": 2,
+        "qGuess": "How important is it to {P} that you get along with their closest friends?",
         "note": "A practical compatibility check the friendship section raises.",
         "guessable": true,
         "lo": "Not important",
@@ -7158,9 +7177,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-088",
-        "q": "If your parents strongly believed you should not marry me, what would you do?",
+        "q": "If your parents strongly believed you should not marry {P}, what would you do?",
         "type": "mc",
         "depth": 3,
+        "qGuess": "If {P}'s parents strongly believed they should not marry you, what would {P} do?",
         "guessable": true,
         "opts": [
           "I would not marry without their blessing",
@@ -7216,9 +7236,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-092",
-        "q": "If someone close to you raised a concern about me or our relationship privately, would you tell me?",
+        "q": "If someone close to you privately raised a worry about {P} or you two, would you tell {P}?",
         "type": "mc",
         "depth": 3,
+        "qGuess": "If someone close to {P} raised a concern about you privately, would they tell you?",
         "guessable": true,
         "opts": [
           "Yes, straight away",
@@ -7603,9 +7624,10 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-114",
-        "q": "How sure are you right now that you'd want to marry me and stay committed for life?",
+        "q": "How sure are you right now that you'd want to marry {P} and stay committed for life?",
         "type": "scale",
         "depth": 4,
+        "qGuess": "How sure is {P} right now that they'd want to marry you and stay committed for life?",
         "guessable": true,
         "lo": "Serious doubts",
         "hi": "Completely sure",
@@ -7614,12 +7636,12 @@ export const DECKS: Record<string, Deck> = {
           "I have some real doubts",
           "I'm hopeful, but still deciding",
           "I'm very sure",
-          "I'm completely sure: I'd choose you for life"
+          "I'm completely sure: I'd choose {P} for life"
         ]
       },
       {
         "id": "US-115",
-        "q": "What, if anything, still gives you hesitation about choosing me for life?",
+        "q": "What, if anything, still gives you hesitation about choosing {P} for life?",
         "type": "open",
         "depth": 4
       },
@@ -7694,19 +7716,20 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-011",
-        "q": "What about me gives you pause or concern right now?",
+        "q": "What about {P} gives you pause or concern right now?",
         "type": "open",
         "depth": 5,
         "note": "Invites honest concerns while there's still time."
       },
       {
         "id": "US-120",
-        "q": "How much would you need me to change from who I am today for you to be happy marrying me as I am?",
+        "q": "How much would {P} need to change from who they are today for you to be happy marrying them?",
         "type": "mc",
         "depth": 5,
+        "qGuess": "How much would you need to change from who you are today for {P} to be happy marrying you?",
         "guessable": true,
         "opts": [
-          "Hardly at all: I can genuinely accept you as you are",
+          "Hardly at all: I can genuinely accept {P} as they are",
           "A few smaller things",
           "There are some meaningful areas I'd want to improve",
           "There are several significant things I'd need to change",
@@ -7715,7 +7738,7 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "US-121",
-        "q": "What's the main thing about me that you would hope changes over time?",
+        "q": "What's the main thing about {P} that you would hope changes over time?",
         "type": "open",
         "depth": 5
       }
@@ -8354,27 +8377,29 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "LOYAL-013",
-        "q": "Would you tell me if you found someone else attractive?",
+        "q": "Would you tell {P} if you found someone else attractive?",
         "type": "mc",
         "depth": 4,
+        "qGuess": "Would {P} tell you if they found someone else attractive?",
         "note": "The honesty-versus-kindness trade-off, made concrete. Both answers are defensible, which is what makes the gap worth talking about.",
         "guessable": true,
         "opts": [
           "Always",
           "Only if it was becoming a problem",
-          "No: it would only hurt you",
+          "No: it would only hurt {P}",
           "There'd be nothing to tell"
         ]
       },
       {
         "id": "LOYAL-015",
-        "q": "What would you do if you saw me being a bit too friendly with someone?",
+        "q": "What would you do if you saw {P} being a bit too friendly with someone?",
         "type": "mc",
         "depth": 4,
+        "qGuess": "What would {P} do if they saw you being a bit too friendly with someone?",
         "note": "The other side of the deck: not what you'd do, but what you'd do about me. 'Say nothing but feel it' is the answer that predicts trouble.",
         "guessable": true,
         "opts": [
-          "Say something to you that night",
+          "Say something to {P} that night",
           "Wait and see if it carried on",
           "Say nothing, but feel it",
           "Say something to them"
@@ -8678,14 +8703,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "NOW-003",
-        "q": "How well do you feel understood by me?",
+        "q": "How well do you feel {P} understands you?",
         "type": "scale",
         "depth": 4,
+        "qGuess": "How well does {P} feel you understand them?",
         "note": "Being known, rated by the one being known. A gap here — one feels deeply understood, the other doesn't — is one of the most useful reveals the app can produce.",
         "guessable": true,
         "notYet": true,
-        "lo": "You see the surface",
-        "hi": "You get the parts most people miss"
+        "lo": "Only sees the surface",
+        "hi": "Sees what most people miss"
       },
       {
         "id": "NOW-005",
@@ -8759,17 +8785,18 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "NOW-012",
-        "q": "When something's clearly bothering me but I won't say what, you:",
+        "q": "When {P} is clearly bothered but won't say why, what do you do?",
         "type": "mc",
         "depth": 3,
+        "qGuess": "When you're clearly bothered but won't say why, what does {P} do?",
         "note": "The pursue-or-withdraw move, as behaviour. Pairs with the CONF question about how my going quiet lands on you — that one is the feeling, this is what you actually do about it.",
         "guessable": true,
         "notYet": true,
         "opts": [
           "Ask directly",
-          "Create space and wait for me",
+          "Give {P} space and wait",
           "Feel frustrated but don't push",
-          "Assume it'll surface when I'm ready"
+          "Trust it'll come out when {P}'s ready"
         ]
       },
       {
@@ -8874,15 +8901,16 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "NOW-011",
-        "q": "When you sense I'm not fully present with you, what do you do?",
+        "q": "When you sense {P} isn't fully present with you, what do you do?",
         "type": "mc",
         "depth": 4,
+        "qGuess": "When {P} senses you're not fully present, what do they do?",
         "note": "Protest behaviour. The last two options are the start of a withdrawal spiral, and a couple who both pick them has found something no belief question would ever surface.",
         "guessable": true,
         "notYet": true,
         "opts": [
           "Say something: I'd rather name it",
-          "Give you space, you might need it",
+          "Give {P} space, they might need it",
           "Feel it but stay quiet, I don't want to be demanding",
           "Pull back too"
         ]
@@ -8951,14 +8979,15 @@ export const DECKS: Record<string, Deck> = {
       },
       {
         "id": "NOW-023",
-        "q": "When did you last feel far from me?",
+        "q": "When did you last feel far from {P}?",
         "type": "mc",
         "depth": 4,
+        "qGuess": "When did {P} last feel far from you?",
         "note": "Distance as an event with a date, not a rating. 'Recently, and it hasn't passed' is a live issue the app just found.",
         "guessable": true,
         "notYet": true,
         "opts": [
-          "I can't remember feeling far from you",
+          "I can't remember feeling far from {P}",
           "Recently, but it passed",
           "Recently, and it hasn't passed",
           "Often, honestly"

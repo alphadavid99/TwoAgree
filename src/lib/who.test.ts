@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { optValue, optIndex, optText, withNames, isLegacyWho } from "./who";
+import { optValue, optIndex, optText, withNames, isLegacyWho, asTheirs, forGuess } from "./who";
 import { scoreQ } from "./scoring";
 import { DECKS } from "./questions";
+
+const ALL = Object.values(DECKS).flatMap((d) => d.questions);
 
 const cooking = DECKS["in-the-home"].questions.find((q) => q.id === "HOME-012")!;
 const names = { host: "Sarah Placeholder", guest: "Judah" };
@@ -45,7 +47,9 @@ describe("which-of-you questions", () => {
 
   it("leaves every other question alone, including husband/wife roles", () => {
     const roles = DECKS["faith-worship-practice"].questions.find((q) => q.id === "FAITH-038")!;
-    expect(withNames(roles, names)).toBe(roles);
+    const named = withNames(roles, names);
+    expect(named.q).toBe(roles.q);
+    expect(named.opts).toEqual(roles.opts);
     expect(roles.opts![0]).toBe("The husband");
     expect(optValue(roles, 0)).toBe(0);
   });
@@ -57,6 +61,42 @@ describe("which-of-you questions", () => {
       // "Him" for God and "her role" in a belief about roles are fine; an option
       // that just names Him or Her as one of you is not.
       expect((q.opts ?? []).some((o) => /^(mostly |mainly )?(him|her)$/i.test(o.trim())), q.id).toBe(false);
+    }
+  });
+});
+
+describe("who's speaking: the partner is named, never 'me'", () => {
+  const names = { host: "Sarah Placeholder", guest: "Judah", me: "host" as const };
+  const ask = (id: string) => ALL.find((q) => q.id === id)!;
+
+  it("names your partner in the question, and in your own choices", () => {
+    const q = withNames(ask("US-053"), names);
+    expect(q.q).toBe("What makes you feel most emotionally chosen by Judah?");
+    expect(q.opts?.[0]).toBe("When Judah prioritises time with me");
+  });
+
+  it("shows your partner's answer in their words", () => {
+    const q = withNames(ask("US-053"), names);
+    expect(asTheirs(q).opts?.[0]).toBe("When Sarah prioritises time with me");
+    expect(asTheirs(q).q).toBe(q.q);
+  });
+
+  it("asks the guess about your partner, with their choices", () => {
+    const g = forGuess(withNames(ask("US-053"), names));
+    expect(g.q).toBe("What makes Judah feel most emotionally chosen by you?");
+    expect(g.opts?.[0]).toBe("When Sarah prioritises time with me");
+  });
+
+  it("reads the same from the other phone", () => {
+    const q = withNames(ask("NOW-003"), { ...names, me: "guest" });
+    expect(q.q).toBe("How well do you feel Sarah understands you?");
+    expect(forGuess(q).q).toBe("How well does Sarah feel you understand them?");
+  });
+
+  it("leaves no question in the bank speaking as I or me", () => {
+    for (const q of ALL) {
+      expect(/\b(I|me|my|mine)\b/.test(q.q), q.id).toBe(false);
+      if (q.guessable && q.q.includes("{P}")) expect(q.qGuess, q.id).toBeTruthy();
     }
   });
 });

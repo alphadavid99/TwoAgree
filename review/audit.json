@@ -1,5 +1,5 @@
 {
-  "screens": 121,
+  "screens": 124,
   "results": [
     {
       "id": "kit-sheet",
@@ -411,6 +411,24 @@
     },
     {
       "id": "play-guess",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-named",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-named-guess",
+      "small": [],
+      "taps": [],
+      "contrast": []
+    },
+    {
+      "id": "play-was-asked",
       "small": [],
       "taps": [],
       "contrast": []

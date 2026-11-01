@@ -17,7 +17,7 @@
 import { DECKS, ORDER } from "./questions";
 import { deckName } from "./questions.fr";
 import { questionOf, AT_TABLE_SLUG, stepMeta } from "./path";
-import { optText, withNames, type Names } from "./who";
+import { asTheirs, optText, withNames, type Names } from "./who";
 import type { AnswerValue } from "./scoring";
 import { INTAKE } from "../data/path.generated";
 import type { Lang } from "./i18n";
@@ -65,10 +65,13 @@ const date = (ms?: number): string =>
   ms ? new Date(ms).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) : "—";
 
 // A stored answer back into the words the person actually saw ("which of
-// you" options with the two names filled in).
-function answerText(qid: string, v: unknown, names?: Names): string {
+// you" options and the partner's name filled in). A guess is at the
+// partner's answer, so it reads in their words.
+const NO_NAMES: Names = { host: "", guest: "" };
+function answerText(qid: string, v: unknown, names?: Names, guess = false): string {
   const raw = questionOf(qid);
-  const q = raw && names ? withNames(raw, names) : raw;
+  const named = raw ? withNames(raw, names ?? NO_NAMES) : raw;
+  const q = named && guess ? asTheirs(named) : named;
   if (v == null) return "—";
   if (!q) return String(v);
   if (q.type === "scale") {
@@ -169,7 +172,7 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
     const you = data.profile?.name ?? T("You", "Vous");
     const them = s.partnerName ?? T("Your partner", "Votre partenaire");
     const names: Names | undefined = role
-      ? ({ [role]: you, [role === "host" ? "guest" : "host"]: them } as Names)
+      ? ({ [role]: you, [role === "host" ? "guest" : "host"]: them, me: role } as Names)
       : undefined;
     const partner = s.partnerName;
     out.push(`<h3>${T("Session", "Session")} ${esc(code)}</h3>`);
@@ -207,9 +210,9 @@ export function renderReadableExport(data: ExportPayload, lang: Lang = "en"): st
         const imp = deck.importance?.[q.id];
         if (mine == null && guess == null && imp == null) continue;
         rows.push(
-          `<tr><td>${esc(q.q)}</td><td>${esc(answerText(q.id, mine, names))}${
+          `<tr><td>${esc(withNames(q, names ?? NO_NAMES).q)}</td><td>${esc(answerText(q.id, mine, names))}${
             imp != null ? `<span class="q-src">${T("matters", "importance")} ${esc(imp)}/5</span>` : ""
-          }</td><td>${guess == null ? "—" : esc(answerText(q.id, guess, names))}</td></tr>`,
+          }</td><td>${guess == null ? "—" : esc(answerText(q.id, guess, names, true))}</td></tr>`,
         );
       }
       if (!rows.length) continue;

@@ -254,6 +254,7 @@ function SessionScreens({
   const names = {
     host: role === "host" ? myName : partnerName,
     guest: role === "guest" ? myName : partnerName,
+    me: role,
   };
 
   // Leave the play/reveal flow, returning to whichever tab it was opened from.

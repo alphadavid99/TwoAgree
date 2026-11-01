@@ -38,7 +38,8 @@ export function optText(q: Question, v: AnswerValue | null | undefined): string 
   return i == null ? undefined : q.opts?.[i];
 }
 
-export type Names = Record<Role, string>;
+/** Both first names by role, and whose phone this is (for {P}). */
+export type Names = Record<Role, string> & { me?: Role };
 
 /** Both names by role, from the session's members and the viewer's own role. */
 export function namesFor(
@@ -51,23 +52,61 @@ export function namesFor(
   return {
     [role]: members?.[role]?.name ?? myName,
     [other]: members?.[other]?.name ?? partnerName,
+    me: role,
   } as Names;
 }
 
 const first = (n: string) => n.trim().split(/\s+/)[0] || n;
+const otherOf = (r: Role): Role => (r === "host" ? "guest" : "host");
 
-/** The question with {A}/{B} replaced by the two first names. */
-export function withNames(q: Question, names: Names): Question {
-  if (!isWho(q) || !q.opts) return q;
-  // A placeholder can open the option ("{A}"), so a fallback like "your
-  // partner" is capitalised there.
-  const fill = (o: string, key: string, name: string) =>
-    o.replace(key, o.startsWith(key) ? name.charAt(0).toUpperCase() + name.slice(1) : name);
-  return {
+// A placeholder can open a line ("{P} sees the surface"), so a fallback like
+// "your partner" is capitalised there.
+const fill = (o: string, key: string, name: string) => {
+  const r = o.split(key).join(name);
+  return o.startsWith(key) ? r.charAt(0).toUpperCase() + r.slice(1) : r;
+};
+
+/**
+ * The question with its names filled in (who's speaking, Nov 2026).
+ *
+ * In the question, {P} is the viewer's partner: "How well do you feel Judah
+ * understands you?". In a choice, "I" is whoever's answer it is and {P} is
+ * their partner, so the same choice reads "When Judah makes time for me" as
+ * yours and "When Sarah makes time for me" as Judah's. `owner` is whose answer
+ * the choices are (the viewer by default); `asTheirs` gives the other one.
+ * {A}/{B} on "which of you" questions are the host and the guest, the same on
+ * both phones.
+ */
+export function withNames(q: Question, names: Names, owner?: Role): Question {
+  const me = names.me ?? "host";
+  const whose = owner ?? me;
+  const partnerOf = (r: Role) => (names.me ? first(names[otherOf(r)]) : "your partner");
+  const inQ = (x: string) => fill(x, "{P}", partnerOf(me));
+  const inA = (x: string) => fill(x, "{P}", partnerOf(whose));
+  const who = (x: string) => (isWho(q) ? fill(fill(x, "{A}", first(names.host)), "{B}", first(names.guest)) : x);
+  const out: Question = {
     ...q,
-    opts: q.opts.map((o) => fill(fill(o, "{A}", first(names.host)), "{B}", first(names.guest))),
+    q: inQ(q.q),
+    ...(q.qGuess ? { qGuess: inQ(q.qGuess) } : {}),
+    ...(q.opts ? { opts: q.opts.map((o) => who(inA(o))) } : {}),
+    ...(q.lo ? { lo: inA(q.lo) } : {}),
+    ...(q.hi ? { hi: inA(q.hi) } : {}),
+    ...(q.steps ? { steps: q.steps.map(inA) } : {}),
   };
+  // The partner's version rides along, for showing their answer (asTheirs).
+  return owner ? out : Object.assign(out, { them: withNames(q, names, otherOf(me)) });
 }
+
+/** The same question with the choices in your partner's words (their answer,
+ *  or your guess at it). Falls back to the question itself. */
+export const asTheirs = (q: Question): Question => (q as Question & { them?: Question }).them ?? q;
+
+/** The guess screen: the question about your partner, with the choices as
+ *  they'd say them. */
+export const forGuess = (q: Question): Question => {
+  const t = asTheirs(q);
+  return { ...t, q: q.qGuess ?? q.q };
+};
 
 /** A who-question answer to the old Him/Her wording (needs asking again). */
 export const isLegacyWho = (q: Question, v: AnswerValue | null | undefined): boolean =>

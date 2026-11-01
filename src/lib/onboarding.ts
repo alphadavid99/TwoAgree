@@ -86,7 +86,8 @@ export function a7Cards(stage: OnbStage): A7Card[] {
         slug,
         name: d.name,
         depth: deckDepthWord(slug),
-        hook: d.hook?.q ?? d.questions[0].q,
+        // A teaser, before anyone's named: {P} reads "your partner".
+        hook: (d.hook?.q ?? d.questions[0].q).replaceAll("{P}", "your partner"),
         count: d.questions.length,
       };
     });

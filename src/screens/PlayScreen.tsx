@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { lvlQs, partName } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, clearImportance, markLevelDone } from "../lib/session";
-import { optIndex, optValue, withNames, type Names } from "../lib/who";
+import { forGuess, optIndex, optValue, withNames, type Names } from "../lib/who";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
@@ -230,7 +230,7 @@ export default function PlayScreen({
 
   if (idx >= qs.length) return null;
   const localized = localizeQuestion(qs[idx], lang);
-  const q = names ? withNames(localized, names) : localized;
+  const q = withNames(localized, names ?? { host: "", guest: "" });
   // An mc pick is held as its position; it's stored as who was picked on a
   // "which of you" question (lib/who.ts).
   const stored = (v: AnswerValue): AnswerValue => (q.type === "mc" ? optValue(q, v as number) : v);
@@ -324,6 +324,12 @@ export default function PlayScreen({
   );
 
   if (guessPhase) {
+    // The question about your partner where it names them (qGuess), with the
+    // choices in their words; otherwise the question as they were asked it.
+    const gq = forGuess(q);
+    // "You" marks your own pick only where it means the same from their side
+    // (not on "When Judah makes time for me", which is now "When Sarah…").
+    const sameWords = JSON.stringify([q.opts, q.lo, q.hi, q.steps]) === JSON.stringify([gq.opts, gq.lo, gq.hi, gq.steps]);
     return (
       <section ref={screen} className="playscreen pfix">
         {header}
@@ -332,17 +338,26 @@ export default function PlayScreen({
             <div className="guesshead">
               <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
               <span>
-                {t("What will ", "Que va répondre ")}
-                <span className="guessname">{partnerFirst}</span>
-                {t(" say?", " ?")}
+                {q.qGuess ? (
+                  <>
+                    {t("Guess ", "Devinez la réponse de ")}
+                    <span className="guessname">{partnerFirst}</span>
+                    {t("’s answer", "")}
+                  </>
+                ) : (
+                  <>
+                    <span className="guessname">{partnerFirst}</span>
+                    {t(" was asked:", " a reçu la question :")}
+                  </>
+                )}
               </span>
             </div>
-            <div className={qtextClass(q.q)}>{q.q}</div>
+            <div className={qtextClass(gq.q)}>{gq.q}</div>
           </div>
           {/* Your own answer is marked in place ("You"), so the guess is made
               beside it; Back changes it. */}
           <div ref={body} className={bodyClass(below)}>
-            <QuestionInput q={q} value={pendGuess} guess mine={pendAns} onPick={setPendGuess} />
+            <QuestionInput q={gq} value={pendGuess} guess mine={sameWords ? pendAns : null} onPick={setPendGuess} />
           </div>
           <MoreBelow below={below} />
         </div>

@@ -31,7 +31,7 @@ import { answerText } from "../lib/discoveries";
 import { deckOf } from "../lib/path";
 import { writeTalkPin } from "../lib/session";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
-import { optText, withNames } from "../lib/who";
+import { asTheirs, optText, withNames } from "../lib/who";
 import { TopBar } from "../components/TopBar";
 import { Avatar, toneFor } from "../components/Avatar";
 import { useT, useLang } from "../lib/i18n";
@@ -113,6 +113,7 @@ export default function RevealScreen({
   const names = {
     host: role === "host" ? myName : partnerName,
     guest: role === "guest" ? myName : partnerName,
+    me: role,
   };
   const know = knowScore(qs, data, role);
   const jointRaw = jointQuestions(qs, data);
@@ -701,7 +702,7 @@ function QCard({
                   <span className="gtag gok">✓ {t("You guessed right", "Vous avez deviné juste")}</span>
                 ) : (
                   <span className="gtag">
-                    ○ {t("You guessed", "Vous pensiez")} <b>{guessWords(q, r.guess, t)}</b>
+                    ○ {t("You guessed", "Vous pensiez")} <b>{guessWords(asTheirs(q), r.guess, t)}</b>
                   </span>
                 ))}
               {r.theyGuessed &&
@@ -780,10 +781,13 @@ function AnswerTrack({
   // On a mirrored scale the partner's dot sits where their answer lands from
   // your side; the rows below still quote each of you in your own words.
   const tvHere = inMyFrame(q, r.th);
-  const same = mv === tv && !isMirror(q);
+  // Their answer in their own words ("I'd choose Sarah for life"); one shared
+  // line only when you both said the same thing in the same words.
+  const theirs = asTheirs(q);
+  const same = mv === tv && !isMirror(q) && scaleText(q, mv, t) === scaleText(theirs, tv, t);
   return (
     <div className="atrack">
-      <div className="atrack-steps" role="img" aria-label={`${me.name}: ${scaleText(q, mv, t)}. ${them.name}: ${scaleText(q, tv, t)}.`}>
+      <div className="atrack-steps" role="img" aria-label={`${me.name}: ${scaleText(q, mv, t)}. ${them.name}: ${scaleText(theirs, tv, t)}.`}>
         {[1, 2, 3, 4, 5].map((n) => {
           const here = [n === mv ? me : null, n === tvHere ? them : null].filter((x): x is Who => !!x);
           return (
@@ -824,7 +828,7 @@ function AnswerTrack({
       ) : (
         <>
           <AnswerRow who={me} text={scaleText(q, mv, t)} />
-          <AnswerRow who={them} text={scaleText(q, tv, t)} />
+          <AnswerRow who={them} text={scaleText(theirs, tv, t)} />
         </>
       )}
     </div>
@@ -855,8 +859,9 @@ function McBody({
   me: Who;
   them: Who;
 }) {
-  const text = (v: AnswerValue | undefined) => (v == null ? "—" : (optText(q, v) ?? "—"));
-  if (r.me === r.th) {
+  const text = (v: AnswerValue | undefined, as = q) => (v == null ? "—" : (optText(as, v) ?? "—"));
+  const theirs = asTheirs(q);
+  if (r.me === r.th && text(r.me) === text(r.th, theirs)) {
     return (
       <div className="ansrow both">
         <span className="atrack-pair">
@@ -872,7 +877,7 @@ function McBody({
   return (
     <>
       <AnswerRow who={me} text={text(r.me)} />
-      <AnswerRow who={them} text={text(r.th)} />
+      <AnswerRow who={them} text={text(r.th, theirs)} />
     </>
   );
 }
@@ -960,7 +965,7 @@ function NotYetCard({
 }) {
   const first = (n: string) => n.trim().split(/\s+/)[0] || n;
   const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
-  const side = (name: string, v: AnswerValue | undefined) =>
+  const side = (name: string, v: AnswerValue | undefined, as = q) =>
     isNotYet(v) ? (
       <div className="ny-side ny-wait">
         <span className="ny-name">{first(name)}</span>
@@ -969,7 +974,7 @@ function NotYetCard({
     ) : (
       <div className="ny-side">
         <span className="ny-name">{first(name)}</span>
-        <b>{v == null ? "—" : cap(answerText(q, v))}</b>
+        <b>{v == null ? "—" : cap(answerText(as, v))}</b>
       </div>
     );
   const who = isNotYet(mine) && isNotYet(theirs) ? null : isNotYet(theirs) ? first(partnerName) : first(myName);
@@ -981,7 +986,7 @@ function NotYetCard({
       </div>
       <div className="ny-pair">
         {side(myName, mine)}
-        {side(partnerName, theirs)}
+        {side(partnerName, theirs, asTheirs(q))}
       </div>
       <p className="helper" style={{ margin: "10px 0 0" }}>
         {who

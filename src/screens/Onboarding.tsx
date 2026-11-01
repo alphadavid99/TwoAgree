@@ -730,6 +730,7 @@ function OnbQuestions({
   const names = {
     host: role === "host" ? myName : partnerName,
     guest: role === "guest" ? myName : partnerName,
+    me: role,
   };
   const q = STARTER_QS[idx] ? withNames(STARTER_QS[idx], names) : undefined;
   const stored = (v: number) => (q ? optValue(q, v) : v);

@@ -37,7 +37,7 @@ export const DECK_NAMES_FR: Record<string, string> = {
 };
 
 /** Per-question French fields. Only the user-facing text is translated. */
-export type QFr = { q: string; opts?: string[]; lo?: string; hi?: string };
+export type QFr = { q: string; qGuess?: string; opts?: string[]; lo?: string; hi?: string };
 
 export const Q_FR: Record<string, QFr> = {
   // --- In the Home ---
@@ -143,12 +143,17 @@ export const Q_FR: Record<string, QFr> = {
   // --- Us & Compatibility ---
   "US-002": { q: "Qu’est-ce qui te dit que ce qu’on a est vraiment de l’amour et pas juste des sentiments forts ?" },
   "US-006": { q: "Classe ce qui fait durer un mariage, le plus important en premier.", opts: ["La communication", "L’engagement", "Une foi partagée", "La confiance", "L’amitié", "L’intimité", "Des objectifs communs"] },
-  "US-008": { q: "Qu’est-ce qui, chez moi, te rend fier ?" },
+  "US-008": { q: "Qu’est-ce qui, chez {P}, te rend fier ?" },
   "US-010": { q: "Quel mariage admires-tu, et que font-ils que tu voudrais pour nous ?" },
-  "US-011": { q: "Qu’est-ce qui, chez moi, te fait hésiter ou t’inquiète en ce moment ?" },
-  "US-016": { q: "Qu’as-tu toujours voulu me demander sans jamais l’avoir fait ?" },
+  "US-011": { q: "Qu’est-ce qui, chez {P}, te fait hésiter ou t’inquiète en ce moment ?" },
+  "US-016": { q: "Qu’as-tu toujours voulu demander à {P} sans jamais l’avoir fait ?" },
   "US-029": { q: "Que penses-tu du rythme auquel avance notre relation ?", lo: "Trop lent pour moi", hi: "Trop rapide pour moi (3 = parfait)" },
-  "US-030": { q: "À quel point est-ce important pour toi que je m’entende avec tes amis les plus proches ?", lo: "Pas important", hi: "Essentiel" },
+  "US-030": {
+    q: "À quel point est-ce important pour toi que {P} s’entende avec tes amis les plus proches ?",
+    qGuess: "À quel point est-ce important pour {P} que tu t’entendes avec ses amis les plus proches ?",
+    lo: "Pas important",
+    hi: "Essentiel",
+  },
   "US-034": { q: "Cette période devrait-elle être plutôt pour s’amuser ou pour évaluer sérieusement notre avenir ?", lo: "Surtout en profiter", hi: "L’évaluer sérieusement" },
   "US-035": { q: "À quel point est-ce important que ton conjoint soit aussi ton meilleur ami ?", lo: "La romance compte plus pour moi", hi: "Meilleurs amis avant tout" },
   "US-038": { q: "Dans quelle mesure les partenaires devraient-ils se pousser à grandir, plutôt que de s’accepter tels qu’ils sont ?", lo: "S’accepter tels qu’on est", hi: "Se pousser activement à grandir" },
@@ -168,7 +173,7 @@ export function deckName(slug: string, lang: Lang): string {
 export function localizeQuestion(q: Question, lang: Lang, names?: Names): Question {
   const f = lang === "fr" ? Q_FR[q.id] : undefined;
   const out = f
-    ? { ...q, q: f.q, opts: f.opts ?? q.opts, lo: f.lo ?? q.lo, hi: f.hi ?? q.hi }
+    ? { ...q, q: f.q, qGuess: f.qGuess ?? q.qGuess, opts: f.opts ?? q.opts, lo: f.lo ?? q.lo, hi: f.hi ?? q.hi }
     : q;
   return names ? withNames(out, names) : out;
 }

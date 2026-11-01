@@ -99,15 +99,16 @@ function PickUp({ slug, session, role, onPlay }: { slug: string; session: Sessio
   return (
     <div className="card cv-pick">
       <span className="eyebrow">{t("Pick up where you left off", "Reprenez là où vous en étiez")}</span>
-      <div className="cv-pick-nm">
-        {deckName(slug, lang)} · {partName(slug, lvl)}
-      </div>
-      <div className="helper">
+      <div className="cv-pick-nm">{deckName(slug, lang)}</div>
+      <div className="helper cv-pick-part">
         {L > 1 ? t(`Part ${lvl + 1} of ${L} · `, `Partie ${lvl + 1} sur ${L} · `) : ""}
-        {t(`${mine} of ${total} answered`, `${mine} sur ${total} répondues`)}
+        {partName(slug, lvl)}
       </div>
-      <div className="qprog featprog" aria-hidden="true">
-        <i style={{ width: `${total ? Math.round((mine / total) * 100) : 0}%` }} />
+      <div className="cv-pick-prog">
+        <div className="qprog featprog" aria-hidden="true">
+          <i style={{ width: `${total ? Math.round((mine / total) * 100) : 0}%` }} />
+        </div>
+        <span>{t(`${mine} of ${total}`, `${mine} sur ${total}`)}</span>
       </div>
       <button className="btn pill" type="button" onClick={() => onPlay(slug)}>
         {t("Continue", "Continuer")}

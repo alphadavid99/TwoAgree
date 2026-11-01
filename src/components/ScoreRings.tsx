@@ -15,14 +15,14 @@ import { scrollerOf } from "../lib/scroll";
 // rings ease down and fade as they leave, and the bar slides in over the same
 // stretch, so it reads as the rings minimising. The bar is fixed to the phone
 // (portalled, like Sheet) so a card it sits in can't trap it, and it never
-// takes part in layout, so nothing below jumps or widens the page.
+// takes part in layout, so nothing below jumps or widens the page. It carries
+// the two scores only: a name squeezed in beside them read as "TOG…".
 export function ScoreRings({
   agree,
   basis,
   known,
   right,
   made,
-  label,
   claret = false,
   sticky,
   foot,
@@ -33,8 +33,6 @@ export function ScoreRings({
   known: number | null;
   right: number;
   made: number;
-  /** Shown in the slim bar ("MONEY · SHARING MONEY"). */
-  label?: string;
   /** On the claret card (Together). */
   claret?: boolean;
   /** Rides in the sticky bar under the slim scores (the filters). */
@@ -123,7 +121,6 @@ export function ScoreRings({
           <b>{known ?? "—"}%</b>
           <i>{t("Known", "Connus")}</i>
         </span>
-        {label && <span className="sbarslim-label">{label}</span>}
       </div>
     </div>
   );

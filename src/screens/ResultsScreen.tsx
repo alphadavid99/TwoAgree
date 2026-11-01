@@ -167,7 +167,6 @@ export default function ResultsScreen({
           known={knownPct}
           right={right}
           made={made}
-          label={t("Together", "Ensemble")}
           foot={
             <span className="tg-foot">
               {t(
@@ -315,18 +314,19 @@ export default function ResultsScreen({
 type Who = { name: string; tone: "berry" | "honey" };
 
 // What the eyebrow says about where you landed on this one.
-function landed(s: NextTalk, t: T): string {
+// Short, so the badge sits on one line beside the deck name.
+function landed(s: NextTalk, t: T): { text: string; tone: string } {
   switch (s.r.verdict) {
     case "Worth a chat":
-      return t("You saw this differently", "Vous l’avez vu différemment");
+      return { text: t("Saw it differently", "Vu différemment"), tone: "chat" };
     case "Close":
-      return t("Close, not quite the same", "Proche, pas tout à fait pareil");
+      return { text: t("Close", "Proche"), tone: "close" };
     case "Complementary":
-      return t("Different, and it works", "Différent, et ça se complète");
+      return { text: t("Different, and it works", "Différent, et ça se complète"), tone: "comp" };
     case "Agreed":
-      return t("You agreed", "Vous étiez d’accord");
+      return { text: t("Agreed", "D’accord"), tone: "agreed" };
     default:
-      return t("On your list", "Sur votre liste");
+      return { text: t("On your list", "Sur votre liste"), tone: "agreed" };
   }
 }
 
@@ -364,11 +364,13 @@ function NextCard({
 }) {
   const q = localizeQuestion(s.q, lang, names);
   const say = (v: unknown) => (v == null ? "—" : cap(answerText(q, v as never)));
+  const verdict = landed(s, t);
   return (
     <div className="card tg-next">
-      <span className="kbadge agreed tg-next-tag">
-        {deckName(s.slug, lang)} · {landed(s, t)}
-      </span>
+      <div className="tg-next-head">
+        <span className="eyebrow">{deckName(s.slug, lang)}</span>
+        <span className={`kbadge ${verdict.tone}`}>{verdict.text}</span>
+      </div>
       <div className="qtext tg-next-q">{q.q}</div>
       {q.type !== "open" && q.type !== "rank" && (
         <>

@@ -380,7 +380,6 @@ export default function RevealScreen({
           known={know.pct}
           right={know.right}
           made={know.made}
-          label={partLabel}
           sticky={filters}
         />
       )}

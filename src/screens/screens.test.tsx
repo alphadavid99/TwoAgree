@@ -116,7 +116,9 @@ describe("HomeScreen", () => {
     const { container } = render(
       <HomeScreen code="ABCD" session={session} role="host" slug={slugA} onPlay={noop} onBrowse={noop} onTogether={noop} onPath={noop} />,
     );
-    expect(container.querySelectorAll(".btn.pill, .btn.honey").length).toBe(1);
+    // The next card waits underneath, hidden and out of reach (inert).
+    const reachable = [...container.querySelectorAll(".btn.pill, .btn.honey")].filter((b) => !b.closest("[inert]"));
+    expect(reachable.length).toBe(1);
   });
 
   it("shows the code to share while the partner hasn't joined", () => {

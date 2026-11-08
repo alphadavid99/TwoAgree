@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent as RPointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { nLevels, lvlQs, partName } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
@@ -304,27 +304,29 @@ function heroStack(slug: string, decks: Session["decks"], role: Role): string[] 
   return [slug, ...open.filter(begun), ...open.filter((s) => !begun(s))].slice(0, 5);
 }
 
-// One card on top, up to two peeking out behind it. Drag sideways (or swipe)
-// to bring up the next; a tap still presses the card's buttons.
+// One card on top and the next one already underneath it, peeking out at the
+// foot, with one more shape behind. Drag or swipe sideways: the top card
+// follows your finger, flies off when you let go past the line (or flick),
+// and the card underneath, the same element all along, rises into place.
+// Nothing is rebuilt or faded mid-swipe, so nothing flashes. A tap still
+// presses the card's buttons.
 function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) => ReactNode }) {
   const t = useT();
   const n = slugs.length;
   const [i, setI] = useState(0);
   const [dx, setDx] = useState(0);
-  const [out, setOut] = useState<0 | 1 | -1>(0);
-  const from = useRef<{ x: number; y: number } | null>(null);
+  const [held, setHeld] = useState(false);
+  // The card that just left, flying off from where the finger let it go.
+  const [gone, setGone] = useState<{ slug: string; dir: 1 | -1; from: number } | null>(null);
+  const from = useRef<{ x: number; y: number; t: number } | null>(null);
   const dragging = useRef(false);
-  const go = (dir: 1 | -1) => {
-    setOut(dir);
-    window.setTimeout(() => {
-      setI((v) => (v + dir + n) % n);
-      setOut(0);
-      setDx(0);
-    }, 220);
-  };
+  const at = (k: number) => slugs[(k + n) % n];
+  // Underneath: the card a swipe would bring, by the way you're pulling.
+  const under = n > 1 ? at(dx > 0 ? i - 1 : i + 1) : null;
+
   const down = (e: RPointerEvent<HTMLDivElement>) => {
     if (n < 2) return;
-    from.current = { x: e.clientX, y: e.clientY };
+    from.current = { x: e.clientX, y: e.clientY, t: performance.now() };
     dragging.current = false;
   };
   const move = (e: RPointerEvent<HTMLDivElement>) => {
@@ -334,51 +336,66 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
     if (!dragging.current) {
       if (Math.abs(x) < 8 || Math.abs(x) < Math.abs(e.clientY - f.y)) return;
       dragging.current = true;
+      setHeld(true);
       e.currentTarget.setPointerCapture?.(e.pointerId);
     }
     setDx(x);
   };
   const up = () => {
-    if (!from.current) return;
+    const f = from.current;
     from.current = null;
-    if (dx < -70) go(1);
-    else if (dx > 70) go(-1);
-    else setDx(0);
+    setHeld(false);
+    if (!f || !dragging.current) return;
+    const quick = performance.now() - f.t < 260 && Math.abs(dx) > 36;
+    if (Math.abs(dx) > 80 || quick) {
+      const dir: 1 | -1 = dx < 0 ? 1 : -1;
+      setGone({ slug: at(i), dir, from: dx });
+      setI((v) => (v + dir + n) % n);
+    }
+    setDx(0);
   };
-  const style =
-    out !== 0
-      ? { transform: `translateX(${out * -120}%) rotate(${out * -8}deg)`, opacity: 0, transition: "transform .22s ease-in, opacity .22s ease-in" }
-      : dx
-        ? { transform: `translateX(${dx}px) rotate(${dx / 28}deg)`, transition: "none" }
-        : undefined;
+
   return (
     <div className="hstack" aria-roledescription={t("cards", "cartes")}>
       {n > 2 && <span className="hstack-back b2" aria-hidden="true" />}
-      {n > 1 && <span className="hstack-back b1" aria-hidden="true" />}
-      {/* While you pull the top card away, the next one is already there. */}
-      {n > 1 && (dx !== 0 || out !== 0) && (
-        <div className="hstack-next" aria-hidden="true" inert>
-          {render(slugs[(i + (dx > 0 || out === -1 ? -1 : 1) + n) % n])}
+      {slugs.map((s) => {
+        const role = s === at(i) ? "top" : s === under ? "under" : null;
+        if (!role) return null;
+        return (
+          <div
+            key={s}
+            className={`hs-card ${role}${role === "top" && held ? " held" : ""}`}
+            style={role === "top" && dx ? { transform: `translateX(${dx}px) rotate(${dx / 28}deg)` } : undefined}
+            aria-hidden={role === "under" ? true : undefined}
+            inert={role === "under" ? true : undefined}
+            onPointerDown={role === "top" ? down : undefined}
+            onPointerMove={role === "top" ? move : undefined}
+            onPointerUp={role === "top" ? up : undefined}
+            onPointerCancel={role === "top" ? up : undefined}
+            onClickCapture={(e) => {
+              if (dragging.current) {
+                e.stopPropagation();
+                e.preventDefault();
+                dragging.current = false;
+              }
+            }}
+          >
+            {render(s)}
+          </div>
+        );
+      })}
+      {gone && (
+        <div
+          key={`gone-${gone.slug}`}
+          className={`hs-card gone ${gone.dir === 1 ? "left" : "right"}`}
+          style={{ "--from": `${gone.from}px`, "--rot": `${gone.from / 28}deg` } as CSSProperties}
+          aria-hidden="true"
+          inert
+          onAnimationEnd={() => setGone(null)}
+        >
+          {render(gone.slug)}
         </div>
       )}
-      <div
-        key={slugs[i]}
-        className={`hstack-top${dx !== 0 || out !== 0 ? " moving" : ""}`}
-        style={style}
-        onPointerDown={down}
-        onPointerMove={move}
-        onPointerUp={up}
-        onPointerCancel={up}
-        onClickCapture={(e) => {
-          if (dragging.current) {
-            e.stopPropagation();
-            e.preventDefault();
-            dragging.current = false;
-          }
-        }}
-      >
-        {render(slugs[i])}
-      </div>
       {n > 1 && (
         <span className="hstack-dots" aria-hidden="true">
           {slugs.map((s, k) => (

@@ -69,7 +69,8 @@ The root is 15px (`html { font-size: 93.75% }`, feedback 27: the app read big ne
 - 20px side gutter on phones. 24px between sections.
 - A label sits 6px from its own field and 24px from the group above.
 - Group related things in one card rather than with white space alone.
-- Phone first: the bottom tab bar (Home, Talk, Path, Together, You, always labelled), back at top left, close at top right.
+- Phone first: the bottom tab bar is a frosted capsule of icons (Home, Talk, Together with the mark in the middle, Path, You; no labels on screen, each named for screen readers, Dave, Nov 2026), back at top left, close at top right.
+- Launch: the wordmark, centred, until the first real screen is ready (index.html, lib/splash.ts). Skeletons appear only when a screen takes over 300ms.
 - The most important item goes first in a list; destructive actions go last, on their own, with space around them.
 
 ## Interaction

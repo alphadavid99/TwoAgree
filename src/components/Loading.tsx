@@ -1,9 +1,15 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useT } from "../lib/i18n";
+import { loadingIn, loadingOut } from "../lib/splash";
 
 // The loading rule (design refresh, item 16; UX laws: Doherty). Show the shape
 // of the screen, not a spinner, and say what's loading. After 5 seconds add
 // "Still loading…"; after 10, say so plainly and offer Try again and a way back.
+//
+// The outline only appears if loading takes a moment (SHOW_AFTER_MS): a quick
+// load goes straight to the screen with no flicker (feedback, Nov 2026). On
+// launch the wordmark screen covers it instead (lib/splash.ts).
+const SHOW_AFTER_MS = 300;
 export function Loading({
   label,
   shape = "page",
@@ -19,6 +25,15 @@ export function Loading({
 }) {
   const t = useT();
   const [waited, setWaited] = useState(0);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    loadingIn();
+    const s = setTimeout(() => setShown(true), SHOW_AFTER_MS);
+    return () => {
+      clearTimeout(s);
+      loadingOut();
+    };
+  }, []);
   useEffect(() => {
     const a = setTimeout(() => setWaited(5), 5000);
     const b = setTimeout(() => setWaited(10), 10000);
@@ -28,7 +43,7 @@ export function Loading({
     };
   }, []);
   return (
-    <section className="skel" aria-busy="true">
+    <section className={`skel${shown ? " skel-in" : ""}`} aria-busy="true">
       <p className="sr-only" role="status">
         {label}
       </p>

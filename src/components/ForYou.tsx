@@ -42,8 +42,13 @@ export function ForYouList({ items, role, partnerName, label, onOpen, onTakeBack
                     : t("not started yet", "pas encore commencé")}
                 </span>
               </span>
-              <button className="fy-act fy-act-ghost" type="button" onClick={() => onTakeBack(it.invite)}>
-                {t("Take back", "Retirer")}
+              <button
+                className="fy-act fy-act-ghost"
+                type="button"
+                onClick={() => onTakeBack(it.invite)}
+                aria-label={t(`Cancel your invite to ${them}`, `Annuler votre invitation à ${them}`)}
+              >
+                {t("Cancel", "Annuler")}
               </button>
             </li>
           );

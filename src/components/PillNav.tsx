@@ -1,10 +1,11 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 // The floating pill nav: five tabs, always labelled (item 10), so none has to
 // be learned by its icon. The honey pill is a single indicator element that
-// SLIDES to whichever tab you pick, measured after layout from the active
-// tab's icon: it sits behind the icon only, one size for every tab, and the
-// active label turns bold. Buttons sit above it on their own layer.
+// SLIDES to whichever tab you pick: it sits behind the icon only, one size for
+// every tab, and the active label turns bold. Buttons sit above it on their
+// own layer. Scrolling down folds the labels away and the bar narrows to a
+// capsule round its icons (as Revolut, Shop and IMDb do on Mobbin).
 export type NavItem = {
   key: string;
   label: string;
@@ -20,27 +21,43 @@ export function PillNav({
   active: string;
   onSelect: (key: string) => void;
 }) {
-  const navRef = useRef<HTMLElement>(null);
-  const [ind, setInd] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+  // Which tab is on, for the pill's place. The pill is laid out in CSS from
+  // this index (--i of --n equal tabs), so it follows the bar as it narrows.
+  const at = Math.max(0, items.findIndex((i) => i.key === active));
 
-  // Re-measure whenever the active tab or the labels (language) change, and
-  // on resize — the active button's width isn't known until it has grown.
-  const labels = items.map((i) => i.label).join("|");
-  useLayoutEffect(() => {
-    const measure = () => {
-      const el = navRef.current?.querySelector<HTMLElement>(".bnav-item.on");
-      const ic = el?.querySelector<HTMLElement>(".bnav-ic");
-      if (el && ic)
-        setInd({ left: el.offsetLeft + ic.offsetLeft, top: el.offsetTop + ic.offsetTop, width: ic.offsetWidth, height: ic.offsetHeight });
+  // Revolut-style (feedback, Nov 2026): the labels fold away as you scroll
+  // down and the bar narrows round its icons; scrolling up, or reaching the
+  // top, brings them back. Each new tab opens unfolded.
+  const [folded, setFolded] = useState(false);
+  useEffect(() => {
+    setFolded(false);
+    const seen = new WeakMap<EventTarget, number>();
+    const onScroll = (e: Event) => {
+      const el = e.target === document ? document.scrollingElement : e.target;
+      if (!(el instanceof HTMLElement)) return;
+      const y = el.scrollTop;
+      const from = seen.get(el) ?? y;
+      if (y < 24) {
+        setFolded(false);
+        seen.set(el, y);
+      } else if (y > from + 16) {
+        setFolded(true);
+        seen.set(el, y);
+      } else if (y < from - 16) {
+        setFolded(false);
+        seen.set(el, y);
+      } else if (!seen.has(el)) seen.set(el, y);
     };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [active, labels]);
+    document.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    return () => document.removeEventListener("scroll", onScroll, { capture: true });
+  }, [active]);
 
   return (
-    <nav className="bnav" ref={navRef}>
-      {ind && <span className="bnav-ind" style={ind} aria-hidden="true" />}
+    <nav
+      className={`bnav${folded ? " folded" : ""}`}
+      style={{ "--i": at, "--n": items.length } as React.CSSProperties}
+    >
+      <span className="bnav-ind" aria-hidden="true" />
       {items.map(({ key, label, Icon }) => {
         const on = active === key;
         return (
@@ -50,11 +67,14 @@ export function PillNav({
             className={`bnav-item ${on ? "on" : ""}`}
             onClick={() => onSelect(key)}
             aria-current={on ? "page" : undefined}
+            aria-label={label}
           >
             <span className="bnav-ic">
               <Icon size={22} />
             </span>
-            <span>{label}</span>
+            <span className="bnav-lbl" aria-hidden="true">
+              {label}
+            </span>
           </button>
         );
       })}

@@ -9436,3 +9436,54 @@ html .cardopt.on {
 html .tgcard .revcard-body {
   padding-top: 196px;
 }
+
+/* ---- Long answer lists (Dave, Nov 2026): the question glides up and
+   settles smaller, giving the answers the room. ---- */
+.pfull .qframe > .qhead {
+  transition: padding 0.45s var(--ease-glide);
+}
+html .pfull .qtext {
+  transition: font-size 0.45s var(--ease-glide), line-height 0.45s var(--ease-glide);
+}
+.pfull .qframe.compact > .qhead {
+  padding: 6px 6px 12px;
+}
+html .pfull .qframe.compact .qtext,
+html .pfull .qframe.compact .qtext.qtext-long {
+  font-size: var(--t-question);
+  line-height: 1.3;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfull .qframe > .qhead,
+  html .pfull .qtext {
+    transition: none;
+  }
+}
+
+/* ---- The question you're on: a softly pulsing mauve segment, never grey ---- */
+html .pfull .qstones i.cur {
+  background: var(--app-mauve);
+  animation: stone-pulse 1.6s ease-in-out infinite;
+}
+html .pfull .qstones i.half.cur {
+  background: var(--app-mauve-tint);
+  animation: none;
+}
+html .pfull .qstones i.half.cur::after {
+  animation: stoneFill 0.42s cubic-bezier(0.22, 1, 0.36, 1) both, stone-pulse 1.6s ease-in-out 0.42s infinite;
+}
+@keyframes stone-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html .pfull .qstones i.cur,
+  html .pfull .qstones i.half.cur::after {
+    animation: none;
+  }
+}

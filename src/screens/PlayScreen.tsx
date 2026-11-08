@@ -211,16 +211,14 @@ export default function PlayScreen({
   // question still opens at the top.
   useScrollMemory(view, undefined, screen);
   const below = useMoreBelow(body, view);
-  // When the answers run on past the screen, the question glides up and
-  // settles smaller to give them room (Dave, Nov 2026). It stays that way
-  // for this question, so it never bounces back as the room changes.
+  // The first time you scroll a long answer list, the question glides up
+  // and settles smaller to give the answers room (Dave, Nov 2026). It stays
+  // that way for this question, so it never bounces back.
   const [compact, setCompact] = useState(false);
   useEffect(() => setCompact(false), [view]);
   useEffect(() => {
-    if (compact || !(below.hidden || below.up)) return;
-    const id = window.setTimeout(() => setCompact(true), below.up ? 0 : 450);
-    return () => window.clearTimeout(id);
-  }, [below.hidden, below.up, compact]);
+    if (!compact && below.up) setCompact(true);
+  }, [below.up, compact]);
 
   // Choosing an answer opens "How much does this matter?" above the button,
   // which shortens the answer area: keep the answer just chosen in view.

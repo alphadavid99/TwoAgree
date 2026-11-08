@@ -41,7 +41,7 @@ import { talkEventIcs, icsHref } from "../lib/calendar";
 import { Wordmark } from "../brand/Wordmark";
 import { PillNav } from "../components/PillNav";
 import type { Session } from "../types";
-import { IconHome, IconDecks, IconResults, IconProfile } from "../components/icons";
+import { IconHome, IconDecks, IconProfile } from "../components/icons";
 import { Route } from "lucide-react";
 import { useLang, useT } from "../lib/i18n";
 import { track } from "../lib/observability";
@@ -63,6 +63,9 @@ const TABS: {
 }[] = [
   { key: "home", en: "Home", fr: "Accueil", Icon: IconHome },
   { key: "decks", en: "Talk", fr: "Parler", Icon: IconDecks },
+  // Together is the middle tab and wears the mark (feedback, Nov 2026): it's
+  // the two of you, which is the whole product.
+  { key: "results", en: "Together", fr: "Ensemble", Icon: ({ size }: { size?: number }) => <Mark height={size} /> },
   // The Path ships behind a flag (VITE_PATH_ENABLED) — it needs the generatePath
   // Cloud Function deployed, and touches live users, so it stays dark by default.
   ...(import.meta.env.VITE_PATH_ENABLED === "true"
@@ -75,7 +78,6 @@ const TABS: {
         },
       ]
     : []),
-  { key: "results", en: "Together", fr: "Ensemble", Icon: IconResults },
   { key: "profile", en: "You", fr: "Vous", Icon: IconProfile },
 ];
 

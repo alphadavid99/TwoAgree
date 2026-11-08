@@ -817,7 +817,9 @@ function AnswerTrack({
                 // The same point: one circle wearing the mark, not two
                 // avatars jostling for one step (feedback 24).
                 <span className="atrack-both">
-                  <Mark height={20} colour="var(--ta-honey)" />
+                  {/* On a light disc the mark is one ink, claret (gold only
+                      ever sits on claret: TWOAGREE-MARK.md rule 2). */}
+                  <Mark height={16} colour="var(--ta-claret)" />
                 </span>
               ) : here.length ? (
                 <span className="atrack-pair">
@@ -951,10 +953,12 @@ function RankBody({
   );
 }
 
-function Quote({ name, tone, text }: { name: string; tone: "s" | "j"; text: string }) {
+// An open answer: who said it (the same soft avatar as everywhere, with
+// their photo when they have one), then what they wrote.
+function Quote({ name, tone, text, photo }: { name: string; tone: "s" | "j"; text: string; photo?: string }) {
   return (
     <div className="oq">
-      <span className={`oav ${tone}`}>{initialOf(name)}</span>
+      <Avatar name={name} photo={photo} tone={tone === "s" ? "berry" : "honey"} size={30} ring={false} />
       <div>
         <span className="oq-who">{name}</span>
         <div className="oq-text">{text}</div>

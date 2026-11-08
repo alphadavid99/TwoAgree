@@ -9487,3 +9487,21 @@ html .pfull .qstones i.half.cur::after {
     animation: none;
   }
 }
+
+/* ---- Answers, softened (Dave, Nov 2026) ---- */
+/* The same point on a scale: a light disc with a mauve edge and the mark in
+   one ink, not a solid claret disc. */
+html .atrack-both {
+  width: 36px;
+  height: 36px;
+  background: var(--ta-white);
+  box-shadow: inset 0 0 0 1.5px var(--app-mauve), 0 0 0 3px var(--app-mauve-tint), 0 4px 10px var(--glass-shadow);
+}
+/* Where you landed together: a mauve tint, not honey. */
+html .ansrow.both {
+  background: var(--app-mauve-tint);
+}
+/* Open answers: the soft avatar beside the words. */
+.oq .avatar-disc {
+  flex: 0 0 auto;
+}

@@ -7,7 +7,7 @@ import { startedLevel } from "../lib/privacy";
 import { other, overall, type Role } from "../lib/scoring";
 import { SUBJECTS } from "../lib/subjects";
 import type { Session } from "../types";
-import { DeckIcon } from "../components/icons";
+import { DeckIcon, IconBell } from "../components/icons";
 import { Avatar, toneFor } from "../components/Avatar";
 import { deckName } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
@@ -16,6 +16,9 @@ import { useT, useLang } from "../lib/i18n";
 const ALL: string[] = SUBJECTS.flatMap((g) => g.slugs).filter((s) => DECKS[s]);
 
 type Ring = "turn" | "going" | "done" | "new";
+
+// The For you circle's key in the row.
+const FY = "__for-you";
 
 // Conversations (Dave, Nov 2026, after Dateasy's chat list): every
 // conversation as a big circle in one sideways row, its ring saying where
@@ -29,7 +32,8 @@ export default function DecksScreen({
   onPlay,
   onPart,
   current,
-  top,
+  forYou,
+  forYouFresh = false,
   actSlot,
 }: {
   session: Session;
@@ -40,8 +44,10 @@ export default function DecksScreen({
   onPart?: (slug: string, level: number) => void;
   /** The conversation you were last in: chosen when the screen opens. */
   current?: string;
-  /** For you: invites and your partner's progress, above everything else. */
-  top?: ReactNode;
+  /** For you: invites and your partner's progress, as the first circle. */
+  forYou?: ReactNode;
+  /** Something new in For you since you last looked. */
+  forYouFresh?: boolean;
   /** The shared header's button spot, left of the bell. */
   actSlot?: HTMLElement | null;
 }) {
@@ -68,6 +74,7 @@ export default function DecksScreen({
   // Chosen when the screen opens: the one you were last in, else the first
   // where your partner is waiting, else the first under way, else the first.
   const [sel, setSel] = useState<string>(() => {
+    if (forYou && forYouFresh) return FY;
     if (current && DECKS[current]) return current;
     return ALL.find((s) => ring(s) === "turn") ?? ALL.find((s) => ring(s) === "going") ?? ALL[0];
   });
@@ -79,6 +86,7 @@ export default function DecksScreen({
   const shown = ALL.filter(matches);
   // A search that hides the chosen one chooses the first it finds.
   useEffect(() => {
+    if (sel === FY && !q) return;
     if (shown.length && !shown.includes(sel)) setSel(shown[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
@@ -116,11 +124,13 @@ export default function DecksScreen({
     </button>
   );
 
-  const d = decks?.[sel];
-  const n = nLevels(sel);
+  // The conversation whose parts show (For you has none of its own).
+  const ds = sel === FY ? (shown[0] ?? ALL[0]) : sel;
+  const d = decks?.[ds];
+  const n = nLevels(ds);
   const openedCount = Array.from({ length: n }, (_, i) => levelComplete(d, i, role)).filter(Boolean).length;
-  const here = curLevel(sel, d, role);
-  const selRing = ring(sel);
+  const here = curLevel(ds, d, role);
+  const selRing = ring(ds);
 
   const ringWord: Record<Ring, string> = {
     turn: t(`${theirFirst} is waiting on you`, `${theirFirst} vous attend`),
@@ -150,10 +160,25 @@ export default function DecksScreen({
         </label>
       )}
 
-      {!q && top}
-
       {/* Every conversation as a big circle; its ring says where you are. */}
       <div ref={row} className="cv-circles" role="group" aria-label={t("Conversations", "Conversations")}>
+        {/* For you first: invites and your partner's progress. */}
+        {forYou && !q && (
+          <button
+            type="button"
+            data-slug={FY}
+            className={`cv-circ fy turn${sel === FY ? " on" : ""}`}
+            aria-pressed={sel === FY}
+            aria-label={t("For you", "Pour vous")}
+            onClick={() => setSel(FY)}
+          >
+            <span className="cv-circ-disc" aria-hidden="true">
+              <IconBell size={28} />
+              {forYouFresh && <span className="cv-circ-new" />}
+            </span>
+            <span className="cv-circ-nm">{t("For you", "Pour vous")}</span>
+          </button>
+        )}
         {shown.map((s) => {
           const r = ring(s);
           return (
@@ -180,16 +205,23 @@ export default function DecksScreen({
         </p>
       )}
 
-      {shown.length > 0 && (
+      {sel === FY && forYou && !q ? (
         <>
           <div className="cv-parts-h">
-            <h2>{deckName(sel, lang)}</h2>
+            <h2>{t("For you", "Pour vous")}</h2>
+          </div>
+          <div className="card fy-card cv-fy">{forYou}</div>
+        </>
+      ) : shown.length > 0 && (
+        <>
+          <div className="cv-parts-h">
+            <h2>{deckName(ds, lang)}</h2>
             <span className={selRing === "turn" ? "turn" : undefined}>
               {selRing === "turn"
                 ? ringWord.turn
                 : n > 1
                   ? t(`${openedCount} of ${n} parts opened`, `${openedCount} parties ouvertes sur ${n}`)
-                  : t(...deckDepthWord(sel))}
+                  : t(...deckDepthWord(ds))}
             </span>
           </div>
           <div className="cv-parts">
@@ -197,10 +229,10 @@ export default function DecksScreen({
               const youDone = levelDone(d, i, role);
               const themDone = levelDone(d, i, other(role));
               const both = levelComplete(d, i, role);
-              const mine = doneInLevel(sel, i, d, role);
+              const mine = doneInLevel(ds, i, d, role);
               const theyStarted = startedLevel(d, i, other(role));
               const turn = themDone && !youDone;
-              const pct = both ? overall(lvlQs(sel, i), d ?? {}, role) : null;
+              const pct = both ? overall(lvlQs(ds, i), d ?? {}, role) : null;
               const theirs = themDone
                 ? t(`${theirFirst} has finished`, `${theirFirst} a terminé`)
                 : theyStarted
@@ -222,13 +254,13 @@ export default function DecksScreen({
                   key={i}
                   type="button"
                   className={`cv-part${i === here && !both ? " here" : ""}`}
-                  onClick={() => (onPart ? onPart(sel, i) : onPlay(sel))}
+                  onClick={() => (onPart ? onPart(ds, i) : onPlay(ds))}
                 >
                   <span className={`cv-part-n${both ? " done" : turn ? " turn" : ""}`} aria-hidden="true">
                     {both ? "✓" : i + 1}
                   </span>
                   <span className="cv-part-txt">
-                    <span className="cv-part-nm">{n > 1 ? partName(sel, i) : deckName(sel, lang)}</span>
+                    <span className="cv-part-nm">{n > 1 ? partName(ds, i) : deckName(ds, lang)}</span>
                     <span className="cv-part-sub">{sub}</span>
                   </span>
                   {both ? (
@@ -247,8 +279,8 @@ export default function DecksScreen({
               );
             })}
           </div>
-          {catComplete(sel, d, role) && (
-            <button className="linkbtn hero-alt cv-all" type="button" onClick={() => onPlay(sel)}>
+          {catComplete(ds, d, role) && (
+            <button className="linkbtn hero-alt cv-all" type="button" onClick={() => onPlay(ds)}>
               {t("See every answer side by side", "Voir toutes les réponses côte à côte")}
             </button>
           )}

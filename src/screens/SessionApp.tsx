@@ -832,18 +832,8 @@ function SessionScreens({
                 role={role}
                 onPlay={openDeck}
                 current={slug}
-                top={
-                  fyItems.length > 0 && (
-                    <section className="fy-talk" aria-label={t("For you", "Pour vous")}>
-                      <div className="cv-group">
-                        <h2>{t("For you", "Pour vous")}</h2>
-                      </div>
-                      <div className="card fy-card">
-                        <ForYouList {...fyProps} />
-                      </div>
-                    </section>
-                  )
-                }
+                forYou={fyItems.length > 0 ? <ForYouList {...fyProps} /> : undefined}
+                forYouFresh={fyFresh}
               />
             )}
             {PATH_ENABLED && tab === "path" && (

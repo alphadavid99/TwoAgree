@@ -9254,3 +9254,23 @@ html .cv-part-nm {
 .cv-circles {
   position: relative;
 }
+/* For you, the first circle: a honey ring, a dot when something's new; its
+   list shows where a conversation's parts would. */
+.cv-circ-disc {
+  position: relative;
+}
+.cv-circ-new {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--ta-white);
+  border-radius: 50%;
+  background: var(--honeyD);
+}
+.cv-fy {
+  padding: 4px 16px;
+  border-radius: 26px;
+  background: var(--ta-white);
+}

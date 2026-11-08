@@ -14,6 +14,7 @@ import SessionApp from "./screens/SessionApp";
 import Onboarding from "./screens/Onboarding";
 import { Wordmark } from "./brand/Wordmark";
 import { Loading } from "./components/Loading";
+import { Flux } from "./components/Flux";
 import { IconSettings, IconBack } from "./components/icons";
 import { useT } from "./lib/i18n";
 
@@ -261,6 +262,7 @@ export default function App() {
 
   return (
     <div className="phone">
+      <Flux />
       {loading || !mode ? (
         <>
           <BrandHead />

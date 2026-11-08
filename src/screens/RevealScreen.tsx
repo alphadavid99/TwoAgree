@@ -20,7 +20,6 @@ import {
 import { type Question } from "../lib/questions";
 import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
 import { revealWords, type Pick } from "../lib/reveal";
-import { PctRing } from "../components/Ring";
 import { ScoreShare } from "../components/ScoreShare";
 import { shareTopic } from "../lib/shareTopic";
 import { talkStateOf, type TalkState } from "../lib/talks";
@@ -66,6 +65,8 @@ export default function RevealScreen({
   onDone,
   myName,
   partnerName,
+  myPhoto,
+  partnerPhoto,
   questions,
   review = false,
   firstEver = false,
@@ -86,6 +87,9 @@ export default function RevealScreen({
   onDone: () => void;
   myName: string;
   partnerName: string;
+  /** Each of your photos, when you have one (shared in the session). */
+  myPhoto?: string;
+  partnerPhoto?: string;
   // Review mode passes the whole deck's questions so a finished deck can be
   // reopened to see the full per-question breakdown (what each of you answered).
   questions?: Question[];
@@ -163,9 +167,10 @@ export default function RevealScreen({
   const [party, setParty] = useState(false);
   const skipped = useRef(false);
   const tier = celebrationTier(pct);
-  // The claret room is for every score (item 2), and the celebration's ground,
-  // so it is there from the first frame of the ceremony.
-  const lit = ceremony;
+  // The claret room is retired (Dave, Nov 2026, after Dateasy): the reveal
+  // sits on the same light ground and waves as every screen, with one big
+  // number and one card.
+  const lit = false;
   // The same line and verse for both of you (picked when the part opened).
   const words = revealWords(pct, pick, `${code ?? ""}|${slug}|${level}`);
   const [sharing, setSharing] = useState(false);
@@ -196,19 +201,13 @@ export default function RevealScreen({
     setStage(2);
   };
 
-  const eyebrow = (
-    <div className="eyebrow center" style={{ marginTop: 10 }}>
-      {(title ?? deckName(slug, lang)).toUpperCase()}
-      {review
-        ? t(" · REVIEW", " · RÉCAP")
-        : multi
-          ? t(
-              ` · PART ${level + 1} OF ${nLevels(slug)}`,
-              ` · PARTIE ${level + 1} SUR ${nLevels(slug)}`,
-            )
-          : ""}
-    </div>
-  );
+  const where =
+    (title ?? deckName(slug, lang)) +
+    (review
+      ? t(" · Review", " · Récap")
+      : multi
+        ? t(` · Part ${level + 1} of ${nLevels(slug)}`, ` · Partie ${level + 1} sur ${nLevels(slug)}`)
+        : "");
 
   if (phase === "ceremony") {
     return (
@@ -219,9 +218,8 @@ export default function RevealScreen({
         {/* The claret room. Full-bleed behind the notch and the home indicator —
             grounds bleed, content stays inside the safe area. */}
         {lit && <div className="ceremony-ground" aria-hidden="true" />}
-        <TopBar onExit={onDone} />
+        <TopBar onExit={onDone} title={where} />
         {party && <Celebration tier={tier} />}
-        {eyebrow}
 
         {stage === 1 && (
           <div className="meetstage tall">
@@ -243,34 +241,65 @@ export default function RevealScreen({
           <div className="levelup">
             {/* 100% only: the two of them settle together above the medallion,
                 the one beat no other range gets. */}
-            {tier >= 4 && (
-              <div className="meetpair oneheart lvlup-rise r2">
-                <Avatar name={myName} tone={toneFor(role)} size={40} />
-                <Avatar name={partnerName} tone={toneFor(other(role))} size={40} />
-              </div>
-            )}
-            <div className="lvlup-rise r1">
-              {tier >= 4 ? (
-                <div className="medal">
-                  <span className="medal-badge">{t("Complete alignment", "Accord complet")}</span>
-                  <div className="medal-ring">
-                    <span className="medal-num">
-                      100<span className="medal-pc">%</span>
-                    </span>
-                    <span className="medal-lb">{t("agreed", "d’accord")}</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="center" style={{ margin: "8px 0 0" }}>
-                  <PctRing pct={pct} size={190} color="var(--ta-honey)" label={t("agreed", "d’accord")} drawMs={1400} />
-                </div>
+            {/* The score as one big card (Dave, Nov 2026, after Dateasy's
+                profile card): a warm glow behind the number, how well you
+                know each other in the pill, the number large at the foot. */}
+            <div className="revcard lvlup-rise r1">
+              {know.pct != null && (
+                <span className="revcard-pill">
+                  <span aria-hidden="true">&#9825;</span> {t(`${know.pct}% known`, `${know.pct} % connus`)}
+                </span>
               )}
-              <p className="score-basis">
-                {t(
-                  `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
-                  `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+              {/* The two of you across the top of the card (Dave, Nov 2026):
+                  your colours blending into each other, each of you in a
+                  circle, your photo or your initial, fading into white
+                  behind the number. */}
+              <span className="revtop" aria-hidden="true">
+                <span className={`revdisc ${toneFor(role)}`}>
+                  {myPhoto ? <img src={myPhoto} alt="" /> : initialOf(myName)}
+                </span>
+                <span className={`revdisc ${toneFor(other(role))}`}>
+                  {partnerPhoto ? <img src={partnerPhoto} alt="" /> : initialOf(partnerName)}
+                </span>
+              </span>
+              <span className="revcard-body">
+                {tier >= 4 ? (
+                  <span className="medal-badge bignum-badge">{t("Complete alignment", "Accord complet")}</span>
+                ) : (
+                  <span className="bignum-lb">
+                    {t(
+                      `You and ${firstOf(partnerName)} agreed on`,
+                      `${firstOf(partnerName)} et vous êtes d’accord sur`,
+                    )}
+                  </span>
                 )}
-              </p>
+                <span className="bignum">
+                  <CountUp to={pct} ms={1200} />
+                  <span className="bignum-pc">%</span>
+                </span>
+                <span className="revcard-basis">
+                  {t(
+                    `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
+                    `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+                  )}
+                </span>
+              </span>
+              <span className="revcard-line">{words.line}</span>
+              <span className="revcard-acts">
+                <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
+                  {t("See your answers →", "Voir vos réponses →")}
+                </button>
+                <button
+                  className="pcircle revshare"
+                  type="button"
+                  onClick={() => setSharing(true)}
+                  aria-label={t("Share your score", "Partager votre score")}
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </span>
             </div>
             {/* The whole ceremony is staged in motion, so without this a blind
                 partner gets none of the arc the animation carries. */}
@@ -287,21 +316,13 @@ export default function RevealScreen({
             )}
             {/* The range's encouragement and its verse (ESV): the same for both
                 of you, never the same as your last reveal. */}
-            <p className="reveal-line lvlup-rise r2">{words.line}</p>
-            <p className="reveal-verse lvlup-rise r3">
-              “{words.verse.text}”
-              <span className="reveal-ref">{words.verse.ref}</span>
-            </p>
+            <div className="revwords lvlup-rise r2">
+              <p className="reveal-verse">
+                “{words.verse.text}”
+                <span className="reveal-ref">{words.verse.ref}</span>
+              </p>
+            </div>
             <div className="lvlup-cta lvlup-rise r4">
-              <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
-                {t("See your answers →", "Voir vos réponses →")}
-              </button>
-              <button className="btn onclaret" type="button" onClick={() => setSharing(true)}>
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {t("Share your score", "Partager votre score")}
-              </button>
               <button className="btn ghost" type="button" onClick={onDone}>
                 {t("Done for now", "Terminé pour l’instant")}
               </button>
@@ -369,7 +390,7 @@ export default function RevealScreen({
     <section>
       <TopBar onExit={onDone} />
       <div className="eyebrow center" style={{ marginTop: 10 }}>
-        {partLabel.toUpperCase()}
+        {partLabel}
       </div>
       <h1 className="h1 center" style={{ margin: "4px 0 0" }}>
         {hasScore ? t("Your answers, side by side", "Vos réponses, face à face") : t("What you each said", "Ce que chacun a dit")}
@@ -1002,4 +1023,27 @@ function NotYetCard({
       {talk && onPin && <TalkLink talk={talk} onPin={onPin} t={t} />}
     </div>
   );
+}
+
+// The big number counts up once as it lands; reduced motion shows it at once.
+function CountUp({ to, ms }: { to: number; ms: number }) {
+  const still =
+    typeof window === "undefined" || !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const [n, setN] = useState(still ? to : 0);
+  useEffect(() => {
+    if (still) {
+      setN(to);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const k = Math.min(1, (now - t0) / ms);
+      setN(Math.round(to * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [to, ms, still]);
+  return <>{n}</>;
 }

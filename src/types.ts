@@ -18,6 +18,8 @@ export interface Profile {
 export interface Member {
   name: string;
   uid: string;
+  /** Your profile photo, copied in so your partner can see it (a small JPEG). */
+  photo?: string;
 }
 
 // Relationship stage, captured on the couple at pairing (brief §8). Stored on

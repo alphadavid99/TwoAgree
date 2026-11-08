@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName, deckDepthWord } from "../lib/leveling";
 import { catComplete, curLevel, doneInLevel, levelComplete } from "../lib/progress";
@@ -19,6 +20,7 @@ export default function DecksScreen({
   onPlay,
   current,
   top,
+  actSlot,
 }: {
   session: Session;
   role: Role;
@@ -27,10 +29,14 @@ export default function DecksScreen({
   current?: string;
   /** For you: invites and your partner's progress, above everything else. */
   top?: ReactNode;
+  /** The shared header's button spot, left of the bell. */
+  actSlot?: HTMLElement | null;
 }) {
   const t = useT();
   const lang = useLang();
   const [query, setQuery] = useState("");
+  // Search opens from the round button beside the title (Dave, Nov 2026).
+  const [searching, setSearching] = useState(false);
   const { rows } = revealedRows(session.decks, role);
   const pctOf = (slug: string) => rows.find((r) => r.slug === slug)?.pct;
 
@@ -43,14 +49,32 @@ export default function DecksScreen({
   const q = norm(query);
   const matches = (slug: string) => !q || norm(deckName(slug, lang)).includes(q) || norm(DECKS[slug].name).includes(q);
 
+  const searchBtn = (
+    <button
+      className="pcircle"
+      type="button"
+      aria-expanded={searching}
+      aria-label={t("Search conversations", "Rechercher une conversation")}
+      onClick={() => {
+        if (searching) setQuery("");
+        setSearching(!searching);
+      }}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+    </button>
+  );
+
   return (
     <section>
-      <h1 className="h1" style={{ margin: "20px 2px 2px" }}>
-        {t("Conversations", "Conversations")}
-      </h1>
-      <p className="helper" style={{ margin: "0 2px 14px" }}>
+      {actSlot ? createPortal(searchBtn, actSlot) : searchBtn}
+      <h1 className="pagetitle">{t("Conversations", "Conversations")}</h1>
+      <p className="helper cv-lede">
         {t("Short parts, answered on your own, opened together.", "De courtes parties, répondues chacun de son côté, ouvertes ensemble.")}
       </p>
+      {searching && (
       <label className="cv-search">
         <span className="sr-only">{t("Search conversations", "Rechercher une conversation")}</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -62,8 +86,10 @@ export default function DecksScreen({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t("Search conversations", "Rechercher une conversation")}
+          autoFocus
         />
       </label>
+      )}
 
       {!q && top}
       {pick && !q && <PickUp slug={pick} session={session} role={role} onPlay={onPlay} />}
@@ -77,9 +103,11 @@ export default function DecksScreen({
               <h2>{t(g.en, g.fr)}</h2>
               <span>{t(g.tagEn, g.tagFr)}</span>
             </div>
-            {slugs.map((slug) => (
-              <DeckRow key={slug} slug={slug} session={session} role={role} pct={pctOf(slug)} onPlay={onPlay} />
-            ))}
+            <div className="cv-grid">
+              {slugs.map((slug) => (
+                <DeckRow key={slug} slug={slug} session={session} role={role} pct={pctOf(slug)} onPlay={onPlay} />
+              ))}
+            </div>
           </div>
         );
       })}
@@ -147,22 +175,21 @@ function DeckRow({
   const depth = deckDepthWord(slug);
   const tag = depth[0] === "Hardest" || depth[0] === "Vulnerable" ? t(...depth) : null;
   const sub = complete
-    ? pct != null
-      ? t(`Complete · ${pct}% agree`, `Terminé · ${pct} % d’accord`)
-      : t("Complete", "Terminé")
+    ? t("Complete", "Terminé")
     : mine > 0
-      ? t(`Part ${lvl + 1} · ${mine} of ${total} answered`, `Partie ${lvl + 1} · ${mine} sur ${total} répondues`)
+      ? t(`Part ${lvl + 1} · ${mine} of ${total}`, `Partie ${lvl + 1} · ${mine} sur ${total}`)
       : t(`${L} part${L === 1 ? "" : "s"}`, `${L} partie${L === 1 ? "" : "s"}`);
+  // A tall glass card (after Dateasy's grid): the topic's icon large,
+  // the agree score as a pill once a part is open, the name and parts below.
   return (
-    <button type="button" className="cv-row" onClick={() => onPlay(slug)}>
-      <span className="tg-icon" aria-hidden="true">
-        <DeckIcon icon={d.icon} size={22} />
+    <button type="button" className="cv-row cv-tile" onClick={() => onPlay(slug)}>
+      <span className="cv-tile-art" aria-hidden="true">
+        <DeckIcon icon={d.icon} size={40} />
       </span>
+      {pct != null && <span className="cv-tile-pct">{t(`${pct}% agree`, `${pct} % d’accord`)}</span>}
       <span className="cv-row-main">
-        <span className="cv-row-nm">
-          {deckName(slug, lang)}
-          {tag && <span className="kbadge close">{tag}</span>}
-        </span>
+        <span className="cv-row-nm">{deckName(slug, lang)}</span>
+        {tag && <span className="kbadge close">{tag}</span>}
         <span className="cv-row-sub">{sub}</span>
         <span className="cv-bars" aria-hidden="true">
           {Array.from({ length: L }, (_, i) => {
@@ -175,11 +202,6 @@ function DeckRow({
             );
           })}
         </span>
-      </span>
-      <span className="cv-go" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20">
-          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
       </span>
     </button>
   );

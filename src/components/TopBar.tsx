@@ -1,26 +1,23 @@
-import { Mark } from "../brand/Mark";
+import type { ReactNode } from "react";
 import { IconClose } from "./icons";
 
-// In-flow header: the TwoAgree mark centred, with an optional close button so the
-// user is never stranded (e.g. mid-questions). Answers are saved as you go, so
-// leaving is always safe.
-export function TopBar({ onExit }: { onExit?: () => void }) {
+// In-flow header, full screen (Dave, Nov 2026, after Dateasy): no mark, just
+// close in a glass circle on the left, so the user is never stranded, and an
+// optional title in the middle. Answers are saved as you go, so leaving is
+// always safe.
+export function TopBar({ onExit, title }: { onExit?: () => void; title?: ReactNode }) {
+  if (!onExit && !title) return <div className="topbar topbar-none" />;
   return (
     <div className="topbar">
-      <span className="topbar-slot" />
-      <Mark height={26} title="TwoAgree" colour="var(--berry)" />
-      <span className="topbar-slot topbar-slot--right">
+      <span className="topbar-slot">
         {onExit && (
-          <button
-            className="iconbtn"
-            type="button"
-            onClick={onExit}
-            aria-label="Close and go home"
-          >
-            <IconClose size={22} />
+          <button className="pcircle" type="button" onClick={onExit} aria-label="Close and go home">
+            <IconClose size={20} />
           </button>
         )}
       </span>
+      {title ? <span className="topbar-title">{title}</span> : <span />}
+      <span className="topbar-slot" />
     </div>
   );
 }

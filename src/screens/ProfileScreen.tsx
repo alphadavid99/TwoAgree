@@ -114,7 +114,7 @@ export default function ProfileScreen({
 
   return (
     <section>
-      <h1 className="h1" style={{ margin: "20px 2px 14px" }}>
+      <h1 className="pagetitle">
         {t("You", "Vous")}
       </h1>
 
@@ -434,7 +434,7 @@ function EditProfile({
         }}
       />
       <p className="helper you-hint">
-        {t(`Your photo and this line stay on your account. ${cap(them)} doesn’t see them.`, `Votre photo et cette ligne restent sur votre compte. ${cap(them)} ne les voit pas.`)}
+        {t(`${cap(them)} sees your photo in your session. This line stays on your account: ${cap(them)} doesn’t see it.`, `${cap(them)} voit votre photo dans votre session. Cette ligne reste sur votre compte : ${cap(them)} ne la voit pas.`)}
       </p>
 
       {err && <ErrorPanel>{err}</ErrorPanel>}
@@ -463,6 +463,7 @@ function WhatTheySee({ them, nameHere, onBack, t }: { them: string; nameHere?: s
               ? t(`Your name in this session: “${nameHere}”.`, `Votre nom dans cette session : « ${nameHere} ».`)
               : t("Your name in your session.", "Votre nom dans votre session.")}
           </li>
+          <li>{t("Your profile photo, if you’ve added one.", "Votre photo de profil, si vous en avez ajouté une.")}</li>
           <li>{t("That you’ve started or finished a part, never what you answered before then.", "Que vous avez commencé ou terminé une partie, jamais ce que vous avez répondu avant.")}</li>
           <li>
             {t(
@@ -476,7 +477,7 @@ function WhatTheySee({ them, nameHere, onBack, t }: { them: string; nameHere?: s
       <div className="card" style={{ marginTop: 12 }}>
         <h2 className="ktitle">{t(`${cap(them)} never sees`, `${cap(them)} ne voit jamais`)}</h2>
         <ul className="you-bullets">
-          <li>{t("Your email, your photo or your line about you.", "Votre e-mail, votre photo ou votre ligne sur vous.")}</li>
+          <li>{t("Your email or your line about you.", "Votre e-mail ou votre ligne sur vous.")}</li>
           <li>{t("Your path questions, only the path they helped choose.", "Vos questions du chemin, seulement le chemin qu’elles ont aidé à choisir.")}</li>
           <li>{t("An answer in a part they haven’t finished too.", "Une réponse dans une partie qu’il ou elle n’a pas aussi terminée.")}</li>
         </ul>

@@ -19,6 +19,7 @@ import HomeScreen from "./HomeScreen";
 import DecksScreen from "./DecksScreen";
 import PartPicker from "./PartPicker";
 import userEvent from "@testing-library/user-event";
+import { TabHeader } from "../components/TabHeader";
 import ResultsScreen from "./ResultsScreen";
 import PlayScreen from "./PlayScreen";
 
@@ -104,11 +105,11 @@ describe("HomeScreen", () => {
         onTogether={noop}
       />,
     );
-    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
-    // The soft scores card: two rings, each named with its count.
-    expect(screen.getByText("Agree")).toBeTruthy();
-    expect(screen.getByText("Known")).toBeTruthy();
-    expect(screen.getByText(/^\d+ questions?$/)).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
+    // Between the two of you, label over value: both numbers and the count.
+    expect(screen.getByText("Between the two of you")).toBeTruthy();
+    expect(screen.getAllByText(/^\d+% agree( · \d+% known)?$/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/^\d+ questions?/)).toBeTruthy();
   });
 
   it("has one honey button: the next step (item 10)", () => {
@@ -159,7 +160,7 @@ describe("HomeScreen", () => {
         onTogether={noop}
       />,
     );
-    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
   });
 
   it("omits the Path card when the Path is behind its flag", () => {
@@ -202,6 +203,7 @@ describe("DecksScreen", () => {
     const s = { ...session, decks: { [partialSlug]: partial } } as unknown as Session;
     const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} current={partialSlug} />);
     expect(screen.getByText("Pick up where you left off")).toBeTruthy();
+    await userEvent.click(screen.getByRole("button", { name: "Search conversations" }));
     await userEvent.type(screen.getByRole("searchbox"), "  MONEY ");
     expect(container.querySelectorAll("button.cv-row").length).toBe(1);
   });
@@ -231,7 +233,7 @@ describe("ResultsScreen", () => {
   it("switches to the real scoreboard once something is revealed", () => {
     render(<ResultsScreen session={session} role="host" code="ABCD" onOpen={noop} />);
     expect(screen.getByRole("heading", { name: "Together" })).toBeTruthy();
-    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
     expect(screen.getByText("Known")).toBeTruthy();
   });
 });
@@ -302,5 +304,16 @@ describe("which-of-you questions show names, in the same order for both", () => 
     expect(host.slice(0, 2)).toEqual(["Mostly Sarah", "Mostly Judah"]);
     expect(guest).toEqual(host);
     expect(host.join(" ")).not.toMatch(/\b(him|her)\b/i);
+  });
+});
+
+describe("TabHeader", () => {
+  it("shows the two of you, the screen's own button spot, and the bell last", () => {
+    const { container } = render(
+      <TabHeader role="host" myName="Sarah" partnerName="Judah" joined slotRef={noop} bell={<button type="button">For you</button>} />,
+    );
+    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
+    const acts = container.querySelector(".tabhdr-acts");
+    expect(acts?.lastElementChild?.textContent).toBe("For you");
   });
 });

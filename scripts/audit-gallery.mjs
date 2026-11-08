@@ -1,6 +1,7 @@
 // Accessibility audit over every gallery screen (design refresh, item 16):
 //  - text smaller than 12px
 //  - tap targets smaller than 44px (Apple's minimum; the kit aims for 48)
+//  - text that isn't one of the six type styles
 //  - text below 4.5:1 against its ground (3:1 for large text, 24px+ or 18.66px+ bold)
 // Run after `npm run build:gallery`:   npm run audit:gallery
 // Writes review/audit.json and prints a summary. Exits 1 if anything fails.
@@ -163,6 +164,7 @@ for (const id of ids) {
     const small = []
     const taps = []
     const contrast = []
+    const type = []
     const seenText = new Set()
     // An open dialog makes everything behind it inert: measure only the dialog.
     const modal = frame.querySelector('[aria-modal="true"]')
@@ -178,6 +180,20 @@ for (const id of ids) {
       const cs = getComputedStyle(el)
       const px = parseFloat(cs.fontSize)
       if (px < 12) small.push({ text: label(el), px })
+      // The six type styles (docs/design-system.md, Type). The logo, avatar
+      // initials, form fields, display numbers (over 30px) and text with no
+      // letters (glyphs, a bare number) are not running type.
+      if (
+        !el.closest('.avatar-disc, input, textarea, select, [role="img"]') &&
+        /\p{L}{2}/u.test(t.textContent) &&
+        px <= 30
+      ) {
+        const fam = /fraunces/i.test(cs.fontFamily) ? 'serif' : /hanken/i.test(cs.fontFamily) ? 'sans' : cs.fontFamily.split(',')[0]
+        const w = Number(cs.fontWeight) >= 550 ? 600 : 400
+        const key = `${fam} ${Math.round(px)} ${w}`
+        const ok = ['serif 26 600', 'serif 20 600', 'sans 17 600', 'sans 15 400', 'sans 15 600', 'sans 13 400']
+        if (!ok.includes(key)) type.push({ text: label(el), style: key, cls: (el.className && typeof el.className === 'string' ? el.tagName.toLowerCase() + '.' + el.className.split(' ').join('.') : el.tagName.toLowerCase()) + ' < ' + (el.parentElement?.className || el.parentElement?.tagName || '') })
+      }
       const fg = parse(cs.color)
       if (!fg) continue
       const bg = groundOf(el)
@@ -199,19 +215,20 @@ for (const id of ids) {
       }
       if (r.height < 44 || r.width < 44) taps.push({ el: label(el), w: Math.round(r.width), h: Math.round(r.height) })
     }
-    return { id, small, taps, contrast }
+    return { id, small, taps, contrast, type }
   }
   }, id))
 }
 await browser.close()
 
-const fails = results.filter((r) => r.small.length || r.taps.length || r.contrast.length)
+const fails = results.filter((r) => r.small.length || r.taps.length || r.contrast.length || r.type.length)
 const total = (k) => results.reduce((n, r) => n + r[k].length, 0)
 mkdirSync('review', { recursive: true })
 writeFileSync('review/audit.json', JSON.stringify({ screens: results.length, results }, null, 2))
 console.log(
   `audit-gallery: ${results.length} screens · text under 12px: ${total('small')} · ` +
-    `tap targets under 44px: ${total('taps')} · contrast fails: ${total('contrast')}`,
+    `tap targets under 44px: ${total('taps')} · contrast fails: ${total('contrast')} · ` +
+    `text off the six styles: ${total('type')}`,
 )
 if (process.argv.includes('--verbose')) {
   for (const r of fails) {
@@ -219,6 +236,7 @@ if (process.argv.includes('--verbose')) {
     for (const s of r.small) console.log(`  small ${s.px}px  ${s.text}`)
     for (const s of r.taps) console.log(`  tap   ${s.w}x${s.h}  ${s.el}`)
     for (const s of r.contrast) console.log(`  contrast ${s.ratio} (<${s.need})  ${s.text}`)
+    for (const s of r.type) console.log(`  type  ${s.style}  [${s.cls}]  ${s.text}`)
   }
 }
 process.exit(fails.length ? 1 : 0)

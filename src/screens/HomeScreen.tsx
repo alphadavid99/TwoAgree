@@ -1,21 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import { DECKS } from "../lib/questions";
+import { useEffect, useRef, useState, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { nLevels, lvlQs, partName } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
 import { inviteLink } from "../lib/invite";
 import { revealedRows, answersWaiting } from "../lib/results";
+import { DECKS, ORDER } from "../lib/questions";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
 import { PATH_STEPS } from "../data/path.generated";
-import { Avatar, toneFor } from "../components/Avatar";
 import { PathScene } from "../components/PathScene";
-import { PctRing } from "../components/Ring";
-import { DeckIcon } from "../components/icons";
-import { deckName } from "../lib/questions.fr";
+import { deckName, localizeQuestion } from "../lib/questions.fr";
+import { talkNext } from "../lib/talkNext";
+import { namesFor } from "../lib/who";
 import { track } from "../lib/observability";
 import { useT, useLang } from "../lib/i18n";
 
@@ -47,7 +46,6 @@ export default function HomeScreen({
 }) {
   const t = useT();
   const lang = useLang();
-  const deck: DeckData | undefined = session.decks?.[slug];
   // Home speaks in first names — full names elongate the chip and greeting.
   const firstName = (n: string) => n.trim().split(/\s+/)[0] || n;
   const myName = firstName(session.members?.[role]?.name ?? t("You", "Vous"));
@@ -77,28 +75,13 @@ export default function HomeScreen({
         ? t("Good afternoon,", "Bon après-midi,")
         : t("Good evening,", "Bonsoir,");
 
-  const L = nLevels(slug);
-  const lvl = curLevel(slug, deck, role);
-  const lvlTotal = lvlQs(slug, lvl).length;
-  const mine = doneInLevel(slug, lvl, deck, role);
-  // Their answers are private until you've both finished, so partner status
-  // comes from the shared started/done flags only.
-  const theyStarted = startedLevel(deck, lvl, other(role));
-  const theyFinished = levelDone(deck, lvl, other(role));
-  const allDone = catComplete(slug, deck, role);
-
-  const cta = allDone
-    ? t("See where you agree →", "Voir où vous êtes d’accord →")
-    : L > 1
-      ? mine > 0
-        ? t(`Continue Part ${lvl + 1} →`, `Continuer la partie ${lvl + 1} →`)
-        : t(`Start Part ${lvl + 1} →`, `Commencer la partie ${lvl + 1} →`)
-      : mine > 0
-        ? t("Continue →", "Continuer →")
-        : t("Start answering →", "Commencer à répondre →");
-
   // The scores card shares Together's maths, so the numbers agree.
   const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
+  // The cards on Home: the conversation you're in on top, then the others
+  // you've started, then the rest, so a swipe brings up what's next.
+  const stack = heroStack(slug, session.decks, role);
+  const talk = talkNext(session.decks, role).next[0];
+  const names = namesFor(session.members, role, myName, partnerName);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
 
@@ -174,27 +157,7 @@ export default function HomeScreen({
 
   return (
     <section>
-      <div className="homehdr">
-        <span className={`avchip${justJoined ? " joinnow" : ""}`}>
-          <span className="avchip-stack">
-            <Avatar name={myName} tone={toneFor(role)} size={34} />
-            {joined ? (
-              <span className="joinpop">
-                <Avatar name={partnerName} tone={toneFor(other(role))} size={34} />
-              </span>
-            ) : (
-              <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34, fontSize: 14 }}>
-                ?
-              </span>
-            )}
-          </span>
-          <i>
-            {myName} &amp; {joined ? partnerName : "…"}
-          </i>
-        </span>
-      </div>
-
-      <h1 className="greet serif">
+      <h1 className="pagetitle">
         {greeting} {myName}
       </h1>
       {justJoined && (
@@ -203,28 +166,25 @@ export default function HomeScreen({
         </div>
       )}
 
-      {/* Between the two of you: soft, light, two small rings kept apart. The
-          encouragement line stays on the reveal and Together. */}
-      {rows.length > 0 && (
-        <button className="card hscores" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
-          <span className="hscores-top">
-            <span className="eyebrow">{t("Between the two of you", "Entre vous deux")}</span>
-            <span aria-hidden="true">&#8250;</span>
-          </span>
-          <span className="hscores-rings">
-            <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)} />
-            <SoftRing
-              pct={knownPct}
-              colour="var(--app-rose-soft)"
-              name={t("Known", "Connus")}
-              count={made ? t(`${right} of ${made} guesses`, `${right} intuitions sur ${made}`) : t("no guesses yet", "pas encore d’intuitions")}
-            />
-          </span>
-        </button>
-      )}
+      {/* Your next step, as one big card with the others stacked behind it
+          (Dave, Nov 2026, after Dateasy): swipe for another conversation. */}
+      <HeroStack
+        slugs={stack}
+        render={(s) => (
+          <HeroCard
+            slug={s}
+            deck={session.decks?.[s]}
+            role={role}
+            joined={joined}
+            partnerName={partnerName}
+            pct={rows.find((r) => r.slug === s)?.pct ?? null}
+            onPlay={onPlay}
+            onBrowse={onBrowse}
+          />
+        )}
+      />
 
-      {/* The reveal that's waiting: the one claret moment, before your next
-          step. */}
+      {/* The reveal that's waiting, before anything else below. */}
       {pending.length > 0 && onOpenReveal && (
         <button
           className="readycard"
@@ -235,7 +195,7 @@ export default function HomeScreen({
             <span className="readyseal" aria-hidden="true">&#10022;</span>
             <span>
               <span className="readycard-eyebrow">
-                {t("READY TO OPEN", "PRÊT À OUVRIR")}
+                {t("Ready to open", "Prêt à ouvrir")}
               </span>
               <span className="readycard-nm">
                 {deckName(pending[0].slug, lang)}
@@ -252,50 +212,37 @@ export default function HomeScreen({
         </button>
       )}
 
-      {/* Your next step: the part you're in, one honey button. */}
-      <div className="card hnext">
-        <div className="hnext-top">
-          <span className="tg-icon" aria-hidden="true">
-            <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={24} />
-          </span>
-          <span>
-            <span className="hnext-nm">{deckName(slug, lang)}</span>
-            <span className="hnext-sub">
-              {allDone
-                ? t("All parts revealed", "Toutes les parties révélées")
-                : L > 1
-                  ? t(`Part ${lvl + 1} of ${L} · ${partName(slug, lvl)}`, `Partie ${lvl + 1} sur ${L} · ${partName(slug, lvl)}`)
-                  : partName(slug, lvl)}
+      {/* Label over value: where you stand, and the next thing to talk about.
+          Both open Together, where the full scores and the list live. */}
+      {rows.length > 0 && (
+        <button className="card irow" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
+          <span className="irow-txt">
+            <span className="irow-lb">{t("Between the two of you", "Entre vous deux")}</span>
+            <span className="irow-val">
+              {[
+                overallPct == null ? t("No scores yet", "Pas encore de scores") : t(`${overallPct}% agree`, `${overallPct} % d’accord`),
+                knownPct != null ? t(`${knownPct}% known`, `${knownPct} % connus`) : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+            <span className="irow-meta">
+              {t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)}
+              {made ? t(` · ${right} of ${made} guesses right`, ` · ${right} intuitions justes sur ${made}`) : ""}
             </span>
           </span>
-        </div>
-        {!allDone && (
-          <>
-            <div className="qprog featprog" aria-hidden="true">
-              <i style={{ width: `${lvlTotal ? Math.round((mine / lvlTotal) * 100) : 0}%` }} />
-            </div>
-            <div className="capline">
-              <b>{t(`${mine} of ${lvlTotal}`, `${mine} sur ${lvlTotal}`)}</b> {t("answered", "répondues")}
-              {joined && (
-                <>
-                  {" · "}
-                  {!theyStarted
-                    ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
-                    : theyFinished
-                      ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
-                      : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
-                </>
-              )}
-            </div>
-          </>
-        )}
-        <button className="btn pill" type="button" onClick={() => onPlay(slug)}>
-          {cta}
+          <span className="irow-go" aria-hidden="true">&#8250;</span>
         </button>
-        <button className="btn ghost" type="button" onClick={onBrowse}>
-          {t("Choose another conversation", "Choisir une autre conversation")}
+      )}
+      {talk && (
+        <button className="card irow" type="button" onClick={onTogether}>
+          <span className="irow-txt">
+            <span className="irow-lb">{t("Talk about next", "À aborder ensuite")}</span>
+            <span className="irow-val">{localizeQuestion(talk.q, lang, names).q}</span>
+          </span>
+          <span className="irow-go" aria-hidden="true">&#8250;</span>
         </button>
-      </div>
+      )}
 
       {/* Before your partner joins: one card, the code and one link. */}
       {!joined && (
@@ -349,18 +296,179 @@ export default function HomeScreen({
   );
 }
 
-function SoftRing({ pct, colour, name, count }: { pct: number | null; colour: string; name: string; count: string }) {
+// The conversation you're in, then the others you've started and not
+// finished, then the ones not yet begun; five at most.
+function heroStack(slug: string, decks: Session["decks"], role: Role): string[] {
+  const begun = (s: string) => !!decks?.[s]?.answers && Object.values(decks[s]?.answers ?? {}).some((a) => a?.[role] != null);
+  const open = ORDER.filter((s) => s !== slug && DECKS[s] && !catComplete(s, decks?.[s], role));
+  return [slug, ...open.filter(begun), ...open.filter((s) => !begun(s))].slice(0, 5);
+}
+
+// One card on top, up to two peeking out behind it. Drag sideways (or swipe)
+// to bring up the next; a tap still presses the card's buttons.
+function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) => ReactNode }) {
+  const t = useT();
+  const n = slugs.length;
+  const [i, setI] = useState(0);
+  const [dx, setDx] = useState(0);
+  const [out, setOut] = useState<0 | 1 | -1>(0);
+  const from = useRef<{ x: number; y: number } | null>(null);
+  const dragging = useRef(false);
+  const go = (dir: 1 | -1) => {
+    setOut(dir);
+    window.setTimeout(() => {
+      setI((v) => (v + dir + n) % n);
+      setOut(0);
+      setDx(0);
+    }, 220);
+  };
+  const down = (e: RPointerEvent<HTMLDivElement>) => {
+    if (n < 2) return;
+    from.current = { x: e.clientX, y: e.clientY };
+    dragging.current = false;
+  };
+  const move = (e: RPointerEvent<HTMLDivElement>) => {
+    const f = from.current;
+    if (!f) return;
+    const x = e.clientX - f.x;
+    if (!dragging.current) {
+      if (Math.abs(x) < 8 || Math.abs(x) < Math.abs(e.clientY - f.y)) return;
+      dragging.current = true;
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    }
+    setDx(x);
+  };
+  const up = () => {
+    if (!from.current) return;
+    from.current = null;
+    if (dx < -70) go(1);
+    else if (dx > 70) go(-1);
+    else setDx(0);
+  };
+  const style =
+    out !== 0
+      ? { transform: `translateX(${out * -120}%) rotate(${out * -8}deg)`, opacity: 0, transition: "transform .22s ease-in, opacity .22s ease-in" }
+      : dx
+        ? { transform: `translateX(${dx}px) rotate(${dx / 28}deg)`, transition: "none" }
+        : undefined;
   return (
-    <span className="softring">
-      {pct == null ? (
-        <span className="softring-none" aria-hidden="true">—</span>
-      ) : (
-        <PctRing pct={pct} size={64} sw={6} color={colour} label="" ink="var(--ta-ink)" />
+    <div className="hstack" aria-roledescription={t("cards", "cartes")}>
+      {n > 2 && <span className="hstack-back b2" aria-hidden="true" />}
+      {n > 1 && <span className="hstack-back b1" aria-hidden="true" />}
+      {/* While you pull the top card away, the next one is already there. */}
+      {n > 1 && (dx !== 0 || out !== 0) && (
+        <div className="hstack-next" aria-hidden="true" inert>
+          {render(slugs[(i + (dx > 0 || out === -1 ? -1 : 1) + n) % n])}
+        </div>
       )}
-      <span className="softring-txt">
-        <b>{name}</b>
-        <span>{count}</span>
+      <div
+        key={slugs[i]}
+        className={`hstack-top${dx !== 0 || out !== 0 ? " moving" : ""}`}
+        style={style}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onClickCapture={(e) => {
+          if (dragging.current) {
+            e.stopPropagation();
+            e.preventDefault();
+            dragging.current = false;
+          }
+        }}
+      >
+        {render(slugs[i])}
+      </div>
+      {n > 1 && (
+        <span className="hstack-dots" aria-hidden="true">
+          {slugs.map((s, k) => (
+            <i key={s} className={k === i ? "on" : ""} />
+          ))}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function HeroCard({
+  slug,
+  deck,
+  role,
+  joined,
+  partnerName,
+  pct,
+  onPlay,
+  onBrowse,
+}: {
+  slug: string;
+  deck: DeckData | undefined;
+  role: Role;
+  joined: boolean;
+  partnerName: string;
+  pct: number | null;
+  onPlay: (slug: string) => void;
+  onBrowse: () => void;
+}) {
+  const t = useT();
+  const lang = useLang();
+  const L = nLevels(slug);
+  const lvl = curLevel(slug, deck, role);
+  const lvlTotal = lvlQs(slug, lvl).length;
+  const mine = doneInLevel(slug, lvl, deck, role);
+  // Their answers are private until you've both finished, so partner status
+  // comes from the shared started/done flags only.
+  const theyStarted = startedLevel(deck, lvl, other(role));
+  const theyFinished = levelDone(deck, lvl, other(role));
+  const allDone = catComplete(slug, deck, role);
+  const cta = allDone
+    ? t("See where you agree →", "Voir où vous êtes d’accord →")
+    : L > 1
+      ? mine > 0
+        ? t(`Continue Part ${lvl + 1} →`, `Continuer la partie ${lvl + 1} →`)
+        : t(`Start Part ${lvl + 1} →`, `Commencer la partie ${lvl + 1} →`)
+      : mine > 0
+        ? t("Continue →", "Continuer →")
+        : t("Start answering →", "Commencer à répondre →");
+  return (
+    <div className="card hhero">
+      {pct != null && (
+        <span className="hero-pill">
+          <span aria-hidden="true">&#9825;</span> {t(`${pct}% agree`, `${pct} % d’accord`)}
+        </span>
+      )}
+      <span className="hero-body">
+        <span className="hero-up">
+          {allDone
+            ? t("All parts revealed", "Toutes les parties révélées")
+            : L > 1
+              ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
+              : t("Up next", "À suivre")}
+        </span>
+        <h2 className="hero-nm">{deckName(slug, lang)}</h2>
+        {!allDone && (
+          <span className="hero-sub">
+            {L > 1 ? `${partName(slug, lvl)} · ` : ""}
+            {mine > 0
+              ? t(`${mine} of ${lvlTotal} answered`, `${mine} sur ${lvlTotal} répondues`)
+              : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
+          </span>
+        )}
+        {joined && !allDone && (
+          <span className="hero-them">
+            {!theyStarted
+              ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
+              : theyFinished
+                ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
+                : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
+          </span>
+        )}
+        <button className="btn pill hero-go" type="button" onClick={() => onPlay(slug)}>
+          {cta}
+        </button>
+        <button className="linkbtn hero-alt" type="button" onClick={onBrowse}>
+          {t("Choose another conversation", "Choisir une autre conversation")}
+        </button>
       </span>
-    </span>
+    </div>
   );
 }

@@ -51,10 +51,8 @@ export default function PartPicker({
   return (
     <section>
       <TopBar onExit={onExit} />
-      <h1 className="h1 center" style={{ margin: "10px 0 4px" }}>
-        {deckName(slug, lang)}
-      </h1>
-      <p className="helper center" style={{ margin: "0 24px 18px" }}>
+      <h1 className="pagetitle pp-title">{deckName(slug, lang)}</h1>
+      <p className="helper pp-lede">
         {t(...deckDepthWord(slug))} · {t(`${n} part${n === 1 ? "" : "s"}`, `${n} partie${n === 1 ? "" : "s"}`)}
       </p>
 

@@ -17,7 +17,6 @@ import { INTAKE, VERSES, type IntakeQuestion } from "../data/path.generated";
 import { writeIntake } from "../lib/session";
 import { readIntakeDraft, writeIntakeDraft, clearIntakeDraft } from "../lib/local";
 import { generatePath } from "../lib/functions";
-import { Mark } from "../brand/Mark";
 import { ShareCard } from "./CoreScore";
 import { shareTopic } from "../lib/shareTopic";
 import { useLang, useT } from "../lib/i18n";
@@ -231,12 +230,8 @@ export function PathIntro({
     // without scrolling (min-height fills the tab area; the CTA sits at the
     // bottom via margin-top:auto).
     <section className="screen-enter path-intro">
-      <div className="pi-head">
-        <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-      </div>
-
       <div className="pi-top">
-        <h1 className="pi-title">{t("The Path", "Le Chemin")}</h1>
+        <h1 className="pi-title pagetitle">{t("The Path", "Le Chemin")}</h1>
         <p className="pi-verse">
           {t("“Can two walk together, unless they are agreed?”", "« Deux marchent-ils ensemble sans s'être accordés ? »")}
         </p>
@@ -371,9 +366,7 @@ function PathIntake({
           style={{
             background: "var(--blush)",
             color: "var(--berry)",
-            fontWeight: 700,
             whiteSpace: "normal",
-            letterSpacing: 0.2,
             lineHeight: 1.35,
             maxWidth: 300,
             textAlign: "center",
@@ -392,7 +385,7 @@ function PathIntake({
         <i style={{ width: `${Math.round(((idx + 1) / QS.length) * 100)}%` }} />
       </div>
       <p className="hint">{t(`${idx + 1} of ${QS.length}`, `${idx + 1} sur ${QS.length}`)}</p>
-      <h1 className="h1" style={{ marginTop: 14, fontSize: 24 }}>{q.q}</h1>
+      <h1 className="h1" style={{ marginTop: 14 }}>{q.q}</h1>
       {q.hint && <p className="sub" style={{ marginTop: 6 }}>{q.hint}</p>}
       <div style={{ marginTop: 16 }}>
         {q.opts.map((o, oi) => {

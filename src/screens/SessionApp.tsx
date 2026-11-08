@@ -15,7 +15,7 @@ import {
 import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
 import { useProfile } from "../hooks/useProfile";
-import { renameInSession } from "../lib/session";
+import { renameInSession, setPhotoInSession } from "../lib/session";
 import {
   getLastDeck,
   setLastDeck,
@@ -33,12 +33,12 @@ import PartPicker from "./PartPicker";
 import RevealScreen from "./RevealScreen";
 import PathScreen, { PathFlow } from "./PathScreen";
 import { TopBar } from "../components/TopBar";
+import { TabHeader } from "../components/TabHeader";
 import { Loading } from "../components/Loading";
 import { Mark } from "../brand/Mark";
 import { Avatar, toneFor } from "../components/Avatar";
 import { deckName } from "../lib/questions.fr";
 import { talkEventIcs, icsHref } from "../lib/calendar";
-import { Wordmark } from "../brand/Wordmark";
 import { PillNav } from "../components/PillNav";
 import type { Session } from "../types";
 import { IconHome, IconDecks, IconProfile } from "../components/icons";
@@ -189,6 +189,13 @@ function SessionScreens({
     if (!role || !profileName || profileName === sessionName) return;
     void renameInSession(code, role, profileName).catch(() => {});
   }, [code, role, profileName, sessionName]);
+  // And your photo: copied in when you have one, taken out when you don't.
+  const profilePhoto = profile?.photo || null;
+  const sessionPhoto = role ? (session?.members?.[role]?.photo ?? null) : null;
+  useEffect(() => {
+    if (!role || profile === null || profilePhoto === sessionPhoto) return;
+    void setPhotoInSession(code, role, profilePhoto).catch(() => {});
+  }, [code, role, profile, profilePhoto, sessionPhoto]);
 
   // Doing a part together (lib/invites.ts). A ticking clock while an invite is
   // fresh, so its pop-up and the sender's waiting screen lapse on time.
@@ -212,6 +219,8 @@ function SessionScreens({
     if (myInvite.from === role && myInvite.status === "accepted") setFlow("play");
   }, [flow, myInvite, role]);
   const [linkCopied, setLinkCopied] = useState(false);
+  // The shared header's spot for a screen's own button (search, share).
+  const [actSlot, setActSlot] = useState<HTMLSpanElement | null>(null);
 
   // Every screen opens at the top. Coming back out of a conversation returns
   // the tab to where you left it, like closing a card; switching tabs starts
@@ -424,7 +433,7 @@ function SessionScreens({
     <>
       {choose && !showIncoming && (
         <Sheet
-          eyebrow={nLevels(choose.slug) > 1 ? t(`${deckName(choose.slug, lang)} · Part ${choose.level + 1}`, `${deckName(choose.slug, lang)} · Partie ${choose.level + 1}`).toUpperCase() : undefined}
+          eyebrow={nLevels(choose.slug) > 1 ? t(`${deckName(choose.slug, lang)} · Part ${choose.level + 1}`, `${deckName(choose.slug, lang)} · Partie ${choose.level + 1}`) : undefined}
           title={nLevels(choose.slug) > 1 ? partName(choose.slug, choose.level) : deckName(choose.slug, lang)}
           onClose={() => setChoose(null)}
         >
@@ -462,7 +471,7 @@ function SessionScreens({
       )}
       {showIncoming && req && (
         <Sheet
-          eyebrow={t(`A request from ${partnerFirst}`, `Une demande de ${partnerFirst}`).toUpperCase()}
+          eyebrow={t(`A request from ${partnerFirst}`, `Une demande de ${partnerFirst}`)}
           title={t(
             `${partnerFirst} wants to start ${partLabel(req.slug, req.level)} with you`,
             `${partnerFirst} veut commencer ${partLabel(req.slug, req.level)} avec vous`,
@@ -529,7 +538,7 @@ function SessionScreens({
             </div>
             {state === "asking" ? (
               <>
-                <h2 className="h1 center" style={{ fontSize: 26 }}>
+                <h2 className="h1 center">
                   {t(`Asking ${partnerFirst}…`, `Demande envoyée à ${partnerFirst}…`)}
                 </h2>
                 <p className="sub center" style={{ margin: "10px 24px 0" }}>
@@ -555,7 +564,7 @@ function SessionScreens({
               </>
             ) : (
               <>
-                <h2 className="h1 center" style={{ fontSize: 26 }}>
+                <h2 className="h1 center">
                   {state === "later"
                     ? t(`${partnerFirst} will do it later`, `${partnerFirst} le fera plus tard`)
                     : t(`No answer from ${partnerFirst} yet`, `Pas encore de réponse de ${partnerFirst}`)}
@@ -657,8 +666,8 @@ function SessionScreens({
                   <Avatar name={session.members?.host?.name} tone="berry" size={46} />
                   <Avatar name={session.members?.guest?.name} tone="honey" size={46} />
                 </div>
-                <div className="eyebrow center">{t("READY TO OPEN", "PRÊT À OUVRIR")}</div>
-                <h2 className="h1 center" style={{ fontSize: 26, marginTop: 6 }}>
+                <div className="eyebrow center">{t("Ready to open", "Prêt à ouvrir")}</div>
+                <h2 className="h1 center" style={{ marginTop: 6 }}>
                   {t("You’ve both finished this part.", "Vous avez tous deux terminé cette partie.")}
                 </h2>
                 <p className="sub center" style={{ margin: "10px 24px 0" }}>
@@ -690,6 +699,8 @@ function SessionScreens({
             pick={deck?.pick?.[level]}
             myName={myName}
             partnerName={partnerName}
+            myPhoto={session.members?.[role]?.photo}
+            partnerPhoto={session.members?.[other(role)]?.photo}
             firstEver={seen.length === 0}
             code={code}
             onDone={exitFlow}
@@ -725,7 +736,7 @@ function SessionScreens({
                 ),
               )}
             </div>
-            <h2 className="h1 center" style={{ fontSize: 26 }}>
+            <h2 className="h1 center">
               {t("Your answers are saved.", "Vos réponses sont enregistrées.")}
             </h2>
             <p className="sub center" style={{ margin: "10px 24px 0" }}>
@@ -776,23 +787,18 @@ function SessionScreens({
     return (
       <>
         <div className="tabwrap">
-          {/* Home and Together wear their own header (the avatar chip); other
-              tabs keep the brand mark up top. */}
-          {tab !== "home" && tab !== "path" && tab !== "results" && (
-            <div className="brandhead" style={{ padding: "2px 0 10px" }}>
-              {tab === "profile" ? (
-                <Wordmark size={24} />
-              ) : (
-                <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-              )}
-            </div>
-          )}
-          {/* For you, top right on every tab but You. */}
-          {tab !== "profile" && (
-            <div className="fy-bellslot">
-              <ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />
-            </div>
-          )}
+          {/* One header on every tab: the two of you, then the screen's own
+              button and the bell, always in the same place. */}
+          <TabHeader
+            role={role}
+            myName={firstWord(myName)}
+            partnerName={firstWord(partnerName)}
+            joined={!!session.members?.[other(role)]}
+            myPhoto={session.members?.[role]?.photo}
+            partnerPhoto={session.members?.[other(role)]?.photo}
+            slotRef={setActSlot}
+            bell={<ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />}
+          />
           {/* keyed per tab so each pane rises in on switch */}
           <div key={tab} className="pane-in">
             {tab === "home" && (
@@ -811,6 +817,7 @@ function SessionScreens({
             )}
             {tab === "decks" && (
               <DecksScreen
+                actSlot={actSlot}
                 session={session}
                 role={role}
                 onPlay={openDeck}
@@ -842,6 +849,7 @@ function SessionScreens({
             )}
             {tab === "results" && (
               <ResultsScreen
+                actSlot={actSlot}
                 session={session}
                 role={role}
                 code={code}
@@ -877,4 +885,9 @@ function SessionScreens({
       {sheets}
     </>
   );
+}
+
+// Headers speak in first names: full names stretch the chip.
+function firstWord(n: string): string {
+  return /^(your partner|votre partenaire)$/i.test(n.trim()) ? n.trim() : n.trim().split(/\s+/)[0] || n;
 }

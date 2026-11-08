@@ -5,17 +5,22 @@
 type Tone = "berry" | "honey";
 
 // Each person keeps their colour on both phones (Dave, 24 Oct): the host is
-// always claret, the guest always honey — never "me" vs "them".
+// always mauve, the guest always honey — never "me" vs "them". Since Nov 2026
+// a disc is white glass with the colour as its edge and initial.
 export const toneFor = (role: "host" | "guest"): Tone => (role === "host" ? "berry" : "honey");
 
 const TONE_BG: Record<Tone, string> = {
-  berry: "var(--berry)",
-  honey: "var(--honeyD)",
+  berry: "var(--glass-strong)",
+  honey: "var(--glass-strong)",
 };
-// White on honey measured 2.5:1; the guest's initial is dark ink (5.8:1).
+// Text-safe on white glass: deep mauve 7.6:1, amber 6.0:1.
 const TONE_INK: Record<Tone, string> = {
-  berry: "var(--ta-white)",
-  honey: "var(--app-honey-ink)",
+  berry: "var(--app-mauve-deep)",
+  honey: "var(--app-amber)",
+};
+const TONE_EDGE: Record<Tone, string> = {
+  berry: "var(--app-mauve)",
+  honey: "var(--honeyD)",
 };
 
 export function Avatar({
@@ -58,6 +63,7 @@ export function Avatar({
         // A custom property, not `color`, so a context can still recolour the
         // initial (the reveal's claret room turns both discs light).
         ["--av-ink" as string]: TONE_INK[tone],
+        ["--av-edge" as string]: TONE_EDGE[tone],
         fontSize: Math.round(size * 0.42),
         borderWidth: ring ? Math.max(2, Math.round(size * 0.06)) : 0,
       }}

@@ -110,12 +110,12 @@ body {
    moves for anyone on the default. */
 .h1 {
   font-family: var(--font-display);
-  font-size: 1.875rem; /* 30px */
+  font-size: var(--t-title); /* 30px */
   font-weight: 600;
 }
 .sub {
   color: var(--sub);
-  font-size: 0.9375rem; /* 15px */
+  font-size: var(--t-small); /* 15px */
   line-height: 1.55;
 }
 .muted {
@@ -125,16 +125,14 @@ body {
   text-align: center;
 }
 .eyebrow {
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
+  font-size: var(--t-small);
   color: var(--amber);
   font-weight: var(--eyebrow-weight);
-  text-transform: uppercase;
 }
 
 label {
   display: block;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--berry);
   margin: 18px 4px 7px;
@@ -144,7 +142,7 @@ label {
 .input {
   width: 100%;
   padding: 15px 16px;
-  font-size: 16px;
+  font-size: var(--t-body);
   font-family: inherit;
   color: var(--ink);
   background: var(--optbg);
@@ -166,7 +164,7 @@ textarea.input {
 .btn {
   width: 100%;
   padding: 16px;
-  font-size: 16px;
+  font-size: var(--t-body);
   font-weight: 600;
   font-family: inherit;
   color: var(--ta-white);
@@ -256,8 +254,8 @@ textarea.input {
   background: none;
   box-shadow: none;
   color: var(--mut);
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: var(--t-small);
   margin-top: 16px;
   padding: 13px 8px; /* 44px tall */
 }
@@ -296,14 +294,14 @@ textarea.input {
 }
 .err {
   color: var(--danger);
-  font-size: 14px;
+  font-size: var(--t-small);
   margin-top: 14px;
   min-height: 1px;
   line-height: 1.5;
 }
 .ok {
   color: var(--sage);
-  font-size: 14px;
+  font-size: var(--t-small);
   margin-top: 14px;
 }
 
@@ -327,7 +325,7 @@ textarea.input {
 .deletelist {
   margin: 10px 0 0;
   padding-left: 18px;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   line-height: 1.55;
   color: var(--ink);
 }
@@ -341,7 +339,7 @@ textarea.input {
 }
 .datahint {
   margin: 6px 2px 0;
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   line-height: 1.45;
   color: var(--sub);
 }
@@ -374,7 +372,7 @@ textarea.input {
 }
 .photobtn {
   margin-top: 14px;
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--berry);
   background: var(--optbg);
@@ -388,7 +386,7 @@ textarea.input {
 .foot {
   margin-top: 28px;
   text-align: center;
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--mut);
   line-height: 1.6;
   word-break: break-all;
@@ -399,7 +397,7 @@ textarea.input {
   margin-top: 10px;
   text-align: center;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   letter-spacing: 0.02em;
   color: var(--mut);
   opacity: 0.55;
@@ -426,9 +424,8 @@ textarea.input {
 }
 .badge {
   display: inline-block;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 600;
-  letter-spacing: 1px;
   color: var(--berry);
   background: var(--optbg);
   border: none;
@@ -446,7 +443,7 @@ textarea.input {
 }
 .badge.tap {
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--t-body);
 }
 .eyebrow {
   display: block;
@@ -467,7 +464,7 @@ textarea.input {
 }
 .qtext {
   font-family: var(--font-display);
-  font-size: 1.3125rem; /* 21px */
+  font-size: var(--t-question); /* 21px */
   line-height: 1.35;
   margin-top: 14px;
   color: var(--ink);
@@ -509,9 +506,7 @@ textarea.input {
 }
 .hint {
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: var(--eyebrow-track);
-  font-size: var(--eyebrow-size);
+  font-size: var(--t-small);
   color: var(--mut);
   margin-top: 16px;
   font-weight: var(--eyebrow-weight);
@@ -522,7 +517,7 @@ textarea.input {
   justify-content: space-between;
   gap: 10px;
   margin-top: 20px;
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--sub);
 }
 .scale {
@@ -540,7 +535,7 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--mut);
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
@@ -588,7 +583,7 @@ textarea.input {
   cursor: pointer;
   transition: all 0.12s;
   line-height: 1.4;
-  font-size: 1rem; /* 16px — a reading surface, so it scales */
+  font-size: var(--t-body); /* 16px — a reading surface, so it scales */
 }
 .opt .dot {
   position: absolute;
@@ -660,8 +655,8 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: var(--t-body);
   background: var(--ta-white);
   border: 2px solid var(--app-orb-line);
   color: var(--mut);
@@ -677,7 +672,7 @@ textarea.input {
   min-height: 120px;
   margin-top: 18px;
   padding: 16px;
-  font-size: 16px;
+  font-size: var(--t-body);
   font-family: inherit;
   color: var(--ink);
   border: 1.5px solid var(--optb);
@@ -713,14 +708,13 @@ textarea.input {
   border: 1px solid var(--app-banner-line);
   border-radius: var(--r-sm);
   padding: 16px 18px;
-  font-size: 14px;
+  font-size: var(--t-small);
   line-height: 1.6;
   color: var(--app-banner-ink);
 }
 .codechip {
   font-family: ui-monospace, Menlo, monospace;
-  font-weight: 700;
-  letter-spacing: 3px;
+  font-weight: 600;
   color: var(--berry);
   background: var(--ta-white);
   border: 1.5px solid var(--honeyD);
@@ -761,7 +755,7 @@ textarea.input {
   justify-content: space-between;
   align-items: baseline;
   margin: 22px 4px 6px;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--berry);
 }
@@ -775,21 +769,19 @@ textarea.input {
 }
 .verq {
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-body);
   line-height: 1.4;
 }
 .veranswers {
   display: flex;
   gap: 18px;
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--sub);
 }
 .verbadge {
   align-self: flex-start;
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   border: 1.5px solid;
   border-radius: 999px;
   padding: 3px 10px;
@@ -817,7 +809,7 @@ textarea.input {
    claret. These rows used to run the mapping backwards, so the same gold
    number meant "agreed" on the reveal and "known" one screen later. */
 .resrow-scores .rs b {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--amber);
   font-variant-numeric: tabular-nums;
 }
@@ -826,9 +818,7 @@ textarea.input {
 }
 .resrow-scores .rs i {
   font-style: normal;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   color: var(--sub);
   font-weight: var(--tag-weight);
 }
@@ -894,7 +884,7 @@ textarea.input {
   background: none;
   border: none;
   font-family: inherit;
-  font-size: 0.8rem; /* 12px: the label floor */
+  font-size: var(--t-small); /* 12px: the label floor */
   font-weight: 600;
   color: var(--ta-grey);
   cursor: pointer;
@@ -956,7 +946,7 @@ textarea.input {
 .langopt {
   flex: 1;
   padding: 12px;
-  font-size: 15px;
+  font-size: var(--t-body);
   font-weight: 600;
   font-family: inherit;
   color: var(--mut);
@@ -991,7 +981,7 @@ textarea.input {
   gap: 10px;
   align-items: flex-start;
   margin: 20px 2px 0;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 400;
   color: var(--sub);
   line-height: 1.5;
@@ -1047,9 +1037,7 @@ textarea.input {
   gap: 10px;
   margin: 16px 2px 0;
   color: var(--mut);
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
 }
 .authdiv::before,
@@ -1087,22 +1075,19 @@ textarea.input {
   background: var(--honbg);
 }
 .scall .lb {
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
   color: var(--amber);
 }
 .scall .nm {
-  font-size: 15px;
+  font-size: var(--t-body);
   font-weight: 600;
   color: var(--ink);
   margin-top: 2px;
 }
 .scall .pc {
-  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 20px;
+  font-size: var(--t-heading);
   color: var(--berry);
 }
 .resrow.hot {
@@ -1120,17 +1105,15 @@ textarea.input {
   min-width: 0;
 }
 .rankcol-h {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--sub);
   margin-bottom: 4px;
 }
 .ranklist {
   margin: 0;
   padding-left: 18px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--ink);
   line-height: 1.5;
 }
@@ -1140,7 +1123,7 @@ textarea.input {
 
 /* ---- reveal: "worth a conversation" subline ---- */
 .verline {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   font-style: italic;
 }
@@ -1160,7 +1143,7 @@ textarea.input {
    no longer a boxed pill now that Known has its own ring. */
 .knowline {
   text-align: center;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--amber);
   margin: 2px 24px 0;
@@ -1180,15 +1163,14 @@ textarea.input {
   padding: 10px 19px;
 }
 .knowpill b {
-  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 21px;
+  font-size: var(--t-heading);
   line-height: 1;
   color: var(--amber);
   font-variant-numeric: tabular-nums;
 }
 .knowpill span {
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--app-banner-ink);
   line-height: 1.35;
@@ -1232,7 +1214,7 @@ textarea.input {
 }
 .qc-q {
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-body);
   line-height: 1.35;
   color: var(--ink);
 }
@@ -1242,10 +1224,8 @@ textarea.input {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   border: none;
   padding: 2px 0;
   white-space: nowrap;
@@ -1258,7 +1238,7 @@ textarea.input {
   background: currentColor;
 }
 .qc-note {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   font-style: italic;
   margin-top: 10px;
@@ -1341,7 +1321,7 @@ textarea.input {
   padding: 9px 12px;
   border-radius: var(--r-xs);
   background: var(--kit-sel-bg);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ink);
   line-height: 1.4;
 }
@@ -1352,7 +1332,7 @@ textarea.input {
   display: flex;
   gap: 8px;
   margin-top: 10px;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   color: var(--app-amber);
   line-height: 1.4;
 }
@@ -1372,7 +1352,7 @@ textarea.input {
   background: none;
   color: var(--ta-claret);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   cursor: pointer;
 }
@@ -1383,14 +1363,14 @@ textarea.input {
   border-radius: 999px;
   background: var(--app-honey-bg);
   color: var(--app-amber);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
 }
 .sbar-ends {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 /* Results: two colour-coded chips */
@@ -1400,13 +1380,11 @@ textarea.input {
   gap: 1px;
   padding: 7px 12px;
   border-radius: var(--r-xs);
-  font-size: 13px;
+  font-size: var(--t-small);
 }
 .mcchip i {
   font-style: normal;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
   opacity: 0.85;
 }
@@ -1434,10 +1412,8 @@ textarea.input {
   min-width: 0;
 }
 .rank2-h {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   margin-bottom: 4px;
 }
 .rank2-h.s {
@@ -1449,7 +1425,7 @@ textarea.input {
 .rank2 ol {
   margin: 0;
   padding-left: 18px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--ink);
   line-height: 1.55;
 }
@@ -1478,9 +1454,9 @@ textarea.input {
   display: grid;
   place-items: center;
   color: var(--ta-white);
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--t-small);
 }
 .oav.s {
   background: var(--berry);
@@ -1491,14 +1467,12 @@ textarea.input {
 }
 .oq-who {
   display: block;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
   color: var(--sub);
 }
 .oq-text {
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--ink);
   line-height: 1.5;
   margin-top: 2px;
@@ -1513,7 +1487,7 @@ textarea.input {
   margin-top: 4px;
 }
 .gtag {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--mut);
   line-height: 1.4;
 }
@@ -1553,8 +1527,8 @@ textarea.input {
 .orblabel {
   background: var(--honbg);
   color: var(--amber);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   padding: 5px 10px;
   border-radius: 8px;
   white-space: nowrap;
@@ -1583,13 +1557,13 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: 600;
+  font-size: var(--t-small);
   flex: 0 0 auto;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
 }
 .stept {
-  font-size: 14px;
+  font-size: var(--t-small);
   color: var(--sub);
   line-height: 1.4;
 }
@@ -1798,9 +1772,9 @@ textarea.input {
   }
 }
 .joinnote {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sage);
-  font-weight: 700;
+  font-weight: 600;
   animation: riseIn 0.4s ease 0.5s both;
 }
 
@@ -1893,9 +1867,9 @@ textarea.input {
   }
 }
 .meetline {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 16px;
+  font-size: var(--t-body);
   color: var(--sub);
   animation: riseIn 0.5s ease 0.55s both;
 }
@@ -2091,7 +2065,7 @@ textarea.input {
   display: flex;
   justify-content: center;
   gap: 34px;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--sub);
   margin-top: -6px;
@@ -2110,8 +2084,8 @@ textarea.input {
    gets the comfort ladder Known always had. */
 .agreedline {
   text-align: center;
-  font-family: var(--font-display);
-  font-size: 17px;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   color: var(--ink);
   margin: 12px 20px 0;
   text-wrap: balance;
@@ -2414,7 +2388,7 @@ textarea.input {
 }
 .avchip i {
   font-style: normal;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ink);
 }
@@ -2436,21 +2410,20 @@ textarea.input {
 }
 
 .greet {
-  font-size: 30px;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
   font-weight: 600;
   line-height: 1.14;
   color: var(--berry);
-  letter-spacing: -0.3px;
   margin: 18px 2px 0;
 }
 .greet small {
   display: block;
   font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--sub);
   margin-top: 7px;
-  letter-spacing: 0;
 }
 
 .tiles {
@@ -2477,7 +2450,7 @@ textarea.input {
 }
 .tile-lb {
   float: right;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   font-weight: 600;
   color: var(--sub);
   text-align: right;
@@ -2485,12 +2458,12 @@ textarea.input {
   line-height: 1.3;
 }
 .tile b {
-  font-size: 26px;
+  font-size: var(--t-heading);
   font-weight: 600;
   color: var(--ink);
 }
 .tile-u {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--sub);
   margin-left: 4px;
 }
@@ -2526,12 +2499,12 @@ textarea.input {
 .featnm {
   display: block;
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-body);
   color: var(--ink);
 }
 .featmt {
   display: block;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-top: 1px;
 }
@@ -2543,7 +2516,7 @@ textarea.input {
 }
 .capline {
   text-align: center;
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--sub);
   margin-top: 10px;
 }
@@ -2556,7 +2529,7 @@ textarea.input {
 
 .shead {
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--t-body);
   margin: 18px 2px 2px;
 }
 .arow {
@@ -2584,17 +2557,17 @@ textarea.input {
 }
 .arow-t b {
   display: block;
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ink);
 }
 .arow-t span {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--mut);
 }
 .pctpill {
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   border-radius: 999px;
   padding: 5px 11px;
   background: var(--honbg);
@@ -2758,26 +2731,25 @@ textarea.input {
   min-width: 0;
 }
 .flagbox-tx b {
-  font-size: 15.5px;
-  font-weight: 700;
+  font-size: var(--t-body);
+  font-weight: 600;
 }
 .flagbox-tx i {
   font-style: normal;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   opacity: 0.82;
 }
 .flagbox-go {
   flex: 0 0 auto;
-  font-size: 20px;
+  font-size: var(--t-heading);
   opacity: 0.85;
+  font-weight: 600;
 }
 
 /* 5b — the grouped index */
 .flaggrp {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--berry);
   margin: 20px 2px 10px;
 }
@@ -2789,21 +2761,19 @@ textarea.input {
   margin-bottom: 10px;
 }
 .flagrow-k {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--amber);
   margin-bottom: 5px;
 }
 .flagrow-q {
   font-weight: 600;
-  font-size: 14.5px;
+  font-size: var(--t-body);
   line-height: 1.35;
   color: var(--ink);
 }
 .flagrow-b {
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--sub);
   margin-top: 6px;
   line-height: 1.4;
@@ -2824,7 +2794,7 @@ textarea.input {
 .imptrack-nm {
   flex: 0 0 auto;
   width: 78px;
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--sub);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2851,7 +2821,7 @@ textarea.input {
   height: 16px;
 }
 .imptracks.big .imptrack-nm {
-  font-size: 13px;
+  font-size: var(--t-small);
   width: 88px;
 }
 
@@ -2866,7 +2836,7 @@ textarea.input {
 .walkcard-q {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 19px;
+  font-size: var(--t-question);
   line-height: 1.3;
   color: var(--ink);
   margin: 6px 0 16px;
@@ -2885,8 +2855,8 @@ textarea.input {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   color: var(--ink);
 }
 .cmp2-av {
@@ -2895,7 +2865,7 @@ textarea.input {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--ta-white);
 }
@@ -2907,17 +2877,17 @@ textarea.input {
   color: var(--app-honey-ink);
 }
 .cmp2-said {
-  font-size: 15px;
+  font-size: var(--t-body);
   font-weight: 600;
   color: var(--ink);
   margin: 8px 0 6px;
 }
 .cmp2-guess {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--sub);
 }
 .cmp2-guess b {
-  font-weight: 700;
+  font-weight: 600;
 }
 .cmp2-guess.no b {
   color: var(--danger);
@@ -2931,28 +2901,26 @@ textarea.input {
   border-top: 1px solid var(--cardb);
 }
 .walktalk-h {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--berry);
   margin-bottom: 8px;
 }
 .walktalk-b {
-  font-size: 14px;
+  font-size: var(--t-small);
   color: var(--ink);
   line-height: 1.45;
 }
 .walktalk-p {
-  font-size: 13.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   line-height: 1.45;
   margin-top: 8px;
 }
 .walktalk-ref {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--amber);
   margin-top: 10px;
 }
@@ -2962,7 +2930,7 @@ textarea.input {
   margin-top: 24px;
 }
 .stagepick-q {
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--berry);
   margin: 0 4px 10px;
@@ -2974,7 +2942,7 @@ textarea.input {
 }
 .stagechip {
   padding: 13px 12px;
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   font-family: inherit;
   color: var(--ink);
@@ -2993,7 +2961,7 @@ textarea.input {
 /* Solo-first — honest "answers waiting" progress (brief §6), calm not naggy. */
 .waitline {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--amber);
 }
@@ -3032,21 +3000,19 @@ textarea.input {
   display: flex;
   align-items: baseline;
   gap: 9px;
-  font-weight: 700;
-  font-size: 15.5px;
+  font-weight: 600;
+  font-size: var(--t-body);
   color: var(--ink);
 }
 .partrow-depth {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--amber);
 }
 .partrow-sub {
   display: block;
   margin-top: 3px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
 }
 .partrow-track {
@@ -3057,13 +3023,13 @@ textarea.input {
   align-items: flex-end;
 }
 .ptick {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--mut);
   white-space: nowrap;
 }
 .ptick.on {
   color: var(--sage);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* The Core headline (brief 2 §C) — Known is the hero, denominators on screen. */
@@ -3089,12 +3055,12 @@ textarea.input {
   line-height: 1;
   color: var(--berry);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -1px;
 }
 /* Scoped to the unit, not every span: the number itself is now its own span
    so it can count up without the % inheriting the small size. */
 .corenum .pc {
-  font-size: 21px;
+  font-size: var(--t-heading);
+  font-weight: 600;
 }
 .corestat.hero .corenum {
   font-size: 66px;
@@ -3110,13 +3076,12 @@ textarea.input {
    bare `span` selector shrank the hero's headline to the size of its unit —
    Known ended up smaller than Agreed, which inverts the whole hierarchy. */
 .corestat.hero .corenum .pc {
-  font-size: 30px;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
 }
 .corelb {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--sub);
   margin-top: 7px;
 }
@@ -3124,13 +3089,13 @@ textarea.input {
   color: var(--sub);
 }
 .coredenom {
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--mut);
   margin-top: 3px;
   font-variant-numeric: tabular-nums;
 }
 .core-pull {
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--sub);
   font-style: italic;
   margin: 14px 24px 0;
@@ -3166,10 +3131,9 @@ textarea.input {
   text-align: center;
 }
 .sharecard-names {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   color: var(--berry);
-  letter-spacing: 0.3px;
 }
 .sharecard-hero {
   margin: 20px 0 6px;
@@ -3181,19 +3145,18 @@ textarea.input {
   line-height: 1;
   color: var(--amber);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -2px;
 }
 .sharecard-num span {
   font-size: 34px;
 }
 .sharecard-lb {
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ink);
   margin-top: 6px;
 }
 .sharecard-denom {
-  font-size: 13px;
+  font-size: var(--t-small);
   color: var(--mut);
   margin-top: 4px;
 }
@@ -3201,7 +3164,7 @@ textarea.input {
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid var(--cardb);
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--berry);
 }
@@ -3232,7 +3195,8 @@ textarea.input {
   margin: auto 0;
 }
 .verse {
-  font-size: 21px;
+  font-family: var(--font-display);
+  font-size: var(--t-question);
   line-height: 1.45;
   color: var(--berry);
   margin: 8px 20px 22px;
@@ -3243,9 +3207,7 @@ textarea.input {
   margin-top: 12px;
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   color: var(--amber);
   font-weight: var(--eyebrow-weight);
 }
@@ -3255,7 +3217,7 @@ textarea.input {
   box-shadow: var(--e1);
   padding: 20px;
   margin-top: 16px;
-  font-size: 14px;
+  font-size: var(--t-small);
   line-height: 1.55;
   color: var(--ink);
   display: flex;
@@ -3294,28 +3256,26 @@ textarea.input {
   gap: 10px;
 }
 .menucard-nm {
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: var(--t-body);
   color: var(--ink);
 }
 .menucard-depth {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--amber);
   white-space: nowrap;
 }
 .menucard-hook {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 14.5px;
+  font-size: var(--t-body);
   line-height: 1.4;
   color: var(--berry);
   margin: 8px 0 8px;
 }
 .menucard-count {
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--mut);
 }
 
@@ -3331,7 +3291,7 @@ textarea.input {
 .obfacts li {
   position: relative;
   padding-left: 26px;
-  font-size: 15px;
+  font-size: var(--t-body);
   line-height: 1.45;
   color: var(--ink);
 }
@@ -3341,7 +3301,7 @@ textarea.input {
   left: 4px;
   top: 1px;
   color: var(--honey);
-  font-size: 13px;
+  font-size: var(--t-small);
 }
 
 /* ---- The Path -------------------------------------------------------------
@@ -3383,7 +3343,7 @@ textarea.input {
   width: 100%;
 }
 .path-verse-card .verse {
-  font-size: 15.5px;
+  font-size: var(--t-body);
 }
 /* Was `pathfade`, keyframe-for-keyframe identical to riseIn at 0.7s — inside
    rule 2's forbidden 600–900ms band for anything outside the ceremony. */
@@ -3392,7 +3352,7 @@ textarea.input {
 }
 .path-inscription {
   margin-top: 28px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   font-style: italic;
   opacity: 0.62;
   max-width: 300px;
@@ -3416,7 +3376,7 @@ textarea.input {
   align-items: center;
   gap: 6px;
   margin: 8px 0 0;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   color: var(--sub);
 }
 .ps-dot {
@@ -3464,10 +3424,8 @@ textarea.input {
 }
 .lk-denom {
   margin-top: 2px;
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--ce-sub);
 }
 .lk-marks {
@@ -3503,18 +3461,18 @@ textarea.input {
   flex-direction: column;
 }
 .lk-txt b {
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   color: var(--ce-ink);
 }
 .lk-txt i {
   font-style: normal;
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   color: var(--ce-sub);
 }
 .lk-pct {
   flex: none;
-  font-weight: 700;
-  font-size: 1.0625rem;
+  font-weight: 600;
+  font-size: var(--t-body);
   color: var(--ce-gold);
 }
 .lk-mark.talk .lk-pct {
@@ -3535,7 +3493,7 @@ textarea.input {
   transform: translateX(-50%);
   background: var(--ink);
   color: #fff;
-  font-size: 14px;
+  font-size: var(--t-small);
   font-weight: 600;
   padding: 11px 18px;
   border-radius: var(--r-xs);
@@ -3614,24 +3572,24 @@ textarea.input {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 26px;
+  font-size: var(--t-title);
   line-height: 1.04;
   color: var(--ink);
 }
 .pi-verse {
   margin: 0;
   max-width: 15rem;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
   font-weight: 400;
-  font-size: 15px;
+  font-size: var(--t-body);
   line-height: 1.44;
   color: var(--berry);
 }
 .pi-vref {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   letter-spacing: 0.05em;
   color: var(--sub);
 }
@@ -3675,14 +3633,14 @@ textarea.input {
 }
 .pi-txt b {
   font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 14.5px;
+  font-weight: 600;
+  font-size: var(--t-body);
   line-height: 1.22;
   color: var(--ink);
 }
 .pi-txt i {
   font-style: normal;
-  font-size: 12px;
+  font-size: var(--t-small);
   line-height: 1.4;
   color: var(--sub);
 }
@@ -3697,7 +3655,7 @@ textarea.input {
   gap: 6px;
   margin: clamp(10px, 1.5vh, 16px) 8px 0;
   text-align: center;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   line-height: 1.4;
   color: var(--app-mut);
 }
@@ -3722,8 +3680,7 @@ textarea.input {
    exists in the UI once a partner has joined. */
 .codebig {
   font-family: var(--font-display);
-  font-size: 30px;
-  letter-spacing: 0.16em;
+  font-size: var(--t-title);
   text-align: center;
   color: var(--berry);
   background: var(--optbg);
@@ -3746,8 +3703,9 @@ textarea.input {
   gap: 1px;
 }
 .tilepair .tp b {
-  font-size: 25px;
+  font-size: var(--t-heading);
   line-height: 1;
+  font-weight: 600;
 }
 .tilepair .tp b.agreed {
   color: var(--amber);
@@ -3760,7 +3718,7 @@ textarea.input {
    tiles out of alignment. Sentence case at the tag size does both jobs. */
 .tilepair .tp i {
   font-style: normal;
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   color: var(--sub);
   margin-left: 3px;
   align-self: center;
@@ -3803,35 +3761,34 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: var(--t-body);
   color: var(--ce-gold);
   background: radial-gradient(circle at 34% 30%, #7A3B5C, #3E1A2E);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.34);
 }
 .readycard-eyebrow {
   display: block;
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   font-weight: 800;
-  letter-spacing: 0.16em;
   color: var(--ce-gold);
 }
 .readycard-nm {
   display: block;
-  font-family: var(--font-display);
-  font-size: 17px;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   margin-top: 2px;
 }
 .readycard-sub {
   display: block;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--ce-sub);
   margin: 9px 0 0;
   line-height: 1.45;
 }
 .readycard-cta {
   display: block;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   color: var(--ce-gold);
   margin-top: 10px;
 }
@@ -3856,7 +3813,7 @@ textarea.input {
   width: 100%;
   text-align: left;
   font: inherit;
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ink);
   background: var(--app-opt-bg);
@@ -3884,8 +3841,8 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   color: var(--app-honey-ink);
 }
 .notifyopt.on .notifyopt-box {
@@ -3917,7 +3874,7 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   color: var(--ta-honey);
   background: radial-gradient(circle at 34% 30%, #5c2e45, #3e1a2e);
 }
@@ -3927,11 +3884,11 @@ textarea.input {
   gap: 2px;
 }
 .daytxt b {
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
 }
 .daytxt i {
   font-style: normal;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   line-height: 1.45;
   color: var(--sub);
 }
@@ -3981,27 +3938,26 @@ textarea.input {
   flex-direction: column;
 }
 .pathcard-eyebrow {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   font-weight: 800;
-  letter-spacing: 0.16em;
   color: var(--app-amber);
 }
 .pathcard-nm {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   margin-top: 1px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .pathcard-sub {
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   color: var(--sub);
   margin-top: 2px;
 }
 .pathcard-go {
   flex: none;
-  font-size: 1.125rem;
+  font-size: var(--t-heading);
   color: var(--berry);
   opacity: 0.55;
 }
@@ -4033,7 +3989,7 @@ textarea.input {
 .waitstat p {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: var(--t-small);
   color: var(--sub);
 }
 .waitstat p b {
@@ -4048,8 +4004,8 @@ textarea.input {
    the shoulder. Serif, sentence case, the ceremony's gold. */
 .firstline {
   text-align: center;
-  font-family: var(--font-display);
-  font-size: 1rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   font-style: italic;
   color: var(--amber);
   margin: 14px 24px 0;
@@ -4060,10 +4016,8 @@ textarea.input {
 
 /* The verse anchor on a difference — neutral ground to start from. */
 .qc-ref {
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--amber);
   margin-top: 8px;
 }
@@ -4082,8 +4036,8 @@ textarea.input {
   box-shadow: var(--e1);
 }
 .talkrow-q {
-  font-family: var(--font-display);
-  font-size: 14.5px;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   line-height: 1.35;
   color: var(--ink);
 }
@@ -4095,8 +4049,8 @@ textarea.input {
   background: var(--ta-white);
   color: var(--berry);
   font: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.13s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -4111,7 +4065,7 @@ textarea.input {
 }
 .talkrow-wait {
   margin-top: 8px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   font-style: italic;
 }
@@ -4121,7 +4075,7 @@ textarea.input {
   background: none;
   color: var(--mut);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--t-small);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -4130,7 +4084,7 @@ textarea.input {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   margin: 12px 0 2px;
 }
@@ -4144,8 +4098,8 @@ textarea.input {
   border-radius: 999px;
   background: var(--app-opt-bg);
   color: var(--berry);
-  font-weight: 800;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: var(--t-small);
 }
 /* Closure is the celebration most worth having: it lands on the talking, not
    on the score. Quiet on purpose — a settle, not a firework. */
@@ -4158,7 +4112,7 @@ textarea.input {
   border-radius: var(--r-sm);
   background: linear-gradient(168deg, var(--ce-ground-top), var(--ce-ground-bot));
   color: var(--ce-ink);
-  font-size: 13.5px;
+  font-size: var(--t-small);
   animation: riseIn 0.5s ease both;
 }
 .talkcheer-mark {
@@ -4171,7 +4125,7 @@ textarea.input {
   border-radius: 50%;
   background: var(--ce-gold);
   color: var(--ce-ground-bot);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 /* The questions behind "most worth a conversation". */
@@ -4193,8 +4147,8 @@ textarea.input {
   cursor: pointer;
 }
 .gap-q {
-  font-family: var(--font-display);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: var(--t-small);
   line-height: 1.35;
   color: var(--ink);
 }
@@ -4246,7 +4200,7 @@ textarea.input {
   border-radius: 999px;
   padding: 8px 14px;
   font: inherit;
-  font-size: 12.5px;
+  font-size: var(--t-small);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
@@ -4269,13 +4223,13 @@ textarea.input {
   box-shadow: var(--e1);
 }
 .disc-q {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   line-height: 1.4;
 }
 .disc-learn {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   color: var(--ink);
   margin-top: 6px;
   line-height: 1.35;
@@ -4283,16 +4237,14 @@ textarea.input {
 .disc-tag {
   display: inline-block;
   font-family: var(--font-ui);
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   color: var(--amber);
   margin-right: 7px;
   vertical-align: 2px;
 }
 .disc-thought {
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--mut);
   margin-top: 6px;
   font-style: italic;
@@ -4353,7 +4305,7 @@ textarea.input {
   animation: paneIn 0.28s ease both;
 }
 .impinline-q {
-  font-size: 12.5px;
+  font-size: var(--t-small);
   color: var(--sub);
   margin-bottom: 9px;
 }
@@ -4371,8 +4323,8 @@ textarea.input {
   background: var(--ta-white);
   color: var(--sub);
   font: inherit;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   cursor: pointer;
   transition:
     transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -4390,7 +4342,7 @@ textarea.input {
   color: var(--app-honey-ink);
 }
 .impinline-ends {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   color: var(--mut);
   margin-left: 2px;
 }
@@ -4408,7 +4360,7 @@ textarea.input {
   cursor: pointer;
 }
 .yousaid-change {
-  font-size: 0.8rem; /* 12px: the label floor (design system) */
+  font-size: var(--t-small); /* 12px: the label floor (design system) */
   font-weight: 700;
   color: var(--berry);
   text-decoration: underline;
@@ -4474,7 +4426,7 @@ textarea.input {
    grey: present and legible, never competing with the page. */
 .scripture-notice {
   margin: 28px 24px 8px;
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   line-height: 1.5;
   color: var(--ta-grey);
   text-align: center;
@@ -4514,7 +4466,7 @@ textarea.input {
   text-align: center;
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   margin-top: 8px;
 }
@@ -4561,7 +4513,7 @@ textarea.input {
 }
 .sheet-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--t-question);
   line-height: 1.875rem;
   color: var(--ta-ink);
   margin: 0;
@@ -4572,7 +4524,7 @@ textarea.input {
   border: none;
   background: none;
   color: var(--ta-grey);
-  font-size: 1.5rem;
+  font-size: var(--t-question);
   line-height: 1;
   border-radius: 50%;
   cursor: pointer;
@@ -4587,7 +4539,7 @@ textarea.input {
   padding: 16px;
   margin-bottom: 16px;
   color: var(--ta-ink);
-  font-size: 1rem;
+  font-size: var(--t-body);
   line-height: 1.5rem;
 }
 .kcard p {
@@ -4606,15 +4558,12 @@ textarea.input {
   justify-content: space-between;
 }
 .kcard-label {
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ta-ink);
 }
 .kcard-num {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -4622,15 +4571,15 @@ textarea.input {
   color: var(--app-amber);
 }
 .sheet-note {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--ta-grey);
   margin: 0 0 16px;
 }
 .sheet-close-line {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 1.125rem;
+  font-size: var(--t-heading);
   line-height: 1.5rem;
   color: var(--ta-ink);
   text-align: center;
@@ -4640,7 +4589,7 @@ textarea.input {
 /* The count under a score: what the number stands on (scoring version 2). */
 .score-basis {
   text-align: center;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--app-sub);
   margin: 4px 24px 0;
@@ -4656,7 +4605,7 @@ textarea.input {
   border: none;
   background: none;
   color: var(--app-sub);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -4665,7 +4614,7 @@ textarea.input {
   color: var(--ta-blush);
 }
 .tile-basis {
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   line-height: 1rem;
   color: var(--app-sub);
   margin: 6px 0 0;
@@ -4683,7 +4632,7 @@ textarea.input {
   min-height: 48px;
   padding: 12px 16px;
   border-radius: 16px;
-  font-size: 1rem;
+  font-size: var(--t-body);
   font-weight: 600;
   /* Claret button: the question flow (Next, Finish part). */
   background: var(--ta-claret);
@@ -4792,7 +4741,7 @@ textarea.input {
   box-shadow: inset 0 0 0 2px var(--ta-line);
   color: var(--ta-claret);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   cursor: pointer;
 }
@@ -4808,10 +4757,8 @@ textarea.input {
   align-items: center;
   border-radius: 999px;
   padding: 3px 10px;
-  font-size: var(--tag-size);
+  font-size: var(--t-small);
   font-weight: var(--tag-weight);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
   white-space: nowrap;
 }
 .kbadge.agreed {
@@ -4836,6 +4783,9 @@ textarea.input {
 }
 .avatar-disc:not(.avatar-wait) {
   color: var(--av-ink, var(--ta-white));
+  /* Glass disc: the person's colour is its edge (Nov 2026). */
+  box-shadow: inset 0 0 0 1.5px var(--av-edge, transparent), 0 2px 8px var(--glass-shadow);
+  font-family: var(--font-ui);
 }
 
 /* Tap targets: at least 48px (design system), measured by audit-gallery. */
@@ -4865,7 +4815,7 @@ textarea.input {
 /* Consent: read to act, so helper size; the whole row is the target. */
 .consent {
   min-height: 48px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   padding: 4px 0;
   align-items: center;
@@ -4880,28 +4830,30 @@ textarea.input {
    it: hero 32/38 · screen heading 28/34 · question 22/30 · card title 18/24 ·
    body 16/24 · helper 14/20 · label 12. */
 .h1 {
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
   line-height: 1.875rem;
 }
 .hero {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: var(--t-title);
   line-height: 2.125rem;
   font-weight: 600;
 }
 .qtext {
-  font-size: 1.25rem;
+  font-family: var(--font-display);
+  font-size: var(--t-question);
   line-height: 1.75rem;
 }
 .ktitle {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.5rem;
   font-weight: 600;
   color: var(--ta-ink);
 }
 .helper {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--ta-grey);
 }
@@ -4967,7 +4919,7 @@ textarea.input {
 }
 .skel-still {
   text-align: center;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   margin-top: 20px;
 }
@@ -5020,7 +4972,7 @@ textarea.input {
   justify-content: space-between;
   align-items: center;
   margin: -10px 0 16px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   min-height: 20px;
 }
@@ -5043,7 +4995,7 @@ textarea.input {
   background: var(--kit-sel-bg);
   border: 2px solid var(--kit-close-bg);
   color: var(--kit-red);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
 }
 .savefail > span {
@@ -5054,7 +5006,7 @@ textarea.input {
   min-height: 44px;
   margin: 0;
   padding: 8px 14px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--kit-red);
 }
 .lastline {
@@ -5062,7 +5014,7 @@ textarea.input {
   gap: 10px;
   align-items: flex-start;
   margin: 0 4px 14px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--ta-grey);
 }
@@ -5073,7 +5025,7 @@ textarea.input {
 /* Scale labels: bigger and darker (item 12). */
 .playscreen .slabels,
 .slabels {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   font-weight: 600;
   color: var(--ta-ink);
@@ -5098,7 +5050,7 @@ textarea.input {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
   margin-bottom: 10px;
@@ -5166,7 +5118,7 @@ textarea.input {
   border-bottom-color: var(--kit-card-base);
 }
 .rankrow-t {
-  font-size: 1rem;
+  font-size: var(--t-body);
   line-height: 1.5rem;
 }
 /* Names and stage on one screen: the three stages in a row. */
@@ -5177,10 +5129,10 @@ textarea.input {
 .stagerow .stagechip {
   min-height: 52px;
   padding: 8px 6px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
 }
 .fieldlabel {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ink);
   margin-top: 24px;
@@ -5188,7 +5140,7 @@ textarea.input {
 /* A label sits 6px from its own field and 24px from the group above
    (design system: Gestalt proximity). */
 label {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   margin: 24px 4px 6px;
 }
 .fieldlabel {
@@ -5201,7 +5153,7 @@ label {
 .codeinfo {
   min-height: 20px;
   margin: 8px 4px 0;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--app-guess-ok);
   display: flex;
@@ -5248,14 +5200,14 @@ label {
   border: none;
   background: none;
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
   cursor: pointer;
 }
 .fielderr {
   margin: 6px 4px 0;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--kit-red);
 }
@@ -5269,7 +5221,7 @@ label {
   background: var(--kit-sel-bg);
   border: 2px solid var(--kit-close-bg);
   color: var(--kit-red);
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   line-height: 1.375rem;
 }
 .errpanel svg {
@@ -5321,7 +5273,7 @@ a.btn {
 /* ---- The reveal (design refresh, item 2) ---- */
 .reveal-line {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--t-question);
   line-height: 1.875rem;
   font-weight: 600;
   text-align: center;
@@ -5329,9 +5281,9 @@ a.btn {
   margin: 20px 16px 0;
 }
 .reveal-verse {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 1.125rem;
+  font-size: var(--t-heading);
   line-height: 1.625rem;
   text-align: center;
   color: var(--ta-blush);
@@ -5342,22 +5294,20 @@ a.btn {
   margin-top: 6px;
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
+  font-size: var(--t-small);
   font-weight: 600;
-  text-transform: uppercase;
   color: var(--ta-honey);
 }
 .notverdict {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 1rem;
+  font-size: var(--t-body);
   text-align: center;
   color: var(--ta-blush);
   margin: 20px 16px 0;
 }
 .ceremony.lit .score-basis {
-  font-size: 1rem;
+  font-size: var(--t-body);
   margin-top: 16px;
 }
 /* 100%: the gold medallion. */
@@ -5375,10 +5325,8 @@ a.btn {
   border-radius: 999px;
   background: var(--ta-honey);
   color: var(--ta-claret);
-  font-size: var(--eyebrow-size);
-  font-weight: 700;
-  letter-spacing: var(--eyebrow-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
+  font-weight: 600;
 }
 .medal-ring {
   width: 220px;
@@ -5399,14 +5347,13 @@ a.btn {
   color: var(--ta-honey-raised);
 }
 .medal-pc {
-  font-size: 1.75rem;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
   vertical-align: top;
 }
 .medal-lb {
   margin-top: 6px;
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   color: var(--ta-honey-raised);
   font-weight: 600;
 }
@@ -5495,7 +5442,7 @@ a.btn {
   color: var(--app-amber);
 }
 .ny-name {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 /* Share your score: the preview, and the names switch. */
@@ -5517,7 +5464,7 @@ a.btn {
   justify-content: center;
   background: var(--ta-claret);
   color: var(--ta-blush);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   padding: 12px;
   text-align: center;
 }
@@ -5530,7 +5477,7 @@ a.btn {
   border: none;
   background: none;
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-ink);
   padding: 0 2px;
   cursor: pointer;
@@ -5598,18 +5545,16 @@ a.btn {
   align-items: center;
   justify-content: center;
   color: var(--ta-grey);
-  font-size: 1.375rem;
+  font-size: var(--t-question);
 }
 .sring-name {
   margin-top: 8px;
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
+  font-size: var(--t-small);
   font-weight: 600;
-  text-transform: uppercase;
   color: var(--ta-ink);
 }
 .sring-count {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .srings.on-claret .sring-name {
@@ -5666,15 +5611,13 @@ a.btn {
   gap: 6px;
 }
 .sbarslim-item b {
-  font-family: var(--font-display);
-  font-size: 1rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   color: var(--ta-ink);
 }
 .sbarslim-item i {
   font-style: normal;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 /* The filters ride under the slim bar; `top` follows it in (set inline). */
@@ -5727,10 +5670,10 @@ a.btn {
 .tg-line {
   margin: 12px 0 0;
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-question);
   line-height: 1.3;
   text-align: center;
-  color: var(--ta-white);
+  color: var(--ta-ink);
 }
 .srings-foot {
   display: flex;
@@ -5739,23 +5682,23 @@ a.btn {
   flex-wrap: wrap;
   gap: 4px 12px;
   margin-top: 12px;
-  border-top: 1px solid var(--ta-claret-hover);
+  border-top: 1px solid var(--kit-card-edge);
 }
 .srings-foot .howlink {
   margin: 0;
   padding: 0;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
 }
 .tg-foot {
-  font-size: 0.8125rem;
-  color: var(--ta-blush);
+  font-size: var(--t-small);
+  color: var(--ta-grey);
 }
 .tg-h {
   margin: 28px 0 12px;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   line-height: 1.3;
   color: var(--ta-ink);
+  font-weight: 600;
 }
 .tg-hrow {
   display: flex;
@@ -5801,7 +5744,7 @@ a.btn {
   padding: 12px 14px;
   border-radius: 16px;
   background: var(--kit-sel-bg);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.45;
   color: var(--ta-grey);
 }
@@ -5814,7 +5757,7 @@ a.btn {
   place-items: center;
   background: var(--ta-claret);
   color: var(--ta-honey);
-  font-weight: 700;
+  font-weight: 600;
 }
 .tg-ask {
   margin-top: 12px;
@@ -5825,7 +5768,7 @@ a.btn {
 }
 .tg-ask p {
   margin: 0 0 10px;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-ink);
 }
 .tg-ask-btns {
@@ -5858,7 +5801,7 @@ a.btn {
   border-radius: 16px;
   background: var(--ta-white);
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-ink);
   cursor: pointer;
 }
@@ -5872,8 +5815,8 @@ a.btn {
 }
 .tg-talked-q {
   margin-top: 4px;
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   line-height: 1.35;
   color: var(--ta-ink);
 }
@@ -5928,24 +5871,22 @@ a.btn {
   align-items: flex-end;
 }
 .tg-pct b {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   line-height: 1.1;
+  font-weight: 600;
 }
 .tg-pct i {
   font-style: normal;
-  font-size: var(--tag-size);
-  letter-spacing: var(--tag-track);
-  text-transform: uppercase;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .tg-tile-name {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.25;
 }
 .tg-tile-sub {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   margin-bottom: 8px;
 }
@@ -5959,7 +5900,7 @@ a.btn {
   gap: 8px;
   border-style: dashed;
   border-bottom-width: 2px;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-claret);
 }
 .tg-plus {
@@ -5969,7 +5910,7 @@ a.btn {
   border: 2px dashed var(--ta-grey);
   display: grid;
   place-items: center;
-  font-size: 1.25rem;
+  font-size: var(--t-question);
   color: var(--ta-grey);
 }
 /* The guide sheet (Talk it through). */
@@ -5988,7 +5929,7 @@ a.btn {
 }
 .guide-steps b {
   display: block;
-  font-size: 1rem;
+  font-size: var(--t-body);
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -6001,8 +5942,8 @@ a.btn {
   place-items: center;
   background: var(--ta-claret);
   color: var(--ta-honey);
-  font-weight: 700;
-  font-size: 0.875rem;
+  font-weight: 600;
+  font-size: var(--t-small);
 }
 .guide-note {
   display: block;
@@ -6011,7 +5952,7 @@ a.btn {
 .guide-note-lb {
   display: block;
   margin-bottom: 6px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .guide-note textarea {
@@ -6022,7 +5963,8 @@ a.btn {
 
 /* ---- Home (item 10): one next step ---- */
 .greet {
-  font-size: 1.625rem;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
   margin: 14px 2px 14px;
 }
 .hscores {
@@ -6040,7 +5982,7 @@ a.btn {
   justify-content: space-between;
   align-items: center;
   color: var(--ta-grey);
-  font-size: 1.25rem;
+  font-size: var(--t-question);
 }
 .hscores-top .eyebrow {
   color: var(--ta-grey);
@@ -6081,13 +6023,13 @@ a.btn {
   min-width: 0;
 }
 .softring-txt b {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   line-height: 1.3;
   font-weight: 600;
 }
 .softring-txt span {
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   line-height: 1.35;
   color: var(--ta-grey);
 }
@@ -6101,19 +6043,19 @@ a.btn {
 }
 .hnext-nm {
   display: block;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   line-height: 1.2;
   color: var(--ta-ink);
+  font-weight: 600;
 }
 .hnext-sub {
   display: block;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .hnext .capline {
   text-align: left;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .hnext .btn.pill {
@@ -6158,10 +6100,10 @@ a.btn {
   color: var(--app-amber);
 }
 .hpath-nm {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   line-height: 1.25;
   color: var(--ta-ink);
+  font-weight: 600;
 }
 .btn.out.hpath-go {
   position: absolute;
@@ -6191,7 +6133,7 @@ a.btn {
   border: none;
   background: none;
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-ink);
   outline: none;
 }
@@ -6204,8 +6146,8 @@ a.btn {
 }
 .cv-pick-nm {
   margin-top: 8px;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.3;
   color: var(--ta-ink);
 }
@@ -6218,7 +6160,7 @@ a.btn {
   align-items: center;
   gap: 12px;
   margin-top: 12px;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   white-space: nowrap;
 }
@@ -6238,12 +6180,12 @@ a.btn {
 }
 .cv-group h2 {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   color: var(--ta-ink);
+  font-weight: 600;
 }
 .cv-group span {
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .cv-row {
@@ -6280,12 +6222,12 @@ a.btn {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.25;
 }
 .cv-row-sub {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .cv-bars {
@@ -6307,7 +6249,7 @@ a.btn {
   background: var(--app-honey);
 }
 .cv-go {
-  font-size: 1.375rem;
+  font-size: var(--t-question);
   color: var(--ta-grey);
 }
 /* Choose a part */
@@ -6343,8 +6285,8 @@ a.btn {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 0.8125rem;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   background: var(--kit-sel-bg);
   color: var(--ta-ink);
 }
@@ -6364,12 +6306,12 @@ a.btn {
   gap: 2px;
 }
 .pp-nm {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.25;
 }
 .pp-sub {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .pp-avs {
@@ -6379,13 +6321,13 @@ a.btn {
 }
 .pp-known {
   margin: 24px 2px 0;
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .pp-known b {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   color: var(--ta-ink);
+  font-weight: 600;
 }
 .cv-row-nm .kbadge {
   font-family: var(--font-ui);
@@ -6429,13 +6371,13 @@ a.btn {
   cursor: pointer;
 }
 .pmap-stop b {
-  font-family: var(--font-display);
-  font-size: 1rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
   font-weight: 600;
   line-height: 1.2;
 }
 .pmap-stop span {
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .pmap-stop.ahead {
@@ -6477,10 +6419,10 @@ a.btn {
   flex: 0 0 auto;
 }
 .pmap-card-nm {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   line-height: 1.25;
   color: var(--ta-ink);
+  font-weight: 600;
 }
 
 /* ---- The Path's step screens (item 14): arrival, walked, Lookout ---- */
@@ -6495,7 +6437,7 @@ a.btn {
 }
 .pstep-of {
   text-align: center;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .pstep-scene {
@@ -6513,7 +6455,7 @@ a.btn {
 }
 .pstep-frame {
   margin: 0 0 14px;
-  font-size: 1rem;
+  font-size: var(--t-body);
   line-height: 1.55;
   color: var(--ta-ink);
 }
@@ -6530,7 +6472,7 @@ a.btn {
   border-radius: 999px;
   border: 2px solid var(--kit-card-edge);
   background: var(--ta-white);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -6541,9 +6483,9 @@ a.btn {
 }
 .pstep-verse p {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-style: italic;
-  font-size: 1.125rem;
+  font-size: var(--t-heading);
   line-height: 1.4;
   color: var(--ta-ink);
 }
@@ -6551,7 +6493,7 @@ a.btn {
   display: block;
   margin-top: 4px;
   font-style: normal;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--app-amber);
 }
@@ -6577,8 +6519,8 @@ a.btn {
   color: var(--app-amber);
 }
 .pstep-next-nm {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.25;
   color: var(--ta-ink);
 }
@@ -6602,14 +6544,14 @@ a.btn {
   color: var(--app-amber);
 }
 .lk-card-nm {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   color: var(--ta-ink);
 }
 .lk-card-pct {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   color: var(--ta-ink);
+  font-weight: 600;
 }
 
 /* ---- You (item 15): a settings list ---- */
@@ -6625,13 +6567,12 @@ a.btn {
   flex-direction: column;
 }
 .you-head-txt b {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--t-heading);
   font-weight: 600;
   color: var(--ta-ink);
 }
 .you-head-txt span {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
   overflow-wrap: anywhere;
 }
@@ -6650,10 +6591,8 @@ a.btn {
   margin: 24px 4px 8px;
   font-family: var(--font-ui);
   line-height: 1.3;
-  font-size: var(--eyebrow-size);
-  letter-spacing: var(--eyebrow-track);
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: var(--t-small);
+  font-weight: 600;
   color: var(--app-amber);
 }
 .you-list {
@@ -6695,15 +6634,15 @@ a.btn {
   flex-direction: column;
 }
 .you-row-txt b {
-  font-size: 1rem;
+  font-size: var(--t-body);
   font-weight: 600;
 }
 .you-row-txt span {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .you-row-val {
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 .you-row-go {
@@ -6724,9 +6663,10 @@ a.btn {
   margin: 12px 0 4px;
 }
 .you-code .codebig {
+  font-family: var(--font-display);
   margin: 0;
   padding: 8px 18px;
-  font-size: 1.375rem;
+  font-size: var(--t-question);
 }
 .you-code .btn.out {
   width: auto;
@@ -6743,7 +6683,7 @@ a.btn {
   border: none;
   background: none;
   font: inherit;
-  font-size: 1rem;
+  font-size: var(--t-body);
   color: var(--ta-ink);
   cursor: pointer;
 }
@@ -6783,7 +6723,7 @@ a.btn {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 1rem;
+  font-size: var(--t-body);
   line-height: 1.5;
   color: var(--ta-ink);
 }
@@ -6792,7 +6732,7 @@ a.btn {
   padding: 12px 14px;
   border-radius: 14px;
   background: var(--kit-sel-bg);
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   line-height: 1.5;
   color: var(--ta-grey);
 }
@@ -6812,7 +6752,7 @@ a.btn {
   flex-direction: column;
 }
 .you-format > span:first-child span {
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   color: var(--ta-grey);
 }
 
@@ -6825,19 +6765,19 @@ a.btn {
    answers 15px. Helper text stays at the 14px floor and every target stays
    48px or more. */
 .qtext {
-  font-size: 1.1875rem; /* 19px */
+  font-size: var(--t-heading); /* 19px */
   line-height: 1.625rem;
   margin-top: 8px;
 }
 .qtext.qtext-long {
-  font-size: 1.125rem; /* 18px */
+  font-size: var(--t-heading); /* 18px */
   line-height: 1.5625rem;
 }
 .opt {
   min-height: 48px;
   margin-top: 8px;
   padding: 11px 44px 11px 16px;
-  font-size: 0.9375rem; /* 15px */
+  font-size: var(--t-small); /* 15px */
   line-height: 1.375rem;
 }
 
@@ -6977,8 +6917,8 @@ a.btn {
   border-radius: 12px;
   background: var(--app-honey-bg);
   color: var(--ta-ink);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: var(--t-small);
+  font-weight: 600;
   line-height: 1.25rem;
   text-align: left;
   animation: sayIn var(--dur-select) var(--ease-glide) both;
@@ -7038,7 +6978,7 @@ a.btn {
   background: var(--ta-white);
   color: var(--ta-claret);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   cursor: pointer;
   transform: translateX(-50%);
@@ -7236,7 +7176,7 @@ a.btn {
   border-radius: 10px;
   background: transparent;
   font: inherit;
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
   cursor: pointer;
@@ -7267,7 +7207,7 @@ a.btn {
   align-items: center;
   flex-wrap: wrap;
   gap: 6px 8px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
 }
@@ -7289,7 +7229,7 @@ a.btn {
   flex: 1;
   max-width: 56px;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-grey);
 }
@@ -7314,8 +7254,8 @@ a.btn {
   border-radius: 999px;
   background: var(--kit-close-bg);
   color: var(--ta-claret-hover);
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: var(--t-small);
+  font-weight: 600;
   line-height: 1.375rem;
 }
 
@@ -7338,7 +7278,7 @@ a.btn {
   border: 0;
   background: none;
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-claret);
   text-decoration: underline;
@@ -7353,7 +7293,7 @@ a.btn {
   height: 30px;
   border: 2px dashed var(--app-orb-line);
   background: var(--ta-white);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
 }
 .opt.rankpick .rankno.on {
   border: 2px solid var(--app-honey);
@@ -7416,15 +7356,15 @@ a.btn {
 }
 .livechoice b {
   display: block;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
   line-height: 1.5rem;
   font-weight: 600;
 }
 .livechoice b + span {
   display: block;
   margin-top: 2px;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.25rem;
   color: var(--ta-grey);
 }
@@ -7543,12 +7483,12 @@ button.fy-row {
   gap: 2px;
 }
 .fy-txt b {
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   font-weight: 600;
   color: var(--ta-ink);
 }
 .fy-txt span {
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   line-height: 1.35;
   color: var(--ta-grey);
 }
@@ -7563,7 +7503,7 @@ button.fy-row {
   background: var(--app-honey);
   color: var(--app-honey-ink);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 600;
 }
 .fy-act-ghost {
@@ -7642,4 +7582,1372 @@ button.fy-row {
   .splash-wm {
     animation: none;
   }
+}
+
+/* ============================================================================
+   GLASS (Dave, Nov 2026: option C "glass with a mauve edge"). One calm look:
+   frosted white cards with a hairline, no thick 3D bases; colour used
+   sparingly. Mauve marks only what you act on (the main button's edge and
+   words, the active tab, the selected answer) and progress. The flowing waves
+   at the top of every screen are components/Flux.tsx. These rules sit last,
+   so every screen picks them up through the kit classes it already uses.
+   ========================================================================== */
+
+/* ---- The ground and the waves ---- */
+html,
+body {
+  background: var(--app-ground-top);
+}
+.phone {
+  position: relative;
+  isolation: isolate;
+}
+.flux {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 560px;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+.flux-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(170deg, var(--flux-wash-1) 0%, var(--flux-wash-2) 45%, var(--flux-wash-3) 100%);
+}
+.flux-wave {
+  position: absolute;
+  left: -60px;
+  filter: blur(16px);
+  transform-origin: 50% 50%;
+  will-change: transform;
+  animation-name: flux-drift, flux-bob;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite;
+}
+.flux-wave svg {
+  display: block;
+}
+@keyframes flux-drift {
+  from {
+    transform: rotate(var(--tilt)) translateX(0);
+  }
+  to {
+    transform: rotate(var(--tilt)) translateX(-420px);
+  }
+}
+@keyframes flux-bob {
+  to {
+    margin-top: 26px;
+  }
+}
+.flux-sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 60% at 20% 10%, rgba(255, 255, 255, 0.45), transparent 60%);
+}
+.flux-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 260px;
+  background: linear-gradient(transparent, var(--app-ground-top) 85%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .flux-wave {
+    animation: none;
+  }
+}
+
+/* ---- Cards: frosted glass, one hairline, no base ---- */
+.card,
+.kcard-claret,
+.readycard {
+  background: var(--glass);
+  color: var(--ta-ink);
+  border: 1px solid var(--glass-line);
+  border-bottom: 1px solid var(--glass-line);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+
+/* ---- Buttons: flat pills. The main one is white glass with a mauve edge
+   and mauve words; secondary is plain glass; text buttons stay text. ---- */
+.btn,
+.btn.pill,
+.btn.honey {
+  border-radius: 999px;
+  background: var(--glass-strong);
+  color: var(--app-mauve-deep);
+  border: 1.5px solid var(--app-mauve);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+}
+.btn:active,
+.btn.pill:active,
+.btn.honey:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px var(--glass-shadow);
+}
+.btn.out {
+  border-radius: 999px;
+  background: var(--glass-strong);
+  color: var(--ta-ink);
+  border: 1px solid var(--kit-card-edge);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+}
+.btn.out:active {
+  box-shadow: 0 2px 8px var(--glass-shadow);
+}
+.btn.red,
+.btn.red[disabled] {
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+}
+.btn.ghost,
+.btn.ghost:active {
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  box-shadow: none;
+  color: var(--ta-ink);
+}
+.btn[disabled],
+.btn.pill[disabled],
+.btn.honey[disabled] {
+  background: var(--glass);
+  color: var(--ta-grey);
+  border-color: var(--kit-card-edge);
+  box-shadow: none;
+}
+
+/* ---- Answers: glass rows; selected = a mauve edge and dot ---- */
+.opt {
+  background: var(--glass-strong);
+  border: 1px solid var(--kit-card-edge);
+  border-bottom-width: 1px;
+  border-bottom-color: var(--kit-card-edge);
+}
+.opt.sel {
+  background: var(--ta-white);
+  border-color: var(--app-mauve);
+  border-bottom-color: var(--app-mauve);
+  box-shadow: inset 0 0 0 0.5px var(--app-mauve);
+}
+.opt.sel .dot {
+  border-color: var(--app-mauve);
+  background: var(--app-mauve);
+}
+.opt.sel .dot::after {
+  color: var(--app-mauve);
+}
+.orb.sel {
+  background: var(--app-mauve);
+  border-color: var(--app-mauve);
+  color: var(--ta-white);
+}
+
+/* ---- Progress: mauve ---- */
+.qprog i {
+  background: var(--app-mauve);
+}
+
+/* ---- Filters and badges: quiet glass; selected = mauve tint ---- */
+.fpill {
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1px var(--kit-card-edge);
+  color: var(--ta-ink);
+}
+.fpill[aria-pressed="true"] {
+  background-color: var(--app-mauve-tint);
+  box-shadow: inset 0 0 0 1.5px var(--app-mauve);
+  color: var(--app-mauve-deep);
+}
+.kbadge.chat {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+}
+
+/* ---- The dock: the active tab is a mauve icon on a faint mauve tint ---- */
+.bnav-ind {
+  background: var(--app-mauve-tint);
+  box-shadow: none;
+}
+.bnav-item.on {
+  color: var(--app-mauve-deep);
+}
+
+/* ---- Labels: SMALL, grey, sentence case (the type scale) ---- */
+.eyebrow,
+.readycard-eyebrow,
+.readycard-cta {
+  color: var(--ta-grey);
+}
+.readycard-sub {
+  color: var(--ta-grey);
+}
+.readyseal {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  box-shadow: none;
+}
+.readycard-cta {
+  color: var(--app-mauve-deep);
+  font-weight: 600;
+}
+
+/* ---- Title line-height for the TITLE style ---- */
+.h1,
+.greet {
+  line-height: 1.2;
+}
+
+/* ---- The question's progress stones: mauve ---- */
+.qstones i.full,
+.qstones i.half::after {
+  background: var(--app-mauve);
+}
+.qstones i.cur {
+  outline-color: var(--app-mauve);
+}
+
+/* ============================================================================
+   TYPE SCALE: the six styles (tokens.css, "Type"; Dave, Nov 2026). These
+   settle every text element onto one of them. `html` lifts each rule over
+   the older component rules above. The gallery audit checks every screen.
+   ========================================================================== */
+/* SMALL is regular: labels, meta, tags. */
+html .sring-name,
+html label,
+html .avchip i,
+html .slabels span,
+html .you-group,
+html .reveal-ref,
+html .stept b,
+html .savestate,
+html .guessname,
+html .impinline-head span,
+html .guesshead span,
+html .youtag,
+html .readycard-eyebrow,
+html .pstep-chips li,
+html .helper b,
+html .gtag b,
+html .daytxt b,
+html .capline b,
+html .orbsay-text,
+html .you-label,
+html .stagepick-q,
+html .fieldlabel,
+html cite,
+html .you-keep b,
+html .medal-lb,
+html .medal-badge,
+html .kcard-label,
+html .guide-note-lb,
+html .badge,
+html .rmatch,
+html .tg-talked-note b,
+html .buildstamp {
+  font-family: var(--font-ui);
+  font-weight: 400;
+}
+/* Links inside sentences: the sentence's own size, regular, underlined. */
+html .link,
+html a.link {
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* STRONG: buttons and tappable words, whatever their old size. */
+html .talklink,
+html .fpill,
+html .impseg button,
+html .stagechip,
+html .btn,
+html .linkbtn,
+html .fy-act,
+html .inlinebtn,
+html .rankreset,
+html .howlink,
+html .codechip,
+html .readycard-cta,
+html .fy-txt b {
+  font-family: var(--font-ui);
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+/* HEADING: names of conversations, parts and cards. */
+html .cv-row-nm,
+html .pp-nm,
+html .tg-tile-name,
+html .readycard-nm,
+html .cv-pick-nm,
+html .lk-card-nm,
+html .pstep-next-nm {
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
+  font-weight: 600;
+}
+/* QUESTION: the question, a verse, the encouragement line, the code. */
+html .qtext,
+html .qtext.qtext-long,
+html .tg-line,
+html .verse,
+html .codebig {
+  font-family: var(--font-display);
+  font-size: var(--t-question);
+  font-weight: 600;
+}
+/* A subtitle is BODY in the UI face, never a small serif. */
+html .sub.serif {
+  font-family: var(--font-ui);
+}
+html .sheet-close-line {
+  font-size: var(--t-body);
+}
+/* The last few that older, more specific rules held off the scale. */
+html body .btn.btn {
+  font-size: var(--t-body) !important;
+  font-weight: 600 !important;
+}
+html .rank2 ol li.rmatch,
+html .youtag.youtag,
+html .badge.badge,
+html .pstep-verse cite,
+html .sub b,
+html .stagerow .stagechip,
+html .stagechip.on {
+  font-weight: 400;
+}
+html .stagerow .stagechip,
+html .stagechip.on,
+html .howlink.howlink,
+html .inlinebtn.inlinebtn {
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+html .you-format b,
+html .errpanel b {
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+/* Labels on the claret rooms that remain (the reveal ceremony): light. */
+.ceremony .eyebrow,
+.claret-ground .eyebrow {
+  color: var(--ce-sub);
+}
+
+/* ---- The last honey and claret accents, onto mauve ---- */
+.opt.guess.sel {
+  border-color: var(--app-mauve);
+  background: var(--ta-white);
+}
+.opt.guess.sel .dot {
+  border-color: var(--app-mauve);
+  background: var(--app-mauve);
+}
+.cv-bar i {
+  background: var(--app-mauve);
+}
+.badge.honey {
+  color: var(--app-mauve-deep);
+  background: var(--app-mauve-tint);
+}
+.switch.on {
+  background: var(--app-mauve);
+}
+
+/* ============================================================================
+   LAYOUT after Dateasy (Dave, Nov 2026): big cards, full-screen questions,
+   one big number. TwoAgree's own colours and the six text styles throughout.
+   ========================================================================== */
+
+/* ---- Home: the next conversation, as one big card ---- */
+.hhero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px 12px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-family: var(--font-ui);
+}
+.hero-segs {
+  display: flex;
+  gap: 6px;
+}
+.hero-segs i {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--glass-strong);
+}
+.hero-segs b {
+  display: block;
+  height: 100%;
+  background: var(--app-mauve-deep);
+  border-radius: 2px;
+}
+.hero-pill {
+  align-self: center;
+  margin-top: 18px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+html .hero-up,
+html .hero-them,
+html .hero-pill {
+  font-size: var(--t-small);
+  font-weight: 400;
+  color: var(--ta-ink);
+}
+html .hero-nm {
+  margin: 4px 0 6px;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0;
+  color: var(--ta-ink);
+  text-wrap: balance;
+}
+.hero-sub {
+  font-size: var(--t-body);
+  color: var(--ta-ink);
+}
+.hero-them {
+  margin-top: 4px;
+}
+.hhero .btn.hero-go {
+  margin-top: 18px;
+}
+html .linkbtn.hero-alt {
+  margin-top: 4px;
+  min-height: 44px;
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--ta-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Label over value: a quiet row that opens something ---- */
+.irow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  margin-bottom: 10px;
+  padding: 14px 16px 14px 18px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.irow-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.irow-lb,
+.irow-meta {
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+html .irow-val {
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+  line-height: 1.35;
+}
+.irow-go {
+  flex: 0 0 auto;
+  font-size: var(--t-heading);
+  color: var(--ta-grey);
+}
+
+/* ---- The question, full screen: no card, a big centred question ---- */
+.pfull .ptop {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  min-height: 48px;
+}
+.pcircle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 50%;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  color: var(--ta-ink);
+  cursor: pointer;
+}
+html .ptop-title {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.ptop-right {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.qcount {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+html .qcount .savestate {
+  font-size: var(--t-small);
+  font-weight: 400;
+  white-space: nowrap;
+}
+html .ptop-skip {
+  min-height: 44px;
+  min-width: 48px;
+  padding: 0 2px 0 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--ta-grey);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.qcount {
+  margin-top: 14px;
+  text-align: center;
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+.pfull .qstones {
+  gap: 6px;
+  margin: 8px 28px 0;
+}
+.pfull .qstones i {
+  height: 4px;
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1px var(--kit-card-edge);
+}
+.pfull .qstones i.full,
+.pfull .qstones i.half::after {
+  background: var(--app-mauve-deep);
+  box-shadow: none;
+}
+.pfull .qstones i.cur {
+  outline: 0;
+  background: var(--app-mauve-tint);
+  box-shadow: none;
+}
+.pfull > .qframe {
+  padding: 8px 0 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.pfull .qframe > .qhead {
+  padding: 22px 6px 18px;
+  text-align: center;
+}
+html .pfull .qtext {
+  margin: 0;
+  font-size: var(--t-title);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+html .pfull .qtext.qtext-long {
+  font-size: var(--t-question);
+  line-height: 1.35;
+}
+.pfull .guesshead {
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.pfull .qframe > .qbody {
+  display: flex;
+  flex-direction: column;
+}
+.pfull .qbody > * {
+  order: 5;
+}
+.pfull .qbody > .scale {
+  order: 1;
+}
+.pfull .qbody > .orbyou {
+  order: 2;
+}
+.pfull .qbody > .slabels {
+  order: 3;
+  margin-top: 10px;
+}
+.pfull .qbody > .orbsay {
+  order: 4;
+}
+
+/* Five large rings, a little deeper toward the top end. */
+.pfull .scale {
+  gap: 10px;
+  margin-top: 6px;
+}
+.pfull .orb {
+  max-width: 60px;
+  border: 2px solid color-mix(in srgb, var(--app-mauve) 40%, var(--ta-white));
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  color: var(--ta-white);
+}
+.pfull .orb:nth-child(2) {
+  border-color: color-mix(in srgb, var(--app-mauve) 55%, var(--ta-white));
+}
+.pfull .orb:nth-child(3) {
+  border-color: color-mix(in srgb, var(--app-mauve) 70%, var(--ta-white));
+}
+.pfull .orb:nth-child(4) {
+  border-color: color-mix(in srgb, var(--app-mauve) 85%, var(--ta-white));
+}
+.pfull .orb:nth-child(5) {
+  border-color: var(--app-mauve);
+}
+.pfull .orb.sel {
+  background: var(--app-mauve-deep);
+  border-color: var(--app-mauve-deep);
+  box-shadow: 0 0 0 5px var(--app-mauve-tint);
+}
+
+/* Choices: big rounded pills; the chosen one takes a mauve edge and a tick. */
+.pfull .opt {
+  min-height: 56px;
+  margin-top: 10px;
+  padding: 14px 48px 14px 22px;
+  border-radius: 28px;
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-line);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+}
+.pfull .opt::before {
+  display: none;
+}
+.pfull .opt.sel,
+.pfull .opt.guess.sel {
+  background: var(--ta-white);
+  border: 1.5px solid var(--app-mauve-deep);
+  box-shadow: 0 6px 16px var(--glass-shadow);
+}
+.pfull .opt .dot {
+  display: none;
+}
+.pfull .opt.sel .dot,
+.pfull .opt.guess.sel .dot {
+  display: block;
+  right: 22px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.pfull .opt.sel .dot::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  left: 6px;
+  top: 1px;
+  width: 7px;
+  height: 13px;
+  border: solid var(--app-mauve-deep);
+  border-width: 0 2.4px 2.4px 0;
+  border-radius: 0;
+  transform: rotate(45deg);
+  animation: none;
+}
+
+/* The big Next pill, with Back as a circle beside it. */
+.pfull .playfoot-row > .btn {
+  min-height: 56px;
+}
+.pfull .playfoot-row > .btn.backsq {
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  border-radius: 50%;
+}
+
+/* ---- The reveal: one big number and one card, on the light ground ---- */
+.ceremony:not(.lit) .eyebrow {
+  color: var(--ta-grey);
+}
+.bignum-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.bignum-lb {
+  font-size: var(--t-body);
+  color: var(--ta-grey);
+}
+html .bignum {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ta-ink);
+  font-variant-numeric: tabular-nums;
+}
+.bignum-pc {
+  font-size: 0.62em;
+  margin-left: 2px;
+}
+.ceremony:not(.lit) .score-basis {
+  color: var(--ta-grey);
+}
+.revealcard {
+  margin-top: 10px;
+  padding: 18px 18px 16px;
+}
+.ceremony:not(.lit) .reveal-line {
+  margin: 0;
+  color: var(--ta-ink);
+}
+.ceremony:not(.lit) .reveal-verse {
+  margin: 10px 0 0;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--ta-grey);
+}
+.ceremony:not(.lit) .reveal-ref,
+.ceremony:not(.lit) .notverdict,
+.ceremony:not(.lit) .firstline {
+  color: var(--ta-grey);
+}
+.ceremony:not(.lit) .meetline,
+.ceremony:not(.lit) .meetnames {
+  color: var(--ta-grey);
+}
+html .bignum-badge {
+  position: static;
+  transform: none;
+  margin-bottom: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  box-shadow: none;
+  font-size: var(--t-small);
+  font-weight: 400;
+}
+
+/* ---- Talk: a big title with a round search button, then a two-column
+   grid of tall cards (after Dateasy's grid) ---- */
+.cv-titlerow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 2px 0;
+}
+html .cv-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ta-ink);
+}
+.cv-lede {
+  margin: 2px 2px 14px;
+}
+.cv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cv-tile.cv-row {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-height: 200px;
+  margin: 0;
+  padding: 0;
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid var(--glass-line);
+  border-radius: 22px;
+  background: var(--glass);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  transition: transform 0.12s ease;
+}
+.cv-tile.cv-row:active {
+  border-bottom-width: 1px;
+  transform: scale(0.98);
+}
+.cv-tile-art {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  min-height: 104px;
+  color: var(--app-mauve-deep);
+}
+
+
+
+
+.cv-tile-art svg {
+  width: 44px;
+  height: 44px;
+}
+.cv-tile-pct {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--app-mauve-tint);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.cv-tile .cv-row-main {
+  flex: none;
+  gap: 2px;
+  padding: 4px 14px 14px;
+  background: none;
+}
+.cv-tile .cv-row-nm {
+  display: block;
+  line-height: 1.25;
+}
+.cv-tile .kbadge {
+  align-self: flex-start;
+  margin: 4px 0 2px;
+}
+.cv-tile .cv-bars {
+  gap: 3px;
+}
+.cv-tile .cv-bar {
+  flex: 1;
+  width: auto;
+  max-width: 26px;
+}
+
+/* ---- Lists as chat-style rows (after Dateasy's chat list): rounded glass,
+   a round badge or avatar on the left, the action on the right ---- */
+.pp-row,
+.pp-row.here {
+  border: 1px solid var(--glass-line);
+  border-radius: 22px;
+  background: var(--glass);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+.pp-row.here {
+  border: 1.5px solid var(--app-mauve);
+}
+.pp-n {
+  width: 36px;
+  height: 36px;
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1px var(--kit-card-edge);
+}
+.pp-n.done {
+  background: var(--app-mauve-deep);
+  color: var(--ta-white);
+  box-shadow: none;
+}
+.pp-n.here {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  box-shadow: none;
+}
+.fy-act {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+}
+html .morebelow {
+  font-weight: 400;
+}
+/* On the light reveal the celebration falls behind the words and buttons. */
+.ceremony:not(.lit) .celebrate {
+  z-index: 0;
+}
+.ceremony:not(.lit) .levelup,
+.ceremony:not(.lit) > .topbar,
+.ceremony:not(.lit) > .eyebrow {
+  position: relative;
+  z-index: 1;
+}
+.guessname {
+  color: var(--app-mauve-deep);
+}
+
+/* ---- Full screen: no mark up top (Dave, Nov 2026). Close is a glass
+   circle on the left; a flow may name itself in the middle. ---- */
+.topbar {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  min-height: 48px;
+  padding: 2px 0 6px;
+}
+.topbar-none {
+  min-height: 8px;
+}
+.topbar .topbar-slot {
+  width: auto;
+}
+html .topbar-title {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.bellrow {
+  height: 40px;
+}
+
+/* ---- Home, round 2 (Dave, Nov 2026): the mockup's tall card, see-through
+   at the top so the waves behind it show, with the rest of the
+   conversations stacked behind it ---- */
+.flux {
+  height: 640px;
+}
+.hstack {
+  position: relative;
+  isolation: isolate;
+  margin: 4px 0 18px;
+  padding-bottom: 22px;
+}
+.hstack-top {
+  position: relative;
+  z-index: 2;
+  touch-action: pan-y;
+  animation: hstack-in 0.32s var(--ease-glide) both;
+}
+@keyframes hstack-in {
+  from {
+    transform: translateY(14px) scale(0.95);
+    opacity: 0.4;
+  }
+}
+.hstack-back {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Only the lower part: the top card is see-through up top, and the cards
+     behind should peek out beneath it, never show through it. */
+  top: 82%;
+  bottom: 22px;
+  border-radius: 0 0 28px 28px;
+  border: 1px solid var(--kit-card-edge);
+  border-top: 0;
+  background: color-mix(in srgb, var(--ta-white) 80%, transparent);
+  box-shadow: 0 10px 22px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  transform-origin: 50% 100%;
+}
+.hstack-back.b1 {
+  z-index: 1;
+  transform: translateY(11px) scale(0.94);
+}
+.hstack-back.b2 {
+  z-index: 0;
+  transform: translateY(22px) scale(0.88);
+  background: color-mix(in srgb, var(--ta-white) 60%, transparent);
+}
+.hstack-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.hstack-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--app-mauve-tint);
+}
+.hstack-dots i.on {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--app-mauve-deep);
+}
+html .hhero {
+  min-height: 460px;
+  margin: 0;
+  padding: 18px 20px 14px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ta-white) 18%, transparent) 0%,
+    color-mix(in srgb, var(--ta-white) 40%, transparent) 45%,
+    color-mix(in srgb, var(--ta-white) 92%, transparent) 72%,
+    var(--ta-white) 80%
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  backdrop-filter: blur(10px) saturate(1.5);
+}
+.hhero .hero-pill {
+  align-self: flex-end;
+  margin-top: 16px;
+}
+.hhero .hero-body {
+  margin-top: auto;
+  padding-top: 40px;
+}
+html .hhero .hero-nm {
+  margin: 6px 0 8px;
+  font-size: 2.9rem;
+  line-height: 1.04;
+}
+.hhero .hero-segs i {
+  background: color-mix(in srgb, var(--ta-white) 70%, transparent);
+}
+.hhero .btn.hero-go {
+  min-height: 56px;
+  margin-top: 22px;
+}
+
+/* ---- Questions at the mockup's sizes: answers in BODY, more air ---- */
+html .pfull .opt {
+  min-height: 60px;
+  margin-top: 12px;
+  font-size: var(--t-body);
+}
+.pfull .qframe > .qhead {
+  padding: 40px 6px 30px;
+}
+.pfull .orb {
+  max-width: 62px;
+}
+.pfull .qcount {
+  margin-top: 22px;
+}
+.hstack-next {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  transform: scale(0.96);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+/* A card on the move turns frosted all over, so the next one under it never
+   reads through it. */
+html .hstack-top.moving .hhero {
+  background: var(--ta-white);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+}
+
+/* ---- One header on every tab, one title style (Dave, Nov 2026) ----
+   The chip on the left; the screen's own button and the bell on the right,
+   always last. 48px tall, the same height as the close bar on full-screen
+   flows, so every top-row button sits on the same line on every screen.
+   The page's top padding already includes the notch / Dynamic Island inset
+   (.phone), so nothing here can sit under it. */
+.tabhdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 2px 0 6px;
+}
+.tabhdr .avchip {
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  min-width: 0;
+}
+.tabhdr .avchip i {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tabhdr-acts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+.tabhdr-slot {
+  display: flex;
+}
+.tabhdr-slot:empty {
+  display: none;
+}
+/* Every round button up top is the same glass circle. */
+.fy-bell,
+.tabhdr .pcircle {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--glass-line);
+  border-radius: 50%;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  color: var(--ta-ink);
+}
+html .pagetitle {
+  margin: 14px 2px 16px;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ta-ink);
+}
+
+/* ---- Home's card: solid white, with soft progress lines ---- */
+html .hhero {
+  background: var(--ta-white);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.hhero .hero-segs {
+  gap: 5px;
+  padding: 0 4px;
+}
+.hhero .hero-segs i {
+  height: 3px;
+  background: var(--app-mauve-tint);
+}
+.hhero .hero-segs b {
+  background: var(--app-mauve);
+}
+/* The Path's intro: its title on the same line and side as every tab's. */
+.pi-top {
+  align-items: flex-start;
+  text-align: left;
+  margin-top: 0;
+}
+html .pi-title.pagetitle {
+  margin: 14px 2px 4px;
+}
+.pi-top .pi-verse {
+  max-width: none;
+  margin: 0 2px;
+}
+.pi-top .pi-vref {
+  margin: 0 2px;
+}
+
+/* ---- Parts: the title in the same place as every screen's ---- */
+html .pagetitle.pp-title {
+  margin-bottom: 2px;
+}
+.pp-lede {
+  margin: 0 2px 18px;
+}
+
+/* ---- The reveal's score card (after Dateasy's profile card): a warm glow
+   behind, the known pill top right, the number big at the foot ---- */
+.revcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: min(660px, calc(100svh - 150px));
+  margin-top: 6px;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--glass-line);
+  border-radius: 32px;
+  background: var(--ta-white);
+  box-shadow: 0 18px 40px var(--glass-shadow);
+}
+.revcard-pill {
+  align-self: flex-end;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.revcard-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: auto;
+  text-align: left;
+}
+.revcard .bignum-lb {
+  color: var(--ta-ink);
+}
+html .revcard .bignum {
+  margin: 2px 0 4px -4px;
+  font-size: 7.5rem;
+}
+.revcard-basis {
+  font-size: var(--t-body);
+  color: var(--ta-ink);
+}
+.revwords {
+  margin-top: 18px;
+}
+.revcard .bignum-badge {
+  margin-bottom: 4px;
+}
+
+
+/* ---- The reveal, round 3 (Dave, Nov 2026): one big white card filling
+   the screen; the gradient stays on the page behind it. The two of you
+   lean together in the middle, the number sits large at the foot, and the
+   next step is inside the card. ---- */
+.revcard .revcard-body {
+  margin-top: 0;
+}
+html .revcard .bignum {
+  font-size: 7rem;
+}
+.revcard-acts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.revcard-acts .btn {
+  flex: 1;
+  width: auto;
+  min-height: 56px;
+  margin: 0;
+}
+.revcard-acts .pcircle.revshare {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+}
+
+/* ---- The reveal, round 4 (Dave, Nov 2026): the two of you across the top
+   of the card, your colours blending into each other and fading into white,
+   each of you in a circle (your photo, or your initial). The number sits in
+   the middle of the card, front and centre. ---- */
+.revcard {
+  overflow: hidden;
+  isolation: isolate;
+}
+.revtop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 56%;
+  z-index: -1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 64px 18px 0;
+  background: linear-gradient(90deg, var(--app-mauve-tint) 8%, var(--app-honey-bg) 92%);
+  -webkit-mask-image: linear-gradient(180deg, black 48%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 48%, transparent 100%);
+}
+.revdisc {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ta-white);
+  box-shadow: 0 10px 24px var(--glass-shadow);
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 600;
+  animation: revdisc-in 0.7s var(--ease-glide) both;
+}
+.revdisc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.revdisc.berry {
+  border: 3px solid var(--app-mauve);
+  color: var(--app-mauve-deep);
+}
+.revdisc.honey {
+  border: 3px solid var(--honeyD);
+  color: var(--app-amber);
+  animation-delay: 0.08s;
+}
+@keyframes revdisc-in {
+  from {
+    transform: translateY(12px) scale(0.9);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revdisc {
+    animation: none;
+  }
+}
+.revcard-pill {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+html .revcard .revcard-body {
+  align-items: center;
+  margin: auto 0;
+  padding-top: 150px;
+  text-align: center;
+}
+html .revcard .bignum {
+  margin: 0;
+  font-size: 8.5rem;
+}
+.revcard-basis {
+  color: var(--ta-grey);
+}
+html .revcard-line {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: var(--t-question);
+  font-weight: 600;
+  text-align: center;
+  color: var(--ta-ink);
 }

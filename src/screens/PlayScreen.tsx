@@ -1,11 +1,11 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { lvlQs, partName } from "../lib/leveling";
 import { writeAnswer, writeGuess, writeImportance, clearImportance, markLevelDone } from "../lib/session";
 import { forGuess, optIndex, optValue, withNames, type Names } from "../lib/who";
 import { type Question } from "../lib/questions";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { NOT_YET, isNotYet, type DeckData, type Role, type AnswerValue } from "../lib/scoring";
-import { TopBar } from "../components/TopBar";
+import { IconClose } from "../components/icons";
 import { useT, useLang } from "../lib/i18n";
 import { scaleSay } from "../lib/scaleLabels";
 import { glideBy, useScrollMemory } from "../lib/scroll";
@@ -280,23 +280,27 @@ export default function PlayScreen({
     </button>
   ) : null;
 
-  const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ").toUpperCase();
+  const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ");
 
-  // The calm header: back and close, one stone per question, "3 of 6", and
-  // what happened to the last answer.
-  const header = (
+  // The header, after Dateasy (Dave, Nov 2026): close in a circle, the part's
+  // name, and Skip where a question can be skipped; then "Question 3 of 7"
+  // over one segment per question, and what happened to the last answer.
+  const skipBtn = (label: string, onClick: () => void) => (
+    <button className="ptop-skip" type="button" onClick={onClick} disabled={finishing}>
+      {label}
+    </button>
+  );
+  const header = (skip?: ReactNode) => (
     <div className="phead">
-      <TopBar onExit={onExit} />
-      <div className="qstones" aria-hidden="true">
-        {qs.map((_, i) => (
-          <i
-            key={i}
-            className={i < idx ? "full" : i === idx ? (guessPhase ? "half cur" : "cur") : ""}
-          />
-        ))}
+      <div className="ptop">
+        <button className="pcircle" type="button" onClick={onExit} aria-label={t("Close and go home", "Fermer et revenir à l’accueil")}>
+          <IconClose size={20} />
+        </button>
+        <span className="ptop-title">{eyebrow}</span>
+        <span className="ptop-right">{skip}</span>
       </div>
-      <div className="qstatus">
-        <span>{t(`${idx + 1} of ${qs.length}`, `${idx + 1} sur ${qs.length}`)}</span>
+      <div className="qcount">
+        <span>{t(`Question ${idx + 1} of ${qs.length}`, `Question ${idx + 1} sur ${qs.length}`)}</span>
         <span className={`savestate ${saves.state}`} role="status">
           {saves.state === "saving"
             ? t("Saving…", "Enregistrement…")
@@ -306,6 +310,14 @@ export default function PlayScreen({
                 ? t("! Not saved", "! Non enregistré")
                 : ""}
         </span>
+      </div>
+      <div className="qstones" aria-hidden="true">
+        {qs.map((_, i) => (
+          <i
+            key={i}
+            className={i < idx ? "full" : i === idx ? (guessPhase ? "half cur" : "cur") : ""}
+          />
+        ))}
       </div>
       {saves.state === "failed" && (
         <div className="savefail" role="alert">
@@ -331,12 +343,12 @@ export default function PlayScreen({
     // (not on "When Judah makes time for me", which is now "When Sarah…").
     const sameWords = JSON.stringify([q.opts, q.lo, q.hi, q.steps]) === JSON.stringify([gq.opts, gq.lo, gq.hi, gq.steps]);
     return (
-      <section ref={screen} className="playscreen pfix">
-        {header}
+      <section ref={screen} className="playscreen pfix pfull">
+        {header(skipBtn(t("Skip", "Passer"), () => advance(idx)))}
         <div key={`${q.id}-guess`} className="qcard qframe pane-in guesscard">
           <div className="qhead">
             <div className="guesshead">
-              <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+              <span className="badge honey">&#10022; {t("Guess", "Devinez")}</span>
               <span>
                 {q.qGuess ? (
                   <>
@@ -364,9 +376,6 @@ export default function PlayScreen({
         <div className="playfoot">
           <div className="playfoot-row">
             {backBtn}
-            <button className="btn ghost" type="button" onClick={() => advance(idx)}>
-              {t("Skip", "Passer")}
-            </button>
             <button className="btn pill" type="button" disabled={pendGuess == null} onClick={lockGuess}>
               {t("That’s my guess →", "Je valide →")}
             </button>
@@ -377,11 +386,15 @@ export default function PlayScreen({
   }
 
   return (
-    <section ref={screen} className="playscreen pfix">
-      {header}
+    <section ref={screen} className="playscreen pfix pfull">
+      {header(
+        q.type === "open" && !q.notYet
+          ? // Open questions never score, so skipping costs nothing.
+            skipBtn(t("Skip for now", "Passer pour l’instant"), () => advance(idx))
+          : undefined,
+      )}
       <div key={q.id} className="qcard qframe glide-in">
         <div className="qhead">
-          <div className="eyebrow">{eyebrow}</div>
           <div className={qtextClass(q.q)}>{q.q}</div>
         </div>
         <div ref={body} className={bodyClass(below)}>
@@ -445,12 +458,6 @@ export default function PlayScreen({
             <button className="btn ghost" type="button" onClick={answerNotYet} disabled={finishing}>
               {t("Not yet", "Pas encore")}
             </button>
-          ) : q.type === "open" ? (
-            // Open questions never score, so skipping costs nothing; without
-            // this the only way past one was the ×, abandoning the part.
-            <button className="btn ghost" type="button" onClick={() => advance(idx)} disabled={finishing}>
-              {t("Skip for now", "Passer pour l’instant")}
-            </button>
           ) : null}
           <button
             className={finishing ? "btn busy" : "btn"}
@@ -508,7 +515,13 @@ function QuestionInput({
               aria-pressed={value === i}
               aria-label={`${i}: ${scaleSay(q, i, lang)}${m === i ? ` (${you})` : ""}`}
             >
-              {i}
+              {/* Five rings, deeper toward the top end; the chosen one fills
+                  and takes a tick. */}
+              {value === i && (
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
             </button>
           ))}
         </div>

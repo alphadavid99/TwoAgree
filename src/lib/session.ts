@@ -166,6 +166,12 @@ export function renameInSession(code: string, role: Role, name: string): Promise
   return set(ref(db, `sessions/${code}/members/${role}/name`), name);
 }
 
+// Your photo in the session follows your profile, so your partner sees it
+// (their phone can't read your profile). null takes it away.
+export function setPhotoInSession(code: string, role: Role, photo: string | null): Promise<void> {
+  return set(ref(db, `sessions/${code}/members/${role}/photo`), photo);
+}
+
 // Take an importance rating back off, so a cleared choice is really gone
 // rather than lingering from an earlier visit.
 export function clearImportance(code: string, slug: string, qid: string): Promise<void> {

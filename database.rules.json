@@ -59,6 +59,10 @@
             "name": {
               ".write": "auth != null && root.child('sessions/'+$code+'/members/'+$role+'/uid').val() === auth.uid",
               ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+            },
+            "photo": {
+              ".write": "auth != null && root.child('sessions/'+$code+'/members/'+$role+'/uid').val() === auth.uid",
+              ".validate": "newData.isString() && newData.val().beginsWith('data:image/jpeg;base64,') && newData.val().length <= 100000"
             }
           }
         },

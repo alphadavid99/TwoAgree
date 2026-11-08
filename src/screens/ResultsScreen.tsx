@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useState } from "react";
 import { revealedRows } from "../lib/results";
 import { other, type Role } from "../lib/scoring";
@@ -30,6 +31,7 @@ export default function ResultsScreen({
   code,
   onOpen,
   onBrowse,
+  actSlot,
 }: {
   session: Session;
   role: Role;
@@ -37,6 +39,8 @@ export default function ResultsScreen({
   onOpen?: (slug: string) => void;
   /** "See all" and "Start another conversation": the Conversations tab. */
   onBrowse?: () => void;
+  /** The shared header's button spot, left of the bell. */
+  actSlot?: HTMLElement | null;
 }) {
   const t = useT();
   const lang = useLang();
@@ -139,35 +143,25 @@ export default function ResultsScreen({
 
   return (
     <section>
-      {/* The same header as Home (feedback, Nov 2026): the two of you in a
-          chip, the bell top right (SessionApp), then the screen's title with
-          share on its line. */}
-      <header className="homehdr">
-        <span className="avchip">
-          <span className="avchip-stack">
-            <Avatar name={me.name} tone={me.tone} size={34} />
-            <Avatar name={them.name} tone={them.tone} size={34} />
-          </span>
-          <i>
-            {firstOf(myName)} &amp; {firstOf(partnerName)}
-          </i>
-        </span>
-      </header>
-      <div className="tg-titlerow">
-        <h1 className="greet serif">{t("Together", "Ensemble")}</h1>
-        <button
-          className="roundbtn tg-share"
-          type="button"
-          onClick={() => setSharing(true)}
-          aria-label={t("Share your card", "Partager votre carte")}
-        >
-          <IconShare size={20} />
-        </button>
-      </div>
+      {/* The chip and the bell are the shared header (TabHeader); share sits
+          beside the bell. */}
+      {(() => {
+        const share = (
+          <button
+            className="pcircle"
+            type="button"
+            onClick={() => setSharing(true)}
+            aria-label={t("Share your card", "Partager votre carte")}
+          >
+            <IconShare size={20} />
+          </button>
+        );
+        return actSlot ? createPortal(share, actSlot) : share;
+      })()}
+      <h1 className="pagetitle">{t("Together", "Ensemble")}</h1>
 
-      <div className="kcard-claret tg-score">
+      <div className="card tg-score">
         <ScoreRings
-          claret
           agree={overallPct}
           basis={basis}
           known={knownPct}

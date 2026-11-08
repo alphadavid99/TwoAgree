@@ -64,7 +64,7 @@ export function ProgressRing({
         textAnchor="middle"
         dominantBaseline="central"
         fontSize={Math.round(size * 0.2)}
-        fontWeight="700"
+        fontWeight="600"
         fill="var(--berry)"
         fontFamily="var(--font-ui)"
       >
@@ -137,7 +137,7 @@ export function PctRing({
         textAnchor="middle"
         dominantBaseline="central"
         fontSize={Math.round(size * 0.3)}
-        fontWeight="700"
+        fontWeight="600"
         letterSpacing="-0.5"
         fill={ink}
         fontFamily="var(--font-ui)"

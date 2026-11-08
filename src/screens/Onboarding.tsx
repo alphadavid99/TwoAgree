@@ -842,14 +842,14 @@ function OnbQuestions({
           style={{ marginTop: 12, borderColor: "var(--app-honey-line)" }}
         >
           <div className="qrow">
-            <div className="eyebrow">{t("YOUR GUESS", "VOTRE INTUITION")}</div>
-            <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+            <div className="eyebrow">{t("Your guess", "Votre intuition")}</div>
+            <span className="badge honey">&#10022; {t("Guess", "Devinez")}</span>
           </div>
           <div className="qtext">{q.q}</div>
           <div className="yousaid">
             <div>
               <div className="eyebrow">
-                {t("YOU SAID", "VOUS AVEZ DIT")}
+                {t("You said", "Vous avez dit")}
               </div>
               <div className="yousaid-val">{yourText}</div>
             </div>
@@ -883,7 +883,7 @@ function OnbQuestions({
         <Mark height={30} title="TwoAgree" colour="var(--berry)" />
       </div>
       {progress}
-      <p className="muted center" style={{ fontSize: 13, marginTop: 12 }}>{heading}</p>
+      <p className="helper muted center" style={{ marginTop: 12 }}>{heading}</p>
       <div key={q.id} className="qcard glide-in" style={{ marginTop: 12 }}>
         <div className="qtext">{q.q}</div>
         {input(pend, setPend)}
@@ -941,7 +941,7 @@ function RevealStep({
     return (
       <section className="pane-in">
         <div className="spin" />
-        <p className="muted center" style={{ fontSize: 14 }}>
+        <p className="helper muted center">
           {t("Bringing it together…", "On rassemble tout…")}
         </p>
       </section>

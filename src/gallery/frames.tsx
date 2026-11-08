@@ -3,6 +3,7 @@
 // SessionApp, Onboarding…) against a fixture database, then script the same
 // taps a person would make to reach the state — so what's reviewed is what
 // ships, not a redrawn imitation.
+import { Flux } from '../components/Flux'
 import type { ReactNode } from 'react'
 import App from '../App'
 import Onboarding from '../screens/Onboarding'
@@ -110,10 +111,13 @@ function inSession(o: AppOpts): FrameDef {
       seed?.(c)
     },
     steps: [...(tab ? ([{ wait: 150 }, { click: tab }] as Step[]) : []), ...(steps ?? [])],
-    bare: !openSlug,
+    // Bare either way: App brings its own phone frame, and the openSlug case
+    // builds one here (wrapping it twice set its top row lower).
+    bare: true,
     render: (c) =>
       openSlug ? (
         <div className="phone">
+          <Flux />
           <SessionApp code={c.code} user={c.user!} onLeave={() => {}} openSlug={openSlug} />
         </div>
       ) : (
@@ -227,7 +231,24 @@ const partnerFinishes = (slug: string) => (rt: FrameRuntime) => {
 const deckLabel = (slug: string) => new RegExp(DECKS[slug].name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
 // ---- Reveal ladder ------------------------------------------------------------
-const revealTier = (id: string, title: string, hit: number, note: string, firstEver = false, more: Step[] = []): FrameDef => {
+// A stand-in profile photo for the gallery: a soft portrait shape drawn on a
+// canvas (no real person), as the small JPEG the app stores.
+const fakePhoto = (hue: number): string => {
+  const cv = document.createElement('canvas')
+  cv.width = cv.height = 256
+  const g = cv.getContext('2d')!
+  const bg = g.createLinearGradient(0, 0, 256, 256)
+  bg.addColorStop(0, `hsl(${hue} 45% 78%)`)
+  bg.addColorStop(1, `hsl(${hue + 30} 40% 62%)`)
+  g.fillStyle = bg
+  g.fillRect(0, 0, 256, 256)
+  g.fillStyle = `hsl(${hue} 30% 38%)`
+  g.beginPath(); g.arc(128, 104, 46, 0, Math.PI * 2); g.fill()
+  g.beginPath(); g.ellipse(128, 262, 96, 92, 0, Math.PI, 0); g.fill()
+  return cv.toDataURL('image/jpeg', 0.82)
+}
+
+const revealTier = (id: string, title: string, hit: number, note: string, firstEver = false, more: Step[] = [], photos = false): FrameDef => {
   const tuned = tunedReveal('fun-icebreakers', hit)
   return {
     id, flow: 'reveal', title, note,
@@ -235,7 +256,8 @@ const revealTier = (id: string, title: string, hit: number, note: string, firstE
     steps: [{ wait: 3800 }, ...more],
     render: (c) => (
       <RevealScreen slug="fun-icebreakers" level={0} role="host" deck={tuned.deck} myName="Sarah"
-        partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}} />
+        partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}}
+        myPhoto={photos ? fakePhoto(330) : undefined} partnerPhoto={photos ? fakePhoto(30) : undefined} />
     ),
   }
 }
@@ -502,6 +524,7 @@ export const FRAMES: FrameDef[] = [
   revealTier('reveal-t4', 'Reveal: 100%, complete alignment', 100, 'Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line.'),
   revealTier('reveal-share', 'Share your score: the preview', 77, 'Names are off until switched on.', false, [{ click: /Share your score/ }, { wait: 600 }]),
   revealTier('reveal-share-names', 'Share your score: names on', 77, '', false, [{ click: /Share your score/ }, { wait: 300 }, { click: /Include our names/ }, { wait: 600 }]),
+  revealTier('reveal-photos', 'Reveal: with both of your photos', 77, 'Each circle shows that person’s photo when they have one.', false, [], true),
   revealTier('reveal-first', 'Reveal: the couple’s first ever', 77, 'Adds the first-reveal line', true),
   inSession({
     id: 'reveal-notyet', flow: 'reveal', title: 'A “Not yet” answer, shown and unscored',

@@ -93,8 +93,8 @@ const empty = {
 } as unknown as Session;
 
 describe("HomeScreen", () => {
-  it("renders both partners and the two headline numbers", () => {
-    render(
+  it("is just the cards, the conversation you're in among them, nothing under them", () => {
+    const { container } = render(
       <HomeScreen
         code="ABCD"
         session={session}
@@ -106,10 +106,11 @@ describe("HomeScreen", () => {
       />,
     );
     expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
-    // Between the two of you, label over value: both numbers and the count.
-    expect(screen.getByText("Between the two of you")).toBeTruthy();
-    expect(screen.getAllByText(/^\d+% agree( · \d+% known)?$/).length).toBeGreaterThan(0);
-    expect(screen.getByText(/^\d+ questions?/)).toBeTruthy();
+    // One card on top, the others waiting (inert) in the deck.
+    expect(container.querySelector(".hs-card.top .hkind")).toBeTruthy();
+    expect(container.querySelectorAll(".hs-card .hhero").length).toBeGreaterThan(0);
+    // The old rows under the cards are gone.
+    expect(screen.queryByText("Between the two of you")).toBeNull();
   });
 
   it("has one honey button: the next step (item 10)", () => {

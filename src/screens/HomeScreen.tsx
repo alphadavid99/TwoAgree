@@ -9,9 +9,8 @@ import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
-import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
-import { PATH_STEPS } from "../data/path.generated";
-import { PathScene } from "../components/PathScene";
+import { SUBJECTS } from "../lib/subjects";
+import { toneFor } from "../components/Avatar";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { talkNext } from "../lib/talkNext";
 import { namesFor } from "../lib/who";
@@ -28,7 +27,6 @@ export default function HomeScreen({
   onTogether,
   pending = [],
   onOpenReveal,
-  onPath,
 }: {
   code: string;
   session: Session;
@@ -75,21 +73,15 @@ export default function HomeScreen({
         ? t("Good afternoon,", "Bon après-midi,")
         : t("Good evening,", "Bonsoir,");
 
-  // The scores card shares Together's maths, so the numbers agree.
-  const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
-  // The cards on Home: the conversation you're in on top, then the others
-  // you've started, then the rest, so a swipe brings up what's next.
-  const stack = heroStack(slug, session.decks, role);
+  // Each conversation's agree score, for its card's pill.
+  const { rows } = revealedRows(session.decks, role);
+  const pctOf = (s: string) => rows.find((r) => r.slug === s)?.pct ?? null;
   const talk = talkNext(session.decks, role).next[0];
   const names = namesFor(session.members, role, myName, partnerName);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
-
-  // Where the couple stands on the Path, for the hero card below.
-  const pathCur = currentIndex(session);
-  const pathStep = PATH_STEPS[pathCur];
-  const atLookout = pathCur >= PATH_STEPS.length - 1;
-  const lamps = orderedSteps(session).filter((s) => lampLit(session, s.index)).length;
+  const myPhoto = session.members?.[role]?.photo;
+  const partnerPhoto = partner?.photo;
 
   const [inviteMsg, setInviteMsg] = useState("");
   const [inviteBusy, setInviteBusy] = useState(false);
@@ -152,8 +144,154 @@ export default function HomeScreen({
     }
   };
 
-  // The Path card's scene: the step you're on, its landmark, the lamps lit.
-  const sceneKey = atLookout ? "lookout" : (pathStep?.key ?? "trailhead");
+
+  // The cards, in order. Each appears only when it applies.
+  const cards: { key: string; node: ReactNode }[] = [];
+  const shown = new Set<string>();
+  const card = (key: string, node: ReactNode, s?: string) => {
+    cards.push({ key, node });
+    if (s) shown.add(s);
+  };
+  // Before your partner joins: inviting them is the one thing that matters.
+  if (!joined) {
+    card(
+      "invite",
+      <div className="card hhero">
+        <span className="hkind">{t("Invite your partner", "Invitez votre partenaire")}</span>
+        <span className="hero-body">
+          <h2 className="hero-nm hero-nm-sm">{t("Do this together", "Faites-le à deux")}</h2>
+          <span className="hero-sub">
+            {t("Share your code so they can join. Your answers stay private until you've both finished a part.", "Partagez votre code pour qu’il ou elle vous rejoigne. Vos réponses restent privées jusqu’à ce que vous ayez tous deux terminé une partie.")}
+          </span>
+          <button className={`codechip${copied ? " copied" : ""}`} type="button" onClick={share} aria-label={t(`Copy the code ${code}`, `Copier le code ${code}`)}>
+            {copied ? t("Copied ✓", "Copié ✓") : code}
+          </button>
+          <button className="btn pill hero-go" type="button" onClick={sendInviteLink} disabled={inviteBusy}>
+            {inviteBusy ? t("Creating link…", "Création du lien…") : t("Send an invite link", "Envoyer un lien d’invitation")}
+          </button>
+          {inviteMsg ? (
+            <span className="hero-them" role="status">{inviteMsg}</span>
+          ) : waiting > 0 ? (
+            <span className="hero-them">
+              {t(
+                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved, waiting for your partner`,
+                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"}, en attente de votre partenaire`,
+              )}
+            </span>
+          ) : null}
+        </span>
+      </div>,
+    );
+  }
+  // A reveal waiting for you both.
+  const ready = pending[0];
+  if (ready && onOpenReveal) {
+    card(
+      `ready:${ready.slug}:${ready.level}`,
+      <div className="card hhero hready">
+        <span className="hkind warm">{t("Ready to open", "Prêt à ouvrir")}</span>
+        <span className="hero-body">
+          <span className="hready-pair" aria-hidden="true">
+            <span className={`revdisc ${toneFor(role)}`}>{myPhoto ? <img src={myPhoto} alt="" /> : firstName(myName)[0]}</span>
+            <span className={`revdisc ${toneFor(other(role))}`}>{partnerPhoto ? <img src={partnerPhoto} alt="" /> : firstName(partnerName)[0]}</span>
+          </span>
+          <h2 className="hero-nm">{deckName(ready.slug, lang)}</h2>
+          <span className="hero-sub">
+            {nLevels(ready.slug) > 1 ? `${partName(ready.slug, ready.level)} · ` : ""}
+            {t("you’ve both finished", "vous avez tous deux terminé")}
+          </span>
+          <button className="btn pill hero-go" type="button" onClick={() => onOpenReveal(ready.slug, ready.level)}>
+            {t("Open the reveal →", "Ouvrir la révélation →")}
+          </button>
+        </span>
+      </div>,
+    );
+  }
+  // Your partner finished a part you haven't.
+  const turn = joined ? yourTurn(slug, session.decks, role) : null;
+  if (turn) {
+    card(
+      `turn:${turn.slug}`,
+      <div className="card hhero">
+        <span className="hkind warm">{t("Your turn", "À vous")}</span>
+        <span className="hero-body">
+          <span className="hready-pair one" aria-hidden="true">
+            <span className={`revdisc ${toneFor(other(role))}`}>{partnerPhoto ? <img src={partnerPhoto} alt="" /> : firstName(partnerName)[0]}</span>
+          </span>
+          <h2 className="hero-nm hero-nm-sm">
+            {t(`${partnerName} finished ${deckName(turn.slug, lang)}`, `${partnerName} a terminé ${deckName(turn.slug, lang)}`)}
+          </h2>
+          <span className="hero-sub">
+            {nLevels(turn.slug) > 1 ? `${partName(turn.slug, turn.level)} · ` : ""}
+            {t("answer it too and see where you landed", "répondez aussi et voyez où vous en êtes")}
+          </span>
+          <button className="btn pill hero-go" type="button" onClick={() => onPlay(turn.slug)}>
+            {nLevels(turn.slug) > 1 ? t(`Answer Part ${turn.level + 1} →`, `Répondre à la partie ${turn.level + 1} →`) : t("Answer it →", "Répondre →")}
+          </button>
+        </span>
+      </div>,
+      turn.slug,
+    );
+  }
+  // The conversation you're in.
+  if (!shown.has(slug)) {
+    card(
+      `cont:${slug}`,
+      <HeroCard kind={t("Continue", "Continuer")} slug={slug} deck={session.decks?.[slug]} role={role} joined={joined} partnerName={partnerName} pct={pctOf(slug)} onPlay={onPlay} onBrowse={onBrowse} />,
+      slug,
+    );
+  }
+  // Somewhere you saw it differently, ready to talk about.
+  if (talk) {
+    card(
+      `talk:${talk.q.id}`,
+      <div className="card hhero">
+        <span className="hkind">{t("Talk about this", "À aborder")}</span>
+        <span className="hero-body">
+          <span className="hero-up">
+            {t(`From ${deckName(talk.slug, lang)} · you saw it differently`, `De ${deckName(talk.slug, lang)} · vous l’avez vu différemment`)}
+          </span>
+          <h2 className="hero-q">{localizeQuestion(talk.q, lang, names).q}</h2>
+          <button className="btn pill hero-go" type="button" onClick={onTogether}>
+            {t("Talk it through →", "En parler →")}
+          </button>
+        </span>
+      </div>,
+    );
+  }
+  // What to do next, picked from what you've just done.
+  const rec = recommend(rows, session.decks, role, shown);
+  if (rec) {
+    card(
+      `next:${rec.slug}`,
+      <HeroCard
+        kind={t("For you two next", "Pour vous deux, ensuite")}
+        reason={
+          rec.from
+            ? t(`Because ${deckName(rec.from.slug, lang)} opened at ${rec.from.pct}%`, `Parce que ${deckName(rec.from.slug, lang)} s’est ouvert à ${rec.from.pct} %`)
+            : t("A good next one for you two", "Une bonne suite pour vous deux")
+        }
+        slug={rec.slug}
+        deck={session.decks?.[rec.slug]}
+        role={role}
+        joined={joined}
+        partnerName={partnerName}
+        pct={null}
+        onPlay={onPlay}
+        onBrowse={onBrowse}
+      />,
+      rec.slug,
+    );
+  }
+  // Then the other conversations you've started, up to six cards in all.
+  for (const s of startedElsewhere(session.decks, role, shown)) {
+    if (cards.length >= 6) break;
+    card(
+      `cont:${s}`,
+      <HeroCard kind={t("Continue", "Continuer")} slug={s} deck={session.decks?.[s]} role={role} joined={joined} partnerName={partnerName} pct={pctOf(s)} onPlay={onPlay} onBrowse={onBrowse} />,
+      s,
+    );
+  }
 
   return (
     <section>
@@ -166,142 +304,51 @@ export default function HomeScreen({
         </div>
       )}
 
-      {/* Your next step, as one big card with the others stacked behind it
-          (Dave, Nov 2026, after Dateasy): swipe for another conversation. */}
-      <HeroStack
-        slugs={stack}
-        render={(s) => (
-          <HeroCard
-            slug={s}
-            deck={session.decks?.[s]}
-            role={role}
-            joined={joined}
-            partnerName={partnerName}
-            pct={rows.find((r) => r.slug === s)?.pct ?? null}
-            onPlay={onPlay}
-            onBrowse={onBrowse}
-          />
-        )}
-      />
-
-      {/* The reveal that's waiting, before anything else below. */}
-      {pending.length > 0 && onOpenReveal && (
-        <button
-          className="readycard"
-          type="button"
-          onClick={() => onOpenReveal(pending[0].slug, pending[0].level)}
-        >
-          <span className="readycard-top">
-            <span className="readyseal" aria-hidden="true">&#10022;</span>
-            <span>
-              <span className="readycard-eyebrow">
-                {t("Ready to open", "Prêt à ouvrir")}
-              </span>
-              <span className="readycard-nm">
-                {deckName(pending[0].slug, lang)}
-                {nLevels(pending[0].slug) > 1 && ` · ${partName(pending[0].slug, pending[0].level)}`}
-              </span>
-            </span>
-          </span>
-          <span className="readycard-sub">
-            {t("You’ve both finished. Open it whenever suits you both.", "Vous avez tous deux terminé. Ouvrez-la quand cela vous convient.")}
-          </span>
-          <span className="readycard-cta">
-            {t("Open the reveal →", "Ouvrir la révélation →")}
-          </span>
-        </button>
-      )}
-
-      {/* Label over value: where you stand, and the next thing to talk about.
-          Both open Together, where the full scores and the list live. */}
-      {rows.length > 0 && (
-        <button className="card irow" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
-          <span className="irow-txt">
-            <span className="irow-lb">{t("Between the two of you", "Entre vous deux")}</span>
-            <span className="irow-val">
-              {[
-                overallPct == null ? t("No scores yet", "Pas encore de scores") : t(`${overallPct}% agree`, `${overallPct} % d’accord`),
-                knownPct != null ? t(`${knownPct}% known`, `${knownPct} % connus`) : null,
-              ]
-                .filter(Boolean)
-                .join(" · ")}
-            </span>
-            <span className="irow-meta">
-              {t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)}
-              {made ? t(` · ${right} of ${made} guesses right`, ` · ${right} intuitions justes sur ${made}`) : ""}
-            </span>
-          </span>
-          <span className="irow-go" aria-hidden="true">&#8250;</span>
-        </button>
-      )}
-      {talk && (
-        <button className="card irow" type="button" onClick={onTogether}>
-          <span className="irow-txt">
-            <span className="irow-lb">{t("Talk about next", "À aborder ensuite")}</span>
-            <span className="irow-val">{localizeQuestion(talk.q, lang, names).q}</span>
-          </span>
-          <span className="irow-go" aria-hidden="true">&#8250;</span>
-        </button>
-      )}
-
-      {/* Before your partner joins: one card, the code and one link. */}
-      {!joined && (
-        <div className="card hinvite">
-          <h2 className="ktitle">{t("Invite your partner", "Invitez votre partenaire")}</h2>
-          <p className="helper">
-            {t("Share your code so they can join. Your answers stay private until you've both finished a part.", "Partagez votre code pour qu’il ou elle vous rejoigne. Vos réponses restent privées jusqu’à ce que vous ayez tous deux terminé une partie.")}
-          </p>
-          <button className={`codechip${copied ? " copied" : ""}`} type="button" onClick={share} aria-label={t(`Copy the code ${code}`, `Copier le code ${code}`)}>
-            {copied ? t("Copied ✓", "Copié ✓") : code}
-          </button>
-          <button className="btn out" type="button" onClick={sendInviteLink} disabled={inviteBusy}>
-            {inviteBusy ? t("Creating link…", "Création du lien…") : t("Send an invite link", "Envoyer un lien d’invitation")}
-          </button>
-          {inviteMsg && <p className="helper" role="status">{inviteMsg}</p>}
-          {waiting > 0 && (
-            <p className="helper">
-              {t(
-                `${waiting} ${waiting === 1 ? "answer" : "answers"} saved, waiting for your partner`,
-                `${waiting} réponse${waiting === 1 ? "" : "s"} enregistrée${waiting === 1 ? "" : "s"}, en attente de votre partenaire`,
-              )}
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* The Path: its scene, the road leading to this step's landmark. Its
-          button is white: Continue above is the screen's one honey action. */}
-      {onPath && pathReady(session) && (
-        <div className="hpath">
-          <PathScene
-            stepKey={sceneKey}
-            lit={lamps}
-            className="hpath-scene"
-            label={atLookout ? t("The Lookout", "Le Belvédère") : t(`Step ${pathCur + 1}, ${pathStep?.name ?? ""}`, `Étape ${pathCur + 1}, ${pathStep?.name ?? ""}`)}
-          />
-          <span className="hpath-txt">
-            <span className="eyebrow">{t("The Path", "Le Chemin")}</span>
-            <span className="hpath-nm">
-              {atLookout
-                ? t("The Lookout", "Le Belvédère")
-                : t(`Step ${pathCur + 1} · ${pathStep?.name ?? ""}`, `Étape ${pathCur + 1} · ${pathStep?.name ?? ""}`)}
-            </span>
-          </span>
-          <button className="btn out hpath-go" type="button" onClick={onPath}>
-            {t("Continue the Path", "Continuer le Chemin")}
-          </button>
-        </div>
-      )}
+      {/* Home is just the cards (Dave, Nov 2026): one for each thing worth
+          doing now, the most useful first, nothing under them. Swipe for
+          the next. */}
+      <HeroStack slugs={cards.map((c) => c.key)} render={(k) => cards.find((c) => c.key === k)?.node ?? null} />
     </section>
   );
 }
 
-// The conversation you're in, then the others you've started and not
-// finished, then the ones not yet begun; five at most.
-function heroStack(slug: string, decks: Session["decks"], role: Role): string[] {
-  const begun = (s: string) => !!decks?.[s]?.answers && Object.values(decks[s]?.answers ?? {}).some((a) => a?.[role] != null);
-  const open = ORDER.filter((s) => s !== slug && DECKS[s] && !catComplete(s, decks?.[s], role));
-  return [slug, ...open.filter(begun), ...open.filter((s) => !begun(s))].slice(0, 5);
+const begun = (decks: Session["decks"], s: string, role: Role) =>
+  Object.values(decks?.[s]?.answers ?? {}).some((a) => a?.[role] != null);
+
+// A part your partner has finished and you haven't: the one you're in first.
+function yourTurn(slug: string, decks: Session["decks"], role: Role): { slug: string; level: number } | null {
+  for (const s of [slug, ...ORDER.filter((x) => x !== slug)]) {
+    if (!DECKS[s]) continue;
+    for (let l = 0; l < nLevels(s); l++) {
+      if (levelDone(decks?.[s], l, other(role)) && !levelDone(decks?.[s], l, role)) return { slug: s, level: l };
+    }
+  }
+  return null;
+}
+
+// A good next conversation: one you haven't begun in the same subject as the
+// last one you both opened (lowest score first, where there's most to talk
+// about); otherwise the first you haven't begun.
+function recommend(
+  rows: { slug: string; pct: number | null }[],
+  decks: Session["decks"],
+  role: Role,
+  shown: Set<string>,
+): { slug: string; from: { slug: string; pct: number } | null } | null {
+  const fresh = (s: string) => DECKS[s] && !shown.has(s) && !begun(decks, s, role);
+  const opened = rows.filter((r) => r.pct != null).sort((a, b) => (a.pct ?? 0) - (b.pct ?? 0));
+  for (const r of opened) {
+    const group = SUBJECTS.find((g) => g.slugs.includes(r.slug));
+    const pick = group?.slugs.find(fresh);
+    if (pick) return { slug: pick, from: { slug: r.slug, pct: r.pct as number } };
+  }
+  const any = ORDER.find(fresh);
+  return any ? { slug: any, from: null } : null;
+}
+
+// Conversations you've started and not finished, not already on a card.
+function startedElsewhere(decks: Session["decks"], role: Role, shown: Set<string>): string[] {
+  return ORDER.filter((s) => DECKS[s] && !shown.has(s) && begun(decks, s, role) && !catComplete(s, decks?.[s], role));
 }
 
 // A real deck (Dave, Nov 2026). The card on top; the next one waiting
@@ -407,6 +454,8 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
 }
 
 function HeroCard({
+  kind,
+  reason,
   slug,
   deck,
   role,
@@ -416,6 +465,10 @@ function HeroCard({
   onPlay,
   onBrowse,
 }: {
+  /** What this card is for, as a small pill top left. */
+  kind: string;
+  /** Why it's suggested, in place of "Up next". */
+  reason?: string;
   slug: string;
   deck: DeckData | undefined;
   role: Role;
@@ -447,6 +500,7 @@ function HeroCard({
         : t("Start answering →", "Commencer à répondre →");
   return (
     <div className="card hhero">
+      <span className="hkind">{kind}</span>
       {pct != null && (
         <span className="hero-pill">
           <span aria-hidden="true">&#9825;</span> {t(`${pct}% agree`, `${pct} % d’accord`)}
@@ -454,11 +508,11 @@ function HeroCard({
       )}
       <span className="hero-body">
         <span className="hero-up">
-          {allDone
+          {reason ?? (allDone
             ? t("All parts revealed", "Toutes les parties révélées")
             : L > 1
               ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
-              : t("Up next", "À suivre")}
+              : t("Up next", "À suivre"))}
         </span>
         <h2 className="hero-nm">{deckName(slug, lang)}</h2>
         {!allDone && (

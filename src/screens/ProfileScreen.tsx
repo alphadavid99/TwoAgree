@@ -114,7 +114,7 @@ export default function ProfileScreen({
 
   return (
     <section>
-      <h1 className="h1" style={{ margin: "20px 2px 14px" }}>
+      <h1 className="pagetitle">
         {t("You", "Vous")}
       </h1>
 

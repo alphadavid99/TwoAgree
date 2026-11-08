@@ -3,6 +3,7 @@
 // SessionApp, Onboarding…) against a fixture database, then script the same
 // taps a person would make to reach the state — so what's reviewed is what
 // ships, not a redrawn imitation.
+import { Flux } from '../components/Flux'
 import type { ReactNode } from 'react'
 import App from '../App'
 import Onboarding from '../screens/Onboarding'
@@ -110,10 +111,13 @@ function inSession(o: AppOpts): FrameDef {
       seed?.(c)
     },
     steps: [...(tab ? ([{ wait: 150 }, { click: tab }] as Step[]) : []), ...(steps ?? [])],
-    bare: !openSlug,
+    // Bare either way: App brings its own phone frame, and the openSlug case
+    // builds one here (wrapping it twice set its top row lower).
+    bare: true,
     render: (c) =>
       openSlug ? (
         <div className="phone">
+          <Flux />
           <SessionApp code={c.code} user={c.user!} onLeave={() => {}} openSlug={openSlug} />
         </div>
       ) : (

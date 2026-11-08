@@ -11,7 +11,6 @@ import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
 import { PATH_STEPS } from "../data/path.generated";
-import { Avatar, toneFor } from "../components/Avatar";
 import { PathScene } from "../components/PathScene";
 import { deckName, localizeQuestion } from "../lib/questions.fr";
 import { talkNext } from "../lib/talkNext";
@@ -158,27 +157,7 @@ export default function HomeScreen({
 
   return (
     <section>
-      <div className="homehdr">
-        <span className={`avchip${justJoined ? " joinnow" : ""}`}>
-          <span className="avchip-stack">
-            <Avatar name={myName} tone={toneFor(role)} size={34} />
-            {joined ? (
-              <span className="joinpop">
-                <Avatar name={partnerName} tone={toneFor(other(role))} size={34} />
-              </span>
-            ) : (
-              <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34 }}>
-                ?
-              </span>
-            )}
-          </span>
-          <i>
-            {myName} &amp; {joined ? partnerName : "…"}
-          </i>
-        </span>
-      </div>
-
-      <h1 className="greet serif">
+      <h1 className="pagetitle">
         {greeting} {myName}
       </h1>
       {justJoined && (

@@ -33,6 +33,7 @@ import PartPicker from "./PartPicker";
 import RevealScreen from "./RevealScreen";
 import PathScreen, { PathFlow } from "./PathScreen";
 import { TopBar } from "../components/TopBar";
+import { TabHeader } from "../components/TabHeader";
 import { Loading } from "../components/Loading";
 import { Mark } from "../brand/Mark";
 import { Avatar, toneFor } from "../components/Avatar";
@@ -211,6 +212,8 @@ function SessionScreens({
     if (myInvite.from === role && myInvite.status === "accepted") setFlow("play");
   }, [flow, myInvite, role]);
   const [linkCopied, setLinkCopied] = useState(false);
+  // The shared header's spot for a screen's own button (search, share).
+  const [actSlot, setActSlot] = useState<HTMLSpanElement | null>(null);
 
   // Every screen opens at the top. Coming back out of a conversation returns
   // the tab to where you left it, like closing a card; switching tabs starts
@@ -775,16 +778,16 @@ function SessionScreens({
     return (
       <>
         <div className="tabwrap">
-          {/* Home and Together wear their own header (the avatar chip). The
-              other tabs are full screen with no mark (Dave, Nov 2026): Talk
-              keeps a row for the bell above its big title. */}
-          {tab === "decks" && <div className="bellrow" aria-hidden="true" />}
-          {/* For you, top right on every tab but You. */}
-          {tab !== "profile" && (
-            <div className="fy-bellslot">
-              <ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />
-            </div>
-          )}
+          {/* One header on every tab: the two of you, then the screen's own
+              button and the bell, always in the same place. */}
+          <TabHeader
+            role={role}
+            myName={firstWord(myName)}
+            partnerName={firstWord(partnerName)}
+            joined={!!session.members?.[other(role)]}
+            slotRef={setActSlot}
+            bell={<ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />}
+          />
           {/* keyed per tab so each pane rises in on switch */}
           <div key={tab} className="pane-in">
             {tab === "home" && (
@@ -803,6 +806,7 @@ function SessionScreens({
             )}
             {tab === "decks" && (
               <DecksScreen
+                actSlot={actSlot}
                 session={session}
                 role={role}
                 onPlay={openDeck}
@@ -834,6 +838,7 @@ function SessionScreens({
             )}
             {tab === "results" && (
               <ResultsScreen
+                actSlot={actSlot}
                 session={session}
                 role={role}
                 code={code}
@@ -869,4 +874,9 @@ function SessionScreens({
       {sheets}
     </>
   );
+}
+
+// Headers speak in first names: full names stretch the chip.
+function firstWord(n: string): string {
+  return /^(your partner|votre partenaire)$/i.test(n.trim()) ? n.trim() : n.trim().split(/\s+/)[0] || n;
 }

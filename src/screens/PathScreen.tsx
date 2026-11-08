@@ -17,7 +17,6 @@ import { INTAKE, VERSES, type IntakeQuestion } from "../data/path.generated";
 import { writeIntake } from "../lib/session";
 import { readIntakeDraft, writeIntakeDraft, clearIntakeDraft } from "../lib/local";
 import { generatePath } from "../lib/functions";
-import { Mark } from "../brand/Mark";
 import { ShareCard } from "./CoreScore";
 import { shareTopic } from "../lib/shareTopic";
 import { useLang, useT } from "../lib/i18n";
@@ -231,12 +230,8 @@ export function PathIntro({
     // without scrolling (min-height fills the tab area; the CTA sits at the
     // bottom via margin-top:auto).
     <section className="screen-enter path-intro">
-      <div className="pi-head">
-        <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-      </div>
-
       <div className="pi-top">
-        <h1 className="pi-title">{t("The Path", "Le Chemin")}</h1>
+        <h1 className="pi-title pagetitle">{t("The Path", "Le Chemin")}</h1>
         <p className="pi-verse">
           {t("“Can two walk together, unless they are agreed?”", "« Deux marchent-ils ensemble sans s'être accordés ? »")}
         </p>

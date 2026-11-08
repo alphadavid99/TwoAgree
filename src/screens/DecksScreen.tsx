@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName, deckDepthWord } from "../lib/leveling";
 import { catComplete, curLevel, doneInLevel, levelComplete } from "../lib/progress";
@@ -19,6 +20,7 @@ export default function DecksScreen({
   onPlay,
   current,
   top,
+  actSlot,
 }: {
   session: Session;
   role: Role;
@@ -27,6 +29,8 @@ export default function DecksScreen({
   current?: string;
   /** For you: invites and your partner's progress, above everything else. */
   top?: ReactNode;
+  /** The shared header's button spot, left of the bell. */
+  actSlot?: HTMLElement | null;
 }) {
   const t = useT();
   const lang = useLang();
@@ -45,26 +49,28 @@ export default function DecksScreen({
   const q = norm(query);
   const matches = (slug: string) => !q || norm(deckName(slug, lang)).includes(q) || norm(DECKS[slug].name).includes(q);
 
+  const searchBtn = (
+    <button
+      className="pcircle"
+      type="button"
+      aria-expanded={searching}
+      aria-label={t("Search conversations", "Rechercher une conversation")}
+      onClick={() => {
+        if (searching) setQuery("");
+        setSearching(!searching);
+      }}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+    </button>
+  );
+
   return (
     <section>
-      <div className="cv-titlerow">
-        <h1 className="cv-title">{t("Conversations", "Conversations")}</h1>
-        <button
-          className="pcircle"
-          type="button"
-          aria-expanded={searching}
-          aria-label={t("Search conversations", "Rechercher une conversation")}
-          onClick={() => {
-            if (searching) setQuery("");
-            setSearching(!searching);
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-3.5-3.5" />
-          </svg>
-        </button>
-      </div>
+      {actSlot ? createPortal(searchBtn, actSlot) : searchBtn}
+      <h1 className="pagetitle">{t("Conversations", "Conversations")}</h1>
       <p className="helper cv-lede">
         {t("Short parts, answered on your own, opened together.", "De courtes parties, répondues chacun de son côté, ouvertes ensemble.")}
       </p>

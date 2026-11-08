@@ -10,9 +10,6 @@ import { DeckIcon } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
 
-// Each topic's place in the bank, so neighbouring cards take different washes.
-const DECK_INDEX: Record<string, number> = Object.fromEntries(Object.keys(DECKS).map((k, i) => [k, i]));
-
 // Conversations (design refresh, item 11): "Pick up where you left off" first,
 // then every topic grouped by subject. Each row talks in parts, with a small
 // bar per part, never question counts or time estimates.
@@ -176,10 +173,10 @@ function DeckRow({
     : mine > 0
       ? t(`Part ${lvl + 1} · ${mine} of ${total}`, `Partie ${lvl + 1} · ${mine} sur ${total}`)
       : t(`${L} part${L === 1 ? "" : "s"}`, `${L} partie${L === 1 ? "" : "s"}`);
-  // A tall card (after Dateasy's grid): its own wash, the topic's icon large,
+  // A tall glass card (after Dateasy's grid): the topic's icon large,
   // the agree score as a pill once a part is open, the name and parts below.
   return (
-    <button type="button" className={`cv-row cv-tile wash${(DECK_INDEX[slug] ?? 0) % 4}`} onClick={() => onPlay(slug)}>
+    <button type="button" className="cv-row cv-tile" onClick={() => onPlay(slug)}>
       <span className="cv-tile-art" aria-hidden="true">
         <DeckIcon icon={d.icon} size={40} />
       </span>

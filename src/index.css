@@ -7975,23 +7975,10 @@ html .errpanel b {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 380px;
   padding: 16px 18px 12px;
   margin-bottom: 12px;
   text-align: center;
   font-family: var(--font-ui);
-}
-.hero-art {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(60% 42% at 28% 26%, var(--flux-rose), transparent 70%),
-    radial-gradient(55% 40% at 76% 34%, var(--flux-peach), transparent 70%),
-    radial-gradient(70% 36% at 50% 52%, var(--flux-lilac), transparent 72%),
-    linear-gradient(180deg, var(--flux-wash-1), var(--flux-wash-2) 40%, transparent 70%);
-  -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 78%);
-  mask-image: linear-gradient(180deg, #000 45%, transparent 78%);
 }
 .hero-segs {
   display: flex;
@@ -8011,8 +7998,8 @@ html .errpanel b {
   border-radius: 2px;
 }
 .hero-pill {
-  align-self: flex-end;
-  margin-top: 14px;
+  align-self: center;
+  margin-top: 18px;
   padding: 6px 12px;
   border-radius: 999px;
   background: var(--glass-strong);
@@ -8024,8 +8011,8 @@ html .errpanel b {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: auto;
-  padding-top: 48px;
+  margin-top: 4px;
+  padding-top: 12px;
 }
 html .hero-up,
 html .hero-them,
@@ -8418,9 +8405,11 @@ html .cv-title {
   flex-direction: column;
   align-items: stretch;
   gap: 0;
-  min-height: 228px;
+  min-height: 200px;
   margin: 0;
   padding: 0;
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
   border: 1px solid var(--glass-line);
   border-radius: 22px;
   background: var(--glass);
@@ -8435,21 +8424,13 @@ html .cv-title {
   display: grid;
   place-items: center;
   flex: 1 1 auto;
-  min-height: 120px;
+  min-height: 104px;
   color: var(--app-mauve-deep);
 }
-.cv-tile.wash0 .cv-tile-art {
-  background: radial-gradient(90% 80% at 30% 20%, var(--flux-rose), transparent 70%), linear-gradient(160deg, var(--flux-wash-1), var(--flux-cream));
-}
-.cv-tile.wash1 .cv-tile-art {
-  background: radial-gradient(90% 80% at 70% 25%, var(--flux-peach), transparent 70%), linear-gradient(160deg, var(--flux-wash-2), var(--flux-wash-3));
-}
-.cv-tile.wash2 .cv-tile-art {
-  background: radial-gradient(90% 80% at 40% 30%, var(--flux-lilac), transparent 70%), linear-gradient(160deg, var(--flux-wash-3), var(--flux-wash-1));
-}
-.cv-tile.wash3 .cv-tile-art {
-  background: radial-gradient(90% 80% at 60% 20%, var(--flux-cream), transparent 70%), linear-gradient(160deg, var(--flux-peach), var(--flux-wash-3));
-}
+
+
+
+
 .cv-tile-art svg {
   width: 44px;
   height: 44px;
@@ -8460,15 +8441,15 @@ html .cv-title {
   right: 10px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--glass-strong);
+  background: var(--app-mauve-tint);
   font-size: var(--t-small);
   color: var(--ta-ink);
 }
 .cv-tile .cv-row-main {
   flex: none;
   gap: 2px;
-  padding: 12px 14px 14px;
-  background: var(--glass-strong);
+  padding: 4px 14px 14px;
+  background: none;
 }
 .cv-tile .cv-row-nm {
   display: block;

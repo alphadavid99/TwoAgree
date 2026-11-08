@@ -219,7 +219,6 @@ export default function HomeScreen({
           the parts as segments, the agree pill, the conversation's name, one
           Start pill and one quiet link. */}
       <div className="card hhero">
-        <span className="hero-art" aria-hidden="true" />
         <span className="hero-segs" aria-hidden="true">
           {segs.map((f, i) => (
             <i key={i}>

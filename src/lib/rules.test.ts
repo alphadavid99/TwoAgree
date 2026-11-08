@@ -302,6 +302,36 @@ describe("sessions/{code}/members/{role}/name — your name follows your profile
   });
 });
 
+describe("sessions/{code}/members/{role}/photo — your photo, shared with your partner", () => {
+  const seedPair = async () =>
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await set(ref(ctx.database(), `sessions/${CODE}`), {
+        created: 1,
+        members: { host: { name: "Sarah", uid: HOST }, guest: { name: "Judah", uid: GUEST } },
+        uids: { [HOST]: true, [GUEST]: true },
+      });
+    });
+  const photoRef = (uid: string, role: string) => ref(env.authenticatedContext(uid).database(), `sessions/${CODE}/members/${role}/photo`);
+  const JPEG = "data:image/jpeg;base64," + "A".repeat(2000);
+
+  it("lets you set, change and remove your own photo, and your partner see it", async () => {
+    await seedPair();
+    await assertSucceeds(set(photoRef(GUEST, "guest"), JPEG));
+    await assertSucceeds(get(photoRef(HOST, "guest")));
+    await assertSucceeds(set(photoRef(GUEST, "guest"), null));
+  });
+
+  it("forbids setting your partner's photo, a stranger reading or writing one, or anything but a small JPEG", async () => {
+    await seedPair();
+    await assertFails(set(photoRef(HOST, "guest"), JPEG));
+    await assertFails(set(photoRef(STRANGER, "guest"), JPEG));
+    await assertFails(get(photoRef(STRANGER, "guest")));
+    await assertFails(set(photoRef(GUEST, "guest"), "https://example.com/me.jpg"));
+    await assertFails(set(photoRef(GUEST, "guest"), "data:image/svg+xml;base64,PHN2Zz4="));
+    await assertFails(set(photoRef(GUEST, "guest"), "data:image/jpeg;base64," + "A".repeat(100000)));
+  });
+});
+
 describe("invites — server-only", () => {
   it("denies all client access", async () => {
     const db = env.authenticatedContext(HOST).database();

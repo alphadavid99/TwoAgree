@@ -59,10 +59,11 @@ describe("You", () => {
     expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
   });
 
-  it("Edit profile never claims Judah sees the photo or line", async () => {
+  it("Edit profile says Judah sees the photo, but never the line", async () => {
     show();
     await userEvent.click(screen.getByRole("button", { name: "Edit" }));
     expect(screen.getByText(/Judah sees this name too/)).toBeTruthy();
-    expect(screen.getByText(/Judah doesn’t see them/)).toBeTruthy();
+    expect(screen.getByText(/Judah sees your photo in your session/)).toBeTruthy();
+    expect(screen.getByText(/Judah doesn’t see it/)).toBeTruthy();
   });
 });

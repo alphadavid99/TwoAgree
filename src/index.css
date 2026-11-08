@@ -8838,59 +8838,6 @@ html .revcard .bignum {
    the screen; the gradient stays on the page behind it. The two of you
    lean together in the middle, the number sits large at the foot, and the
    next step is inside the card. ---- */
-.revpair {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1 1 auto;
-  min-height: 170px;
-  padding: 18px 0 8px;
-}
-.revface {
-  display: grid;
-  place-items: center;
-  width: 112px;
-  height: 138px;
-  border: 4px solid var(--ta-white);
-  border-radius: 26px;
-  box-shadow: 0 12px 28px var(--glass-shadow);
-  font-family: var(--font-display);
-  font-size: 3.4rem;
-  font-weight: 600;
-}
-.revface.berry {
-  background: var(--app-mauve-tint);
-  color: var(--app-mauve-deep);
-  transform: rotate(-8deg) translateX(10px);
-  animation: revface-l 0.7s var(--ease-glide) both;
-}
-.revface.honey {
-  background: var(--app-honey-bg);
-  color: var(--app-amber);
-  transform: rotate(8deg) translateX(-10px) translateY(10px);
-  animation: revface-r 0.7s var(--ease-glide) both;
-}
-.revpair .revface:first-child {
-  z-index: 1;
-}
-@keyframes revface-l {
-  from {
-    transform: rotate(-14deg) translateX(-40px);
-    opacity: 0;
-  }
-}
-@keyframes revface-r {
-  from {
-    transform: rotate(14deg) translateX(40px) translateY(10px);
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .revface.berry,
-  .revface.honey {
-    animation: none;
-  }
-}
 .revcard .revcard-body {
   margin-top: 0;
 }
@@ -8913,4 +8860,94 @@ html .revcard .bignum {
   flex: 0 0 56px;
   width: 56px;
   height: 56px;
+}
+
+/* ---- The reveal, round 4 (Dave, Nov 2026): the two of you across the top
+   of the card, your colours blending into each other and fading into white,
+   each of you in a circle (your photo, or your initial). The number sits in
+   the middle of the card, front and centre. ---- */
+.revcard {
+  overflow: hidden;
+  isolation: isolate;
+}
+.revtop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 56%;
+  z-index: -1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 64px 18px 0;
+  background: linear-gradient(90deg, var(--app-mauve-tint) 8%, var(--app-honey-bg) 92%);
+  -webkit-mask-image: linear-gradient(180deg, black 48%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 48%, transparent 100%);
+}
+.revdisc {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ta-white);
+  box-shadow: 0 10px 24px var(--glass-shadow);
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 600;
+  animation: revdisc-in 0.7s var(--ease-glide) both;
+}
+.revdisc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.revdisc.berry {
+  border: 3px solid var(--app-mauve);
+  color: var(--app-mauve-deep);
+}
+.revdisc.honey {
+  border: 3px solid var(--honeyD);
+  color: var(--app-amber);
+  animation-delay: 0.08s;
+}
+@keyframes revdisc-in {
+  from {
+    transform: translateY(12px) scale(0.9);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revdisc {
+    animation: none;
+  }
+}
+.revcard-pill {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+html .revcard .revcard-body {
+  align-items: center;
+  margin: auto 0;
+  padding-top: 150px;
+  text-align: center;
+}
+html .revcard .bignum {
+  margin: 0;
+  font-size: 8.5rem;
+}
+.revcard-basis {
+  color: var(--ta-grey);
+}
+html .revcard-line {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: var(--t-question);
+  font-weight: 600;
+  text-align: center;
+  color: var(--ta-ink);
 }

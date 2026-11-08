@@ -65,6 +65,8 @@ export default function RevealScreen({
   onDone,
   myName,
   partnerName,
+  myPhoto,
+  partnerPhoto,
   questions,
   review = false,
   firstEver = false,
@@ -85,6 +87,9 @@ export default function RevealScreen({
   onDone: () => void;
   myName: string;
   partnerName: string;
+  /** Each of your photos, when you have one (shared in the session). */
+  myPhoto?: string;
+  partnerPhoto?: string;
   // Review mode passes the whole deck's questions so a finished deck can be
   // reopened to see the full per-question breakdown (what each of you answered).
   questions?: Question[];
@@ -245,12 +250,17 @@ export default function RevealScreen({
                   <span aria-hidden="true">&#9825;</span> {t(`${know.pct}% known`, `${know.pct} % connus`)}
                 </span>
               )}
-              {/* The two of you, as two cards leaning together (after
-                  Dateasy's match screen). Initials: a partner's photo isn't
-                  readable on this phone. */}
-              <span className="revpair" aria-hidden="true">
-                <span className={`revface ${toneFor(role)}`}>{initialOf(myName)}</span>
-                <span className={`revface ${toneFor(other(role))}`}>{initialOf(partnerName)}</span>
+              {/* The two of you across the top of the card (Dave, Nov 2026):
+                  your colours blending into each other, each of you in a
+                  circle, your photo or your initial, fading into white
+                  behind the number. */}
+              <span className="revtop" aria-hidden="true">
+                <span className={`revdisc ${toneFor(role)}`}>
+                  {myPhoto ? <img src={myPhoto} alt="" /> : initialOf(myName)}
+                </span>
+                <span className={`revdisc ${toneFor(other(role))}`}>
+                  {partnerPhoto ? <img src={partnerPhoto} alt="" /> : initialOf(partnerName)}
+                </span>
               </span>
               <span className="revcard-body">
                 {tier >= 4 ? (
@@ -274,6 +284,7 @@ export default function RevealScreen({
                   )}
                 </span>
               </span>
+              <span className="revcard-line">{words.line}</span>
               <span className="revcard-acts">
                 <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
                   {t("See your answers →", "Voir vos réponses →")}
@@ -306,7 +317,6 @@ export default function RevealScreen({
             {/* The range's encouragement and its verse (ESV): the same for both
                 of you, never the same as your last reveal. */}
             <div className="revwords lvlup-rise r2">
-              <p className="reveal-line">{words.line}</p>
               <p className="reveal-verse">
                 “{words.verse.text}”
                 <span className="reveal-ref">{words.verse.ref}</span>

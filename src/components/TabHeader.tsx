@@ -12,6 +12,8 @@ export function TabHeader({
   myName,
   partnerName,
   joined,
+  myPhoto,
+  partnerPhoto,
   slotRef,
   bell,
 }: {
@@ -19,6 +21,8 @@ export function TabHeader({
   myName: string;
   partnerName: string;
   joined: boolean;
+  myPhoto?: string;
+  partnerPhoto?: string;
   /** Where a screen puts its own button, left of the bell. */
   slotRef: (el: HTMLSpanElement | null) => void;
   bell: ReactNode;
@@ -34,10 +38,10 @@ export function TabHeader({
     <header className="tabhdr">
       <span className={`avchip${joinNow ? " joinnow" : ""}`}>
         <span className="avchip-stack">
-          <Avatar name={myName} tone={toneFor(role)} size={34} />
+          <Avatar name={myName} photo={myPhoto} tone={toneFor(role)} size={34} />
           {joined ? (
             <span className="joinpop">
-              <Avatar name={partnerName} tone={toneFor(other(role))} size={34} />
+              <Avatar name={partnerName} photo={partnerPhoto} tone={toneFor(other(role))} size={34} />
             </span>
           ) : (
             <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34 }}>

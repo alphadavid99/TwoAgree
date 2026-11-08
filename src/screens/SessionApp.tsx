@@ -15,7 +15,7 @@ import {
 import { jointQuestions, other, type Role } from "../lib/scoring";
 import { useSession } from "../hooks/useSession";
 import { useProfile } from "../hooks/useProfile";
-import { renameInSession } from "../lib/session";
+import { renameInSession, setPhotoInSession } from "../lib/session";
 import {
   getLastDeck,
   setLastDeck,
@@ -189,6 +189,13 @@ function SessionScreens({
     if (!role || !profileName || profileName === sessionName) return;
     void renameInSession(code, role, profileName).catch(() => {});
   }, [code, role, profileName, sessionName]);
+  // And your photo: copied in when you have one, taken out when you don't.
+  const profilePhoto = profile?.photo || null;
+  const sessionPhoto = role ? (session?.members?.[role]?.photo ?? null) : null;
+  useEffect(() => {
+    if (!role || profile === null || profilePhoto === sessionPhoto) return;
+    void setPhotoInSession(code, role, profilePhoto).catch(() => {});
+  }, [code, role, profile, profilePhoto, sessionPhoto]);
 
   // Doing a part together (lib/invites.ts). A ticking clock while an invite is
   // fresh, so its pop-up and the sender's waiting screen lapse on time.
@@ -692,6 +699,8 @@ function SessionScreens({
             pick={deck?.pick?.[level]}
             myName={myName}
             partnerName={partnerName}
+            myPhoto={session.members?.[role]?.photo}
+            partnerPhoto={session.members?.[other(role)]?.photo}
             firstEver={seen.length === 0}
             code={code}
             onDone={exitFlow}
@@ -785,6 +794,8 @@ function SessionScreens({
             myName={firstWord(myName)}
             partnerName={firstWord(partnerName)}
             joined={!!session.members?.[other(role)]}
+            myPhoto={session.members?.[role]?.photo}
+            partnerPhoto={session.members?.[other(role)]?.photo}
             slotRef={setActSlot}
             bell={<ForYouBell {...fyProps} fresh={fyFresh} onSeen={markFySeen} />}
           />

@@ -7962,3 +7962,578 @@ html .errpanel b {
 .switch.on {
   background: var(--app-mauve);
 }
+
+/* ============================================================================
+   LAYOUT after Dateasy (Dave, Nov 2026): big cards, full-screen questions,
+   one big number. TwoAgree's own colours and the six text styles throughout.
+   ========================================================================== */
+
+/* ---- Home: the next conversation, as one big card ---- */
+.hhero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+  padding: 16px 18px 12px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-family: var(--font-ui);
+}
+.hero-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 42% at 28% 26%, var(--flux-rose), transparent 70%),
+    radial-gradient(55% 40% at 76% 34%, var(--flux-peach), transparent 70%),
+    radial-gradient(70% 36% at 50% 52%, var(--flux-lilac), transparent 72%),
+    linear-gradient(180deg, var(--flux-wash-1), var(--flux-wash-2) 40%, transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 78%);
+  mask-image: linear-gradient(180deg, #000 45%, transparent 78%);
+}
+.hero-segs {
+  display: flex;
+  gap: 6px;
+}
+.hero-segs i {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--glass-strong);
+}
+.hero-segs b {
+  display: block;
+  height: 100%;
+  background: var(--app-mauve-deep);
+  border-radius: 2px;
+}
+.hero-pill {
+  align-self: flex-end;
+  margin-top: 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 48px;
+}
+html .hero-up,
+html .hero-them,
+html .hero-pill {
+  font-size: var(--t-small);
+  font-weight: 400;
+  color: var(--ta-ink);
+}
+html .hero-nm {
+  margin: 4px 0 6px;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0;
+  color: var(--ta-ink);
+  text-wrap: balance;
+}
+.hero-sub {
+  font-size: var(--t-body);
+  color: var(--ta-ink);
+}
+.hero-them {
+  margin-top: 4px;
+}
+.hhero .btn.hero-go {
+  margin-top: 18px;
+}
+html .linkbtn.hero-alt {
+  margin-top: 4px;
+  min-height: 44px;
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--ta-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Label over value: a quiet row that opens something ---- */
+.irow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  margin-bottom: 10px;
+  padding: 14px 16px 14px 18px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.irow-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.irow-lb,
+.irow-meta {
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+html .irow-val {
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+  line-height: 1.35;
+}
+.irow-go {
+  flex: 0 0 auto;
+  font-size: var(--t-heading);
+  color: var(--ta-grey);
+}
+
+/* ---- The question, full screen: no card, a big centred question ---- */
+.pfull .ptop {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  min-height: 48px;
+}
+.pcircle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 50%;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  color: var(--ta-ink);
+  cursor: pointer;
+}
+html .ptop-title {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.ptop-right {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.qcount {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+html .qcount .savestate {
+  font-size: var(--t-small);
+  font-weight: 400;
+  white-space: nowrap;
+}
+html .ptop-skip {
+  min-height: 44px;
+  min-width: 48px;
+  padding: 0 2px 0 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--t-body);
+  font-weight: 400;
+  color: var(--ta-grey);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.qcount {
+  margin-top: 14px;
+  text-align: center;
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+.pfull .qstones {
+  gap: 6px;
+  margin: 8px 28px 0;
+}
+.pfull .qstones i {
+  height: 4px;
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1px var(--kit-card-edge);
+}
+.pfull .qstones i.full,
+.pfull .qstones i.half::after {
+  background: var(--app-mauve-deep);
+  box-shadow: none;
+}
+.pfull .qstones i.cur {
+  outline: 0;
+  background: var(--app-mauve-tint);
+  box-shadow: none;
+}
+.pfull > .qframe {
+  padding: 8px 0 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.pfull .qframe > .qhead {
+  padding: 22px 6px 18px;
+  text-align: center;
+}
+html .pfull .qtext {
+  margin: 0;
+  font-size: var(--t-title);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+html .pfull .qtext.qtext-long {
+  font-size: var(--t-question);
+  line-height: 1.35;
+}
+.pfull .guesshead {
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.pfull .qframe > .qbody {
+  display: flex;
+  flex-direction: column;
+}
+.pfull .qbody > * {
+  order: 5;
+}
+.pfull .qbody > .scale {
+  order: 1;
+}
+.pfull .qbody > .orbyou {
+  order: 2;
+}
+.pfull .qbody > .slabels {
+  order: 3;
+  margin-top: 10px;
+}
+.pfull .qbody > .orbsay {
+  order: 4;
+}
+
+/* Five large rings, a little deeper toward the top end. */
+.pfull .scale {
+  gap: 10px;
+  margin-top: 6px;
+}
+.pfull .orb {
+  max-width: 60px;
+  border: 2px solid color-mix(in srgb, var(--app-mauve) 40%, var(--ta-white));
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  color: var(--ta-white);
+}
+.pfull .orb:nth-child(2) {
+  border-color: color-mix(in srgb, var(--app-mauve) 55%, var(--ta-white));
+}
+.pfull .orb:nth-child(3) {
+  border-color: color-mix(in srgb, var(--app-mauve) 70%, var(--ta-white));
+}
+.pfull .orb:nth-child(4) {
+  border-color: color-mix(in srgb, var(--app-mauve) 85%, var(--ta-white));
+}
+.pfull .orb:nth-child(5) {
+  border-color: var(--app-mauve);
+}
+.pfull .orb.sel {
+  background: var(--app-mauve-deep);
+  border-color: var(--app-mauve-deep);
+  box-shadow: 0 0 0 5px var(--app-mauve-tint);
+}
+
+/* Choices: big rounded pills; the chosen one takes a mauve edge and a tick. */
+.pfull .opt {
+  min-height: 56px;
+  margin-top: 10px;
+  padding: 14px 48px 14px 22px;
+  border-radius: 28px;
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-line);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+}
+.pfull .opt::before {
+  display: none;
+}
+.pfull .opt.sel,
+.pfull .opt.guess.sel {
+  background: var(--ta-white);
+  border: 1.5px solid var(--app-mauve-deep);
+  box-shadow: 0 6px 16px var(--glass-shadow);
+}
+.pfull .opt .dot {
+  display: none;
+}
+.pfull .opt.sel .dot,
+.pfull .opt.guess.sel .dot {
+  display: block;
+  right: 22px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.pfull .opt.sel .dot::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  left: 6px;
+  top: 1px;
+  width: 7px;
+  height: 13px;
+  border: solid var(--app-mauve-deep);
+  border-width: 0 2.4px 2.4px 0;
+  border-radius: 0;
+  transform: rotate(45deg);
+  animation: none;
+}
+
+/* The big Next pill, with Back as a circle beside it. */
+.pfull .playfoot-row > .btn {
+  min-height: 56px;
+}
+.pfull .playfoot-row > .btn.backsq {
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  border-radius: 50%;
+}
+
+/* ---- The reveal: one big number and one card, on the light ground ---- */
+.ceremony:not(.lit) .eyebrow {
+  color: var(--ta-grey);
+}
+.bignum-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.bignum-lb {
+  font-size: var(--t-body);
+  color: var(--ta-grey);
+}
+html .bignum {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ta-ink);
+  font-variant-numeric: tabular-nums;
+}
+.bignum-pc {
+  font-size: 0.62em;
+  margin-left: 2px;
+}
+.ceremony:not(.lit) .score-basis {
+  color: var(--ta-grey);
+}
+.revealcard {
+  margin-top: 10px;
+  padding: 18px 18px 16px;
+}
+.ceremony:not(.lit) .reveal-line {
+  margin: 0;
+  color: var(--ta-ink);
+}
+.ceremony:not(.lit) .reveal-verse {
+  margin: 10px 0 0;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--ta-grey);
+}
+.ceremony:not(.lit) .reveal-ref,
+.ceremony:not(.lit) .notverdict,
+.ceremony:not(.lit) .firstline {
+  color: var(--ta-grey);
+}
+.ceremony:not(.lit) .meetline,
+.ceremony:not(.lit) .meetnames {
+  color: var(--ta-grey);
+}
+html .bignum-badge {
+  position: static;
+  transform: none;
+  margin-bottom: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  box-shadow: none;
+  font-size: var(--t-small);
+  font-weight: 400;
+}
+
+/* ---- Talk: a big title with a round search button, then a two-column
+   grid of tall cards (after Dateasy's grid) ---- */
+.cv-titlerow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 2px 0;
+}
+html .cv-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ta-ink);
+}
+.cv-lede {
+  margin: 2px 2px 14px;
+}
+.cv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cv-tile.cv-row {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-height: 228px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 22px;
+  background: var(--glass);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  transition: transform 0.12s ease;
+}
+.cv-tile.cv-row:active {
+  border-bottom-width: 1px;
+  transform: scale(0.98);
+}
+.cv-tile-art {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  min-height: 120px;
+  color: var(--app-mauve-deep);
+}
+.cv-tile.wash0 .cv-tile-art {
+  background: radial-gradient(90% 80% at 30% 20%, var(--flux-rose), transparent 70%), linear-gradient(160deg, var(--flux-wash-1), var(--flux-cream));
+}
+.cv-tile.wash1 .cv-tile-art {
+  background: radial-gradient(90% 80% at 70% 25%, var(--flux-peach), transparent 70%), linear-gradient(160deg, var(--flux-wash-2), var(--flux-wash-3));
+}
+.cv-tile.wash2 .cv-tile-art {
+  background: radial-gradient(90% 80% at 40% 30%, var(--flux-lilac), transparent 70%), linear-gradient(160deg, var(--flux-wash-3), var(--flux-wash-1));
+}
+.cv-tile.wash3 .cv-tile-art {
+  background: radial-gradient(90% 80% at 60% 20%, var(--flux-cream), transparent 70%), linear-gradient(160deg, var(--flux-peach), var(--flux-wash-3));
+}
+.cv-tile-art svg {
+  width: 44px;
+  height: 44px;
+}
+.cv-tile-pct {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.cv-tile .cv-row-main {
+  flex: none;
+  gap: 2px;
+  padding: 12px 14px 14px;
+  background: var(--glass-strong);
+}
+.cv-tile .cv-row-nm {
+  display: block;
+  line-height: 1.25;
+}
+.cv-tile .kbadge {
+  align-self: flex-start;
+  margin: 4px 0 2px;
+}
+.cv-tile .cv-bars {
+  gap: 3px;
+}
+.cv-tile .cv-bar {
+  flex: 1;
+  width: auto;
+  max-width: 26px;
+}
+
+/* ---- Lists as chat-style rows (after Dateasy's chat list): rounded glass,
+   a round badge or avatar on the left, the action on the right ---- */
+.pp-row,
+.pp-row.here {
+  border: 1px solid var(--glass-line);
+  border-radius: 22px;
+  background: var(--glass);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+.pp-row.here {
+  border: 1.5px solid var(--app-mauve);
+}
+.pp-n {
+  width: 36px;
+  height: 36px;
+  background: var(--glass-strong);
+  box-shadow: inset 0 0 0 1px var(--kit-card-edge);
+}
+.pp-n.done {
+  background: var(--app-mauve-deep);
+  color: var(--ta-white);
+  box-shadow: none;
+}
+.pp-n.here {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  box-shadow: none;
+}
+.fy-act {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+}
+html .morebelow {
+  font-weight: 400;
+}
+/* On the light reveal the celebration falls behind the words and buttons. */
+.ceremony:not(.lit) .celebrate {
+  z-index: 0;
+}
+.ceremony:not(.lit) .levelup,
+.ceremony:not(.lit) > .topbar,
+.ceremony:not(.lit) > .eyebrow {
+  position: relative;
+  z-index: 1;
+}
+.guessname {
+  color: var(--app-mauve-deep);
+}

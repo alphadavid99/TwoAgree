@@ -105,10 +105,10 @@ describe("HomeScreen", () => {
       />,
     );
     expect(screen.getByText("Sarah & Judah")).toBeTruthy();
-    // The soft scores card: two rings, each named with its count.
-    expect(screen.getByText("Agree")).toBeTruthy();
-    expect(screen.getByText("Known")).toBeTruthy();
-    expect(screen.getByText(/^\d+ questions?$/)).toBeTruthy();
+    // Between the two of you, label over value: both numbers and the count.
+    expect(screen.getByText("Between the two of you")).toBeTruthy();
+    expect(screen.getAllByText(/^\d+% agree( · \d+% known)?$/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/^\d+ questions?/)).toBeTruthy();
   });
 
   it("has one honey button: the next step (item 10)", () => {
@@ -202,6 +202,7 @@ describe("DecksScreen", () => {
     const s = { ...session, decks: { [partialSlug]: partial } } as unknown as Session;
     const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} current={partialSlug} />);
     expect(screen.getByText("Pick up where you left off")).toBeTruthy();
+    await userEvent.click(screen.getByRole("button", { name: "Search conversations" }));
     await userEvent.type(screen.getByRole("searchbox"), "  MONEY ");
     expect(container.querySelectorAll("button.cv-row").length).toBe(1);
   });

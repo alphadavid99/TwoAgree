@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
@@ -13,9 +12,9 @@ import { pathReady, currentIndex, orderedSteps, lampLit } from "../lib/path";
 import { PATH_STEPS } from "../data/path.generated";
 import { Avatar, toneFor } from "../components/Avatar";
 import { PathScene } from "../components/PathScene";
-import { PctRing } from "../components/Ring";
-import { DeckIcon } from "../components/icons";
-import { deckName } from "../lib/questions.fr";
+import { deckName, localizeQuestion } from "../lib/questions.fr";
+import { talkNext } from "../lib/talkNext";
+import { namesFor } from "../lib/who";
 import { track } from "../lib/observability";
 import { useT, useLang } from "../lib/i18n";
 
@@ -99,6 +98,19 @@ export default function HomeScreen({
 
   // The scores card shares Together's maths, so the numbers agree.
   const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
+  // The hero's segments: one per part (filled when you've finished it, the
+  // current one by how far you are); a one-part conversation shows its
+  // questions instead.
+  const segs: number[] =
+    L > 1
+      ? Array.from({ length: L }, (_, i) =>
+          levelDone(deck, i, role) ? 1 : i === lvl && lvlTotal ? mine / lvlTotal : 0,
+        )
+      : Array.from({ length: Math.min(lvlTotal, 12) }, (_, i) =>
+          i < Math.round((mine / Math.max(lvlTotal, 1)) * Math.min(lvlTotal, 12)) ? 1 : 0,
+        );
+  const talk = talkNext(session.decks, role).next[0];
+  const names = namesFor(session.members, role, myName, partnerName);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
   const waiting = answersWaiting(session.decks, role);
 
@@ -203,28 +215,59 @@ export default function HomeScreen({
         </div>
       )}
 
-      {/* Between the two of you: soft, light, two small rings kept apart. The
-          encouragement line stays on the reveal and Together. */}
-      {rows.length > 0 && (
-        <button className="card hscores" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
-          <span className="hscores-top">
-            <span className="eyebrow">{t("Between the two of you", "Entre vous deux")}</span>
-            <span aria-hidden="true">&#8250;</span>
+      {/* Your next step, as one big card (Dave, Nov 2026, after Dateasy):
+          the parts as segments, the agree pill, the conversation's name, one
+          Start pill and one quiet link. */}
+      <div className="card hhero">
+        <span className="hero-art" aria-hidden="true" />
+        <span className="hero-segs" aria-hidden="true">
+          {segs.map((f, i) => (
+            <i key={i}>
+              <b style={{ width: `${Math.round(f * 100)}%` }} />
+            </i>
+          ))}
+        </span>
+        {overallPct != null && (
+          <span className="hero-pill">
+            <span aria-hidden="true">&#9825;</span> {t(`${overallPct}% agree`, `${overallPct} % d’accord`)}
           </span>
-          <span className="hscores-rings">
-            <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)} />
-            <SoftRing
-              pct={knownPct}
-              colour="var(--app-mauve)"
-              name={t("Known", "Connus")}
-              count={made ? t(`${right} of ${made} guesses`, `${right} intuitions sur ${made}`) : t("no guesses yet", "pas encore d’intuitions")}
-            />
+        )}
+        <span className="hero-body">
+          <span className="hero-up">
+            {allDone
+              ? t("All parts revealed", "Toutes les parties révélées")
+              : L > 1
+                ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
+                : t("Up next", "À suivre")}
           </span>
-        </button>
-      )}
+          <h2 className="hero-nm">{deckName(slug, lang)}</h2>
+          {!allDone && (
+            <span className="hero-sub">
+              {L > 1 ? `${partName(slug, lvl)} · ` : ""}
+              {mine > 0
+                ? t(`${mine} of ${lvlTotal} answered`, `${mine} sur ${lvlTotal} répondues`)
+                : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
+            </span>
+          )}
+          {joined && !allDone && (
+            <span className="hero-them">
+              {!theyStarted
+                ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
+                : theyFinished
+                  ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
+                  : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
+            </span>
+          )}
+          <button className="btn pill hero-go" type="button" onClick={() => onPlay(slug)}>
+            {cta}
+          </button>
+          <button className="linkbtn hero-alt" type="button" onClick={onBrowse}>
+            {t("Choose another conversation", "Choisir une autre conversation")}
+          </button>
+        </span>
+      </div>
 
-      {/* The reveal that's waiting: the one claret moment, before your next
-          step. */}
+      {/* The reveal that's waiting, before anything else below. */}
       {pending.length > 0 && onOpenReveal && (
         <button
           className="readycard"
@@ -252,50 +295,37 @@ export default function HomeScreen({
         </button>
       )}
 
-      {/* Your next step: the part you're in, one honey button. */}
-      <div className="card hnext">
-        <div className="hnext-top">
-          <span className="tg-icon" aria-hidden="true">
-            <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={24} />
-          </span>
-          <span>
-            <span className="hnext-nm">{deckName(slug, lang)}</span>
-            <span className="hnext-sub">
-              {allDone
-                ? t("All parts revealed", "Toutes les parties révélées")
-                : L > 1
-                  ? t(`Part ${lvl + 1} of ${L} · ${partName(slug, lvl)}`, `Partie ${lvl + 1} sur ${L} · ${partName(slug, lvl)}`)
-                  : partName(slug, lvl)}
+      {/* Label over value: where you stand, and the next thing to talk about.
+          Both open Together, where the full scores and the list live. */}
+      {rows.length > 0 && (
+        <button className="card irow" type="button" onClick={onTogether} aria-label={t("Between the two of you: open Together", "Entre vous deux : ouvrir Ensemble")}>
+          <span className="irow-txt">
+            <span className="irow-lb">{t("Between the two of you", "Entre vous deux")}</span>
+            <span className="irow-val">
+              {[
+                overallPct == null ? t("No scores yet", "Pas encore de scores") : t(`${overallPct}% agree`, `${overallPct} % d’accord`),
+                knownPct != null ? t(`${knownPct}% known`, `${knownPct} % connus`) : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+            <span className="irow-meta">
+              {t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)}
+              {made ? t(` · ${right} of ${made} guesses right`, ` · ${right} intuitions justes sur ${made}`) : ""}
             </span>
           </span>
-        </div>
-        {!allDone && (
-          <>
-            <div className="qprog featprog" aria-hidden="true">
-              <i style={{ width: `${lvlTotal ? Math.round((mine / lvlTotal) * 100) : 0}%` }} />
-            </div>
-            <div className="capline">
-              <b>{t(`${mine} of ${lvlTotal}`, `${mine} sur ${lvlTotal}`)}</b> {t("answered", "répondues")}
-              {joined && (
-                <>
-                  {" · "}
-                  {!theyStarted
-                    ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
-                    : theyFinished
-                      ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
-                      : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
-                </>
-              )}
-            </div>
-          </>
-        )}
-        <button className="btn pill" type="button" onClick={() => onPlay(slug)}>
-          {cta}
+          <span className="irow-go" aria-hidden="true">&#8250;</span>
         </button>
-        <button className="btn ghost" type="button" onClick={onBrowse}>
-          {t("Choose another conversation", "Choisir une autre conversation")}
+      )}
+      {talk && (
+        <button className="card irow" type="button" onClick={onTogether}>
+          <span className="irow-txt">
+            <span className="irow-lb">{t("Talk about next", "À aborder ensuite")}</span>
+            <span className="irow-val">{localizeQuestion(talk.q, lang, names).q}</span>
+          </span>
+          <span className="irow-go" aria-hidden="true">&#8250;</span>
         </button>
-      </div>
+      )}
 
       {/* Before your partner joins: one card, the code and one link. */}
       {!joined && (
@@ -346,21 +376,5 @@ export default function HomeScreen({
         </div>
       )}
     </section>
-  );
-}
-
-function SoftRing({ pct, colour, name, count }: { pct: number | null; colour: string; name: string; count: string }) {
-  return (
-    <span className="softring">
-      {pct == null ? (
-        <span className="softring-none" aria-hidden="true">—</span>
-      ) : (
-        <PctRing pct={pct} size={64} sw={6} color={colour} label="" ink="var(--ta-ink)" />
-      )}
-      <span className="softring-txt">
-        <b>{name}</b>
-        <span>{count}</span>
-      </span>
-    </span>
   );
 }

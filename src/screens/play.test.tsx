@@ -170,7 +170,7 @@ describe("going back (feedback 15)", () => {
     await userEvent.click(screen.getByRole("button", { name: /Next/ }));
     await userEvent.click(screen.getAllByRole("button", { pressed: false })[2]);
     await userEvent.click(screen.getByRole("button", { name: /my guess/ }));
-    expect(screen.getByText(/^2 of/)).toBeTruthy();
+    expect(screen.getByText(/^Question 2 of/)).toBeTruthy();
 
     // Back lands on the guess with it still chosen…
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));

@@ -564,10 +564,8 @@ function QuestionInput({
           onClick={() => onPick(i)}
           aria-pressed={value === i}
         >
-          <span className="opt-t">
-            {o}
-            {mine === i && <span className="youtag">{you}</span>}
-          </span>
+          <span className="opt-t">{o}</span>
+          {mine === i && <span className="youtag">{you}</span>}
           <span className="dot" />
         </button>
       ))}

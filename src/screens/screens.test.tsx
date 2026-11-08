@@ -230,7 +230,8 @@ describe("ResultsScreen", () => {
 
   it("switches to the real scoreboard once something is revealed", () => {
     render(<ResultsScreen session={session} role="host" code="ABCD" onOpen={noop} />);
-    expect(screen.getByRole("heading", { name: "Sarah & Judah" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Together" })).toBeTruthy();
+    expect(screen.getByText("Sarah & Judah")).toBeTruthy();
     expect(screen.getByText("Known")).toBeTruthy();
   });
 });

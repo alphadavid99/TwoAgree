@@ -853,17 +853,23 @@ textarea.input {
   box-shadow: 0 12px 30px rgba(62, 26, 46, 0.16);
   z-index: 10;
 }
-/* the honey pill is one shared indicator that slides to the active tab */
+/* The honey pill is one shared indicator that slides to the active tab. It
+   sits behind the icon only, the same size on every tab, so a long label
+   ("Together") never swells it (feedback, Nov 2026). Its left/top/size are
+   measured from the active tab's icon. */
 .bnav-ind {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
   border-radius: 999px;
   background: var(--honey);
-  box-shadow: 0 6px 14px rgba(217, 150, 58, 0.3);
-  transition: left 0.38s cubic-bezier(0.3, 1.12, 0.35, 1),
-    width 0.38s cubic-bezier(0.3, 1.12, 0.35, 1);
+  box-shadow: 0 4px 10px rgba(217, 150, 58, 0.28);
+  transition: left 0.38s cubic-bezier(0.3, 1.12, 0.35, 1);
   pointer-events: none;
+}
+.bnav-ic {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 30px;
 }
 .bnav-item {
   position: relative;
@@ -893,6 +899,10 @@ textarea.input {
 }
 .bnav-item.on {
   color: var(--app-honey-ink);
+}
+.bnav-item.on span:last-child {
+  color: var(--ta-ink);
+  font-weight: 700;
 }
 @media (prefers-reduced-motion: reduce) {
   .bnav-ind {
@@ -5676,32 +5686,20 @@ a.btn {
 
 /* ---- Together (items 3 and 13): who, where you stand, talk about next,
    your conversations. ---- */
-.tg-head {
-  position: relative;
+/* Together's title line: the title left, share on the same line. The chip
+   above is Home's (.homehdr / .avchip). */
+.tg-titlerow {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  margin: 8px 0 20px;
-  padding: 0 52px;
-  text-align: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 2px 16px;
 }
-.tg-avs {
-  display: inline-flex;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-.tg-names {
+.tg-titlerow .greet {
   margin: 0;
-  font-size: 1.375rem;
-  line-height: 1.2;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
 }
 .tg-share {
-  position: absolute;
-  top: 0;
-  right: 0;
+  flex: 0 0 auto;
   width: 44px;
   height: 44px;
   border: 2px solid var(--kit-card-edge);
@@ -7288,18 +7286,23 @@ a.btn {
 .opt.mine:not(.sel) {
   background: var(--kit-sel-bg);
 }
+/* Your own answer, on the guess screen: a small tag on the right, beside the
+   radio, so the option's words keep their line (feedback, Nov 2026). */
+.opt.mine {
+  padding-right: 92px;
+}
 .opt .youtag {
-  display: inline-block;
-  margin-left: 8px;
+  position: absolute;
+  right: 44px;
+  top: 50%;
+  transform: translateY(-50%);
   padding: 0 8px;
   border-radius: 999px;
-  border: 1.5px dashed var(--ta-claret-hover);
   background: var(--kit-close-bg);
   color: var(--ta-claret-hover);
   font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  vertical-align: 1px;
+  font-weight: 700;
+  line-height: 1.375rem;
 }
 
 /* Rank (feedback 19): full-width rows; tap in order and each takes the next

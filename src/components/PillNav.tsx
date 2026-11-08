@@ -2,8 +2,9 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 // The floating pill nav: five tabs, always labelled (item 10), so none has to
 // be learned by its icon. The honey pill is a single indicator element that
-// SLIDES to whichever tab you pick (left/width transition, measured after
-// layout). Buttons sit above it on their own layer.
+// SLIDES to whichever tab you pick, measured after layout from the active
+// tab's icon: it sits behind the icon only, one size for every tab, and the
+// active label turns bold. Buttons sit above it on their own layer.
 export type NavItem = {
   key: string;
   label: string;
@@ -20,7 +21,7 @@ export function PillNav({
   onSelect: (key: string) => void;
 }) {
   const navRef = useRef<HTMLElement>(null);
-  const [ind, setInd] = useState<{ left: number; width: number } | null>(null);
+  const [ind, setInd] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
   // Re-measure whenever the active tab or the labels (language) change, and
   // on resize — the active button's width isn't known until it has grown.
@@ -28,7 +29,9 @@ export function PillNav({
   useLayoutEffect(() => {
     const measure = () => {
       const el = navRef.current?.querySelector<HTMLElement>(".bnav-item.on");
-      if (el) setInd({ left: el.offsetLeft, width: el.offsetWidth });
+      const ic = el?.querySelector<HTMLElement>(".bnav-ic");
+      if (el && ic)
+        setInd({ left: el.offsetLeft + ic.offsetLeft, top: el.offsetTop + ic.offsetTop, width: ic.offsetWidth, height: ic.offsetHeight });
     };
     measure();
     window.addEventListener("resize", measure);
@@ -48,7 +51,9 @@ export function PillNav({
             onClick={() => onSelect(key)}
             aria-current={on ? "page" : undefined}
           >
-            <Icon size={22} />
+            <span className="bnav-ic">
+              <Icon size={22} />
+            </span>
             <span>{label}</span>
           </button>
         );

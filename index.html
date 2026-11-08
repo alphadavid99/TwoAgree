@@ -17,11 +17,15 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <!-- The phone paints its status bar (and, on some iPhones, the strip under
-         the home indicator) in this colour. It matches the top of the page,
-         the pink of the waves, so the app reads as full screen; claret here
-         showed as a dark band above the app (Dave, Nov 2026). -->
-    <meta name="theme-color" content="#F7D7E0" />
+    <!-- Full screen to the very top (Dave, Nov 2026): no theme colour, so the
+         browser paints no band of its own, and as a Home Screen app the page
+         runs under the status bar (black-translucent: the phone's time and
+         battery show in white over the page; a soft shade under them keeps
+         them readable, index.css "Full screen"). Content still starts below
+         the notch: the page's top padding carries the safe-area inset. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <!-- Preload the wordmark font so the mark's letters render in Inter on
          first paint (no fallback-font flash). -->

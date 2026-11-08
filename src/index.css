@@ -9284,3 +9284,69 @@ html .fy-act.fy-act-ghost {
   text-decoration-color: var(--ta-line);
   text-underline-offset: 3px;
 }
+
+/* ============================================================================
+   NO 3D, anywhere (Dave, Nov 2026): the last pieces with a thick base or a
+   press that drops them become flat white or glass, a hairline edge and a
+   soft shadow, like every other card; a press shrinks a touch instead.
+   ========================================================================== */
+html .kcard,
+html .qcard,
+html .sbarslim-card,
+html .tg-more-q,
+html .tg-tile,
+html .hpath,
+html .cv-row:not(.cv-tile),
+html .pmap,
+html .pstep-scene,
+html .livechoice {
+  border: 1px solid var(--glass-line);
+  border-bottom: 1px solid var(--glass-line);
+  box-shadow: 0 8px 22px var(--glass-shadow);
+}
+html .btn.you-delete,
+html .morebelow {
+  border: 1px solid var(--kit-card-edge);
+  border-bottom: 1px solid var(--kit-card-edge);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+}
+html .tg-tile:active,
+html .cv-row:not(.cv-tile):active,
+html .morebelow:active,
+html .btn.you-delete:active,
+html .livechoice:active,
+html .readycard:active,
+html .menucard:active,
+html .pathcard:active {
+  border-bottom-width: 1px;
+  transform: scale(0.98);
+}
+
+/* Do it with Judah now / Answer on my own: two rounded white rows like the
+   rest; the suggested one has the mauve edge of a main action. */
+html .livechoice {
+  min-height: 84px;
+  padding: 16px 18px;
+  border-radius: 26px;
+  background: var(--ta-white);
+}
+html .livechoice.live {
+  border: 1.5px solid var(--app-mauve);
+  background: var(--ta-white);
+}
+
+/* ---- A finished part, waiting or ready (Dave, Nov 2026): the two of you as
+   big as the conversation circles, the words below, and the buttons down at
+   the foot of the screen where the thumb is. ---- */
+.unlock.unlock-full {
+  justify-content: flex-start;
+  min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 128px);
+  padding-top: 9vh;
+}
+.unlock-full > .btn.pill {
+  margin-top: auto;
+}
+.unlock-full .pair-apart {
+  gap: 16px;
+  margin-bottom: 26px;
+}

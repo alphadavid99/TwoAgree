@@ -670,10 +670,10 @@ function SessionScreens({
           return (
             <section className="screen-enter">
               <TopBar onExit={exitFlow} />
-              <div className="unlock">
+              <div className="unlock unlock-full">
                 <div className="pair-apart">
-                  <Avatar name={session.members?.host?.name} tone="berry" size={46} />
-                  <Avatar name={session.members?.guest?.name} tone="honey" size={46} />
+                  <Avatar name={session.members?.host?.name} photo={session.members?.host?.photo} tone="berry" size={84} />
+                  <Avatar name={session.members?.guest?.name} photo={session.members?.guest?.photo} tone="honey" size={84} />
                 </div>
                 <div className="eyebrow center">{t("Ready to open", "Prêt à ouvrir")}</div>
                 <h2 className="h1 center" style={{ marginTop: 6 }}>
@@ -735,13 +735,13 @@ function SessionScreens({
       return (
         <section className="screen-enter">
           <TopBar onExit={exitFlow} />
-          <div className="unlock">
+          <div className="unlock unlock-full">
             <div className="pair-apart">
               {(["host", "guest"] as const).map((r) =>
                 r === role ? (
-                  <Avatar key={r} name={session.members?.[r]?.name} tone={toneFor(r)} size={56} done />
+                  <Avatar key={r} name={session.members?.[r]?.name} photo={session.members?.[r]?.photo} tone={toneFor(r)} size={84} done />
                 ) : (
-                  <Avatar key={r} name={session.members?.[r]?.name ?? partnerName} tone={toneFor(r)} size={56} pending />
+                  <Avatar key={r} name={session.members?.[r]?.name ?? partnerName} photo={session.members?.[r]?.photo} tone={toneFor(r)} size={84} pending />
                 ),
               )}
             </div>

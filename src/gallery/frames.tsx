@@ -14,7 +14,7 @@ import { PathFlow } from '../screens/PathScreen'
 import SessionApp from '../screens/SessionApp'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { ORDER, DECKS, type Question } from '../lib/questions'
-import { lvlQs, nLevels } from '../lib/leveling'
+import { lvlQs, nLevels, partName } from '../lib/leveling'
 import { revealKey } from '../lib/progress'
 import { NOT_YET } from '../lib/scoring'
 import { PathScene, SCENE_KEYS } from '../components/PathScene'
@@ -228,6 +228,8 @@ const partnerFinishes = (slug: string) => (rt: FrameRuntime) => {
   s.decks![slug] = d
   rt.listeners.forEach((fn) => fn())
 }
+// A part's row, by its name.
+const partLabel = (slug: string, level: number) => new RegExp(partName(slug, level).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 const deckLabel = (slug: string) => new RegExp(DECKS[slug].name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
 // ---- Reveal ladder ------------------------------------------------------------
@@ -508,12 +510,14 @@ export const FRAMES: FrameDef[] = [
   inSession({
     id: 'wait-partner', flow: 'wait', title: 'Your answers are saved (waiting on partner)',
     session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }), openSlug: SINGLE,
+    // Every conversation has parts now: open the first, the one you've done.
+    steps: [{ wait: 300 }, { click: partLabel(SINGLE, 0) }, { wait: 400 }],
   }),
   inSession({
     id: 'wait-unlock', flow: 'wait', title: 'Ready to open (you’ve both finished)',
     note: 'Scripted: open the deck, wait, then the fixture partner finishes live.',
     session: (c) => sessionOf(seat(c), { decks: { [SINGLE]: hostOnlyDeck(SINGLE) } }),
-    steps: [{ click: 'Talk' }, { wait: 200 }, { click: deckLabel(SINGLE) }, { wait: 200 }, { run: partnerFinishes(SINGLE) }, { wait: 300 }],
+    steps: [{ click: 'Talk' }, { wait: 200 }, { click: deckLabel(SINGLE) }, { wait: 300 }, { click: partLabel(SINGLE, 0) }, { wait: 300 }, { run: partnerFinishes(SINGLE) }, { wait: 300 }],
   }),
 
   // ============ 11 · Reveal ============

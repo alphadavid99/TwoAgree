@@ -1,5 +1,5 @@
 {
-  "screens": 124,
+  "screens": 125,
   "results": [
     {
       "id": "kit-sheet",
@@ -640,6 +640,13 @@
     },
     {
       "id": "reveal-share-names",
+      "small": [],
+      "taps": [],
+      "contrast": [],
+      "type": []
+    },
+    {
+      "id": "reveal-photos",
       "small": [],
       "taps": [],
       "contrast": [],

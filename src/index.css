@@ -9049,3 +9049,18 @@ html .hero-q {
 .hhero .hero-sub {
   text-wrap: balance;
 }
+/* The dots sit a clear gap below the cards peeking out under the deck
+   (Dave, Nov 2026). */
+.hstack {
+  height: 510px;
+}
+.hstack .hstack-dots {
+  bottom: 0;
+}
+/* The shape at the back keeps to the cards' own size, whatever the deck's
+   height. */
+.hstack .hstack-back {
+  top: 380px;
+  bottom: auto;
+  height: 80px;
+}

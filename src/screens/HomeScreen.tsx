@@ -429,25 +429,8 @@ function HeroCard({
       : mine > 0
         ? t("Continue →", "Continuer →")
         : t("Start answering →", "Commencer à répondre →");
-  // One segment per part (filled when you've finished it, the current one by
-  // how far you are); a one-part conversation shows its questions instead.
-  const segs: number[] =
-    L > 1
-      ? Array.from({ length: L }, (_, i) =>
-          levelDone(deck, i, role) ? 1 : i === lvl && lvlTotal ? mine / lvlTotal : 0,
-        )
-      : Array.from({ length: Math.min(lvlTotal, 12) }, (_, i) =>
-          i < Math.round((mine / Math.max(lvlTotal, 1)) * Math.min(lvlTotal, 12)) ? 1 : 0,
-        );
   return (
     <div className="card hhero">
-      <span className="hero-segs" aria-hidden="true">
-        {segs.map((f, i) => (
-          <i key={i}>
-            <b style={{ width: `${Math.round(f * 100)}%` }} />
-          </i>
-        ))}
-      </span>
       {pct != null && (
         <span className="hero-pill">
           <span aria-hidden="true">&#9825;</span> {t(`${pct}% agree`, `${pct} % d’accord`)}

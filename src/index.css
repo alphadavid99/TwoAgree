@@ -8776,3 +8776,135 @@ html .pi-title.pagetitle {
 .pi-top .pi-vref {
   margin: 0 2px;
 }
+
+/* ---- Parts: the title in the same place as every screen's ---- */
+html .pagetitle.pp-title {
+  margin-bottom: 2px;
+}
+.pp-lede {
+  margin: 0 2px 18px;
+}
+
+/* ---- The reveal's score card (after Dateasy's profile card): a warm glow
+   behind, the known pill top right, the number big at the foot ---- */
+.revcard {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  margin-top: 6px;
+  padding: 18px 22px 24px;
+  border-radius: 28px;
+  background: linear-gradient(170deg, var(--flux-wash-1), var(--flux-wash-3));
+  box-shadow: 0 16px 36px var(--glass-shadow);
+}
+.revcard-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 52% 34%, var(--flux-cream) 0, var(--flux-peach) 20%, transparent 40%),
+    radial-gradient(80% 60% at 12% 88%, var(--flux-lilac), transparent 70%),
+    radial-gradient(70% 55% at 92% 72%, var(--flux-rose), transparent 70%);
+  animation: revcard-glow 7s ease-in-out infinite alternate;
+}
+@keyframes revcard-glow {
+  to {
+    transform: scale(1.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revcard-art {
+    animation: none;
+  }
+}
+.revcard-pill {
+  align-self: flex-end;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  box-shadow: 0 4px 14px var(--glass-shadow);
+  font-size: var(--t-small);
+  color: var(--ta-ink);
+}
+.revcard-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: auto;
+  text-align: left;
+}
+.revcard .bignum-lb {
+  color: var(--ta-ink);
+}
+html .revcard .bignum {
+  margin: 2px 0 4px -4px;
+  font-size: 7.5rem;
+}
+.revcard-basis {
+  font-size: var(--t-body);
+  color: var(--ta-ink);
+}
+.revwords {
+  margin-top: 18px;
+}
+.revcard .bignum-badge {
+  margin-bottom: 4px;
+}
+
+/* ---- Home: the cards behind peek out to the side, so it reads as a
+   sideways swipe ---- */
+.hstack {
+  padding: 0 28px 22px 0;
+}
+.hstack-back,
+.hstack-back.b1,
+.hstack-back.b2 {
+  top: 16px;
+  bottom: 38px;
+  left: 14px;
+  right: 14px;
+  border: 1px solid var(--kit-card-edge);
+  border-radius: 28px;
+  background: var(--ta-white);
+  box-shadow: 0 8px 22px var(--glass-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transform: none;
+}
+.hstack-back.b2 {
+  top: 32px;
+  bottom: 54px;
+  left: 28px;
+  right: 0;
+  background: color-mix(in srgb, var(--ta-white) 70%, transparent);
+}
+.hstack-next {
+  right: 28px;
+}
+/* Centred: the cards either side peek out on both edges, like a carousel,
+   since a swipe goes either way. */
+.hstack {
+  padding: 0 0 22px;
+}
+.hstack-top {
+  margin: 0 20px;
+}
+.hstack-back.b1 {
+  top: 18px;
+  bottom: 40px;
+  left: 8px;
+  right: 8px;
+}
+.hstack-back.b2 {
+  top: 36px;
+  bottom: 58px;
+  left: 0;
+  right: 0;
+}
+.hstack-next {
+  left: 20px;
+  right: 20px;
+}

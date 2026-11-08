@@ -242,8 +242,17 @@ export default function RevealScreen({
                 <Avatar name={partnerName} tone={toneFor(other(role))} size={40} />
               </div>
             )}
-            <div className="lvlup-rise r1">
-              <div className="bignum-wrap">
+            {/* The score as one big card (Dave, Nov 2026, after Dateasy's
+                profile card): a warm glow behind the number, how well you
+                know each other in the pill, the number large at the foot. */}
+            <div className="revcard lvlup-rise r1">
+              <span className="revcard-art" aria-hidden="true" />
+              {know.pct != null && (
+                <span className="revcard-pill">
+                  <span aria-hidden="true">&#9825;</span> {t(`${know.pct}% known`, `${know.pct} % connus`)}
+                </span>
+              )}
+              <span className="revcard-body">
                 {tier >= 4 ? (
                   <span className="medal-badge bignum-badge">{t("Complete alignment", "Accord complet")}</span>
                 ) : (
@@ -253,13 +262,13 @@ export default function RevealScreen({
                   <CountUp to={pct} ms={1200} />
                   <span className="bignum-pc">%</span>
                 </span>
-              </div>
-              <p className="score-basis">
-                {t(
-                  `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
-                  `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
-                )}
-              </p>
+                <span className="revcard-basis">
+                  {t(
+                    `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
+                    `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+                  )}
+                </span>
+              </span>
             </div>
             {/* The whole ceremony is staged in motion, so without this a blind
                 partner gets none of the arc the animation carries. */}
@@ -276,7 +285,7 @@ export default function RevealScreen({
             )}
             {/* The range's encouragement and its verse (ESV): the same for both
                 of you, never the same as your last reveal. */}
-            <div className="card revealcard lvlup-rise r2">
+            <div className="revwords lvlup-rise r2">
               <p className="reveal-line">{words.line}</p>
               <p className="reveal-verse">
                 “{words.verse.text}”

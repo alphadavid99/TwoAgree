@@ -304,25 +304,22 @@ function heroStack(slug: string, decks: Session["decks"], role: Role): string[] 
   return [slug, ...open.filter(begun), ...open.filter((s) => !begun(s))].slice(0, 5);
 }
 
-// One card on top and the next one already underneath it, peeking out at the
-// foot, with one more shape behind. Drag or swipe sideways: the top card
-// follows your finger, flies off when you let go past the line (or flick),
-// and the card underneath, the same element all along, rises into place.
-// Nothing is rebuilt or faded mid-swipe, so nothing flashes. A tap still
-// presses the card's buttons.
+// A real deck (Dave, Nov 2026). The card on top; the next one waiting
+// underneath, peeking out at the foot; the one you've already swiped past
+// waiting just off the left edge. Swipe left and the top card goes off to
+// the left, where it waits; swipe right and that card comes back in from the
+// left, over the top, and the one it covers settles underneath. Every card
+// is the same element wherever it goes, so it always returns from where it
+// left, and nothing is rebuilt or faded. A tap still presses its buttons.
 function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) => ReactNode }) {
   const t = useT();
   const n = slugs.length;
   const [i, setI] = useState(0);
   const [dx, setDx] = useState(0);
   const [held, setHeld] = useState(false);
-  // The card that just left, flying off from where the finger let it go.
-  const [gone, setGone] = useState<{ slug: string; dir: 1 | -1; from: number } | null>(null);
   const from = useRef<{ x: number; y: number; t: number } | null>(null);
   const dragging = useRef(false);
   const at = (k: number) => slugs[(k + n) % n];
-  // Underneath: the card a swipe would bring, by the way you're pulling.
-  const under = n > 1 ? at(dx > 0 ? i - 1 : i + 1) : null;
 
   const down = (e: RPointerEvent<HTMLDivElement>) => {
     if (n < 2) return;
@@ -347,31 +344,45 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
     setHeld(false);
     if (!f || !dragging.current) return;
     const quick = performance.now() - f.t < 260 && Math.abs(dx) > 36;
-    if (Math.abs(dx) > 80 || quick) {
-      const dir: 1 | -1 = dx < 0 ? 1 : -1;
-      setGone({ slug: at(i), dir, from: dx });
-      setI((v) => (v + dir + n) % n);
-    }
+    if (Math.abs(dx) > 80 || quick) setI((v) => (v + (dx < 0 ? 1 : -1) + n) % n);
     setDx(0);
+  };
+
+  // Where each card sits, from how far you've pulled (p, 0 to 1).
+  const p = Math.min(1, Math.abs(dx) / 260);
+  const place = (role: "top" | "under" | "left"): CSSProperties | undefined => {
+    if (role === "top") {
+      if (dx < 0) return { transform: `translateX(${dx}px) rotate(${dx / 28}deg)` };
+      if (dx > 0) return { transform: `scale(${1 - 0.06 * p})` };
+      return undefined;
+    }
+    if (role === "under") {
+      if (dx < 0) return { transform: `translateY(${11 * (1 - p)}px) scale(${0.94 + 0.06 * p})` };
+      return undefined;
+    }
+    if (dx > 0) return { transform: `translateX(calc(-100% - 140px + ${dx * 1.45}px)) rotate(${Math.min(0, -10 + dx / 22)}deg)` };
+    return undefined;
   };
 
   return (
     <div className="hstack" aria-roledescription={t("cards", "cartes")}>
       {n > 2 && <span className="hstack-back b2" aria-hidden="true" />}
       {slugs.map((s) => {
-        const role = s === at(i) ? "top" : s === under ? "under" : null;
+        const role: "top" | "under" | "left" | null =
+          s === at(i) ? "top" : n > 2 && s === at(i - 1) ? "left" : n > 1 && s === at(i + 1) ? "under" : n === 2 && s === at(i - 1) ? "under" : null;
         if (!role) return null;
+        const top = role === "top";
         return (
           <div
             key={s}
-            className={`hs-card ${role}${role === "top" && held ? " held" : ""}`}
-            style={role === "top" && dx ? { transform: `translateX(${dx}px) rotate(${dx / 28}deg)` } : undefined}
-            aria-hidden={role === "under" ? true : undefined}
-            inert={role === "under" ? true : undefined}
-            onPointerDown={role === "top" ? down : undefined}
-            onPointerMove={role === "top" ? move : undefined}
-            onPointerUp={role === "top" ? up : undefined}
-            onPointerCancel={role === "top" ? up : undefined}
+            className={`hs-card ${role}${held ? " held" : ""}`}
+            style={place(role)}
+            aria-hidden={top ? undefined : true}
+            inert={top ? undefined : true}
+            onPointerDown={top ? down : undefined}
+            onPointerMove={top ? move : undefined}
+            onPointerUp={top ? up : undefined}
+            onPointerCancel={top ? up : undefined}
             onClickCapture={(e) => {
               if (dragging.current) {
                 e.stopPropagation();
@@ -384,18 +395,6 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
           </div>
         );
       })}
-      {gone && (
-        <div
-          key={`gone-${gone.slug}`}
-          className={`hs-card gone ${gone.dir === 1 ? "left" : "right"}`}
-          style={{ "--from": `${gone.from}px`, "--rot": `${gone.from / 28}deg` } as CSSProperties}
-          aria-hidden="true"
-          inert
-          onAnimationEnd={() => setGone(null)}
-        >
-          {render(gone.slug)}
-        </div>
-      )}
       {n > 1 && (
         <span className="hstack-dots" aria-hidden="true">
           {slugs.map((s, k) => (

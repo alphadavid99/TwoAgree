@@ -8950,7 +8950,7 @@ html .revcard-line {
   z-index: 3;
   touch-action: pan-y;
 }
-.hs-card.top.held {
+.hs-card.held {
   transition: none;
 }
 .hs-card.under {
@@ -8959,38 +8959,36 @@ html .revcard-line {
   transform-origin: 50% 100%;
   pointer-events: none;
 }
-.hs-card.gone {
+/* The card you've swiped past waits just off the left edge, tilted, and
+   comes back in over the top when you swipe right. */
+.hs-card.left {
   z-index: 4;
+  transform: translateX(calc(-100% - 140px)) rotate(-10deg);
   pointer-events: none;
-  transition: none;
-  animation: hs-gone 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-.hs-card.gone.right {
-  animation-name: hs-gone-right;
-}
-@keyframes hs-gone {
-  from {
-    transform: translateX(var(--from)) rotate(var(--rot));
-  }
-  to {
-    transform: translateX(-125%) rotate(-12deg);
-  }
-}
-@keyframes hs-gone-right {
-  from {
-    transform: translateX(var(--from)) rotate(var(--rot));
-  }
-  to {
-    transform: translateX(125%) rotate(12deg);
-  }
 }
 .hstack-back.b2 {
   z-index: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .hs-card,
-  .hs-card.gone {
+  .hs-card {
     transition: none;
-    animation-duration: 0.01s;
+  }
+}
+
+/* ---- Full screen (Dave, Nov 2026): as a Home Screen app the page runs under
+   the phone's status bar, whose time and battery are white. A soft shade
+   under them, only as tall as the bar, keeps them readable over the pink
+   waves; it stays put as the page scrolls, like the bar. ---- */
+@media (display-mode: standalone) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(env(safe-area-inset-top, 0px) + 10px);
+    background: linear-gradient(rgba(62, 26, 46, 0.24), rgba(62, 26, 46, 0));
+    z-index: 50;
+    pointer-events: none;
   }
 }

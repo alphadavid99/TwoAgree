@@ -774,9 +774,9 @@ function SessionScreens({
     return (
       <>
         <div className="tabwrap">
-          {/* Home wears its own header (avatar chip + settings); other tabs keep
-              the brand mark up top. */}
-          {tab !== "home" && tab !== "path" && (
+          {/* Home and Together wear their own header (the avatar chip); other
+              tabs keep the brand mark up top. */}
+          {tab !== "home" && tab !== "path" && tab !== "results" && (
             <div className="brandhead" style={{ padding: "2px 0 10px" }}>
               {tab === "profile" ? (
                 <Wordmark size={24} />

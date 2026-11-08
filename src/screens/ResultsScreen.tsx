@@ -139,16 +139,22 @@ export default function ResultsScreen({
 
   return (
     <section>
-      {/* One centred stack, the share button tucked top right (feedback 26). */}
-      <header className="tg-head">
-        <span className="tg-avs">
-          <Avatar name={me.name} tone={me.tone} size={40} />
-          <Avatar name={them.name} tone={them.tone} size={40} />
+      {/* The same header as Home (feedback, Nov 2026): the two of you in a
+          chip, the bell top right (SessionApp), then the screen's title with
+          share on its line. */}
+      <header className="homehdr">
+        <span className="avchip">
+          <span className="avchip-stack">
+            <Avatar name={me.name} tone={me.tone} size={34} />
+            <Avatar name={them.name} tone={them.tone} size={34} />
+          </span>
+          <i>
+            {firstOf(myName)} &amp; {firstOf(partnerName)}
+          </i>
         </span>
-        <span className="eyebrow">{t("Together", "Ensemble")}</span>
-        <h1 className="h1 tg-names">
-          {firstOf(myName)} &amp; {firstOf(partnerName)}
-        </h1>
+      </header>
+      <div className="tg-titlerow">
+        <h1 className="greet serif">{t("Together", "Ensemble")}</h1>
         <button
           className="roundbtn tg-share"
           type="button"
@@ -157,7 +163,7 @@ export default function ResultsScreen({
         >
           <IconShare size={20} />
         </button>
-      </header>
+      </div>
 
       <div className="kcard-claret tg-score">
         <ScoreRings

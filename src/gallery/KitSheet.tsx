@@ -11,13 +11,13 @@ export function KitSheet() {
 
       <div className="card">
         <div className="eyebrow">Money · Sharing money</div>
-        <div className="ktitle" style={{ marginTop: 6 }}>The thick card</div>
-        <p className="helper" style={{ margin: '6px 0 0' }}>White, a 2px edge and a 5px base. 20px corners, 16px inside.</p>
+        <div className="ktitle" style={{ marginTop: 6 }}>The glass card</div>
+        <p className="helper" style={{ margin: '6px 0 0' }}>Frosted white with a hairline edge and a soft shadow. No thick base. 22px corners, 16px inside.</p>
       </div>
-      <div className="kcard-claret" style={{ marginTop: 16 }}>
-        <div className="eyebrow" style={{ color: 'var(--ta-honey)' }}>The important moment</div>
-        <div className="ktitle" style={{ color: 'var(--ta-white)', marginTop: 6 }}>The claret card</div>
-        <p className="helper" style={{ color: 'var(--ta-blush)', margin: '6px 0 0' }}>One per screen at most: scores, a ready reveal.</p>
+      <div className="card" style={{ marginTop: 16 }}>
+        <div className="eyebrow">Colour, sparingly</div>
+        <div className="ktitle" style={{ marginTop: 6 }}>Mauve marks what you act on</div>
+        <p className="helper" style={{ margin: '6px 0 0' }}>The main button's edge, the active tab, the selected answer and progress. Nothing else.</p>
       </div>
 
       <button className="btn pill" type="button">Continue</button>

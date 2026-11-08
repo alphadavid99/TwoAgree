@@ -165,9 +165,8 @@ export default function ResultsScreen({
         </button>
       </div>
 
-      <div className="kcard-claret tg-score">
+      <div className="card tg-score">
         <ScoreRings
-          claret
           agree={overallPct}
           basis={basis}
           known={knownPct}

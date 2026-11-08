@@ -388,13 +388,13 @@ function StepPlay({
           style={{ borderColor: "var(--app-honey-line)" }}
         >
           <div className="qrow">
-            <div className="eyebrow">{t("YOUR GUESS", "VOTRE INTUITION")}</div>
-            <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+            <div className="eyebrow">{t("Your guess", "Votre intuition")}</div>
+            <span className="badge honey">&#10022; {t("Guess", "Devinez")}</span>
           </div>
           <div className="qtext">{q.q}</div>
           <div className="yousaid">
             <div>
-              <div className="eyebrow">{t("YOU SAID", "VOUS AVEZ DIT")}</div>
+              <div className="eyebrow">{t("You said", "Vous avez dit")}</div>
               <div className="yousaid-val">{yourText}</div>
             </div>
           </div>

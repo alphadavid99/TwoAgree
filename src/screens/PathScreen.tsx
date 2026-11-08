@@ -371,9 +371,7 @@ function PathIntake({
           style={{
             background: "var(--blush)",
             color: "var(--berry)",
-            fontWeight: 700,
             whiteSpace: "normal",
-            letterSpacing: 0.2,
             lineHeight: 1.35,
             maxWidth: 300,
             textAlign: "center",
@@ -392,7 +390,7 @@ function PathIntake({
         <i style={{ width: `${Math.round(((idx + 1) / QS.length) * 100)}%` }} />
       </div>
       <p className="hint">{t(`${idx + 1} of ${QS.length}`, `${idx + 1} sur ${QS.length}`)}</p>
-      <h1 className="h1" style={{ marginTop: 14, fontSize: 24 }}>{q.q}</h1>
+      <h1 className="h1" style={{ marginTop: 14 }}>{q.q}</h1>
       {q.hint && <p className="sub" style={{ marginTop: 6 }}>{q.hint}</p>}
       <div style={{ marginTop: 16 }}>
         {q.opts.map((o, oi) => {

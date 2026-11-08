@@ -5,745 +5,869 @@
       "id": "kit-sheet",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "kit-scenes",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "boot-checking",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "boot-crash",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-welcome",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-names",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-stage",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-consent",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-consent-ticked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-consent-error",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-q-answer",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-q-guess",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-profile",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-profile-error",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-invite",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "onb-menu",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-arrive",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-about",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-name",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-consent",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-questions",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-reveal",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-account",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-menu",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-redeeming",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "join-invite-failed",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signup",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signup-validation",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signin",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signin-error",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signin-busy",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signup-fields",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signup-taken",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-signin-shown",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "auth-reset",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-profile-loading",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-firstrun",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-choose",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-stage",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-join",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-join-tidy",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-join-link",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-join-error",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "start-settings",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "session-loading",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "session-loading-still",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "session-loading-slow",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "session-denied",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-new",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-invite-busy",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-solo",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-joined",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-herald",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "home-path",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "talk-decks",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "talk-pickup",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "talk-decks-deeper",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "talk-picker",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "live-choose",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "live-asking",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "live-request",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "live-later",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "foryou-talk",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "foryou-sheet",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-scale",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-mc",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-mc-saved",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-save-failed",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-guess",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-named",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-named-guess",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-was-asked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-rank",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-rank-moved",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-last",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-open",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-importance",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-long-scale",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-more-below",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-scale-end",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-scale-say",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-back",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "play-importance-on",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "wait-partner",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "wait-unlock",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-t0",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-t1",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-t2",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-t3",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-t4",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-share",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-share-names",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-first",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-notyet",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-answers",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "reveal-flags",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-empty",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-results",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-guide",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-sharecard",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-howscores",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-talk",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-ticked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "together-talked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-loading",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-intro",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-intake",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-waiting",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-start",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-start-walked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-map",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-step-arrival",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-step-play",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-step-walked",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "path-lookout",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-loading",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-main",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-edit",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-sees",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-close",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-data",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-export-error",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-delete",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     },
     {
       "id": "profile-delete-busy",
       "small": [],
       "taps": [],
-      "contrast": []
+      "contrast": [],
+      "type": []
     }
   ]
 }

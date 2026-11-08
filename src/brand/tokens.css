@@ -65,9 +65,11 @@
   --app-opt-hover:    #DCC0CB;  /* option border on hover */
   --app-row-hover:    #FDF7F9;  /* result row hover ground */
 
-  /* The thick-card kit (design refresh, item 16; docs/design-system.md). */
-  --kit-card-edge:    #F0E3DC;  /* card's 2px edge */
-  --kit-card-base:    #E8D3C7;  /* card's 5px base */
+  /* The kit. Glass since Nov 2026 (Dave: option C): cards are frosted white
+     with a hairline edge, no thick base; the old base token now matches the
+     edge so anything still drawing it reads as one quiet line. */
+  --kit-card-edge:    rgba(62, 26, 46, 0.07);  /* glass card's hairline */
+  --kit-card-base:    rgba(62, 26, 46, 0.07);
   --kit-claret-base:  #23101B;  /* base under claret cards and buttons */
   --kit-honey-base:   #C38A2A;  /* base under the honey button */
   --kit-red:          #A32D45;  /* deleting only. white on it 6.9:1 */
@@ -94,9 +96,31 @@
   --scene-rose:       #D98BA6;
   --scene-peak:       #C7839E;
 
-  /* Ground gradient (blush field the white cards float on) */
-  --app-ground-top:   #FBF2F5;
-  --app-ground-bot:   #F8E9EC;
+  /* The ground: one calm near-white (Nov 2026). The colour lives in the
+     flowing waves at the top of each screen (components/Flux.tsx). */
+  --app-ground-top:   #FBF8F9;
+  --app-ground-bot:   #FBF8F9;
+
+  /* Glass (option C). Frosted white over the ground and the waves. */
+  --glass:            rgba(255, 255, 255, 0.72);
+  --glass-strong:     rgba(255, 255, 255, 0.9);
+  --glass-line:       rgba(255, 255, 255, 0.9);
+  --glass-shadow:     rgba(62, 26, 46, 0.06);
+
+  /* The one calm accent: mauve, a softened claret, for things you act on
+     and for progress. Deep mauve for text on light grounds. */
+  --app-mauve:        #8E6A7D;  /* edges, dots, progress. 4.7:1 on white */
+  --app-mauve-deep:   #6E4F61;  /* text on glass. 7.6:1 on white */
+  --app-mauve-tint:   #EBDDE4;  /* the active tab's tint */
+
+  /* The waves (Flux): four silk ribbons over a soft wash. Decorative. */
+  --flux-wash-1:      #F5C9D8;
+  --flux-wash-2:      #F7DCC4;
+  --flux-wash-3:      #EEDCEB;
+  --flux-rose:        #EFB2C7;
+  --flux-peach:       #F4CCA6;
+  --flux-lilac:       #DBC0E2;
+  --flux-cream:       #F7E4C6;
 
   /* State + verdict colours */
   --app-danger:       #B23A48;
@@ -155,19 +179,30 @@
   --ease-settle:      cubic-bezier(0.25, 0.6, 0.3, 1);    /* calm arrival */
 
   /* ==========================================================================
-     Micro-labels. The app had grown 23 variants of "small uppercase text" —
-     9 to 12.5px, tracking 0.4 to 3px, weights 600 to 800 — which is what type
-     drift looks like when nobody names the thing. There are exactly two jobs:
-       EYEBROW  a wide-tracked label announcing a section.
-       TAG      a tight label riding on a chip, row or badge.
-     Sizes are rem so they scale with the reader's OS text size.
+     Type: six styles, two weights, two families (Dave, Nov 2026). The app
+     had grown 42 sizes, five weights and 30 uppercase label styles. Now:
+       TITLE     Fraunces 600, 26   screen titles, the greeting
+       QUESTION  Fraunces 600, 20   the question being asked
+       HEADING   Hanken 600, 17     card titles, section heads, score numbers
+       BODY      Hanken 400, 15     text, answers
+       STRONG    Hanken 600, 15     buttons, names
+       SMALL     Hanken 400, 13     meta, hints, labels (grey, sentence case)
+     Rem on the 15px root, so the reader's text size still scales them. No
+     uppercase, no tracking. The launch screen's wordmark (Inter) is the logo,
+     not type. The gallery audit fails any text outside these six.
      ========================================================================== */
-  --eyebrow-size:     0.8rem;      /* 12px on the 15px root */
-  --eyebrow-track:    0.18em;
-  --eyebrow-weight:   600;
-  --tag-size:         0.8rem;      /* 12px on the 15px root: the label floor (design system) */
-  --tag-track:        0.05em;
-  --tag-weight:       700;
+  --t-title:          1.7333rem;   /* 26px */
+  --t-question:       1.3333rem;   /* 20px */
+  --t-heading:        1.1333rem;   /* 17px */
+  --t-body:           1rem;        /* 15px */
+  --t-small:          0.8667rem;   /* 13px */
+  /* The old label names, kept so every label lands on SMALL. */
+  --eyebrow-size:     var(--t-small);
+  --eyebrow-track:    0;
+  --eyebrow-weight:   400;
+  --tag-size:         var(--t-small);
+  --tag-track:        0;
+  --tag-weight:       400;
 
   /* ==========================================================================
      Radius. The app declared 16 / 22 / 30 and then drew 10, 11, 12, 14, 18, 20

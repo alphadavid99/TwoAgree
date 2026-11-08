@@ -198,7 +198,7 @@ export default function RevealScreen({
 
   const eyebrow = (
     <div className="eyebrow center" style={{ marginTop: 10 }}>
-      {(title ?? deckName(slug, lang)).toUpperCase()}
+      {title ?? deckName(slug, lang)}
       {review
         ? t(" · REVIEW", " · RÉCAP")
         : multi
@@ -369,7 +369,7 @@ export default function RevealScreen({
     <section>
       <TopBar onExit={onDone} />
       <div className="eyebrow center" style={{ marginTop: 10 }}>
-        {partLabel.toUpperCase()}
+        {partLabel}
       </div>
       <h1 className="h1 center" style={{ margin: "4px 0 0" }}>
         {hasScore ? t("Your answers, side by side", "Vos réponses, face à face") : t("What you each said", "Ce que chacun a dit")}

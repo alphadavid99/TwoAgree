@@ -79,7 +79,7 @@ export function ScoreRings({
   }, []);
 
   const agreeColour = claret ? "var(--ta-honey)" : "var(--app-honey)";
-  const knownColour = claret ? "var(--app-rose-light)" : "var(--ta-claret)";
+  const knownColour = claret ? "var(--app-rose-light)" : "var(--app-mauve)";
   const ink = claret ? "var(--ta-white)" : "var(--ta-ink)";
   const track = claret ? "rgba(243,222,214,0.18)" : "var(--track)";
 
@@ -117,7 +117,7 @@ export function ScoreRings({
           <i>{t("Agree", "D’accord")}</i>
         </span>
         <span className="sbarslim-item">
-          <PctRing pct={known ?? 0} size={26} color="var(--ta-claret)" label="" />
+          <PctRing pct={known ?? 0} size={26} color="var(--app-mauve)" label="" />
           <b>{known ?? "—"}%</b>
           <i>{t("Known", "Connus")}</i>
         </span>

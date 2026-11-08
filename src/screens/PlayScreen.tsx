@@ -280,7 +280,7 @@ export default function PlayScreen({
     </button>
   ) : null;
 
-  const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ").toUpperCase();
+  const eyebrow = [deckName(slug, lang), partName(slug, level)].filter(Boolean).join(" · ");
 
   // The calm header: back and close, one stone per question, "3 of 6", and
   // what happened to the last answer.
@@ -336,7 +336,7 @@ export default function PlayScreen({
         <div key={`${q.id}-guess`} className="qcard qframe pane-in guesscard">
           <div className="qhead">
             <div className="guesshead">
-              <span className="badge honey">&#10022; {t("GUESS", "DEVINEZ")}</span>
+              <span className="badge honey">&#10022; {t("Guess", "Devinez")}</span>
               <span>
                 {q.qGuess ? (
                   <>

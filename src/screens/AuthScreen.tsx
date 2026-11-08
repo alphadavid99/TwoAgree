@@ -334,7 +334,7 @@ export default function AuthScreen({
         </form>
       </div>
 
-      <p className="muted center" style={{ fontSize: 14, marginTop: 8 }}>
+      <p className="helper muted center" style={{ marginTop: 8 }}>
         {isSignup ? t("Already have an account? ", "Vous avez déjà un compte ? ") : t("New here? ", "Nouveau ici ? ")}
         <button className="link" type="button" onClick={() => switchTo(isSignup ? "signin" : "signup")}>
           {isSignup ? t("Sign in", "Se connecter") : t("Create one", "Créer un compte")}

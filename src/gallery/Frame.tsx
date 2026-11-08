@@ -3,6 +3,7 @@ import { flushSync } from 'react-dom'
 import { createRoot, type Root } from 'react-dom/client'
 import type { User } from 'firebase/auth'
 import { exclusive, runSteps, sleep, type Step } from './actions'
+import { Flux } from '../components/Flux'
 import { setActiveFrame, type CallableHandler, type FrameRuntime } from './mock/runtime'
 import { exportFixture, fixtureUser } from './fixtures'
 import { publishInFrame, stampPublished } from './mock/publish'
@@ -150,7 +151,7 @@ export function Frame({ def, index, eager }: { def: FrameDef; index: number; eag
       flushSync(() =>
         root!.render(
           <FrameBoundary id={def.id}>
-            {def.bare ? def.render(c) : <div className="phone">{def.render(c)}</div>}
+            {def.bare ? def.render(c) : <div className="phone"><Flux />{def.render(c)}</div>}
           </FrameBoundary>,
         ),
       )

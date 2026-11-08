@@ -424,7 +424,7 @@ function SessionScreens({
     <>
       {choose && !showIncoming && (
         <Sheet
-          eyebrow={nLevels(choose.slug) > 1 ? t(`${deckName(choose.slug, lang)} · Part ${choose.level + 1}`, `${deckName(choose.slug, lang)} · Partie ${choose.level + 1}`).toUpperCase() : undefined}
+          eyebrow={nLevels(choose.slug) > 1 ? t(`${deckName(choose.slug, lang)} · Part ${choose.level + 1}`, `${deckName(choose.slug, lang)} · Partie ${choose.level + 1}`) : undefined}
           title={nLevels(choose.slug) > 1 ? partName(choose.slug, choose.level) : deckName(choose.slug, lang)}
           onClose={() => setChoose(null)}
         >
@@ -462,7 +462,7 @@ function SessionScreens({
       )}
       {showIncoming && req && (
         <Sheet
-          eyebrow={t(`A request from ${partnerFirst}`, `Une demande de ${partnerFirst}`).toUpperCase()}
+          eyebrow={t(`A request from ${partnerFirst}`, `Une demande de ${partnerFirst}`)}
           title={t(
             `${partnerFirst} wants to start ${partLabel(req.slug, req.level)} with you`,
             `${partnerFirst} veut commencer ${partLabel(req.slug, req.level)} avec vous`,
@@ -529,7 +529,7 @@ function SessionScreens({
             </div>
             {state === "asking" ? (
               <>
-                <h2 className="h1 center" style={{ fontSize: 26 }}>
+                <h2 className="h1 center">
                   {t(`Asking ${partnerFirst}…`, `Demande envoyée à ${partnerFirst}…`)}
                 </h2>
                 <p className="sub center" style={{ margin: "10px 24px 0" }}>
@@ -555,7 +555,7 @@ function SessionScreens({
               </>
             ) : (
               <>
-                <h2 className="h1 center" style={{ fontSize: 26 }}>
+                <h2 className="h1 center">
                   {state === "later"
                     ? t(`${partnerFirst} will do it later`, `${partnerFirst} le fera plus tard`)
                     : t(`No answer from ${partnerFirst} yet`, `Pas encore de réponse de ${partnerFirst}`)}
@@ -657,8 +657,8 @@ function SessionScreens({
                   <Avatar name={session.members?.host?.name} tone="berry" size={46} />
                   <Avatar name={session.members?.guest?.name} tone="honey" size={46} />
                 </div>
-                <div className="eyebrow center">{t("READY TO OPEN", "PRÊT À OUVRIR")}</div>
-                <h2 className="h1 center" style={{ fontSize: 26, marginTop: 6 }}>
+                <div className="eyebrow center">{t("Ready to open", "Prêt à ouvrir")}</div>
+                <h2 className="h1 center" style={{ marginTop: 6 }}>
                   {t("You’ve both finished this part.", "Vous avez tous deux terminé cette partie.")}
                 </h2>
                 <p className="sub center" style={{ margin: "10px 24px 0" }}>
@@ -725,7 +725,7 @@ function SessionScreens({
                 ),
               )}
             </div>
-            <h2 className="h1 center" style={{ fontSize: 26 }}>
+            <h2 className="h1 center">
               {t("Your answers are saved.", "Vos réponses sont enregistrées.")}
             </h2>
             <p className="sub center" style={{ margin: "10px 24px 0" }}>

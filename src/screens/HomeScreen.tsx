@@ -183,7 +183,7 @@ export default function HomeScreen({
                 <Avatar name={partnerName} tone={toneFor(other(role))} size={34} />
               </span>
             ) : (
-              <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34, fontSize: 14 }}>
+              <span className="avatar-disc avatar-wait" style={{ width: 34, height: 34 }}>
                 ?
               </span>
             )}
@@ -215,7 +215,7 @@ export default function HomeScreen({
             <SoftRing pct={overallPct} colour="var(--app-honey)" name={t("Agree", "D’accord")} count={t(`${basis} question${basis === 1 ? "" : "s"}`, `${basis} question${basis === 1 ? "" : "s"}`)} />
             <SoftRing
               pct={knownPct}
-              colour="var(--app-rose-soft)"
+              colour="var(--app-mauve)"
               name={t("Known", "Connus")}
               count={made ? t(`${right} of ${made} guesses`, `${right} intuitions sur ${made}`) : t("no guesses yet", "pas encore d’intuitions")}
             />
@@ -235,7 +235,7 @@ export default function HomeScreen({
             <span className="readyseal" aria-hidden="true">&#10022;</span>
             <span>
               <span className="readycard-eyebrow">
-                {t("READY TO OPEN", "PRÊT À OUVRIR")}
+                {t("Ready to open", "Prêt à ouvrir")}
               </span>
               <span className="readycard-nm">
                 {deckName(pending[0].slug, lang)}

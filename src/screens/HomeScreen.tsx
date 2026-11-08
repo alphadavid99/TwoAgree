@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { nLevels, lvlQs, partName } from "../lib/leveling";
 import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
 import { inviteLink } from "../lib/invite";
 import { revealedRows, answersWaiting } from "../lib/results";
+import { DECKS, ORDER } from "../lib/questions";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
@@ -46,7 +47,6 @@ export default function HomeScreen({
 }) {
   const t = useT();
   const lang = useLang();
-  const deck: DeckData | undefined = session.decks?.[slug];
   // Home speaks in first names — full names elongate the chip and greeting.
   const firstName = (n: string) => n.trim().split(/\s+/)[0] || n;
   const myName = firstName(session.members?.[role]?.name ?? t("You", "Vous"));
@@ -76,39 +76,11 @@ export default function HomeScreen({
         ? t("Good afternoon,", "Bon après-midi,")
         : t("Good evening,", "Bonsoir,");
 
-  const L = nLevels(slug);
-  const lvl = curLevel(slug, deck, role);
-  const lvlTotal = lvlQs(slug, lvl).length;
-  const mine = doneInLevel(slug, lvl, deck, role);
-  // Their answers are private until you've both finished, so partner status
-  // comes from the shared started/done flags only.
-  const theyStarted = startedLevel(deck, lvl, other(role));
-  const theyFinished = levelDone(deck, lvl, other(role));
-  const allDone = catComplete(slug, deck, role);
-
-  const cta = allDone
-    ? t("See where you agree →", "Voir où vous êtes d’accord →")
-    : L > 1
-      ? mine > 0
-        ? t(`Continue Part ${lvl + 1} →`, `Continuer la partie ${lvl + 1} →`)
-        : t(`Start Part ${lvl + 1} →`, `Commencer la partie ${lvl + 1} →`)
-      : mine > 0
-        ? t("Continue →", "Continuer →")
-        : t("Start answering →", "Commencer à répondre →");
-
   // The scores card shares Together's maths, so the numbers agree.
   const { rows, overallPct, knownPct, basis, right, made } = revealedRows(session.decks, role);
-  // The hero's segments: one per part (filled when you've finished it, the
-  // current one by how far you are); a one-part conversation shows its
-  // questions instead.
-  const segs: number[] =
-    L > 1
-      ? Array.from({ length: L }, (_, i) =>
-          levelDone(deck, i, role) ? 1 : i === lvl && lvlTotal ? mine / lvlTotal : 0,
-        )
-      : Array.from({ length: Math.min(lvlTotal, 12) }, (_, i) =>
-          i < Math.round((mine / Math.max(lvlTotal, 1)) * Math.min(lvlTotal, 12)) ? 1 : 0,
-        );
+  // The cards on Home: the conversation you're in on top, then the others
+  // you've started, then the rest, so a swipe brings up what's next.
+  const stack = heroStack(slug, session.decks, role);
   const talk = talkNext(session.decks, role).next[0];
   const names = namesFor(session.members, role, myName, partnerName);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
@@ -215,56 +187,23 @@ export default function HomeScreen({
         </div>
       )}
 
-      {/* Your next step, as one big card (Dave, Nov 2026, after Dateasy):
-          the parts as segments, the agree pill, the conversation's name, one
-          Start pill and one quiet link. */}
-      <div className="card hhero">
-        <span className="hero-segs" aria-hidden="true">
-          {segs.map((f, i) => (
-            <i key={i}>
-              <b style={{ width: `${Math.round(f * 100)}%` }} />
-            </i>
-          ))}
-        </span>
-        {overallPct != null && (
-          <span className="hero-pill">
-            <span aria-hidden="true">&#9825;</span> {t(`${overallPct}% agree`, `${overallPct} % d’accord`)}
-          </span>
+      {/* Your next step, as one big card with the others stacked behind it
+          (Dave, Nov 2026, after Dateasy): swipe for another conversation. */}
+      <HeroStack
+        slugs={stack}
+        render={(s) => (
+          <HeroCard
+            slug={s}
+            deck={session.decks?.[s]}
+            role={role}
+            joined={joined}
+            partnerName={partnerName}
+            pct={rows.find((r) => r.slug === s)?.pct ?? null}
+            onPlay={onPlay}
+            onBrowse={onBrowse}
+          />
         )}
-        <span className="hero-body">
-          <span className="hero-up">
-            {allDone
-              ? t("All parts revealed", "Toutes les parties révélées")
-              : L > 1
-                ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
-                : t("Up next", "À suivre")}
-          </span>
-          <h2 className="hero-nm">{deckName(slug, lang)}</h2>
-          {!allDone && (
-            <span className="hero-sub">
-              {L > 1 ? `${partName(slug, lvl)} · ` : ""}
-              {mine > 0
-                ? t(`${mine} of ${lvlTotal} answered`, `${mine} sur ${lvlTotal} répondues`)
-                : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
-            </span>
-          )}
-          {joined && !allDone && (
-            <span className="hero-them">
-              {!theyStarted
-                ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
-                : theyFinished
-                  ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
-                  : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
-            </span>
-          )}
-          <button className="btn pill hero-go" type="button" onClick={() => onPlay(slug)}>
-            {cta}
-          </button>
-          <button className="linkbtn hero-alt" type="button" onClick={onBrowse}>
-            {t("Choose another conversation", "Choisir une autre conversation")}
-          </button>
-        </span>
-      </div>
+      />
 
       {/* The reveal that's waiting, before anything else below. */}
       {pending.length > 0 && onOpenReveal && (
@@ -375,5 +314,199 @@ export default function HomeScreen({
         </div>
       )}
     </section>
+  );
+}
+
+// The conversation you're in, then the others you've started and not
+// finished, then the ones not yet begun; five at most.
+function heroStack(slug: string, decks: Session["decks"], role: Role): string[] {
+  const begun = (s: string) => !!decks?.[s]?.answers && Object.values(decks[s]?.answers ?? {}).some((a) => a?.[role] != null);
+  const open = ORDER.filter((s) => s !== slug && DECKS[s] && !catComplete(s, decks?.[s], role));
+  return [slug, ...open.filter(begun), ...open.filter((s) => !begun(s))].slice(0, 5);
+}
+
+// One card on top, up to two peeking out behind it. Drag sideways (or swipe)
+// to bring up the next; a tap still presses the card's buttons.
+function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) => ReactNode }) {
+  const t = useT();
+  const n = slugs.length;
+  const [i, setI] = useState(0);
+  const [dx, setDx] = useState(0);
+  const [out, setOut] = useState<0 | 1 | -1>(0);
+  const from = useRef<{ x: number; y: number } | null>(null);
+  const dragging = useRef(false);
+  const go = (dir: 1 | -1) => {
+    setOut(dir);
+    window.setTimeout(() => {
+      setI((v) => (v + dir + n) % n);
+      setOut(0);
+      setDx(0);
+    }, 220);
+  };
+  const down = (e: RPointerEvent<HTMLDivElement>) => {
+    if (n < 2) return;
+    from.current = { x: e.clientX, y: e.clientY };
+    dragging.current = false;
+  };
+  const move = (e: RPointerEvent<HTMLDivElement>) => {
+    const f = from.current;
+    if (!f) return;
+    const x = e.clientX - f.x;
+    if (!dragging.current) {
+      if (Math.abs(x) < 8 || Math.abs(x) < Math.abs(e.clientY - f.y)) return;
+      dragging.current = true;
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    }
+    setDx(x);
+  };
+  const up = () => {
+    if (!from.current) return;
+    from.current = null;
+    if (dx < -70) go(1);
+    else if (dx > 70) go(-1);
+    else setDx(0);
+  };
+  const style =
+    out !== 0
+      ? { transform: `translateX(${out * -120}%) rotate(${out * -8}deg)`, opacity: 0, transition: "transform .22s ease-in, opacity .22s ease-in" }
+      : dx
+        ? { transform: `translateX(${dx}px) rotate(${dx / 28}deg)`, transition: "none" }
+        : undefined;
+  return (
+    <div className="hstack" aria-roledescription={t("cards", "cartes")}>
+      {n > 2 && <span className="hstack-back b2" aria-hidden="true" />}
+      {n > 1 && <span className="hstack-back b1" aria-hidden="true" />}
+      {/* While you pull the top card away, the next one is already there. */}
+      {n > 1 && (dx !== 0 || out !== 0) && (
+        <div className="hstack-next" aria-hidden="true" inert>
+          {render(slugs[(i + (dx > 0 || out === -1 ? -1 : 1) + n) % n])}
+        </div>
+      )}
+      <div
+        key={slugs[i]}
+        className={`hstack-top${dx !== 0 || out !== 0 ? " moving" : ""}`}
+        style={style}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onClickCapture={(e) => {
+          if (dragging.current) {
+            e.stopPropagation();
+            e.preventDefault();
+            dragging.current = false;
+          }
+        }}
+      >
+        {render(slugs[i])}
+      </div>
+      {n > 1 && (
+        <span className="hstack-dots" aria-hidden="true">
+          {slugs.map((s, k) => (
+            <i key={s} className={k === i ? "on" : ""} />
+          ))}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function HeroCard({
+  slug,
+  deck,
+  role,
+  joined,
+  partnerName,
+  pct,
+  onPlay,
+  onBrowse,
+}: {
+  slug: string;
+  deck: DeckData | undefined;
+  role: Role;
+  joined: boolean;
+  partnerName: string;
+  pct: number | null;
+  onPlay: (slug: string) => void;
+  onBrowse: () => void;
+}) {
+  const t = useT();
+  const lang = useLang();
+  const L = nLevels(slug);
+  const lvl = curLevel(slug, deck, role);
+  const lvlTotal = lvlQs(slug, lvl).length;
+  const mine = doneInLevel(slug, lvl, deck, role);
+  // Their answers are private until you've both finished, so partner status
+  // comes from the shared started/done flags only.
+  const theyStarted = startedLevel(deck, lvl, other(role));
+  const theyFinished = levelDone(deck, lvl, other(role));
+  const allDone = catComplete(slug, deck, role);
+  const cta = allDone
+    ? t("See where you agree →", "Voir où vous êtes d’accord →")
+    : L > 1
+      ? mine > 0
+        ? t(`Continue Part ${lvl + 1} →`, `Continuer la partie ${lvl + 1} →`)
+        : t(`Start Part ${lvl + 1} →`, `Commencer la partie ${lvl + 1} →`)
+      : mine > 0
+        ? t("Continue →", "Continuer →")
+        : t("Start answering →", "Commencer à répondre →");
+  // One segment per part (filled when you've finished it, the current one by
+  // how far you are); a one-part conversation shows its questions instead.
+  const segs: number[] =
+    L > 1
+      ? Array.from({ length: L }, (_, i) =>
+          levelDone(deck, i, role) ? 1 : i === lvl && lvlTotal ? mine / lvlTotal : 0,
+        )
+      : Array.from({ length: Math.min(lvlTotal, 12) }, (_, i) =>
+          i < Math.round((mine / Math.max(lvlTotal, 1)) * Math.min(lvlTotal, 12)) ? 1 : 0,
+        );
+  return (
+    <div className="card hhero">
+      <span className="hero-segs" aria-hidden="true">
+        {segs.map((f, i) => (
+          <i key={i}>
+            <b style={{ width: `${Math.round(f * 100)}%` }} />
+          </i>
+        ))}
+      </span>
+      {pct != null && (
+        <span className="hero-pill">
+          <span aria-hidden="true">&#9825;</span> {t(`${pct}% agree`, `${pct} % d’accord`)}
+        </span>
+      )}
+      <span className="hero-body">
+        <span className="hero-up">
+          {allDone
+            ? t("All parts revealed", "Toutes les parties révélées")
+            : L > 1
+              ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
+              : t("Up next", "À suivre")}
+        </span>
+        <h2 className="hero-nm">{deckName(slug, lang)}</h2>
+        {!allDone && (
+          <span className="hero-sub">
+            {L > 1 ? `${partName(slug, lvl)} · ` : ""}
+            {mine > 0
+              ? t(`${mine} of ${lvlTotal} answered`, `${mine} sur ${lvlTotal} répondues`)
+              : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
+          </span>
+        )}
+        {joined && !allDone && (
+          <span className="hero-them">
+            {!theyStarted
+              ? t(`${partnerName} hasn’t started this part yet`, `${partnerName} n’a pas encore commencé cette partie`)
+              : theyFinished
+                ? t(`${partnerName} has finished this part`, `${partnerName} a terminé cette partie`)
+                : t(`${partnerName} has started this part`, `${partnerName} a commencé cette partie`)}
+          </span>
+        )}
+        <button className="btn pill hero-go" type="button" onClick={() => onPlay(slug)}>
+          {cta}
+        </button>
+        <button className="linkbtn hero-alt" type="button" onClick={onBrowse}>
+          {t("Choose another conversation", "Choisir une autre conversation")}
+        </button>
+      </span>
+    </div>
   );
 }

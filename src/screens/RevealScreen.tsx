@@ -196,19 +196,13 @@ export default function RevealScreen({
     setStage(2);
   };
 
-  const eyebrow = (
-    <div className="eyebrow center" style={{ marginTop: 10 }}>
-      {title ?? deckName(slug, lang)}
-      {review
-        ? t(" · REVIEW", " · RÉCAP")
-        : multi
-          ? t(
-              ` · PART ${level + 1} OF ${nLevels(slug)}`,
-              ` · PARTIE ${level + 1} SUR ${nLevels(slug)}`,
-            )
-          : ""}
-    </div>
-  );
+  const where =
+    (title ?? deckName(slug, lang)) +
+    (review
+      ? t(" · Review", " · Récap")
+      : multi
+        ? t(` · Part ${level + 1} of ${nLevels(slug)}`, ` · Partie ${level + 1} sur ${nLevels(slug)}`)
+        : "");
 
   if (phase === "ceremony") {
     return (
@@ -219,9 +213,8 @@ export default function RevealScreen({
         {/* The claret room. Full-bleed behind the notch and the home indicator —
             grounds bleed, content stays inside the safe area. */}
         {lit && <div className="ceremony-ground" aria-hidden="true" />}
-        <TopBar onExit={onDone} />
+        <TopBar onExit={onDone} title={where} />
         {party && <Celebration tier={tier} />}
-        {eyebrow}
 
         {stage === 1 && (
           <div className="meetstage tall">

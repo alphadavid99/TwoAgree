@@ -8518,3 +8518,171 @@ html .morebelow {
 .guessname {
   color: var(--app-mauve-deep);
 }
+
+/* ---- Full screen: no mark up top (Dave, Nov 2026). Close is a glass
+   circle on the left; a flow may name itself in the middle. ---- */
+.topbar {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  min-height: 48px;
+  padding: 2px 0 6px;
+}
+.topbar-none {
+  min-height: 8px;
+}
+.topbar .topbar-slot {
+  width: auto;
+}
+html .topbar-title {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.bellrow {
+  height: 40px;
+}
+
+/* ---- Home, round 2 (Dave, Nov 2026): the mockup's tall card, see-through
+   at the top so the waves behind it show, with the rest of the
+   conversations stacked behind it ---- */
+.flux {
+  height: 640px;
+}
+.hstack {
+  position: relative;
+  isolation: isolate;
+  margin: 4px 0 18px;
+  padding-bottom: 22px;
+}
+.hstack-top {
+  position: relative;
+  z-index: 2;
+  touch-action: pan-y;
+  animation: hstack-in 0.32s var(--ease-glide) both;
+}
+@keyframes hstack-in {
+  from {
+    transform: translateY(14px) scale(0.95);
+    opacity: 0.4;
+  }
+}
+.hstack-back {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Only the lower part: the top card is see-through up top, and the cards
+     behind should peek out beneath it, never show through it. */
+  top: 82%;
+  bottom: 22px;
+  border-radius: 0 0 28px 28px;
+  border: 1px solid var(--kit-card-edge);
+  border-top: 0;
+  background: color-mix(in srgb, var(--ta-white) 80%, transparent);
+  box-shadow: 0 10px 22px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  transform-origin: 50% 100%;
+}
+.hstack-back.b1 {
+  z-index: 1;
+  transform: translateY(11px) scale(0.94);
+}
+.hstack-back.b2 {
+  z-index: 0;
+  transform: translateY(22px) scale(0.88);
+  background: color-mix(in srgb, var(--ta-white) 60%, transparent);
+}
+.hstack-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.hstack-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--app-mauve-tint);
+}
+.hstack-dots i.on {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--app-mauve-deep);
+}
+html .hhero {
+  min-height: 460px;
+  margin: 0;
+  padding: 18px 20px 14px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ta-white) 18%, transparent) 0%,
+    color-mix(in srgb, var(--ta-white) 40%, transparent) 45%,
+    color-mix(in srgb, var(--ta-white) 92%, transparent) 72%,
+    var(--ta-white) 80%
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  backdrop-filter: blur(10px) saturate(1.5);
+}
+.hhero .hero-pill {
+  align-self: flex-end;
+  margin-top: 16px;
+}
+.hhero .hero-body {
+  margin-top: auto;
+  padding-top: 40px;
+}
+html .hhero .hero-nm {
+  margin: 6px 0 8px;
+  font-size: 2.9rem;
+  line-height: 1.04;
+}
+.hhero .hero-segs i {
+  background: color-mix(in srgb, var(--ta-white) 70%, transparent);
+}
+.hhero .btn.hero-go {
+  min-height: 56px;
+  margin-top: 22px;
+}
+
+/* ---- Questions at the mockup's sizes: answers in BODY, more air ---- */
+html .pfull .opt {
+  min-height: 60px;
+  margin-top: 12px;
+  font-size: var(--t-body);
+}
+.pfull .qframe > .qhead {
+  padding: 40px 6px 30px;
+}
+.pfull .orb {
+  max-width: 62px;
+}
+.pfull .qcount {
+  margin-top: 22px;
+}
+.hstack-next {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  transform: scale(0.96);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+/* A card on the move turns frosted all over, so the next one under it never
+   reads through it. */
+html .hstack-top.moving .hhero {
+  background: var(--ta-white);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+}

@@ -38,7 +38,6 @@ import { Mark } from "../brand/Mark";
 import { Avatar, toneFor } from "../components/Avatar";
 import { deckName } from "../lib/questions.fr";
 import { talkEventIcs, icsHref } from "../lib/calendar";
-import { Wordmark } from "../brand/Wordmark";
 import { PillNav } from "../components/PillNav";
 import type { Session } from "../types";
 import { IconHome, IconDecks, IconProfile } from "../components/icons";
@@ -776,17 +775,10 @@ function SessionScreens({
     return (
       <>
         <div className="tabwrap">
-          {/* Home and Together wear their own header (the avatar chip); other
-              tabs keep the brand mark up top. */}
-          {tab !== "home" && tab !== "path" && tab !== "results" && (
-            <div className="brandhead" style={{ padding: "2px 0 10px" }}>
-              {tab === "profile" ? (
-                <Wordmark size={24} />
-              ) : (
-                <Mark height={30} title="TwoAgree" colour="var(--berry)" />
-              )}
-            </div>
-          )}
+          {/* Home and Together wear their own header (the avatar chip). The
+              other tabs are full screen with no mark (Dave, Nov 2026): Talk
+              keeps a row for the bell above its big title. */}
+          {tab === "decks" && <div className="bellrow" aria-hidden="true" />}
           {/* For you, top right on every tab but You. */}
           {tab !== "profile" && (
             <div className="fy-bellslot">

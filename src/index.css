@@ -9334,3 +9334,19 @@ html .livechoice.live {
   border: 1.5px solid var(--app-mauve);
   background: var(--ta-white);
 }
+
+/* ---- A finished part, waiting or ready (Dave, Nov 2026): the two of you as
+   big as the conversation circles, the words below, and the buttons down at
+   the foot of the screen where the thumb is. ---- */
+.unlock.unlock-full {
+  justify-content: flex-start;
+  min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 128px);
+  padding-top: 9vh;
+}
+.unlock-full > .btn.pill {
+  margin-top: auto;
+}
+.unlock-full .pair-apart {
+  gap: 16px;
+  margin-bottom: 26px;
+}

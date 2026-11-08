@@ -34,6 +34,10 @@ export default function DecksScreen({
   current,
   forYou,
   forYouFresh = false,
+  firstLabel,
+  firstIcon,
+  past = false,
+  onBack,
   actSlot,
 }: {
   session: Session;
@@ -48,6 +52,13 @@ export default function DecksScreen({
   forYou?: ReactNode;
   /** Something new in For you since you last looked. */
   forYouFresh?: boolean;
+  /** The first circle's name and icon, when it isn't For you. */
+  firstLabel?: string;
+  firstIcon?: ReactNode;
+  /** Past conversations (Together): only what you've both opened, to review. */
+  past?: boolean;
+  /** Past conversations: back to the score. */
+  onBack?: () => void;
   /** The shared header's button spot, left of the bell. */
   actSlot?: HTMLElement | null;
 }) {
@@ -64,8 +75,12 @@ export default function DecksScreen({
   const theirFirst = partnerName.trim().split(/\s+/)[0] || partnerName;
 
   const begun = (s: string) => Object.values(decks?.[s]?.answers ?? {}).some((a) => a?.[role] != null);
+  // Past conversations: only the ones with a part you've both opened.
+  const opened = (s: string) => Array.from({ length: nLevels(s) }, (_, l) => levelComplete(decks?.[s], l, role)).some(Boolean);
+  const POOL = past ? ALL.filter(opened) : ALL;
   const ring = (s: string): Ring => {
     const d = decks?.[s];
+    if (past) return catComplete(s, d, role) ? "done" : "going";
     for (let l = 0; l < nLevels(s); l++) if (levelDone(d, l, other(role)) && !levelDone(d, l, role)) return "turn";
     if (catComplete(s, d, role)) return "done";
     return begun(s) ? "going" : "new";
@@ -75,15 +90,15 @@ export default function DecksScreen({
   // where your partner is waiting, else the first under way, else the first.
   const [sel, setSel] = useState<string>(() => {
     if (forYou && forYouFresh) return FY;
-    if (current && DECKS[current]) return current;
-    return ALL.find((s) => ring(s) === "turn") ?? ALL.find((s) => ring(s) === "going") ?? ALL[0];
+    if (current && DECKS[current] && POOL.includes(current)) return current;
+    return POOL.find((s) => ring(s) === "turn") ?? POOL.find((s) => ring(s) === "going") ?? POOL[0] ?? ALL[0];
   });
 
   // Accept messy input: case, accents and stray spaces don't matter.
   const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
   const q = norm(query);
   const matches = (s: string) => !q || norm(deckName(s, lang)).includes(q) || norm(DECKS[s].name).includes(q);
-  const shown = ALL.filter(matches);
+  const shown = POOL.filter(matches);
   // A search that hides the chosen one chooses the first it finds.
   useEffect(() => {
     if (sel === FY && !q) return;
@@ -125,7 +140,7 @@ export default function DecksScreen({
   );
 
   // The conversation whose parts show (For you has none of its own).
-  const ds = sel === FY ? (shown[0] ?? ALL[0]) : sel;
+  const ds = sel === FY ? (shown[0] ?? POOL[0] ?? ALL[0]) : sel;
   const d = decks?.[ds];
   const n = nLevels(ds);
   const openedCount = Array.from({ length: n }, (_, i) => levelComplete(d, i, role)).filter(Boolean).length;
@@ -141,9 +156,24 @@ export default function DecksScreen({
 
   return (
     <section>
-      {actSlot ? createPortal(searchBtn, actSlot) : searchBtn}
-      <h1 className="pagetitle">{t("Conversations", "Conversations")}</h1>
-      {searching && (
+      {past ? (
+        <div className="past-head">
+          {onBack && (
+            <button className="pcircle" type="button" onClick={onBack} aria-label={t("Back to Together", "Retour à Ensemble")}>
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M14.5 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
+          <h1 className="pagetitle">{t("Past conversations", "Conversations passées")}</h1>
+        </div>
+      ) : (
+        <>
+          {actSlot ? createPortal(searchBtn, actSlot) : searchBtn}
+          <h1 className="pagetitle">{t("Conversations", "Conversations")}</h1>
+        </>
+      )}
+      {(searching || past) && (
         <label className="cv-search">
           <span className="sr-only">{t("Search conversations", "Rechercher une conversation")}</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -155,7 +185,7 @@ export default function DecksScreen({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("Search conversations", "Rechercher une conversation")}
-            autoFocus
+            autoFocus={!past}
           />
         </label>
       )}
@@ -169,14 +199,14 @@ export default function DecksScreen({
             data-slug={FY}
             className={`cv-circ fy turn${sel === FY ? " on" : ""}`}
             aria-pressed={sel === FY}
-            aria-label={t("For you", "Pour vous")}
+            aria-label={firstLabel ?? t("For you", "Pour vous")}
             onClick={() => setSel(FY)}
           >
             <span className="cv-circ-disc" aria-hidden="true">
-              <IconBell size={28} />
+              {firstIcon ?? <IconBell size={28} />}
               {forYouFresh && <span className="cv-circ-new" />}
             </span>
-            <span className="cv-circ-nm">{t("For you", "Pour vous")}</span>
+            <span className="cv-circ-nm">{firstLabel ?? t("For you", "Pour vous")}</span>
           </button>
         )}
         {shown.map((s) => {
@@ -199,6 +229,11 @@ export default function DecksScreen({
           );
         })}
       </div>
+      {past && !POOL.length && (
+        <p className="helper center" style={{ marginTop: 24 }}>
+          {t("Nothing opened together yet.", "Rien d’ouvert ensemble pour l’instant.")}
+        </p>
+      )}
       {q && !shown.length && (
         <p className="helper center" style={{ marginTop: 24 }}>
           {t("No conversation by that name.", "Aucune conversation de ce nom.")}
@@ -208,9 +243,9 @@ export default function DecksScreen({
       {sel === FY && forYou && !q ? (
         <>
           <div className="cv-parts-h">
-            <h2>{t("For you", "Pour vous")}</h2>
+            <h2>{firstLabel ?? t("For you", "Pour vous")}</h2>
           </div>
-          <div className="card fy-card cv-fy">{forYou}</div>
+          {past ? forYou : <div className="card fy-card cv-fy">{forYou}</div>}
         </>
       ) : shown.length > 0 && (
         <>
@@ -226,6 +261,7 @@ export default function DecksScreen({
           </div>
           <div className="cv-parts">
             {Array.from({ length: n }, (_, i) => {
+              if (past && !levelComplete(d, i, role)) return null;
               const youDone = levelDone(d, i, role);
               const themDone = levelDone(d, i, other(role));
               const both = levelComplete(d, i, role);

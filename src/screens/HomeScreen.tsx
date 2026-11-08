@@ -11,7 +11,8 @@ import { prettyError } from "../lib/errors";
 import type { Session } from "../types";
 import { SUBJECTS } from "../lib/subjects";
 import { toneFor } from "../components/Avatar";
-import { deckName, localizeQuestion } from "../lib/questions.fr";
+import { TalkCard } from "../components/TalkCard";
+import { deckName } from "../lib/questions.fr";
 import { talkNext } from "../lib/talkNext";
 import { namesFor } from "../lib/who";
 import { track } from "../lib/observability";
@@ -24,7 +25,6 @@ export default function HomeScreen({
   slug,
   onPlay,
   onBrowse,
-  onTogether,
   pending = [],
   onOpenReveal,
 }: {
@@ -241,22 +241,22 @@ export default function HomeScreen({
       slug,
     );
   }
-  // Somewhere you saw it differently, ready to talk about.
+  // Somewhere you saw it differently, ready to talk about: the guide, or
+  // "Have you talked this through yet?" (moved here from Together).
   if (talk) {
     card(
       `talk:${talk.q.id}`,
-      <div className="card hhero">
-        <span className="hkind">{t("Talk about this", "À aborder")}</span>
-        <span className="hero-body">
-          <span className="hero-up">
-            {t(`From ${deckName(talk.slug, lang)} · you saw it differently`, `De ${deckName(talk.slug, lang)} · vous l’avez vu différemment`)}
-          </span>
-          <h2 className="hero-q">{localizeQuestion(talk.q, lang, names).q}</h2>
-          <button className="btn pill hero-go" type="button" onClick={onTogether}>
-            {t("Talk it through →", "En parler →")}
-          </button>
-        </span>
-      </div>,
+      <TalkCard
+        s={talk}
+        code={code}
+        role={role}
+        lang={lang}
+        names={names}
+        me={{ name: myName, photo: myPhoto, tone: toneFor(role) }}
+        them={{ name: partnerName, photo: partnerPhoto, tone: toneFor(other(role)) }}
+        t={t}
+        kind={t("Talk about this", "À aborder")}
+      />,
     );
   }
   // What to do next, picked from what you've just done.

@@ -9350,3 +9350,89 @@ html .livechoice.live {
   gap: 16px;
   margin-bottom: 26px;
 }
+
+/* ---- Together (Dave, Nov 2026): what you've built so far, one big card ---- */
+.revcard.tgcard {
+  min-height: min(620px, calc(100svh - 300px));
+  margin-top: 0;
+}
+.tgstats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 14px;
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+html .tgstats b {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.tg-how {
+  display: block;
+  margin: 8px auto 0;
+}
+/* Past conversations: back circle beside the title, search always there. */
+.past-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.past-head .pagetitle {
+  margin: 14px 2px 16px;
+}
+.past-head + .cv-search {
+  margin-bottom: 4px;
+}
+/* Home's Talk about this card: the question, both answers, then the step. */
+.htalk .htalk-body {
+  margin-top: auto;
+  padding-top: 8px;
+}
+.htalk-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.htalk .hero-q {
+  font-size: var(--t-question);
+  margin: 8px 0 12px;
+}
+.htalk-ans {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+.htalk-ans .ansrow {
+  margin: 0;
+}
+.htalk-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 14px;
+}
+.htalk-btns {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+.htalk-btns .btn {
+  flex: 1;
+  margin: 0;
+}
+/* The share sheet's choices: SMALL, regular, like every label. */
+html .cardopt,
+html .cardopt.on {
+  font-weight: 400;
+}
+/* Together's card: the number sits clear below the two circles. */
+html .tgcard .revcard-body {
+  padding-top: 196px;
+}

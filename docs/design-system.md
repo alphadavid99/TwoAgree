@@ -24,59 +24,57 @@ Decisions behind it: the design review walkthrough (items 1–17) and the UX law
 
 ## The kit
 
-Build from these. Don't hand-style a one-off when a kit piece fits.
+Build from these. Don't hand-style a one-off when a kit piece fits. The look (Dave, Nov 2026, after Revolut and Dateasy): flowing waves on the page, white and frosted cards on top, colour used sparingly.
 
 | Piece | Spec |
 |---|---|
-| Card | White, 2px edge `#F0E3DC`, 5px base `#E8D3C7`, radius 20, padding 16. |
-| Claret card | `--ta-claret` with a 5px `#23101B` base. At most one per screen, for the important moment (scores, a ready reveal). |
-| Honey button | The one main action on a screen. `--app-honey` fill, ink `#3A2410`, 4px base `#C38A2A`. |
-| Claret button | The question flow (Next, Finish part). White text, 4px `#23101B` base. |
-| White button | Secondary. 2px `--ta-line` edge, 4px base. Claret text. |
-| Red button | Deleting only. `#A32D45`, white text. |
-| Text button | Grey, no fill, still 48px tall to tap. |
-| Answer row | At least 48px, never a fixed height. Selected: claret edge, filled radio, light blush `#FBF5F7` that fills in from the left, the radio springing and ringing out once. Never colour alone. |
-| Filter pill | 40px. Selected: claret fill, white text. |
-| Importance control | A soft segmented control on a light track (A little · Somewhat · A lot). Selected: a white segment with a claret edge and a small spring, never a filled button. Optional; tapping the choice clears it. |
-| Badge | A label, not a button. Agreed `#FBEBDC`/`#8F5A12` · Close `#F7EEF1`/`#5C2E45` · Worth a chat claret/`#F3D58E`. |
-| Avatar | Host: white on claret. Guest: ink `#3A2410` on `#D9963A`. Each person keeps their colour on both phones. Side by side, never overlapping. |
-| Score rings | Two separate rings, Agree in honey and Known in claret (rose on claret grounds), each with its count underneath. On Review and Together they ease down as you scroll and a slim one-line bar slides in at the top with the same stretch of scroll; the bar never wraps (a long part name ends in "…"), never sits inside a card, and never widens the page. |
-| Same answer on a scale | When you both picked the same point, that point is one claret circle with the gold mark, not two avatars. |
+| The page | A soft ground (`--app-ground-top`) with flowing waves across the top 640px (`<Flux>`, `components/Flux.tsx`), fading into the ground. **The waves are the only gradient: a card never carries its own.** |
+| Card | Frosted glass: `--glass` with a `--glass-line` hairline, radius 22, a soft `--glass-shadow`, backdrop blur. No thick base. |
+| Home card stack | One solid white card (radius 28) with the next conversations peeking out underneath; swipe or drag sideways for the next. Dots under it say where you are. |
+| Reveal card | One solid white card filling the screen: the two of you across its top (your colours blending into each other, each in a circle with your photo or initial), the number large in the middle, the line and the next step under it. |
+| Main button | A white pill with a 1.5px `--app-mauve` edge and `--app-mauve-deep` words, 56px on the question and reveal screens. One per screen. |
+| Secondary button | A plain white pill (`.btn.out`). Text buttons stay text, still 44px+ to tap. |
+| Red button | Deleting only. |
+| Round button | A 44px white glass circle (`.pcircle`): close, search, share, the bell. |
+| Answer row | A big rounded pill (min 60px on questions). Selected: a mauve-deep edge and a tick. Never colour alone. |
+| Scale | Five large rings, a little deeper mauve toward the top end; the chosen one fills and takes a tick. |
+| Filter pill / badge | Quiet glass; selected or tinted = `--app-mauve-tint`. |
+| Avatar | White glass disc with the person's colour as its edge and initial (host mauve, guest honey), or their photo. Each person keeps their colour on both phones. |
+| Label over value | A row with a small grey label over a strong value and a chevron (`.irow`), for "Between the two of you" and the like. |
 
-All buttons are 48px tall with radius 16. Pressing drops the base from 4px to 1px over 120ms.
-The colours above are tokens in `tokens.css` (`--kit-card-edge`, `--kit-card-base`, `--kit-claret-base`, `--kit-honey-base`, `--kit-red`, `--kit-sel-bg`, `--kit-close-bg`, `--kit-chat-ink`); use the tokens, not the hex.
+Mauve (`--app-mauve`, `--app-mauve-deep`, `--app-mauve-tint`) marks only what you act on and progress. Honey stays for the guest's colour and a few fills; claret is for the text ink and brand moments.
 
-In code: `.card`, `.kcard-claret`, `.btn` (claret), `.btn.pill` (honey), `.btn.out` (white), `.btn.red`, `.btn.ghost` (text), `.opt` (answer row), `.fpill` (filter pill, `aria-pressed`), `.kbadge.agreed|close|chat`, `<Avatar tone={toneFor(role)}>`, `<Loading>` (the loading rule), `<HowScores>` (sheet). Type: `.hero`, `.h1`, `.qtext`, `.ktitle`, `.helper`, `.eyebrow`. All of them are on one screen in the gallery: flow 0, "The kit".
+In code: `.card`, `.btn` / `.btn.pill` (main), `.btn.out`, `.btn.red`, `.btn.ghost`, `.pcircle`, `.opt`, `.fpill`, `.kbadge.*`, `.irow`, `<Avatar>`, `<TabHeader>`, `<TopBar>`, `<Loading>`, `<HowScores>`. The kit is in the gallery: flow 0, "The kit".
 
 ## Type
 
-| Use | Font |
-|---|---|
-| Hero | Fraunces 26/32 |
-| Screen heading | Fraunces 22.5/28 |
-| Question | Fraunces 18/24; 17/23 over 90 characters |
-| Card title | Fraunces 17/22.5 |
-| Body | Hanken Grotesk 15/22 |
-| Answers | Hanken Grotesk 14/21 |
-| Helper | Hanken 13/19. The floor for anything you need to read to act. |
-| Label | Hanken 12, uppercase, tracked. Labels only, never instructions. |
+Six styles, and nothing else (the gallery audit checks every screen):
 
-The root is 15px (`html { font-size: 93.75% }`, feedback 27: the app read big next to other apps). Sizes are in rem against that root, so the phone's text-size setting still scales them; the label floor is `0.8rem`, which is 12px. At large sizes, rows wrap and stack; nothing truncates.
+| Style | Font |
+|---|---|
+| Title | Fraunces 26 / 600: screen names, the greeting |
+| Question | Fraunces 20 / 600: a long question, the reveal's line, a verse |
+| Heading | Hanken 17 / 600: names of conversations, parts and cards |
+| Body | Hanken 15 / 400 |
+| Strong | Hanken 15 / 600: buttons and tappable words |
+| Small | Hanken 13 / 400: labels and meta, sentence case, never uppercase or tracked |
+
+Only display numbers and names over 30px step outside them (the reveal's number, a conversation's name on its card, a question at full size at 26). Tokens: `--t-title`, `--t-question`, `--t-heading`, `--t-body`, `--t-small`. The root is 15px, so the phone's text-size setting still scales everything.
 
 ## Layout and spacing
 
-- Spacing on a 4/8 scale: 4, 8, 12, 16, 20, 24, 32, 40.
-- 20px side gutter on phones. 24px between sections.
-- A label sits 6px from its own field and 24px from the group above.
-- Group related things in one card rather than with white space alone.
-- Phone first: the bottom tab bar is a frosted capsule of icons (Home, Talk, Together with the mark in the middle, Path, You; no labels on screen, each named for screen readers, Dave, Nov 2026), back at top left, close at top right.
-- Launch: the wordmark, centred, until the first real screen is ready (index.html, lib/splash.ts). Skeletons appear only when a screen takes over 300ms.
-- The most important item goes first in a list; destructive actions go last, on their own, with space around them.
+- Spacing on a 4/8 scale: 4, 8, 12, 16, 20, 24, 32, 40. 20px side gutter on phones.
+- **One top row on every screen, at the same height:** on a tab, the two of you on the left and the bell always far right, with the screen's own round button just left of it (`<TabHeader>`); on a full-screen flow, close in a circle on the left and the flow's name in the middle (`<TopBar>`). No mark at the top of any screen. The page's top padding includes the notch / Dynamic Island inset.
+- Screen names sit in one place and style, left-aligned under the top row (`.pagetitle`).
+- The dock: a frosted capsule of icons (Home, Talk, Together with the mark in the middle, Path, You), no labels on screen.
+- Launch: the wordmark, centred, until the first real screen is ready. Skeletons appear only when a screen takes over 300ms.
+- Talk is a two-column grid of tall glass cards, each with its icon large and the agree score as a pill.
+- The most important item goes first; destructive actions go last, on their own.
 
 ## Interaction
 
 - Tap targets at least 48×48px (44pt on iOS).
-- Question screens are exactly the phone's height. The top (back, close, the stones, "3 of 8", the question) and the bottom (importance, the main button) stay put; only the answers scroll between them, fading at whichever edge has more beyond it, with a "More below" chip on the card's bottom edge when there's more below. "How much does this matter?" rises in above the main button once an answer is chosen, so it never needs scrolling. Back (a square white button), then Skip, Not yet or Skip for now, then the main button, all in one row at the bottom.
+- Question screens are full screen with no card, exactly the phone's height: close, the part's name and Skip (where a question can be skipped) on top; "Question 3 of 7" over one segment per question, with "✓ Saved"; the question large and centred; only the answers scroll. "How much does this matter?" rises in above the main button once an answer is chosen. Back (a circle) and the big Next pill share the bottom row.
 - Back (bottom left) steps through earlier questions and guesses with their answers still picked; any of them can be changed until the part is finished. An importance chosen on an earlier visit says so ("Your earlier answer").
 - A guess says whose answer it is in one line ("✦ Guess · What will Judah say?"); your own answer is marked softly in place ("You", dashed), so the guess is the only strong colour.
 - Starting a part you haven't begun, once your partner has joined: a sheet offers "Do it with Judah now" or "Answer on my own". Together sends Judah an in-app request (Start now / Not right now, open ten minutes) and a link to send when the app isn't open; Start now takes both of you straight into the part. Nothing else is synced: own pace, private answers, the same reveal.
@@ -88,12 +86,13 @@ The root is 15px (`html { font-size: 93.75% }`, feedback 27: the app read big ne
 - Every error says what happened and what to do next, in plain words, with Try again where it can work.
 - Accept messy input and clean it: codes in any case with spaces or dashes, a pasted invite link, emails with stray spaces.
 - Focus: a 2px claret outline with a 3px gap.
+- Partners see each other's name and profile photo (copied into the session); never an email.
 
 ## Colour and contrast
 
 - Text at least 4.5:1 against its ground; large text (24px+) and control edges at least 3:1.
 - Measured pairs that pass: ink on white 17.5, grey `--ta-grey` on white 6.4, amber `#8F5A12` on white 5.8, ink on honey 7.0, white on claret 15.1, gold on claret 10.6.
-- Gold on claret only (brand rule 1); app screens are white or soft blush (rule 2); the mark is the A (rule 3). See CLAUDE.md §10.1.
+- Gold on claret only (brand rule 1); app screens sit on the soft ground with the waves on top, cards white or glass (rule 2); the mark is the A (rule 3). See CLAUDE.md §10.1.
 
 ## Words
 
@@ -105,4 +104,4 @@ The root is 15px (`html { font-size: 93.75% }`, feedback 27: the app read big ne
 
 ## Checking a screen
 
-Before calling a screen done: render it in the gallery (`npm run build:gallery`), check it at 390px wide and with large text, and run `npm run audit:gallery`, which measures every gallery screen for text under 12px, tap targets under 44px and colour pairs under 4.5:1 (3:1 for large text) and writes `review/audit.json`. It must report zero. Aim for 48px targets; the audit's floor is Apple's 44.
+Before calling a screen done: render it in the gallery (`npm run build:gallery`), check it at 390px wide and with large text, and run `npm run audit:gallery`, which measures every gallery screen for text under 12px, tap targets under 44px, colour pairs under 4.5:1 (3:1 for large text) and text off the six styles, and writes `review/audit.json`. It must report zero. Aim for 48px targets; the audit's floor is Apple's 44.

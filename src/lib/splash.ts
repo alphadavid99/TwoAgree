@@ -9,7 +9,8 @@
 // launch screen goes. It stays at least MIN_MS so a fast load doesn't blink,
 // and never more than MAX_MS: past that, the loading screen underneath (with
 // its "Still loading…" and Try again) takes over.
-const MIN_MS = 600;
+// Long enough for the wordmark's 0.6s entrance to land and rest a beat.
+const MIN_MS = 900;
 const MAX_MS = 8000;
 const SETTLE_MS = 150;
 

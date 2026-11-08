@@ -30,6 +30,7 @@ Written for Dave, in plain English, after applying `TWOAGREE-MARK.md` top to bot
 **Removed**
 
 - The logo's entrance animation and the "breathing" logo on the waiting screen — the spec forbids animating the mark. The soft ripple rings on the waiting screen remain; they were never part of the mark.
+  - **Later exception (Dave, Nov 2026):** the launch screen shown when the app first opens brings the whole wordmark in with one gentle fade and an 8px rise. It's the only place the logo moves, it happens once, and it stays still for anyone who has turned motion down.
 - The old wordmark styles, including a weight-500 setting in the old logo text (the kind of faked-thickness bug the spec calls out). The new wordmark is locked to weight 400 and the browser is told never to synthesise a bold or italic for it.
 
 **Survey note.** The spec's list of old TwoAgree artwork (the "899.862"/"1137.09" paths) does not exist anywhere in this repository — this codebase carried the Aligned caret instead, so this is the first application of the TwoAgree mark here rather than a replacement of version 4 artwork. The old Aligned assets found (caret favicon, caret logo component, "Aligned" wordmark text and its weight-500 style) were all replaced or deleted as listed above.

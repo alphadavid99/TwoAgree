@@ -7590,8 +7590,11 @@ button.fy-row {
 
 /* ---- The launch screen (index.html #splash, lib/splash.ts) ----
    The wordmark, centred on the app's ground, over everything while the app
-   boots; it fades once the first real screen is up. The mark never animates:
-   only the whole screen fades. Sized and set exactly as <Wordmark>. */
+   boots; it fades once the first real screen is up. Sized and set exactly as
+   <Wordmark>. Its one entrance (the whole wordmark fades in and rises 8px,
+   once) is the single, Dave-approved exception to "the mark never animates"
+   (TWOAGREE-MARK.md §7): the letters never move apart and nothing is drawn
+   on. */
 #splash {
   position: fixed;
   inset: 0;
@@ -7615,6 +7618,13 @@ button.fy-row {
   line-height: 1;
   color: var(--ta-claret);
   white-space: nowrap;
+  animation: splash-in 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes splash-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 .splash-wm svg {
   display: inline-block;
@@ -7628,5 +7638,8 @@ button.fy-row {
   #splash,
   .skel > [aria-hidden="true"] {
     transition: none;
+  }
+  .splash-wm {
+    animation: none;
   }
 }

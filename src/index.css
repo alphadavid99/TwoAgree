@@ -8046,9 +8046,13 @@ html .linkbtn.hero-alt {
   min-height: 44px;
   font-size: var(--t-body);
   font-weight: 400;
-  color: var(--ta-ink);
+  /* Softer than the Start pill (Dave, Nov 2026): grey words, a pale
+     underline. */
+  color: var(--ta-grey);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--ta-line);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
 }
 
 /* ---- Label over value: a quiet row that opens something ---- */
@@ -8560,18 +8564,6 @@ html .topbar-title {
   margin: 4px 0 18px;
   padding-bottom: 22px;
 }
-.hstack-top {
-  position: relative;
-  z-index: 2;
-  touch-action: pan-y;
-  animation: hstack-in 0.32s var(--ease-glide) both;
-}
-@keyframes hstack-in {
-  from {
-    transform: translateY(14px) scale(0.95);
-    opacity: 0.4;
-  }
-}
 .hstack-back {
   position: absolute;
   left: 0;
@@ -8668,23 +8660,6 @@ html .pfull .opt {
 }
 .pfull .qcount {
   margin-top: 22px;
-}
-.hstack-next {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  transform: scale(0.96);
-  transform-origin: 50% 100%;
-  pointer-events: none;
-}
-/* A card on the move turns frosted all over, so the next one under it never
-   reads through it. */
-html .hstack-top.moving .hhero {
-  background: var(--ta-white);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
-  backdrop-filter: blur(24px) saturate(1.4);
 }
 
 /* ---- One header on every tab, one title style (Dave, Nov 2026) ----
@@ -8950,4 +8925,72 @@ html .revcard-line {
   font-weight: 600;
   text-align: center;
   color: var(--ta-ink);
+}
+
+/* ---- Home's card stack, round 2 (Dave, Nov 2026: no flashing). Every card
+   is the same element from under to top: the one underneath rises into
+   place as the top one flies off, nothing fades in or out. ---- */
+.hstack {
+  height: 482px;
+}
+.hs-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 460px;
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.hs-card .hhero {
+  height: 100%;
+  min-height: 0;
+}
+.hs-card.top {
+  z-index: 3;
+  touch-action: pan-y;
+}
+.hs-card.top.held {
+  transition: none;
+}
+.hs-card.under {
+  z-index: 2;
+  transform: translateY(11px) scale(0.94);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.hs-card.gone {
+  z-index: 4;
+  pointer-events: none;
+  transition: none;
+  animation: hs-gone 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.hs-card.gone.right {
+  animation-name: hs-gone-right;
+}
+@keyframes hs-gone {
+  from {
+    transform: translateX(var(--from)) rotate(var(--rot));
+  }
+  to {
+    transform: translateX(-125%) rotate(-12deg);
+  }
+}
+@keyframes hs-gone-right {
+  from {
+    transform: translateX(var(--from)) rotate(var(--rot));
+  }
+  to {
+    transform: translateX(125%) rotate(12deg);
+  }
+}
+.hstack-back.b2 {
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs-card,
+  .hs-card.gone {
+    transition: none;
+    animation-duration: 0.01s;
+  }
 }

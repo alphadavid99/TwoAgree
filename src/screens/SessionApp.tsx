@@ -849,12 +849,11 @@ function SessionScreens({
             )}
             {tab === "results" && (
               <ResultsScreen
-                actSlot={actSlot}
+                onPart={openPart}
                 session={session}
                 role={role}
                 code={code}
                 onOpen={openReview}
-                onBrowse={() => setTab("decks")}
               />
             )}
             {tab === "profile" && (

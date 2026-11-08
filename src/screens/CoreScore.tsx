@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { renderShareCard, shareCardImage } from "../lib/sharecard";
 import { revealWords } from "../lib/reveal";
 
@@ -130,7 +131,10 @@ export function ShareCard({
     </button>
   );
 
-  return (
+  // On the page itself, not inside the screen: a screen that animates in
+  // holds a fixed layer to its own height, so a short screen showed the page
+  // under the card.
+  return createPortal(
     <div
       className="sharewrap"
       onClick={onClose}
@@ -182,6 +186,7 @@ export function ShareCard({
           {t("Close", "Fermer")}
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

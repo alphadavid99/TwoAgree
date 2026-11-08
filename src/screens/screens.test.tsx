@@ -243,7 +243,8 @@ describe("ResultsScreen", () => {
     render(<ResultsScreen session={session} role="host" code="ABCD" onOpen={noop} />);
     expect(screen.getByRole("heading", { name: "Together" })).toBeTruthy();
     expect(screen.getByRole("heading", { level: 1 })).toBeTruthy();
-    expect(screen.getByText("Known")).toBeTruthy();
+    expect(screen.getByText(/agree on$/)).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Past conversations →" })).toBeTruthy();
   });
 });
 

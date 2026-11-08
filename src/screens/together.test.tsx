@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 //
-// Together (design refresh, items 3 and 13): "We talked" is asked, never
-// reported; the guide's "We talked about this" saves your tick and note.
+// Talk about this (design refresh, items 3 and 13; on Home's cards since Nov
+// 2026): "We talked" is asked, never reported; the guide's "We talked about
+// this" saves your tick and note. Together is the score, then Past
+// conversations: only what you've both opened.
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -16,6 +18,9 @@ const writes = vi.hoisted(() => ({ writeTalked: vi.fn(async () => {}), writeTalk
 vi.mock("../lib/session", () => writes);
 
 import ResultsScreen from "./ResultsScreen";
+import { TalkCard } from "../components/TalkCard";
+import { talkNext } from "../lib/talkNext";
+import { namesFor } from "../lib/who";
 
 afterEach(() => {
   cleanup();
@@ -34,9 +39,25 @@ function session(talks: DeckData["talks"]): Session {
     decks: { [slug]: d },
   } as unknown as Session;
 }
-const show = (s: Session) => render(<ResultsScreen session={s} role="host" code="ABCD" onOpen={() => {}} onBrowse={() => {}} />);
+const t = (en: string) => en;
+const show = (s: Session) => {
+  const next = talkNext(s.decks, "host").next[0];
+  return render(
+    <TalkCard
+      s={next}
+      code="ABCD"
+      role="host"
+      lang="en"
+      names={namesFor(s.members, "host", "Sarah", "Judah")}
+      me={{ name: "Sarah", tone: "berry" }}
+      them={{ name: "Judah", tone: "honey" }}
+      t={t}
+      kind="Talk about this"
+    />,
+  );
+};
 
-describe("Together", () => {
+describe("Talk about this", () => {
   it("asks “Have you talked this through yet?” without saying who ticked", () => {
     const { container } = show(session({ [mc.id]: { pinned: { guest: true }, talked: { guest: true } } }));
     expect(screen.getByText("Have you talked this through yet?")).toBeTruthy();
@@ -67,5 +88,29 @@ describe("Together", () => {
   it("shows one honey button at most", () => {
     const { container } = show(session({}));
     expect(container.querySelectorAll(".btn.pill, .btn.honey").length).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("Together", () => {
+  it("is the score, front and centre, with Past conversations and Share", () => {
+    render(<ResultsScreen session={session({})} role="host" code="ABCD" />);
+    expect(screen.getByRole("heading", { name: "Together" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Past conversations →" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Share your card" })).toBeTruthy();
+    // Talk about next and the conversation tiles live elsewhere now.
+    expect(screen.queryByText("Talk about next")).toBeNull();
+  });
+
+  it("Past conversations lists only what you've both opened, and opens a part to review", async () => {
+    const onPart = vi.fn();
+    const { container } = render(<ResultsScreen session={session({})} role="host" code="ABCD" onPart={onPart} />);
+    await userEvent.click(screen.getByRole("button", { name: "Past conversations →" }));
+    expect(screen.getByRole("heading", { name: "Past conversations" })).toBeTruthy();
+    expect(screen.getByRole("searchbox")).toBeTruthy();
+    expect(container.querySelectorAll("button.cv-circ:not(.fy)").length).toBe(1);
+    const parts = container.querySelectorAll("button.cv-part");
+    expect(parts.length).toBe(1);
+    await userEvent.click(parts[0] as HTMLElement);
+    expect(onPart).toHaveBeenCalledWith(slug, 0);
   });
 });

@@ -236,27 +236,32 @@ export default function RevealScreen({
           <div className="levelup">
             {/* 100% only: the two of them settle together above the medallion,
                 the one beat no other range gets. */}
-            {tier >= 4 && (
-              <div className="meetpair oneheart lvlup-rise r2">
-                <Avatar name={myName} tone={toneFor(role)} size={40} />
-                <Avatar name={partnerName} tone={toneFor(other(role))} size={40} />
-              </div>
-            )}
             {/* The score as one big card (Dave, Nov 2026, after Dateasy's
                 profile card): a warm glow behind the number, how well you
                 know each other in the pill, the number large at the foot. */}
             <div className="revcard lvlup-rise r1">
-              <span className="revcard-art" aria-hidden="true" />
               {know.pct != null && (
                 <span className="revcard-pill">
                   <span aria-hidden="true">&#9825;</span> {t(`${know.pct}% known`, `${know.pct} % connus`)}
                 </span>
               )}
+              {/* The two of you, as two cards leaning together (after
+                  Dateasy's match screen). Initials: a partner's photo isn't
+                  readable on this phone. */}
+              <span className="revpair" aria-hidden="true">
+                <span className={`revface ${toneFor(role)}`}>{initialOf(myName)}</span>
+                <span className={`revface ${toneFor(other(role))}`}>{initialOf(partnerName)}</span>
+              </span>
               <span className="revcard-body">
                 {tier >= 4 ? (
                   <span className="medal-badge bignum-badge">{t("Complete alignment", "Accord complet")}</span>
                 ) : (
-                  <span className="bignum-lb">{t("You agreed on", "Vous êtes d’accord sur")}</span>
+                  <span className="bignum-lb">
+                    {t(
+                      `You and ${firstOf(partnerName)} agreed on`,
+                      `${firstOf(partnerName)} et vous êtes d’accord sur`,
+                    )}
+                  </span>
                 )}
                 <span className="bignum">
                   <CountUp to={pct} ms={1200} />
@@ -268,6 +273,21 @@ export default function RevealScreen({
                     `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
                   )}
                 </span>
+              </span>
+              <span className="revcard-acts">
+                <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
+                  {t("See your answers →", "Voir vos réponses →")}
+                </button>
+                <button
+                  className="pcircle revshare"
+                  type="button"
+                  onClick={() => setSharing(true)}
+                  aria-label={t("Share your score", "Partager votre score")}
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
               </span>
             </div>
             {/* The whole ceremony is staged in motion, so without this a blind
@@ -293,15 +313,6 @@ export default function RevealScreen({
               </p>
             </div>
             <div className="lvlup-cta lvlup-rise r4">
-              <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
-                {t("See your answers →", "Voir vos réponses →")}
-              </button>
-              <button className="btn out" type="button" onClick={() => setSharing(true)}>
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {t("Share your score", "Partager votre score")}
-              </button>
               <button className="btn ghost" type="button" onClick={onDone}>
                 {t("Done for now", "Terminé pour l’instant")}
               </button>

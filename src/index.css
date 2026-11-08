@@ -8789,36 +8789,15 @@ html .pagetitle.pp-title {
    behind, the known pill top right, the number big at the foot ---- */
 .revcard {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 420px;
+  min-height: min(660px, calc(100svh - 150px));
   margin-top: 6px;
-  padding: 18px 22px 24px;
-  border-radius: 28px;
-  background: linear-gradient(170deg, var(--flux-wash-1), var(--flux-wash-3));
-  box-shadow: 0 16px 36px var(--glass-shadow);
-}
-.revcard-art {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 52% 34%, var(--flux-cream) 0, var(--flux-peach) 20%, transparent 40%),
-    radial-gradient(80% 60% at 12% 88%, var(--flux-lilac), transparent 70%),
-    radial-gradient(70% 55% at 92% 72%, var(--flux-rose), transparent 70%);
-  animation: revcard-glow 7s ease-in-out infinite alternate;
-}
-@keyframes revcard-glow {
-  to {
-    transform: scale(1.06);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .revcard-art {
-    animation: none;
-  }
+  padding: 18px 20px 20px;
+  border: 1px solid var(--glass-line);
+  border-radius: 32px;
+  background: var(--ta-white);
+  box-shadow: 0 18px 40px var(--glass-shadow);
 }
 .revcard-pill {
   align-self: flex-end;
@@ -8854,57 +8833,84 @@ html .revcard .bignum {
   margin-bottom: 4px;
 }
 
-/* ---- Home: the cards behind peek out to the side, so it reads as a
-   sideways swipe ---- */
-.hstack {
-  padding: 0 28px 22px 0;
+
+/* ---- The reveal, round 3 (Dave, Nov 2026): one big white card filling
+   the screen; the gradient stays on the page behind it. The two of you
+   lean together in the middle, the number sits large at the foot, and the
+   next step is inside the card. ---- */
+.revpair {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+  min-height: 170px;
+  padding: 18px 0 8px;
 }
-.hstack-back,
-.hstack-back.b1,
-.hstack-back.b2 {
-  top: 16px;
-  bottom: 38px;
-  left: 14px;
-  right: 14px;
-  border: 1px solid var(--kit-card-edge);
-  border-radius: 28px;
-  background: var(--ta-white);
-  box-shadow: 0 8px 22px var(--glass-shadow);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  transform: none;
+.revface {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 138px;
+  border: 4px solid var(--ta-white);
+  border-radius: 26px;
+  box-shadow: 0 12px 28px var(--glass-shadow);
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 600;
 }
-.hstack-back.b2 {
-  top: 32px;
-  bottom: 54px;
-  left: 28px;
-  right: 0;
-  background: color-mix(in srgb, var(--ta-white) 70%, transparent);
+.revface.berry {
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  transform: rotate(-8deg) translateX(10px);
+  animation: revface-l 0.7s var(--ease-glide) both;
 }
-.hstack-next {
-  right: 28px;
+.revface.honey {
+  background: var(--app-honey-bg);
+  color: var(--app-amber);
+  transform: rotate(8deg) translateX(-10px) translateY(10px);
+  animation: revface-r 0.7s var(--ease-glide) both;
 }
-/* Centred: the cards either side peek out on both edges, like a carousel,
-   since a swipe goes either way. */
-.hstack {
-  padding: 0 0 22px;
+.revpair .revface:first-child {
+  z-index: 1;
 }
-.hstack-top {
-  margin: 0 20px;
+@keyframes revface-l {
+  from {
+    transform: rotate(-14deg) translateX(-40px);
+    opacity: 0;
+  }
 }
-.hstack-back.b1 {
-  top: 18px;
-  bottom: 40px;
-  left: 8px;
-  right: 8px;
+@keyframes revface-r {
+  from {
+    transform: rotate(14deg) translateX(40px) translateY(10px);
+    opacity: 0;
+  }
 }
-.hstack-back.b2 {
-  top: 36px;
-  bottom: 58px;
-  left: 0;
-  right: 0;
+@media (prefers-reduced-motion: reduce) {
+  .revface.berry,
+  .revface.honey {
+    animation: none;
+  }
 }
-.hstack-next {
-  left: 20px;
-  right: 20px;
+.revcard .revcard-body {
+  margin-top: 0;
+}
+html .revcard .bignum {
+  font-size: 7rem;
+}
+.revcard-acts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.revcard-acts .btn {
+  flex: 1;
+  width: auto;
+  min-height: 56px;
+  margin: 0;
+}
+.revcard-acts .pcircle.revshare {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
 }

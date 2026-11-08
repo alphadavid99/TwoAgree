@@ -367,6 +367,7 @@ The old CSS used `height:.78em; width:.62em` against a square viewBox. Default `
 - Do not add `stroke` to any path — the mark is fills only
 - Do not add `<title>` inside the SVG when the parent has `aria-label`
 - Do not add hover, transition or animation to the mark
+  - **One approved exception (Dave, Nov 2026):** on the launch screen (`index.html` `#splash`), the whole wordmark fades in and rises 8px, once, in 0.6s, and is still for reduce-motion users. The letters never move apart, nothing is drawn on, and the mark is never animated on its own. Nowhere else.
 - Do not use the display cut inside the wordmark, or the text cut on a tile
 - Do not invent a "simplified" or "compact" variant
 - Do not use the mark as a bullet, divider, spinner or background watermark

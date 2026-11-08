@@ -17,6 +17,7 @@ import App from './App.tsx'
 import { initNative } from './lib/device/native'
 import { initObservability } from './lib/observability'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { watchSplash } from './lib/splash'
 
 // Wire up native-shell behaviour (status bar, deep links). No-op on web.
 initNative()
@@ -32,3 +33,6 @@ createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </StrictMode>,
 )
+
+// The launch screen in index.html fades once the first real screen is up.
+watchSplash()

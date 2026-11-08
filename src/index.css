@@ -8046,9 +8046,13 @@ html .linkbtn.hero-alt {
   min-height: 44px;
   font-size: var(--t-body);
   font-weight: 400;
-  color: var(--ta-ink);
+  /* Softer than the Start pill (Dave, Nov 2026): grey words, a pale
+     underline. */
+  color: var(--ta-grey);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--ta-line);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
 }
 
 /* ---- Label over value: a quiet row that opens something ---- */

@@ -7492,7 +7492,7 @@ button.fy-row {
   line-height: 1.35;
   color: var(--ta-grey);
 }
-/* Start: a small honey pill; Take back: plain text, still a full tap. */
+/* Start: a small pill; Cancel: plain text, still a full tap. */
 .fy-act {
   flex: 0 0 auto;
   display: inline-flex;
@@ -9273,4 +9273,14 @@ html .cv-part-nm {
   padding: 4px 16px;
   border-radius: 26px;
   background: var(--ta-white);
+}
+/* Cancel your own invite: quiet grey words, not a pill (Dave, Nov 2026). */
+html .fy-act.fy-act-ghost {
+  padding: 0 4px;
+  background: none;
+  color: var(--ta-grey);
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-color: var(--ta-line);
+  text-underline-offset: 3px;
 }

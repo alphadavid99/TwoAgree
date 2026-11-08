@@ -1,53 +1,110 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName, deckDepthWord } from "../lib/leveling";
-import { catComplete, curLevel, doneInLevel, levelComplete } from "../lib/progress";
-import { revealedRows } from "../lib/results";
-import { type Role } from "../lib/scoring";
+import { catComplete, curLevel, doneInLevel, levelComplete, levelDone } from "../lib/progress";
+import { startedLevel } from "../lib/privacy";
+import { other, overall, type Role } from "../lib/scoring";
 import { SUBJECTS } from "../lib/subjects";
 import type { Session } from "../types";
-import { DeckIcon } from "../components/icons";
+import { DeckIcon, IconBell } from "../components/icons";
+import { Avatar, toneFor } from "../components/Avatar";
 import { deckName } from "../lib/questions.fr";
 import { useT, useLang } from "../lib/i18n";
 
-// Conversations (design refresh, item 11): "Pick up where you left off" first,
-// then every topic grouped by subject. Each row talks in parts, with a small
-// bar per part, never question counts or time estimates.
+// Every conversation, subject by subject, in display order.
+const ALL: string[] = SUBJECTS.flatMap((g) => g.slugs).filter((s) => DECKS[s]);
+
+type Ring = "turn" | "going" | "done" | "new";
+
+// The For you circle's key in the row.
+const FY = "__for-you";
+
+// Conversations (Dave, Nov 2026, after Dateasy's chat list): every
+// conversation as a big circle in one sideways row, its ring saying where
+// you are (honey: your partner is waiting on you; mauve: under way; deep:
+// finished; pale: not started). Tap one and its parts list below, each a
+// rounded row you can open straight away. It talks in parts, never question
+// counts or time estimates.
 export default function DecksScreen({
   session,
   role,
   onPlay,
+  onPart,
   current,
-  top,
+  forYou,
+  forYouFresh = false,
   actSlot,
 }: {
   session: Session;
   role: Role;
+  /** Open a conversation the usual way (its whole review once finished). */
   onPlay: (slug: string) => void;
-  /** The conversation you were last in, for "Pick up where you left off". */
+  /** Open one part of a conversation straight away. */
+  onPart?: (slug: string, level: number) => void;
+  /** The conversation you were last in: chosen when the screen opens. */
   current?: string;
-  /** For you: invites and your partner's progress, above everything else. */
-  top?: ReactNode;
+  /** For you: invites and your partner's progress, as the first circle. */
+  forYou?: ReactNode;
+  /** Something new in For you since you last looked. */
+  forYouFresh?: boolean;
   /** The shared header's button spot, left of the bell. */
   actSlot?: HTMLElement | null;
 }) {
   const t = useT();
   const lang = useLang();
   const [query, setQuery] = useState("");
-  // Search opens from the round button beside the title (Dave, Nov 2026).
+  // Search opens from the round button in the header (Dave, Nov 2026).
   const [searching, setSearching] = useState(false);
-  const { rows } = revealedRows(session.decks, role);
-  const pctOf = (slug: string) => rows.find((r) => r.slug === slug)?.pct;
+  const decks = session.decks;
+  const me = session.members?.[role];
+  const them = session.members?.[other(role)];
+  const myName = me?.name ?? t("You", "Vous");
+  const partnerName = them?.name ?? t("your partner", "votre partenaire");
+  const theirFirst = partnerName.trim().split(/\s+/)[0] || partnerName;
 
-  const started = (slug: string) =>
-    DECKS[slug].questions.some((q) => session.decks?.[slug]?.answers?.[q.id]?.[role] != null);
-  const pick = current && DECKS[current] && started(current) && !catComplete(current, session.decks?.[current], role) ? current : undefined;
+  const begun = (s: string) => Object.values(decks?.[s]?.answers ?? {}).some((a) => a?.[role] != null);
+  const ring = (s: string): Ring => {
+    const d = decks?.[s];
+    for (let l = 0; l < nLevels(s); l++) if (levelDone(d, l, other(role)) && !levelDone(d, l, role)) return "turn";
+    if (catComplete(s, d, role)) return "done";
+    return begun(s) ? "going" : "new";
+  };
+
+  // Chosen when the screen opens: the one you were last in, else the first
+  // where your partner is waiting, else the first under way, else the first.
+  const [sel, setSel] = useState<string>(() => {
+    if (forYou && forYouFresh) return FY;
+    if (current && DECKS[current]) return current;
+    return ALL.find((s) => ring(s) === "turn") ?? ALL.find((s) => ring(s) === "going") ?? ALL[0];
+  });
 
   // Accept messy input: case, accents and stray spaces don't matter.
   const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
   const q = norm(query);
-  const matches = (slug: string) => !q || norm(deckName(slug, lang)).includes(q) || norm(DECKS[slug].name).includes(q);
+  const matches = (s: string) => !q || norm(deckName(s, lang)).includes(q) || norm(DECKS[s].name).includes(q);
+  const shown = ALL.filter(matches);
+  // A search that hides the chosen one chooses the first it finds.
+  useEffect(() => {
+    if (sel === FY && !q) return;
+    if (shown.length && !shown.includes(sel)) setSel(shown[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
+
+  // Keep the chosen circle in view in the sideways row.
+  // At once when the screen opens, gently after a tap; only the row
+  // scrolls, never the page.
+  const row = useRef<HTMLDivElement>(null);
+  const first = useRef(true);
+  useEffect(() => {
+    const r = row.current;
+    const el = r?.querySelector<HTMLElement>(`[data-slug="${sel}"]`);
+    if (r && el) {
+      const left = el.offsetLeft - (r.clientWidth - el.offsetWidth) / 2;
+      r.scrollTo?.({ left, behavior: first.current ? "auto" : "smooth" });
+    }
+    first.current = false;
+  }, [sel]);
 
   const searchBtn = (
     <button
@@ -67,142 +124,168 @@ export default function DecksScreen({
     </button>
   );
 
+  // The conversation whose parts show (For you has none of its own).
+  const ds = sel === FY ? (shown[0] ?? ALL[0]) : sel;
+  const d = decks?.[ds];
+  const n = nLevels(ds);
+  const openedCount = Array.from({ length: n }, (_, i) => levelComplete(d, i, role)).filter(Boolean).length;
+  const here = curLevel(ds, d, role);
+  const selRing = ring(ds);
+
+  const ringWord: Record<Ring, string> = {
+    turn: t(`${theirFirst} is waiting on you`, `${theirFirst} vous attend`),
+    going: t("Under way", "En cours"),
+    done: t("Finished", "Terminée"),
+    new: t("Not started", "Pas commencée"),
+  };
+
   return (
     <section>
       {actSlot ? createPortal(searchBtn, actSlot) : searchBtn}
       <h1 className="pagetitle">{t("Conversations", "Conversations")}</h1>
-      <p className="helper cv-lede">
-        {t("Short parts, answered on your own, opened together.", "De courtes parties, répondues chacun de son côté, ouvertes ensemble.")}
-      </p>
       {searching && (
-      <label className="cv-search">
-        <span className="sr-only">{t("Search conversations", "Rechercher une conversation")}</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("Search conversations", "Rechercher une conversation")}
-          autoFocus
-        />
-      </label>
+        <label className="cv-search">
+          <span className="sr-only">{t("Search conversations", "Rechercher une conversation")}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("Search conversations", "Rechercher une conversation")}
+            autoFocus
+          />
+        </label>
       )}
 
-      {!q && top}
-      {pick && !q && <PickUp slug={pick} session={session} role={role} onPlay={onPlay} />}
-
-      {SUBJECTS.map((g) => {
-        const slugs = g.slugs.filter((s) => DECKS[s] && matches(s));
-        if (!slugs.length) return null;
-        return (
-          <div key={g.key}>
-            <div className="cv-group">
-              <h2>{t(g.en, g.fr)}</h2>
-              <span>{t(g.tagEn, g.tagFr)}</span>
-            </div>
-            <div className="cv-grid">
-              {slugs.map((slug) => (
-                <DeckRow key={slug} slug={slug} session={session} role={role} pct={pctOf(slug)} onPlay={onPlay} />
-              ))}
-            </div>
-          </div>
-        );
-      })}
-      {q && !SUBJECTS.some((g) => g.slugs.some((s) => DECKS[s] && matches(s))) && (
+      {/* Every conversation as a big circle; its ring says where you are. */}
+      <div ref={row} className="cv-circles" role="group" aria-label={t("Conversations", "Conversations")}>
+        {/* For you first: invites and your partner's progress. */}
+        {forYou && !q && (
+          <button
+            type="button"
+            data-slug={FY}
+            className={`cv-circ fy turn${sel === FY ? " on" : ""}`}
+            aria-pressed={sel === FY}
+            aria-label={t("For you", "Pour vous")}
+            onClick={() => setSel(FY)}
+          >
+            <span className="cv-circ-disc" aria-hidden="true">
+              <IconBell size={28} />
+              {forYouFresh && <span className="cv-circ-new" />}
+            </span>
+            <span className="cv-circ-nm">{t("For you", "Pour vous")}</span>
+          </button>
+        )}
+        {shown.map((s) => {
+          const r = ring(s);
+          return (
+            <button
+              key={s}
+              type="button"
+              data-slug={s}
+              className={`cv-circ ${r}${s === sel ? " on" : ""}`}
+              aria-pressed={s === sel}
+              aria-label={`${deckName(s, lang)}: ${ringWord[r]}`}
+              onClick={() => setSel(s)}
+            >
+              <span className="cv-circ-disc" aria-hidden="true">
+                <DeckIcon icon={DECKS[s].icon} size={30} />
+              </span>
+              <span className="cv-circ-nm">{deckName(s, lang)}</span>
+            </button>
+          );
+        })}
+      </div>
+      {q && !shown.length && (
         <p className="helper center" style={{ marginTop: 24 }}>
           {t("No conversation by that name.", "Aucune conversation de ce nom.")}
         </p>
       )}
+
+      {sel === FY && forYou && !q ? (
+        <>
+          <div className="cv-parts-h">
+            <h2>{t("For you", "Pour vous")}</h2>
+          </div>
+          <div className="card fy-card cv-fy">{forYou}</div>
+        </>
+      ) : shown.length > 0 && (
+        <>
+          <div className="cv-parts-h">
+            <h2>{deckName(ds, lang)}</h2>
+            <span className={selRing === "turn" ? "turn" : undefined}>
+              {selRing === "turn"
+                ? ringWord.turn
+                : n > 1
+                  ? t(`${openedCount} of ${n} parts opened`, `${openedCount} parties ouvertes sur ${n}`)
+                  : t(...deckDepthWord(ds))}
+            </span>
+          </div>
+          <div className="cv-parts">
+            {Array.from({ length: n }, (_, i) => {
+              const youDone = levelDone(d, i, role);
+              const themDone = levelDone(d, i, other(role));
+              const both = levelComplete(d, i, role);
+              const mine = doneInLevel(ds, i, d, role);
+              const theyStarted = startedLevel(d, i, other(role));
+              const turn = themDone && !youDone;
+              const pct = both ? overall(lvlQs(ds, i), d ?? {}, role) : null;
+              const theirs = themDone
+                ? t(`${theirFirst} has finished`, `${theirFirst} a terminé`)
+                : theyStarted
+                  ? t(`${theirFirst} has started`, `${theirFirst} a commencé`)
+                  : t(`${theirFirst} hasn’t started`, `${theirFirst} n’a pas commencé`);
+              const sub = both
+                ? t(`Opened together · ${pct}% agree`, `Ouverte ensemble · ${pct} % d’accord`)
+                : turn
+                  ? t(`${theirFirst} finished · your turn`, `${theirFirst} a terminé · à vous`)
+                  : youDone
+                    ? t(`You’ve finished · ${theirs}`, `Vous avez terminé · ${theirs}`)
+                    : mine > 0
+                      ? t(`You’re part way through · ${theirs}`, `Vous êtes en cours · ${theirs}`)
+                      : theyStarted
+                        ? theirs
+                        : t("Not started yet", "Pas encore commencée");
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  className={`cv-part${i === here && !both ? " here" : ""}`}
+                  onClick={() => (onPart ? onPart(ds, i) : onPlay(ds))}
+                >
+                  <span className={`cv-part-n${both ? " done" : turn ? " turn" : ""}`} aria-hidden="true">
+                    {both ? "✓" : i + 1}
+                  </span>
+                  <span className="cv-part-txt">
+                    <span className="cv-part-nm">{n > 1 ? partName(ds, i) : deckName(ds, lang)}</span>
+                    <span className="cv-part-sub">{sub}</span>
+                  </span>
+                  {both ? (
+                    <span className="cv-part-pct">{pct}%</span>
+                  ) : turn ? (
+                    <span className="cv-part-dot" aria-hidden="true" />
+                  ) : youDone || mine > 0 || theyStarted ? (
+                    <span className="cv-part-avs" aria-hidden="true">
+                      <Avatar name={myName} photo={me?.photo} tone={toneFor(role)} size={28} ring={false} done={youDone} pending={!youDone && mine === 0} />
+                      <Avatar name={partnerName} photo={them?.photo} tone={toneFor(other(role))} size={28} ring={false} done={themDone} pending={!themDone && !theyStarted} />
+                    </span>
+                  ) : (
+                    <span className="cv-part-go" aria-hidden="true">&#8250;</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {catComplete(ds, d, role) && (
+            <button className="linkbtn hero-alt cv-all" type="button" onClick={() => onPlay(ds)}>
+              {t("See every answer side by side", "Voir toutes les réponses côte à côte")}
+            </button>
+          )}
+        </>
+      )}
     </section>
-  );
-}
-
-function PickUp({ slug, session, role, onPlay }: { slug: string; session: Session; role: Role; onPlay: (slug: string) => void }) {
-  const t = useT();
-  const lang = useLang();
-  const deck = session.decks?.[slug];
-  const lvl = curLevel(slug, deck, role);
-  const total = lvlQs(slug, lvl).length;
-  const mine = doneInLevel(slug, lvl, deck, role);
-  const L = nLevels(slug);
-  return (
-    <div className="card cv-pick">
-      <span className="eyebrow">{t("Pick up where you left off", "Reprenez là où vous en étiez")}</span>
-      <div className="cv-pick-nm">{deckName(slug, lang)}</div>
-      <div className="helper cv-pick-part">
-        {L > 1 ? t(`Part ${lvl + 1} of ${L} · `, `Partie ${lvl + 1} sur ${L} · `) : ""}
-        {partName(slug, lvl)}
-      </div>
-      <div className="cv-pick-prog">
-        <div className="qprog featprog" aria-hidden="true">
-          <i style={{ width: `${total ? Math.round((mine / total) * 100) : 0}%` }} />
-        </div>
-        <span>{t(`${mine} of ${total}`, `${mine} sur ${total}`)}</span>
-      </div>
-      <button className="btn pill" type="button" onClick={() => onPlay(slug)}>
-        {t("Continue", "Continuer")}
-      </button>
-    </div>
-  );
-}
-
-function DeckRow({
-  slug,
-  session,
-  role,
-  pct,
-  onPlay,
-}: {
-  slug: string;
-  session: Session;
-  role: Role;
-  pct: number | undefined;
-  onPlay: (slug: string) => void;
-}) {
-  const t = useT();
-  const lang = useLang();
-  const d = DECKS[slug];
-  const deck = session.decks?.[slug];
-  const L = nLevels(slug);
-  const complete = catComplete(slug, deck, role);
-  const lvl = curLevel(slug, deck, role);
-  const mine = doneInLevel(slug, lvl, deck, role);
-  const total = lvlQs(slug, lvl).length;
-  // Depth words stay (Hardest included); only the deeper ones earn a tag.
-  const depth = deckDepthWord(slug);
-  const tag = depth[0] === "Hardest" || depth[0] === "Vulnerable" ? t(...depth) : null;
-  const sub = complete
-    ? t("Complete", "Terminé")
-    : mine > 0
-      ? t(`Part ${lvl + 1} · ${mine} of ${total}`, `Partie ${lvl + 1} · ${mine} sur ${total}`)
-      : t(`${L} part${L === 1 ? "" : "s"}`, `${L} partie${L === 1 ? "" : "s"}`);
-  // A tall glass card (after Dateasy's grid): the topic's icon large,
-  // the agree score as a pill once a part is open, the name and parts below.
-  return (
-    <button type="button" className="cv-row cv-tile" onClick={() => onPlay(slug)}>
-      <span className="cv-tile-art" aria-hidden="true">
-        <DeckIcon icon={d.icon} size={40} />
-      </span>
-      {pct != null && <span className="cv-tile-pct">{t(`${pct}% agree`, `${pct} % d’accord`)}</span>}
-      <span className="cv-row-main">
-        <span className="cv-row-nm">{deckName(slug, lang)}</span>
-        {tag && <span className="kbadge close">{tag}</span>}
-        <span className="cv-row-sub">{sub}</span>
-        <span className="cv-bars" aria-hidden="true">
-          {Array.from({ length: L }, (_, i) => {
-            const n = lvlQs(slug, i).length;
-            const f = levelComplete(deck, i, role) ? 1 : n ? doneInLevel(slug, i, deck, role) / n : 0;
-            return (
-              <span key={i} className="cv-bar">
-                <i style={{ width: `${Math.round(f * 100)}%` }} />
-              </span>
-            );
-          })}
-        </span>
-      </span>
-    </button>
   );
 }

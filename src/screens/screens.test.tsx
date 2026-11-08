@@ -183,15 +183,21 @@ describe("HomeScreen", () => {
 });
 
 describe("DecksScreen", () => {
-  it("lists every conversation as a real button, grouped by subject", () => {
+  it("shows every conversation as a real button, and the chosen one's parts as buttons too", () => {
     const { container } = render(
       <DecksScreen session={session} role="host" onPlay={noop} />,
     );
-    // They were click-divs — a keyboard user could not open one at all.
-    const rows = container.querySelectorAll("button.cv-row");
-    expect(rows.length).toBe(ORDER.length);
-    expect(screen.getByRole("heading", { name: "Light to start" })).toBeTruthy();
-    expect(screen.getByRole("heading", { name: "Deeper and honest" })).toBeTruthy();
+    // Click-divs once left a keyboard user unable to open one at all.
+    expect(container.querySelectorAll("button.cv-circ").length).toBe(ORDER.length);
+    expect(container.querySelectorAll("button.cv-circ[aria-pressed='true']").length).toBe(1);
+    expect(container.querySelectorAll("button.cv-part").length).toBeGreaterThan(0);
+  });
+
+  it("opens a part straight away from its row", async () => {
+    const onPart = vi.fn();
+    render(<DecksScreen session={empty} role="host" onPlay={noop} onPart={onPart} current={slugA} />);
+    await userEvent.click(screen.getByRole("button", { name: new RegExp(partName(slugA, 0)) }));
+    expect(onPart).toHaveBeenCalledWith(slugA, 0);
   });
 
   it("talks in parts, never question counts (item 11)", () => {
@@ -200,15 +206,15 @@ describe("DecksScreen", () => {
     expect(container.textContent).toMatch(/\d+ parts?/);
   });
 
-  it("puts where you left off first, and search narrows the list", async () => {
+  it("opens on where you left off, and search narrows the circles", async () => {
     const partialSlug = slugA;
     const partial: DeckData = { answers: { [lvlQs(partialSlug, 0)[0].id]: { host: 0 } } };
     const s = { ...session, decks: { [partialSlug]: partial } } as unknown as Session;
     const { container } = render(<DecksScreen session={s} role="host" onPlay={noop} current={partialSlug} />);
-    expect(screen.getByText("Pick up where you left off")).toBeTruthy();
+    expect(container.querySelector(`button.cv-circ[data-slug="${partialSlug}"]`)?.getAttribute("aria-pressed")).toBe("true");
     await userEvent.click(screen.getByRole("button", { name: "Search conversations" }));
     await userEvent.type(screen.getByRole("searchbox"), "  MONEY ");
-    expect(container.querySelectorAll("button.cv-row").length).toBe(1);
+    expect(container.querySelectorAll("button.cv-circ").length).toBe(1);
   });
 });
 

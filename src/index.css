@@ -9049,3 +9049,228 @@ html .hero-q {
 .hhero .hero-sub {
   text-wrap: balance;
 }
+/* The dots sit a clear gap below the cards peeking out under the deck
+   (Dave, Nov 2026). */
+.hstack {
+  height: 510px;
+}
+.hstack .hstack-dots {
+  bottom: 0;
+}
+/* The shape at the back keeps to the cards' own size, whatever the deck's
+   height. */
+.hstack .hstack-back {
+  top: 380px;
+  bottom: auto;
+  height: 80px;
+}
+
+/* ---- Conversations (Dave, Nov 2026, after Dateasy's chat list): big
+   circles in one sideways row, their rings saying where you are; the chosen
+   one's parts as rounded rows below. ---- */
+.cv-circles {
+  display: flex;
+  gap: 14px;
+  margin: 2px -20px 0;
+  padding: 10px 20px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.cv-circles::-webkit-scrollbar {
+  display: none;
+}
+.cv-circ {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 78px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ta-ink);
+  cursor: pointer;
+  scroll-snap-align: center;
+}
+.cv-circ-disc {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--ta-white);
+  color: var(--app-mauve-deep);
+  /* The ring: a white gap, then the state's colour. */
+  box-shadow: 0 0 0 3px var(--ta-white), 0 0 0 6px var(--ring, var(--ta-line)), 0 6px 16px var(--glass-shadow);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.cv-circ.turn {
+  --ring: var(--honeyD);
+}
+.cv-circ.going {
+  --ring: var(--app-mauve);
+}
+.cv-circ.done {
+  --ring: var(--app-mauve-deep);
+}
+.cv-circ.on .cv-circ-disc {
+  background: var(--app-mauve-deep);
+  color: var(--ta-white);
+}
+html .cv-circ-nm {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-small);
+  font-weight: 400;
+}
+.cv-circ.on .cv-circ-nm {
+  color: var(--ta-ink);
+}
+.cv-circ:focus-visible {
+  outline: none;
+}
+.cv-circ:focus-visible .cv-circ-disc {
+  outline: 2px solid var(--ta-claret);
+  outline-offset: 9px;
+}
+.cv-parts-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 18px 2px 10px;
+}
+html .cv-parts-h h2 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.cv-parts-h span {
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+.cv-parts-h span.turn {
+  color: var(--app-amber);
+}
+.cv-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cv-part {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 76px;
+  padding: 12px 16px 12px 12px;
+  border: 1px solid var(--glass-line);
+  border-radius: 26px;
+  background: var(--ta-white);
+  box-shadow: 0 8px 22px var(--glass-shadow);
+  font: inherit;
+  color: var(--ta-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.cv-part:active {
+  transform: scale(0.985);
+}
+.cv-part-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  font-family: var(--font-display);
+  font-size: var(--t-question);
+  font-weight: 600;
+}
+.cv-part-n.done {
+  background: var(--app-mauve-deep);
+  color: var(--ta-white);
+}
+.cv-part-n.turn {
+  background: var(--app-honey-bg);
+  color: var(--app-amber);
+}
+.cv-part-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+html .cv-part-nm {
+  font-family: var(--font-ui);
+  font-size: var(--t-heading);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.cv-part-sub {
+  font-size: var(--t-small);
+  color: var(--ta-grey);
+}
+.cv-part-pct {
+  flex: none;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--app-mauve-tint);
+  color: var(--app-mauve-deep);
+  font-size: var(--t-small);
+}
+.cv-part-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--honeyD);
+}
+.cv-part-avs {
+  flex: none;
+  display: flex;
+  gap: 3px;
+}
+.cv-part-go {
+  flex: none;
+  font-size: var(--t-heading);
+  color: var(--ta-grey);
+}
+.cv-all {
+  display: block;
+  margin: 8px auto 0;
+}
+.cv-circles {
+  position: relative;
+}
+/* For you, the first circle: a honey ring, a dot when something's new; its
+   list shows where a conversation's parts would. */
+.cv-circ-disc {
+  position: relative;
+}
+.cv-circ-new {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--ta-white);
+  border-radius: 50%;
+  background: var(--honeyD);
+}
+.cv-fy {
+  padding: 4px 16px;
+  border-radius: 26px;
+  background: var(--ta-white);
+}

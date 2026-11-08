@@ -325,6 +325,15 @@ function SessionScreens({
     enterFlow(f, s, l);
   };
 
+  // From Conversations: open one part straight away (play it, or its waiting
+  // or reveal screen once you've done it).
+  const openPart = (s: string, lvl: number) => {
+    setFlowReturn(tab);
+    setSlug(s);
+    setLastDeck(user.uid, code, s);
+    enterFlow(levelDone(session.decks?.[s], lvl, role) ? "review" : "play", s, lvl);
+  };
+
   // From the part picker: play a not-yet-finished part, or open the waiting/
   // reveal screen for one you've already done.
   const selectPart = (lvl: number) => {
@@ -818,6 +827,7 @@ function SessionScreens({
             {tab === "decks" && (
               <DecksScreen
                 actSlot={actSlot}
+                onPart={openPart}
                 session={session}
                 role={role}
                 onPlay={openDeck}

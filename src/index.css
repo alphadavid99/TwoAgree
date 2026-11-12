@@ -9505,3 +9505,109 @@ html .ansrow.both {
 .oq .avatar-disc {
   flex: 0 0 auto;
 }
+
+/* ============================================================================
+   Home's conversation card, final (Dave, Nov 2026). The topic's big circle
+   with its ring of parts, what you've explored together, the name, the part
+   you're on, one filled button. Sized so it fits the card on a 360px phone.
+   ========================================================================== */
+.hring {
+  position: relative;
+  flex: none;
+  width: 128px;
+  height: 128px;
+  margin: 6px auto 8px;
+}
+.hcirc.tight .hring {
+  width: 104px;
+  height: 104px;
+}
+.pring {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.pring-disc {
+  fill: color-mix(in srgb, var(--app-mauve-tint) 45%, var(--ta-white));
+}
+.pring-track,
+.pring-fill {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.pring-track {
+  stroke: var(--app-mauve-tint);
+}
+/* One colour for progress, whatever the part. */
+.pring-fill {
+  stroke: var(--app-mauve-deep);
+  transition: stroke-dasharray 0.6s var(--ease-glide);
+}
+.hring-ic {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--app-mauve-deep);
+}
+.hring-ic svg {
+  width: 34%;
+  height: 34%;
+}
+.hring-legend {
+  font-size: var(--t-small);
+  line-height: 1.4;
+  color: var(--ta-grey);
+  text-wrap: balance;
+}
+html .hring-legend b {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--ta-ink);
+}
+.hcirc .hero-body {
+  margin-top: auto;
+  padding-top: 0;
+}
+/* The name: as large as it fits on one line. */
+html .hhero .hero-nm.lg {
+  margin: 6px 0 6px;
+  font-size: 3.4rem;
+  line-height: 1.04;
+}
+html .hhero .hero-nm.md {
+  margin: 6px 0 6px;
+  font-size: 2.9rem;
+  line-height: 1.04;
+}
+html .hhero .hero-nm.sm {
+  margin: 6px 0 6px;
+  font-size: 2.4rem;
+  line-height: 1.06;
+}
+html .hcirc .hero-sub b {
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+.hcirc .hero-them {
+  margin-top: 2px;
+  color: var(--ta-grey);
+}
+.hcirc .btn.hero-go {
+  margin-top: 14px;
+}
+/* The one thing to do on a Home card: a filled button (Dave, Nov 2026). */
+html body .hhero .btn.hero-go:not([disabled]),
+html body .htalk-btns .btn.pill:not([disabled]) {
+  background: var(--app-mauve-deep);
+  border-color: var(--app-mauve-deep);
+  color: var(--ta-white);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--app-mauve-deep) 26%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pring-fill {
+    transition: none;
+  }
+}

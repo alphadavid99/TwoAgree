@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { nLevels, lvlQs, partName } from "../lib/leveling";
-import { curLevel, doneInLevel, catComplete, levelDone } from "../lib/progress";
+import { curLevel, doneInLevel, catComplete, levelDone, levelComplete } from "../lib/progress";
 import { startedLevel } from "../lib/privacy";
 import { inviteLink } from "../lib/invite";
 import { revealedRows, answersWaiting } from "../lib/results";
@@ -12,6 +12,8 @@ import type { Session } from "../types";
 import { SUBJECTS } from "../lib/subjects";
 import { toneFor } from "../components/Avatar";
 import { TalkCard } from "../components/TalkCard";
+import { PartsRing } from "../components/PartsRing";
+import { DeckIcon } from "../components/icons";
 import { deckName } from "../lib/questions.fr";
 import { talkNext } from "../lib/talkNext";
 import { namesFor } from "../lib/who";
@@ -73,9 +75,9 @@ export default function HomeScreen({
         ? t("Good afternoon,", "Bon après-midi,")
         : t("Good evening,", "Bonsoir,");
 
-  // Each conversation's agree score, for its card's pill.
+  // What you've opened together: only to choose what to suggest next. No
+  // score is shown on Home.
   const { rows } = revealedRows(session.decks, role);
-  const pctOf = (s: string) => rows.find((r) => r.slug === s)?.pct ?? null;
   const talk = talkNext(session.decks, role).next[0];
   const names = namesFor(session.members, role, myName, partnerName);
   // Solo-first: answers you've banked that your partner hasn't matched yet.
@@ -237,7 +239,7 @@ export default function HomeScreen({
   if (!shown.has(slug)) {
     card(
       `cont:${slug}`,
-      <HeroCard kind={t("Continue", "Continuer")} slug={slug} deck={session.decks?.[slug]} role={role} joined={joined} partnerName={partnerName} pct={pctOf(slug)} onPlay={onPlay} onBrowse={onBrowse} />,
+      <HeroCard kind={t("Continue", "Continuer")} slug={slug} deck={session.decks?.[slug]} role={role} joined={joined} partnerName={partnerName} onPlay={onPlay} onBrowse={onBrowse} />,
       slug,
     );
   }
@@ -268,7 +270,7 @@ export default function HomeScreen({
         kind={t("For you two next", "Pour vous deux, ensuite")}
         reason={
           rec.from
-            ? t(`Because ${deckName(rec.from.slug, lang)} opened at ${rec.from.pct}%`, `Parce que ${deckName(rec.from.slug, lang)} s’est ouvert à ${rec.from.pct} %`)
+            ? t(`A good next step after ${deckName(rec.from.slug, lang)}`, `Une bonne suite après ${deckName(rec.from.slug, lang)}`)
             : t("A good next one for you two", "Une bonne suite pour vous deux")
         }
         slug={rec.slug}
@@ -276,7 +278,6 @@ export default function HomeScreen({
         role={role}
         joined={joined}
         partnerName={partnerName}
-        pct={null}
         onPlay={onPlay}
         onBrowse={onBrowse}
       />,
@@ -288,7 +289,7 @@ export default function HomeScreen({
     if (cards.length >= 6) break;
     card(
       `cont:${s}`,
-      <HeroCard kind={t("Continue", "Continuer")} slug={s} deck={session.decks?.[s]} role={role} joined={joined} partnerName={partnerName} pct={pctOf(s)} onPlay={onPlay} onBrowse={onBrowse} />,
+      <HeroCard kind={t("Continue", "Continuer")} slug={s} deck={session.decks?.[s]} role={role} joined={joined} partnerName={partnerName} onPlay={onPlay} onBrowse={onBrowse} />,
       s,
     );
   }
@@ -453,6 +454,11 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
   );
 }
 
+// A conversation's card on Home (Dave, Nov 2026, final): the topic's big
+// circle, its ring one segment per part and filling in one colour as you
+// answer; under it, how much you've explored together; then the name, the
+// part you're on, and one filled button. No score here: Home is about what
+// you've explored together, and the numbers live on Together.
 function HeroCard({
   kind,
   reason,
@@ -461,20 +467,18 @@ function HeroCard({
   role,
   joined,
   partnerName,
-  pct,
   onPlay,
   onBrowse,
 }: {
   /** What this card is for, as a small pill top left. */
   kind: string;
-  /** Why it's suggested, in place of "Up next". */
+  /** Why it's suggested, under the circle, when nothing's been answered yet. */
   reason?: string;
   slug: string;
   deck: DeckData | undefined;
   role: Role;
   joined: boolean;
   partnerName: string;
-  pct: number | null;
   onPlay: (slug: string) => void;
   onBrowse: () => void;
 }) {
@@ -498,29 +502,81 @@ function HeroCard({
       : mine > 0
         ? t("Continue →", "Continuer →")
         : t("Start answering →", "Commencer à répondre →");
-  return (
-    <div className="card hhero">
-      <span className="hkind">{kind}</span>
-      {pct != null && (
-        <span className="hero-pill">
-          <span aria-hidden="true">&#9825;</span> {t(`${pct}% agree`, `${pct} % d’accord`)}
-        </span>
+
+  // The ring: each part by how much of it you've answered.
+  const parts = Array.from({ length: L }, (_, i) => i);
+  const fills = parts.map((i) => {
+    const n = lvlQs(slug, i).length;
+    return levelDone(deck, i, role) ? 1 : n ? doneInLevel(slug, i, deck, role) / n : 0;
+  });
+  const answered = parts.filter((i) => levelDone(deck, i, role)).length;
+  const together = parts.filter((i) => levelComplete(deck, i, role)).length;
+  const begun = fills.some((f) => f > 0);
+  // Under the circle: what the ring is showing, in words.
+  const legend: ReactNode = allDone ? (
+    L > 1 ? (
+      <>
+        <b>{t(`All ${L} parts`, `Les ${L} parties`)}</b> {t("explored together", "explorées ensemble")}
+      </>
+    ) : (
+      t("Explored together", "Explorée ensemble")
+    )
+  ) : !begun && reason ? (
+    reason
+  ) : L === 1 ? (
+    mine > 0 ? (
+      <>
+        <b>{t(`${mine} of ${lvlTotal} questions`, `${mine} questions sur ${lvlTotal}`)}</b> {t("answered", "répondues")}
+      </>
+    ) : (
+      <>
+        <b>{t(`${lvlTotal} questions`, `${lvlTotal} questions`)}</b> {t("to explore together", "à explorer ensemble")}
+      </>
+    )
+  ) : answered > together ? (
+    <>
+      <b>{t(`${answered} of ${L}${together ? "" : " parts"}`, `${answered} ${together ? "" : `partie${answered === 1 ? "" : "s"} `}sur ${L}`)}</b>{" "}
+      {t("answered", answered === 1 ? "répondue" : "répondues")}
+      {together > 0 && (
+        <>
+          {" · "}
+          <b>{together}</b> {t("opened together", together === 1 ? "ouverte ensemble" : "ouvertes ensemble")}
+        </>
       )}
-      <span className="hero-body">
-        <span className="hero-up">
-          {reason ?? (allDone
-            ? t("All parts revealed", "Toutes les parties révélées")
-            : L > 1
-              ? t(`Up next · Part ${lvl + 1} of ${L}`, `À suivre · Partie ${lvl + 1} sur ${L}`)
-              : t("Up next", "À suivre"))}
+    </>
+  ) : together > 0 ? (
+    <>
+      <b>{t(`${together} of ${L} parts`, `${together} partie${together === 1 ? "" : "s"} sur ${L}`)}</b>{" "}
+      {t("explored together", together === 1 ? "explorée ensemble" : "explorées ensemble")}
+    </>
+  ) : (
+    <>
+      <b>{t(`${L} parts`, `${L} parties`)}</b> {t("to explore together", "à explorer ensemble")}
+    </>
+  );
+  const name = deckName(slug, lang);
+  // The name as large as it fits on one line; long names step down.
+  const size = name.length <= 7 ? "lg" : name.length <= 10 ? "md" : "sm";
+  return (
+    <div className={`card hhero hcirc${size === "sm" ? " tight" : ""}`}>
+      <span className="hkind">{kind}</span>
+      <span className="hring" aria-hidden="true">
+        <PartsRing fills={fills} />
+        <span className="hring-ic">
+          <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={44} stroke={1.6} />
         </span>
-        <h2 className="hero-nm">{deckName(slug, lang)}</h2>
+      </span>
+      <span className="hring-legend">{legend}</span>
+      <span className="hero-body">
+        <h2 className={`hero-nm ${size}`}>{name}</h2>
         {!allDone && (
           <span className="hero-sub">
-            {L > 1 ? `${partName(slug, lvl)} · ` : ""}
-            {mine > 0
-              ? t(`${mine} of ${lvlTotal} answered`, `${mine} sur ${lvlTotal} répondues`)
-              : t(`${lvlTotal} questions`, `${lvlTotal} questions`)}
+            {L > 1 && (
+              <>
+                <b>{t(`Part ${lvl + 1}`, `Partie ${lvl + 1}`)}</b> ·{" "}
+              </>
+            )}
+            {partName(slug, lvl)}
           </span>
         )}
         {joined && !allDone && (

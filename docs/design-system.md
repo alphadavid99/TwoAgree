@@ -30,7 +30,9 @@ Build from these. Don't hand-style a one-off when a kit piece fits. The look (Da
 |---|---|
 | The page | A soft ground (`--app-ground-top`) with flowing waves across the top 640px (`<Flux>`, `components/Flux.tsx`), fading into the ground. **The waves are the only gradient: a card never carries its own.** |
 | Card | Frosted glass: `--glass` with a `--glass-line` hairline, radius 22, a soft `--glass-shadow`, backdrop blur. No thick base. |
-| Home card stack | One solid white card (radius 28) with the next conversations peeking out underneath; swipe or drag sideways for the next. Dots under it say where you are. |
+| Home card stack | One solid white card (radius 28) with the next cards peeking out underneath; swipe or drag sideways. Dots under it say where you are. Each card says what it's for in a small pill and has one **filled** button (`--app-mauve-deep`, white words): the one place a button is filled. |
+| Conversation card (Home) | The topic's big circle with its **parts ring** (`<PartsRing>`), a line saying what you've explored together, the name as large as fits one line, "Part 2 · its name", the filled button and a quiet link. **No score on Home**: it's about what you've explored together; the numbers live on Together. |
+| Parts ring | One segment per part, from twelve o'clock, clockwise, equal gaps. **One colour** (`--app-mauve-deep`) fills each segment by how much of it you've answered, over a pale track (`--app-mauve-tint`). Never a second shade for a state. |
 | Reveal card | One solid white card filling the screen: the two of you across its top (your colours blending into each other, each in a circle with your photo or initial), the number large in the middle, the line and the next step under it. |
 | Main button | A white pill with a 1.5px `--app-mauve` edge and `--app-mauve-deep` words, 56px on the question and reveal screens. One per screen. |
 | Secondary button | A plain white pill (`.btn.out`). Text buttons stay text, still 44px+ to tap. |

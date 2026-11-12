@@ -2,6 +2,8 @@
 // checked at a glance. Every piece is the real class from index.css; see
 // docs/design-system.md for the spec.
 import { Avatar } from '../components/Avatar'
+import { PartsRing } from '../components/PartsRing'
+import { DeckIcon } from '../components/icons'
 
 export function KitSheet() {
   return (
@@ -18,6 +20,28 @@ export function KitSheet() {
         <div className="eyebrow">Colour, sparingly</div>
         <div className="ktitle" style={{ marginTop: 6 }}>Mauve marks what you act on</div>
         <p className="helper" style={{ margin: '6px 0 0' }}>The main button's edge, the active tab, the selected answer and progress. Nothing else.</p>
+      </div>
+
+      {/* The parts ring: one colour fills each part as it's answered. */}
+      <div className="card" style={{ marginTop: 16 }}>
+        <div className="eyebrow">The parts ring</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginTop: 10 }}>
+          {[
+            [0, 0, 0],
+            [1, 0.4, 0],
+            [1, 1, 1],
+            [0.6],
+            [1, 0],
+            [1, 1, 0.25, 0, 0],
+            [1, 1, 1, 1, 0.5, 0, 0, 0, 0, 0, 0, 0],
+            [0.05, 0, 0, 0],
+          ].map((f, i) => (
+            <span key={i} className="hring" style={{ width: 72, height: 72, margin: 0 }}>
+              <PartsRing fills={f} />
+              <span className="hring-ic"><DeckIcon icon={['coin', 'home', 'faith', 'star', 'heart', 'book', 'chat', 'leaf'][i]} size={24} stroke={1.6} /></span>
+            </span>
+          ))}
+        </div>
       </div>
 
       <button className="btn pill" type="button">Continue</button>

@@ -1,14 +1,14 @@
 // Small line icons. Stroke uses currentColor so callers set the colour.
 type P = { size?: number };
 
-const svg = (size: number, children: React.ReactNode) => (
+const svg = (size: number, children: React.ReactNode, strokeWidth = 2) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth={2}
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
@@ -200,5 +200,6 @@ const DECK_GLYPHS: Record<string, React.ReactNode> = {
   ),
 };
 
-export const DeckIcon = ({ icon, size = 22 }: { icon: string; size?: number }) =>
-  svg(size, DECK_GLYPHS[icon] ?? DECK_GLYPHS.star);
+// `stroke` is the line weight on the 24 grid: lighter when drawn large.
+export const DeckIcon = ({ icon, size = 22, stroke = 2 }: { icon: string; size?: number; stroke?: number }) =>
+  svg(size, DECK_GLYPHS[icon] ?? DECK_GLYPHS.star, stroke);

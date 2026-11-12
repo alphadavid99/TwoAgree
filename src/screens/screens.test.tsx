@@ -109,6 +109,10 @@ describe("HomeScreen", () => {
     // One card on top, the others waiting (inert) in the deck.
     expect(container.querySelector(".hs-card.top .hkind")).toBeTruthy();
     expect(container.querySelectorAll(".hs-card .hhero").length).toBeGreaterThan(0);
+    // A conversation's card carries its ring of parts, and no score: Home is
+    // about what you've explored together (the numbers live on Together).
+    expect(container.querySelector(".hcirc .pring")).toBeTruthy();
+    expect(container.textContent).not.toMatch(/\d+\s?% agree/);
     // The old rows under the cards are gone.
     expect(screen.queryByText("Between the two of you")).toBeNull();
   });

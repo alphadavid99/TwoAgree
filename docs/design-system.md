@@ -90,6 +90,26 @@ Only display numbers and names over 30px step outside them (the reveal's number,
 - Focus: a 2px claret outline with a 3px gap.
 - Partners see each other's name and profile photo (copied into the session); never an email.
 
+## Motion
+
+Fast, quiet and for a reason: celebration and feedback only, never on a low score or private text. Tokens live in `tokens.css` (`--dur-*`, `--ease-*`). Adopted Nov 2026 from the animation and design-hack reviews:
+
+- **Arrive in place** from 0.97 scale and 4px down, 220ms (`arrive`, `--dur-arrive`). A screen's parts stagger 30ms apart, capped at 120ms, so its button is there by ~340ms.
+- **Sheets rise from their edge** and fall back on close. Drag the grip or header: past 40% or a flick (over 500px/s) closes it, otherwise it springs home (`spring` in `lib/motion.ts`: stiffness 300, damping 30).
+- **Direction means something.** Next glides in from the right, Back from the left (`.glide-in`, `.glide-in.from-left`).
+- **A field to fix** turns red (`.input[aria-invalid]`), takes focus and shakes once (`flagField`). Colour alone is never the only sign.
+- **Press:** instant down, springy release. Scale by size: about 0.98 full-width, 0.95 pills, 0.92 small circles. Only the filled button darkens.
+- **Transform and opacity only.** Never animate `left`, `width`, `height`, `margin` or `padding`, and never `transition: all`. A progress fill is full width and slides in with `translateX`.
+- **Swaps blur** (`.swap-in`, 180ms) when one word or icon becomes another in the same place.
+- Every motion has a reduce-motion fallback. Nothing blocks a tap for more than 300ms; the reveal ceremony is the one place that is slow on purpose.
+
+## Details
+
+- **Concentric corners:** an inner shape near a corner takes the outer radius minus its gap (a part row is 38px: its 26px circle plus the 12px gap). Once the gap is as big as the radius, the inner radius is free.
+- **Icon lines are fixed in pixels** at every size (`iconLine`): 1.75px under 22px, 2px up to 40px, 2.5px above.
+- **Sideways scrollers fade** only the edge with more past it (`useEdgeFade`).
+- **Lines over the waves or glass** use `--app-hairline` (claret 10%), not a solid colour. `--ta-line` stays for lines on plain white.
+
 ## Colour and contrast
 
 - Text at least 4.5:1 against its ground; large text (24px+) and control edges at least 3:1.

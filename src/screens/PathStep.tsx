@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import type { Question } from "../lib/questions";
 import type { Role } from "../lib/scoring";
 import type { Session, PathStepData } from "../types";
@@ -320,7 +320,7 @@ function StepPlay({
 
   const progress = (
     <div className="qprog">
-      <i style={{ width: `${Math.round(((idx + 1) / todo.length) * 100)}%` }} />
+      <i style={{ "--p": `${Math.round(((idx + 1) / todo.length) * 100)}%` } as CSSProperties} />
     </div>
   );
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   signInAnonymously,
   linkWithCredential,
@@ -823,7 +823,7 @@ function OnbQuestions({
 
   const progress = (
     <div className="qprog">
-      <i style={{ width: `${Math.round(((idx + 1) / STARTER_QS.length) * 100)}%` }} />
+      <i style={{ "--p": `${Math.round(((idx + 1) / STARTER_QS.length) * 100)}%` } as CSSProperties} />
     </div>
   );
 

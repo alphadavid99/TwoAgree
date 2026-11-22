@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useEdgeFade } from "../hooks/useEdgeFade";
 import { createPortal } from "react-dom";
 import { DECKS } from "../lib/questions";
 import { nLevels, lvlQs, partName, deckDepthWord } from "../lib/leveling";
@@ -110,6 +111,14 @@ export default function DecksScreen({
   // At once when the screen opens, gently after a tap; only the row
   // scrolls, never the page.
   const row = useRef<HTMLDivElement>(null);
+  const fade = useEdgeFade<HTMLDivElement>();
+  const rowRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      row.current = el;
+      fade(el);
+    },
+    [fade],
+  );
   const first = useRef(true);
   useEffect(() => {
     const r = row.current;
@@ -191,7 +200,7 @@ export default function DecksScreen({
       )}
 
       {/* Every conversation as a big circle; its ring says where you are. */}
-      <div ref={row} className="cv-circles" role="group" aria-label={t("Conversations", "Conversations")}>
+      <div ref={rowRef} className="cv-circles" role="group" aria-label={t("Conversations", "Conversations")}>
         {/* For you first: invites and your partner's progress. */}
         {forYou && !q && (
           <button

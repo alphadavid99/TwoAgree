@@ -8,6 +8,7 @@ import { DECKS, ORDER } from "../lib/questions";
 import { other, type DeckData, type Role } from "../lib/scoring";
 import { createInvite } from "../lib/functions";
 import { prettyError } from "../lib/errors";
+import { Velocity } from "../lib/motion";
 import type { Session } from "../types";
 import { SUBJECTS } from "../lib/subjects";
 import { toneFor } from "../components/Avatar";
@@ -367,12 +368,17 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
   const [held, setHeld] = useState(false);
   const from = useRef<{ x: number; y: number; t: number } | null>(null);
   const dragging = useRef(false);
+  // Release speed sets how fast the cards settle (motion rule 9): a flick is
+  // quick, a slow drag is soft. Plain CSS transitions still do the moving.
+  const vel = useRef(new Velocity());
+  const [ms, setMs] = useState(340);
   const at = (k: number) => slugs[(k + n) % n];
 
   const down = (e: RPointerEvent<HTMLDivElement>) => {
     if (n < 2) return;
     from.current = { x: e.clientX, y: e.clientY, t: performance.now() };
     dragging.current = false;
+    vel.current.reset(0);
   };
   const move = (e: RPointerEvent<HTMLDivElement>) => {
     const f = from.current;
@@ -384,6 +390,7 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
       setHeld(true);
       e.currentTarget.setPointerCapture?.(e.pointerId);
     }
+    vel.current.push(x);
     setDx(x);
   };
   const up = () => {
@@ -391,8 +398,14 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
     from.current = null;
     setHeld(false);
     if (!f || !dragging.current) return;
-    const quick = performance.now() - f.t < 260 && Math.abs(dx) > 36;
-    if (Math.abs(dx) > 80 || quick) setI((v) => (v + (dx < 0 ? 1 : -1) + n) % n);
+    const v = vel.current.get();
+    // A flick in the direction of the pull counts even when it's short.
+    const quick = Math.abs(v) > 500 && Math.abs(dx) > 24 && Math.sign(v) === Math.sign(dx);
+    const go = Math.abs(dx) > 80 || quick;
+    if (go) setI((k) => (k + (dx < 0 ? 1 : -1) + n) % n);
+    // What's left to travel at the speed you let go, kept between 160 and 340ms.
+    const left = go ? 360 - Math.abs(dx) : Math.abs(dx);
+    setMs(Math.round(Math.min(340, Math.max(160, (left / Math.max(Math.abs(v), 1)) * 1000))));
     setDx(0);
   };
 
@@ -424,7 +437,7 @@ function HeroStack({ slugs, render }: { slugs: string[]; render: (slug: string) 
           <div
             key={s}
             className={`hs-card ${role}${held ? " held" : ""}`}
-            style={place(role)}
+            style={{ ...place(role), transitionDuration: held ? undefined : `${ms}ms` }}
             aria-hidden={top ? undefined : true}
             inert={top ? undefined : true}
             onPointerDown={top ? down : undefined}
@@ -563,7 +576,7 @@ function HeroCard({
       <span className="hring" aria-hidden="true">
         <PartsRing fills={fills} />
         <span className="hring-ic">
-          <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={44} stroke={1.6} />
+          <DeckIcon icon={DECKS[slug]?.icon ?? "star"} size={44} />
         </span>
       </span>
       <span className="hring-legend">{legend}</span>

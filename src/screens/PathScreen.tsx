@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode, type CSSProperties } from "react";
 import type { User } from "firebase/auth";
 import { get, ref } from "firebase/database";
 import { db } from "../firebase";
@@ -382,7 +382,7 @@ function PathIntake({
       {/* (idx+1)/, not idx/ — the bar sat at 0% while the label already said
           "1 of 8", so the first question looked like nothing had started. */}
       <div className="qprog" style={{ marginTop: 14 }}>
-        <i style={{ width: `${Math.round(((idx + 1) / QS.length) * 100)}%` }} />
+        <i style={{ "--p": `${Math.round(((idx + 1) / QS.length) * 100)}%` } as CSSProperties} />
       </div>
       <p className="hint">{t(`${idx + 1} of ${QS.length}`, `${idx + 1} sur ${QS.length}`)}</p>
       <h1 className="h1" style={{ marginTop: 14 }}>{q.q}</h1>

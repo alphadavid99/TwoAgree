@@ -59,6 +59,17 @@ describe("create account", () => {
     expect(fb.createUserWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
+  it("points at the first field to fix, and its red edge clears once you edit it", async () => {
+    render(<AuthScreen initialMode="signin" />);
+    const email = screen.getByLabelText("Email");
+    await userEvent.type(email, "sarah@");
+    await userEvent.click(screen.getByRole("button", { name: /Sign in →/ }));
+    expect(document.activeElement).toBe(email);
+    expect(email.getAttribute("aria-invalid")).toBe("true");
+    await userEvent.type(email, "example.com");
+    expect(email.getAttribute("aria-invalid")).toBeNull();
+  });
+
   it("an email that already has an account offers Sign in instead, keeping the email", async () => {
     fb.createUserWithEmailAndPassword.mockRejectedValue(fail("auth/email-already-in-use"));
     render(<AuthScreen initialMode="signup" />);

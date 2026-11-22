@@ -4,6 +4,7 @@ import { joinByCode, redeemInvite } from "../lib/functions";
 import { parseCodeInput } from "../lib/invite";
 import { setActiveCode } from "../lib/local";
 import { prettyError } from "../lib/errors";
+import { flagField } from "../lib/motion";
 import { useT } from "../lib/i18n";
 import type { Stage } from "../types";
 
@@ -74,6 +75,7 @@ export default function StartScreen({
           "Saisissez le code à 4 caractères partagé par votre partenaire.",
         ),
       );
+      flagField(document.getElementById("code"));
       return;
     }
     setBusy(true);
@@ -83,6 +85,7 @@ export default function StartScreen({
     } catch (e) {
       setErr(prettyError(e));
       setBusy(false);
+      flagField(document.getElementById("code"));
     }
   };
 
@@ -185,7 +188,11 @@ export default function StartScreen({
             placeholder="ABCD"
             style={{ letterSpacing: 4 }}
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) => {
+              setCode(e.target.value);
+              if (err) setErr("");
+            }}
+            aria-invalid={(mode === "join" && !!err) || undefined}
             aria-describedby="code-read"
           />
           <p id="code-read" className="codeinfo" aria-live="polite">

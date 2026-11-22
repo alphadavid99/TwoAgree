@@ -172,9 +172,12 @@ describe("going back (feedback 15)", () => {
     await userEvent.click(screen.getByRole("button", { name: /my guess/ }));
     expect(screen.getByText(/^Question 2 of/)).toBeTruthy();
 
-    // Back lands on the guess with it still chosen…
+    // Going on, the card glides in from the right…
+    expect(document.querySelector(".qcard.from-left")).toBeNull();
+    // Back lands on the guess with it still chosen, gliding in from the left…
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));
     expect(screen.getByText(/was asked:|’s answer/)).toBeTruthy();
+    expect(document.querySelector(".qcard.from-left")).toBeTruthy();
     expect(screen.getByRole("button", { pressed: true }).textContent).toContain(first.opts![2]);
     // …and again on the answer, still chosen.
     await userEvent.click(screen.getByRole("button", { name: /Back to the previous question/ }));

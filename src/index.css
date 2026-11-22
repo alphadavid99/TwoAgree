@@ -155,6 +155,13 @@ label {
   border-color: var(--berry);
   box-shadow: 0 0 0 3px rgba(62, 26, 46, 0.1);
 }
+/* A field that needs fixing says so itself, not just in the line under it
+   (motion rule 3). Focus keeps the red edge: you're fixing it, it's still wrong. */
+.input[aria-invalid="true"],
+.input[aria-invalid="true"]:focus {
+  border-color: var(--kit-red);
+  box-shadow: 0 0 0 3px rgba(163, 45, 69, 0.12);
+}
 textarea.input {
   resize: none;
   min-height: 84px;
@@ -476,13 +483,17 @@ textarea.input {
   overflow: hidden;
   margin: 18px 0 0;
 }
+/* The fill is full width and slides in from the left (motion rule 6):
+   transform runs on the GPU, so a busy main thread can't make it stutter,
+   and unlike scaleX it keeps its rounded end. --p is the share done. */
 .qprog i {
   position: relative;
   display: block;
   height: 100%;
   background: var(--honey);
   border-radius: 999px;
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(calc(var(--p, 0%) - 100%));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* keyed per question so the leading edge pulses once on each advance */
 .qtick {
@@ -581,7 +592,10 @@ textarea.input {
   border-radius: var(--r-sm);
   margin-top: 10px;
   cursor: pointer;
-  transition: all 0.12s;
+  /* Named properties, never `all` (motion rule 6): `all` would animate any
+     layout property a later rule changes. */
+  transition: border-color 0.12s, background-color 0.12s, box-shadow 0.12s, color 0.12s,
+    transform 0.12s;
   line-height: 1.4;
   font-size: var(--t-body); /* 16px — a reading surface, so it scales */
 }
@@ -849,20 +863,30 @@ textarea.input {
 }
 /* The honey pill is one shared indicator that slides to the active tab. It
    sits behind the icon only, the same size on every tab, so a long label
-   ("Together") never swells it (feedback, Nov 2026). Its left/top/size are
-   measured from the active tab's icon. */
+   ("Together") never swells it (feedback, Nov 2026).
+   Motion rule 6: the indicator is a one-tab-wide box moved with transform
+   (in translateX, 100% is the box's own width, i.e. one tab); the pill is
+   its ::before, centred on the icon. Animating `left` re-ran layout on every
+   frame. */
 .bnav-ind {
-  --tab: calc((100% - 12px - (var(--n) - 1) * 2px) / var(--n));
   position: absolute;
   top: 12px;
+  left: 6px;
+  width: calc((100% - 12px - (var(--n) - 1) * 2px) / var(--n));
+  height: 32px;
+  display: grid;
+  place-items: center;
+  transform: translateX(calc(var(--i) * (100% + 2px)));
+  transition: transform 0.38s cubic-bezier(0.3, 1.12, 0.35, 1);
+  pointer-events: none;
+}
+.bnav-ind::before {
+  content: "";
   width: 52px;
   height: 32px;
-  left: calc(6px + var(--i) * (var(--tab) + 2px) + (var(--tab) - 52px) / 2);
   border-radius: 999px;
   background: var(--honey);
   box-shadow: 0 4px 10px rgba(217, 150, 58, 0.28);
-  transition: left 0.38s cubic-bezier(0.3, 1.12, 0.35, 1);
-  pointer-events: none;
 }
 .bnav-ic {
   display: grid;
@@ -1597,6 +1621,21 @@ textarea.input {
     transform: none;
   }
 }
+/* Back glides in from the left, so going back never looks like going on. */
+.glide-in.from-left,
+.screen-enter > .glide-in.from-left {
+  animation-name: qInBack;
+}
+@keyframes qInBack {
+  from {
+    opacity: 0;
+    transform: translateX(-26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* 7. tab crossfade — pane rises in on tab change (keyed per tab) */
 .pane-in {
@@ -1632,17 +1671,33 @@ textarea.input {
    — every gating CTA in onboarding looked fully tappable while disabled, so
    people tapped "Start" on the consent screen with nothing ticked and got no
    feedback at all. */
+/* Motion rule 1: arrive fast and from 0.97, and cap the stagger so the last
+   thing on a screen (usually its button) is there by ~340ms. The old 450ms
+   rise with a 60ms stagger kept the 7th item invisible until 0.86s. */
 .screen-enter > * {
-  animation: riseIn 0.45s ease backwards;
+  animation: arrive var(--dur-arrive) var(--ease-arrive) backwards;
 }
-.screen-enter > *:nth-child(1) { animation-delay: 0.05s; }
-.screen-enter > *:nth-child(2) { animation-delay: 0.11s; }
-.screen-enter > *:nth-child(3) { animation-delay: 0.17s; }
-.screen-enter > *:nth-child(4) { animation-delay: 0.23s; }
-.screen-enter > *:nth-child(5) { animation-delay: 0.29s; }
-.screen-enter > *:nth-child(6) { animation-delay: 0.35s; }
-.screen-enter > *:nth-child(7) { animation-delay: 0.41s; }
-.screen-enter > *:nth-child(8) { animation-delay: 0.47s; }
+.screen-enter > *:nth-child(2) { animation-delay: 30ms; }
+.screen-enter > *:nth-child(3) { animation-delay: 60ms; }
+.screen-enter > *:nth-child(4) { animation-delay: 90ms; }
+.screen-enter > *:nth-child(n + 5) { animation-delay: 120ms; }
+
+/* One arrival for anything that appears in place: a screen's parts, an error
+   panel, "Not saved", the importance question. */
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.errpanel,
+.savefail {
+  animation: arrive var(--dur-arrive) var(--ease-arrive) backwards;
+}
 
 /* 5. waiting breath — caret breathes, soft rings ripple outward */
 .bwrap {
@@ -1803,6 +1858,9 @@ textarea.input {
   .glide-in,
   .pane-in,
   .screen-enter > *,
+  .errpanel,
+  .savefail,
+  .impfoot,
   .orb.sel,
   .opt.sel,
   .opt.sel .dot,
@@ -4476,10 +4534,12 @@ textarea.input {
   position: fixed;
   inset: 0;
   z-index: 1000; /* above the bottom tab bar */
-  background: rgba(42, 17, 32, 0.45);
+  /* --shade lightens the scrim as the sheet is dragged down */
+  background: rgba(42, 17, 32, calc(0.45 * var(--shade, 1)));
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  animation: scrimIn 200ms ease-out;
 }
 .sheet {
   width: 100%;
@@ -4491,6 +4551,35 @@ textarea.input {
   padding: 8px 20px calc(24px + env(safe-area-inset-bottom));
   text-align: left;
   outline: none;
+}
+/* Sheets rise from their edge (motion rule 1). No fill mode: a held
+   keyframe would override the drag's inline transform. */
+.sheet {
+  animation: sheetUp 280ms var(--ease-glide);
+}
+@keyframes scrimIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+}
+/* The grip and header are the handle (motion rule 9). */
+.sheet-drag {
+  touch-action: none;
+  cursor: grab;
+}
+.sheet-drag:active {
+  cursor: grabbing;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet-scrim,
+  .sheet {
+    animation: none;
+  }
 }
 .sheet-grip {
   width: 40px;
@@ -5843,7 +5932,7 @@ a.btn {
   font: inherit;
   color: var(--ta-ink);
   cursor: pointer;
-  transition: border-bottom-width 0.12s ease, transform 0.12s ease;
+  transition: transform 0.12s ease;
 }
 .tg-tile:active {
   border-bottom-width: 2px;
@@ -6204,7 +6293,7 @@ a.btn {
   font: inherit;
   color: var(--ta-ink);
   cursor: pointer;
-  transition: border-bottom-width 0.12s ease, transform 0.12s ease;
+  transition: transform 0.12s ease;
 }
 .cv-row:active {
   border-bottom-width: 2px;
@@ -6864,7 +6953,7 @@ a.btn {
    it rises in once an answer is chosen. */
 .impfoot {
   margin-bottom: 12px;
-  animation: riseIn var(--dur-enter) var(--ease-glide) both;
+  animation: arrive var(--dur-arrive) var(--ease-arrive) backwards;
 }
 .impfoot .impinline-head {
   margin-bottom: 8px;
@@ -7343,7 +7432,7 @@ a.btn {
   font: inherit;
   color: var(--ta-ink);
   cursor: pointer;
-  transition: transform var(--dur-press) ease, border-bottom-width var(--dur-press) ease;
+  transition: transform var(--dur-press) ease;
 }
 .livechoice:active {
   transform: translateY(3px);
@@ -7774,7 +7863,7 @@ body {
 }
 
 /* ---- The dock: the active tab is a mauve icon on a faint mauve tint ---- */
-.bnav-ind {
+.bnav-ind::before {
   background: var(--app-mauve-tint);
   box-shadow: none;
 }
@@ -8230,19 +8319,23 @@ html .pfull .qtext.qtext-long {
 }
 .pfull .orb {
   max-width: 60px;
-  border: 2px solid color-mix(in srgb, var(--app-mauve) 40%, var(--ta-white));
+  /* Five rings, a little deeper toward the top end, mixed in OKLab so the
+     steps are even. The lightest is 3.1:1 on white, the darkest today's mauve
+     (4.7:1): every ring meets the 3:1 rule for control edges. The old ramp
+     started at 1.7:1. */
+  border: 2px solid color-mix(in oklab, var(--app-mauve) 77%, var(--ta-white));
   background: var(--glass-strong);
   box-shadow: 0 4px 14px var(--glass-shadow);
   color: var(--ta-white);
 }
 .pfull .orb:nth-child(2) {
-  border-color: color-mix(in srgb, var(--app-mauve) 55%, var(--ta-white));
+  border-color: color-mix(in oklab, var(--app-mauve) 83%, var(--ta-white));
 }
 .pfull .orb:nth-child(3) {
-  border-color: color-mix(in srgb, var(--app-mauve) 70%, var(--ta-white));
+  border-color: color-mix(in oklab, var(--app-mauve) 88%, var(--ta-white));
 }
 .pfull .orb:nth-child(4) {
-  border-color: color-mix(in srgb, var(--app-mauve) 85%, var(--ta-white));
+  border-color: color-mix(in oklab, var(--app-mauve) 94%, var(--ta-white));
 }
 .pfull .orb:nth-child(5) {
   border-color: var(--app-mauve);
@@ -9104,7 +9197,7 @@ html .hero-q {
   background: var(--ta-white);
   color: var(--app-mauve-deep);
   /* The ring: a white gap, then the state's colour. */
-  box-shadow: 0 0 0 3px var(--ta-white), 0 0 0 6px var(--ring, var(--ta-line)), 0 6px 16px var(--glass-shadow);
+  box-shadow: 0 0 0 3px var(--ta-white), 0 0 0 6px var(--ring, var(--app-hairline)), 0 6px 16px var(--glass-shadow);
   transition: background 0.2s ease, color 0.2s ease;
 }
 .cv-circ.turn {
@@ -9172,7 +9265,9 @@ html .cv-parts-h h2 {
   min-height: 76px;
   padding: 12px 16px 12px 12px;
   border: 1px solid var(--glass-line);
-  border-radius: 26px;
+  /* Concentric with its 52px circle (design hack 1): the circle's radius 26
+     plus its 12px gap = 38, half the row, so the row is a pill. */
+  border-radius: 38px;
   background: var(--ta-white);
   box-shadow: 0 8px 22px var(--glass-shadow);
   font: inherit;
@@ -9609,5 +9704,78 @@ html body .htalk-btns .btn.pill:not([disabled]) {
 @media (prefers-reduced-motion: reduce) {
   .pring-fill {
     transition: none;
+  }
+}
+
+/* ==========================================================================
+   Motion and polish pass (Nov 2026): the animation rules and design hacks
+   reviewed with Dave. Each block names its rule.
+   ========================================================================== */
+
+/* Motion rule 2: press feedback where it was missing. Down is instant (0ms),
+   the release springs back. Scale by size: a small circle can dip further
+   than a wide pill before it reads as a lurch. */
+.pcircle,
+.fpill {
+  transition: transform var(--dur-press) var(--ease-spring);
+}
+.pcircle:active {
+  transform: scale(0.92);
+  transition-duration: 0ms;
+}
+.fpill:active {
+  transform: scale(0.95);
+  transition-duration: 0ms;
+}
+/* The one filled button also darkens a touch; white glass doesn't (it would
+   turn grey), it keeps its shadow drop instead. */
+html body .hhero .btn.hero-go:not([disabled]),
+html body .htalk-btns .btn.pill:not([disabled]) {
+  transition: transform 0.12s var(--ease-spring), box-shadow 0.12s, filter var(--dur-press) ease;
+}
+html body .hhero .btn.hero-go:not([disabled]):active,
+html body .htalk-btns .btn.pill:not([disabled]):active {
+  filter: brightness(0.92);
+  transition-duration: 0ms;
+}
+
+/* Design hack 6: a sideways scroller fades only the edge with more past it.
+   The classes are set by useEdgeFade (src/hooks/useEdgeFade.ts). */
+.fade-x {
+  --fl: 0px;
+  --fr: 0px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+}
+.fade-x.more-l {
+  --fl: 32px;
+}
+.fade-x.more-r {
+  --fr: 32px;
+}
+
+/* Design hack 7: a word or icon that becomes another in the same place blurs
+   in instead of snapping (Saving… → ✓ Saved, the password eye). */
+.swap-in {
+  display: inline-block;
+  animation: swapIn 180ms var(--ease-arrive);
+}
+@keyframes swapIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcircle,
+  .fpill,
+  html body .hhero .btn.hero-go:not([disabled]),
+  html body .htalk-btns .btn.pill:not([disabled]) {
+    transition: none;
+  }
+  .swap-in {
+    animation: none;
   }
 }

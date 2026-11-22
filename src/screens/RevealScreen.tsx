@@ -23,6 +23,7 @@ import { revealWords, type Pick } from "../lib/reveal";
 import { ScoreShare } from "../components/ScoreShare";
 import { shareTopic } from "../lib/shareTopic";
 import { talkStateOf, type TalkState } from "../lib/talks";
+import { useEdgeFade } from "../hooks/useEdgeFade";
 import { ScoreRings } from "../components/ScoreRings";
 import { scaleText, scaleWord } from "../lib/answerWords";
 import { partName } from "../lib/leveling";
@@ -109,6 +110,7 @@ export default function RevealScreen({
 }) {
   const t = useT();
   const lang = useLang();
+  const fadePills = useEdgeFade<HTMLDivElement>();
   const qs = questions ?? lvlQs(slug, level);
   const data = deck ?? {};
   const pct = overall(qs, data, role);
@@ -376,7 +378,7 @@ export default function RevealScreen({
     ["talk", "To talk", "À aborder"],
   ];
   const filters = hasScore ? (
-    <div className="fpills" role="group" aria-label={t("Show", "Afficher")}>
+    <div ref={fadePills} className="fpills" role="group" aria-label={t("Show", "Afficher")}>
       {FILTERS.map(([k, en, fr]) => (
         <button key={k} type="button" className="fpill" aria-pressed={filter === k} onClick={() => setFilter(k)}>
           {t(en, fr)}

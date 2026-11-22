@@ -1,14 +1,17 @@
 // Small line icons. Stroke uses currentColor so callers set the colour.
+import { iconLine } from "../lib/iconLine";
+
 type P = { size?: number };
 
-const svg = (size: number, children: React.ReactNode, strokeWidth = 2) => (
+// `line` is in screen pixels; the viewBox stroke is scaled to keep it so.
+const svg = (size: number, children: React.ReactNode, line = iconLine(size)) => (
   <svg
     width={size}
     height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth={strokeWidth}
+    strokeWidth={(line * 24) / size}
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
@@ -200,6 +203,6 @@ const DECK_GLYPHS: Record<string, React.ReactNode> = {
   ),
 };
 
-// `stroke` is the line weight on the 24 grid: lighter when drawn large.
-export const DeckIcon = ({ icon, size = 22, stroke = 2 }: { icon: string; size?: number; stroke?: number }) =>
+// `stroke` overrides the line weight, in screen pixels.
+export const DeckIcon = ({ icon, size = 22, stroke }: { icon: string; size?: number; stroke?: number }) =>
   svg(size, DECK_GLYPHS[icon] ?? DECK_GLYPHS.star, stroke);

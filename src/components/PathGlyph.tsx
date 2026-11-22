@@ -16,6 +16,7 @@ import {
   Lamp,
   type LucideIcon,
 } from "lucide-react";
+import { iconLine } from "../lib/iconLine";
 
 const GLYPHS: Record<string, LucideIcon> = {
   "g-trailhead": Signpost,
@@ -41,5 +42,7 @@ export function PathGlyph({
   color?: string;
 }) {
   const Icon = GLYPHS[id] ?? Signpost;
-  return <Icon size={size} strokeWidth={2} style={{ color }} aria-hidden="true" />;
+  // A fixed line in pixels at every size (design hack 5): a 64px landmark
+  // used to get 5.3px lines.
+  return <Icon size={size} strokeWidth={iconLine(size)} absoluteStrokeWidth style={{ color }} aria-hidden="true" />;
 }

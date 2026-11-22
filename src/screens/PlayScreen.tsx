@@ -128,6 +128,9 @@ export default function PlayScreen({
 
   const [idx, setIdx] = useState(resumeGuess ? resumeGuess.at : firstUnanswered);
   const [guessPhase, setGuessPhase] = useState(!!resumeGuess);
+  // Which way the last step went, so Back glides in from the left and Next
+  // from the right: you can tell where you are without reading the count.
+  const [dir, setDir] = useState<"fwd" | "back">("fwd");
   const [pendAns, setPendAns] = useState<AnswerValue | null>(resumeGuess?.answer ?? null);
   const [pendImp, setPendImp] = useState<number | null>(null);
   // The importance shown came from an earlier visit, not a tap just now.
@@ -154,8 +157,9 @@ export default function PlayScreen({
     v == null || isNotYet(v) ? null : q.type === "mc" ? (optIndex(q, v) ?? null) : v;
 
   // Open question `i`, on its answer or its guess, with what was given before.
-  const open = (i: number, guess: boolean) => {
+  const open = (i: number, guess: boolean, way: "fwd" | "back" = "fwd") => {
     const q = qs[i];
+    setDir(way);
     const w = was(q);
     setIdx(i);
     setGuessPhase(guess);
@@ -194,6 +198,7 @@ export default function PlayScreen({
   // it, which is the previous question's guess when it had one.
   const canBack = guessPhase || idx > 0;
   const back = () => {
+    setDir("back");
     if (guessPhase) {
       setGuessPhase(false);
       return;
@@ -201,7 +206,7 @@ export default function PlayScreen({
     if (idx === 0) return;
     const p = qs[idx - 1];
     const a = was(p).a;
-    open(idx - 1, !!p.guessable && p.type !== "open" && a != null && !isNotYet(a));
+    open(idx - 1, !!p.guessable && p.type !== "open" && a != null && !isNotYet(a), "back");
   };
 
   const screen = useRef<HTMLElement>(null);
@@ -256,6 +261,7 @@ export default function PlayScreen({
     });
     remember(q, { a: value, imp });
     if (q.guessable && q.type !== "open") {
+      setDir("fwd");
       setGuessPhase(true);
       setPendGuess(asPick(q, was(q).g));
     } else {
@@ -309,14 +315,18 @@ export default function PlayScreen({
       </div>
       <div className="qcount">
         <span>{t(`Question ${idx + 1} of ${qs.length}`, `Question ${idx + 1} sur ${qs.length}`)}</span>
+        {/* The live region stays put; the words inside are keyed so each
+            change blurs in (design hack 7) and is still announced. */}
         <span className={`savestate ${saves.state}`} role="status">
-          {saves.state === "saving"
-            ? t("Saving…", "Enregistrement…")
-            : saves.state === "saved"
-              ? t("✓ Saved", "✓ Enregistré")
-              : saves.state === "failed"
-                ? t("! Not saved", "! Non enregistré")
-                : ""}
+          <span key={saves.state} className="swap-in">
+            {saves.state === "saving"
+              ? t("Saving…", "Enregistrement…")
+              : saves.state === "saved"
+                ? t("✓ Saved", "✓ Enregistré")
+                : saves.state === "failed"
+                  ? t("! Not saved", "! Non enregistré")
+                  : ""}
+          </span>
         </span>
       </div>
       <div className="qstones" aria-hidden="true">
@@ -353,7 +363,7 @@ export default function PlayScreen({
     return (
       <section ref={screen} className="playscreen pfix pfull">
         {header(skipBtn(t("Skip", "Passer"), () => advance(idx)))}
-        <div key={`${q.id}-guess`} className={`qcard qframe pane-in guesscard${compact ? " compact" : ""}`}>
+        <div key={`${q.id}-guess`} className={`qcard qframe ${dir === "back" ? "glide-in from-left" : "pane-in"} guesscard${compact ? " compact" : ""}`}>
           <div className="qhead">
             <div className="guesshead">
               <span className="badge honey">&#10022; {t("Guess", "Devinez")}</span>
@@ -401,7 +411,7 @@ export default function PlayScreen({
             skipBtn(t("Skip for now", "Passer pour l’instant"), () => advance(idx))
           : undefined,
       )}
-      <div key={q.id} className={`qcard qframe glide-in${compact ? " compact" : ""}`}>
+      <div key={q.id} className={`qcard qframe glide-in${dir === "back" ? " from-left" : ""}${compact ? " compact" : ""}`}>
         <div className="qhead">
           <div className={qtextClass(q.q)}>{q.q}</div>
         </div>

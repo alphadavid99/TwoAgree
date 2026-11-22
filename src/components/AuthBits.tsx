@@ -43,7 +43,7 @@ export function PasswordField({
         aria-pressed={show}
         aria-label={show ? t("Hide password", "Masquer le mot de passe") : t("Show password", "Afficher le mot de passe")}
       >
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <svg key={show ? "shown" : "hidden"} className="swap-in" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.8" />
           {show && <path d="M4 4l16 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />}

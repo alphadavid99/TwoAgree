@@ -70,6 +70,7 @@
      edge so anything still drawing it reads as one quiet line. */
   --kit-card-edge:    rgba(62, 26, 46, 0.07);  /* glass card's hairline */
   --kit-card-base:    rgba(62, 26, 46, 0.07);
+  --app-hairline:     rgba(62, 26, 46, 0.10);  /* claret 10%: a line that takes the colour of the ground under it (waves, glass) */
   --kit-claret-base:  #23101B;  /* base under claret cards and buttons */
   --kit-honey-base:   #C38A2A;  /* base under the honey button */
   --kit-red:          #A32D45;  /* deleting only. white on it 6.9:1 */
@@ -170,6 +171,7 @@
      ========================================================================== */
   --dur-press:        120ms;    /* tap feedback: the thing under the finger */
   --dur-enter:        280ms;    /* a screen or card arriving */
+  --dur-arrive:       220ms;    /* something appearing in place, from 0.97 */
   --dur-select:       400ms;    /* a choice registering */
   --dur-ceremony:     900ms;    /* reveal only — the arc draw, the count-up */
   --dur-breathe:      3200ms;   /* the one permitted loop */
@@ -177,6 +179,7 @@
   --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);  /* one overshoot */
   --ease-glide:       cubic-bezier(0.22, 1, 0.36, 1);     /* decelerate hard */
   --ease-settle:      cubic-bezier(0.25, 0.6, 0.3, 1);    /* calm arrival */
+  --ease-arrive:      cubic-bezier(0.2, 0.8, 0.2, 1);     /* quick ease-out for arrivals */
 
   /* ==========================================================================
      Type: six styles, two weights, two families (Dave, Nov 2026). The app

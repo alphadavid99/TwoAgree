@@ -5,6 +5,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { flagField } from "../lib/motion";
 import {
   signInWithGoogleSmart,
   signInWithAppleSmart,
@@ -55,6 +56,14 @@ export default function AuthScreen({
 
   const isSignup = mode === "signup";
 
+  // Point at the field to fix: focus it and shake it once (motion rule 3).
+  const flag = (field: "email" | "pw" | "consent") => {
+    if (field === "consent") {
+      const box = document.getElementById("consent");
+      flagField(box?.closest(".consent") ?? box, box);
+    } else flagField(document.getElementById(field));
+  };
+
   const switchTo = (m: Mode) => {
     setMode(m);
     setErrs({});
@@ -77,19 +86,29 @@ export default function AuthScreen({
         "Cochez cette case pour créer votre compte.",
       );
     setErrs(next);
-    if (Object.keys(next).length) return;
+    if (Object.keys(next).length) {
+      flag(next.email ? "email" : next.pw ? "pw" : "consent");
+      return;
+    }
     setBusy(true);
     try {
       if (isSignup) await createUserWithEmailAndPassword(auth, addr, pw);
       else await signInWithEmailAndPassword(auth, addr, pw);
     } catch (e2) {
       const code = codeOf(e2);
-      if (code === "auth/email-already-in-use") setErrs({ panel: "taken" });
-      else if (code === "auth/invalid-email") setErrs({ email: prettyError(e2) });
-      else if (code === "auth/weak-password") setErrs({ pw: prettyError(e2) });
-      else if (["auth/invalid-credential", "auth/wrong-password", "auth/user-not-found"].includes(code))
+      if (code === "auth/email-already-in-use") {
+        setErrs({ panel: "taken" });
+        flag("email");
+      } else if (code === "auth/invalid-email") {
+        setErrs({ email: prettyError(e2) });
+        flag("email");
+      } else if (code === "auth/weak-password") {
+        setErrs({ pw: prettyError(e2) });
+        flag("pw");
+      } else if (["auth/invalid-credential", "auth/wrong-password", "auth/user-not-found"].includes(code)) {
         setErrs({ panel: "signin" });
-      else setErrs({ panel: "other", other: prettyError(e2) });
+        flag("pw");
+      } else setErrs({ panel: "other", other: prettyError(e2) });
       setBusy(false);
     }
   };
@@ -102,6 +121,7 @@ export default function AuthScreen({
       setErrs({
         consent: t("Tick this to create your account.", "Cochez cette case pour créer votre compte."),
       });
+      flag("consent");
       return;
     }
     try {
@@ -123,6 +143,7 @@ export default function AuthScreen({
           "Saisissez d’abord votre e-mail, puis appuyez sur Mot de passe oublié.",
         ),
       });
+      flag("email");
       return;
     }
     setErrs({});
@@ -203,6 +224,7 @@ export default function AuthScreen({
           <>
             <label className="consent" style={{ marginTop: 0 }}>
               <input
+                id="consent"
                 type="checkbox"
                 checked={agreed}
                 onChange={(e) => {
@@ -276,7 +298,10 @@ export default function AuthScreen({
             inputMode="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errs.email) setErrs((x) => ({ ...x, email: undefined }));
+            }}
             aria-invalid={!!errs.email || undefined}
             aria-describedby="email-err"
           />
@@ -286,7 +311,10 @@ export default function AuthScreen({
           <PasswordField
             id="pw"
             value={pw}
-            onChange={setPw}
+            onChange={(v) => {
+              setPw(v);
+              if (errs.pw) setErrs((x) => ({ ...x, pw: undefined }));
+            }}
             autoComplete={isSignup ? "new-password" : "current-password"}
             placeholder={isSignup ? t("At least 6 characters", "Au moins 6 caractères") : t("Your password", "Votre mot de passe")}
             invalid={!!errs.pw}

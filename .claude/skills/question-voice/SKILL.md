@@ -38,6 +38,13 @@ language isn't English.
    match.** A reword of an existing question otherwise keeps the number, order
    and meaning of its choices, because stored answers are positions.
 
+10. **Simplify the words, never the meaning.** Don't narrow or shift what is
+    asked while rewording. "Advice about a relationship problem" became "a
+    problem in our relationship" and lost the point: it doesn't have to be a
+    problem, and the question was about advice.
+11. **For a duty, say "responsible for".** Better than "handle", and much better
+    than "look after" or "job".
+
 ## Approved examples
 
 | Before | After |
@@ -50,6 +57,16 @@ language isn't English.
 | How strongly do you believe the home and family should be a wife's primary responsibility? | Do you think looking after the home and family is mainly the wife's responsibility? |
 | Which parts of our connection would you most want to stay strong through our marriage? | Which of these would you most want us to keep strong once we're married? |
 | Would you personally consider pornography use to be a form of sexual unfaithfulness? | Do you think watching porn is a form of cheating? |
+| Who should handle home repairs and maintenance? | Who should be responsible for repairs around the home? ("We'd hire it out" → "We'd pay someone to do it") |
+| How important is it that your work feels meaningful, versus just paying well? | Which matters more to you in your work: that it pays well, or that it means something to you? (scale: "Pays well" → "Means something to me") |
+| If you needed advice about a relationship problem, who would you be most likely to talk to first? | If you wanted advice about our relationship, who would you talk to first? ("{P}, so we could work it out together") |
+| How would you ideally want us to educate our children? | How would you want our children to be educated? (Teach them at home / A Christian school / A state school / A private school that isn't faith-based / Whatever suits each child) |
+| Which areas would you most value our parents' advice on? | Where would you most want advice from our parents? Rank from most to least. |
+| If you changed your mind about wanting children after you married, what would you expect of {P}? | If you stopped wanting children after we married, what would you expect {P} to do? ("Be sad with me, and accept it" / "Expect me to keep to what we agreed") |
+| When life becomes extremely difficult, who or what do you most naturally turn to first? | When life gets really hard, who or what do you turn to first? ("Scripture" → "the Bible") |
+| How should we decide how many children to have or whether to delay pregnancy? | How should we decide how many children to have, and when? (Have as many children as God gives us / Space them out using natural family planning / Plan our family using contraception / Decide based on our health, money and family life / I'm not sure) |
+
+Already right, left alone: "Who's more likely to pray out loud first?"
 
 Partly approved: "Which character traits come most naturally to you?" He liked
 the simpler rewrite ("Which of these are you naturally best at?") and also

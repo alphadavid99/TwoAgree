@@ -65,6 +65,8 @@ language isn't English.
 | If you changed your mind about wanting children after you married, what would you expect of {P}? | If you stopped wanting children after we married, what would you expect {P} to do? ("Be sad with me, and accept it" / "Expect me to keep to what we agreed") |
 | When life becomes extremely difficult, who or what do you most naturally turn to first? | When life gets really hard, who or what do you turn to first? ("Scripture" → "the Bible") |
 | How should we decide how many children to have or whether to delay pregnancy? | How should we decide how many children to have, and when? (Have as many children as God gives us / Space them out using natural family planning / Plan our family using contraception / Decide based on our health, money and family life / I'm not sure) |
+| How disciplined are you with a monthly budget? | How closely do you keep to a monthly budget? (scale: "I don't really follow one" → "I track everything I spend") |
+| (choices) I would think about my faith, but it wouldn't always decide | My faith would matter, but not always decide. Choices use contractions and stay short: "I'd usually follow my faith", "My faith comes first, every time". |
 
 Already right, left alone: "Who's more likely to pray out loud first?"
 

@@ -4032,7 +4032,7 @@
  },
  {
   "id": "PAST-012",
-  "kind": "know",
+  "kind": "disclosure",
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -4041,8 +4041,7 @@
    "married"
   ],
   "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Multiple choice, but an answer can be a sensitive disclosure."
+  "borderline": false
  },
  {
   "id": "PAST-013",
@@ -4163,16 +4162,15 @@
  },
  {
   "id": "PAST-022",
-  "kind": "know",
-  "agreementMatters": true,
+  "kind": "disclosure",
+  "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
   "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Multiple choice, but an answer can be a disclosure the partner needs."
+  "borderline": false
  },
  {
   "id": "PAST-023",
@@ -4201,7 +4199,7 @@
  },
  {
   "id": "PAST-025",
-  "kind": "know",
+  "kind": "disclosure",
   "agreementMatters": false,
   "stages": [
    "relationship",
@@ -4209,12 +4207,11 @@
    "married"
   ],
   "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Multiple choice, but it is a disclosure."
+  "borderline": false
  },
  {
   "id": "PAST-026",
-  "kind": "know",
+  "kind": "disclosure",
   "agreementMatters": false,
   "stages": [
    "relationship",
@@ -4222,8 +4219,7 @@
    "married"
   ],
   "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Multiple choice, but an answer can be a sensitive disclosure."
+  "borderline": false
  },
  {
   "id": "PAST-027",
@@ -4329,7 +4325,7 @@
  },
  {
   "id": "PAST-033",
-  "kind": "know",
+  "kind": "disclosure",
   "agreementMatters": false,
   "stages": [
    "relationship",
@@ -4337,8 +4333,7 @@
    "married"
   ],
   "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Multiple choice, but it is a disclosure."
+  "borderline": false
  },
  {
   "id": "PAST-034",

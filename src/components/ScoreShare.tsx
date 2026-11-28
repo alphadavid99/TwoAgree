@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { renderScoreCard, shareCardImage, type ScoreCardFields } from "../lib/sharecard";
 import { useT } from "../lib/i18n";
 import { Sheet } from "./Sheet";
+import type { CardFinish } from "../lib/ceremony";
+
+const FINISH_NAME: Record<CardFinish, [string, string]> = {
+  milk: ["Your card", "Votre carte"],
+  goldline: ["Gold line", "Liseré d’or"],
+  gilded: ["Gilded", "Dorée"],
+  claret: ["Claret and gold", "Bordeaux et or"],
+};
 
 // "Share your score" from the reveal (design refresh, item 2): a preview of
 // the exact image that will be shared, and names only if you switch them on.
@@ -9,22 +17,30 @@ import { Sheet } from "./Sheet";
 export function ScoreShare({
   fields,
   names,
+  finishes = [],
+  defaultFinish,
   onClose,
 }: {
-  fields: Omit<ScoreCardFields, "names">;
+  /** 100% only: the cards to choose from. The choice decides the look of the
+   *  image that is shared; the card on the reveal itself never changes. */
+  finishes?: CardFinish[];
+  /** The finish the reveal showed: the shared image starts as this one. */
+  defaultFinish: CardFinish;
+  fields: Omit<ScoreCardFields, "names" | "finish">;
   /** "Sarah & Judah" — shown on the card only when switched on. */
   names: string;
   onClose: () => void;
 }) {
   const t = useT();
   const [withNames, setWithNames] = useState(false);
+  const [finish, setFinish] = useState<CardFinish>(defaultFinish);
   const [blob, setBlob] = useState<Blob | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
     let live = true;
-    void renderScoreCard({ ...fields, ...(withNames ? { names } : {}) })
+    void renderScoreCard({ ...fields, finish, ...(withNames ? { names } : {}) })
       .catch(() => null)
       .then((b) => {
         if (!live) return;
@@ -38,7 +54,7 @@ export function ScoreShare({
       live = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withNames]);
+  }, [withNames, finish]);
 
   const share = async () => {
     if (!blob) return;
@@ -54,6 +70,16 @@ export function ScoreShare({
 
   return (
     <Sheet title={t("Share your score", "Partager votre score")} onClose={onClose}>
+      {finishes.length > 1 && (
+        <div className="rc-thumbs" role="group" aria-label={t("Choose your card", "Choisissez votre carte")}>
+          {finishes.map((f) => (
+            <button key={f} type="button" className="rc-thumb" aria-pressed={f === finish} onClick={() => setFinish(f)}>
+              <i className={f}>{fields.pct}%</i>
+              {t(...FINISH_NAME[f])}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="sharepreview">
         {url ? (
           <img src={url} alt={t("Your score card", "Votre carte de score")} />

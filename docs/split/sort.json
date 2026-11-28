@@ -1,0 +1,7099 @@
+[
+ {
+  "id": "HOME-012",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-008",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-006",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true,
+  "reviewed": true
+ },
+ {
+  "id": "HOME-010",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-011",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-015",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true,
+  "reviewed": true
+ },
+ {
+  "id": "HOME-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "HOME-007",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "HOME-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-009",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-018",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HOME-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-018",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FIN-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-004",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-025",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-030",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "FIN-031",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-032",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "I think it could be interesting to see if they know how each other thinks about debt."
+ },
+ {
+  "id": "FIN-033",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-034",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-035",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-036",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-037",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "Would need a reword for friends - and no need to add 'as christians'"
+ },
+ {
+  "id": "FIN-038",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FIN-039",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "FAITH-007",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-036",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-031",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-003",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "Would need friends reword and know reword"
+ },
+ {
+  "id": "FAITH-033",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-001",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-004",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-037",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-038",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-039",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-040",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-028",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-041",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-042",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-043",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-044",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-045",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-025",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAITH-046",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAITH-047",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-048",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAITH-049",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAITH-050",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAITH-051",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-014",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-015",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "ROLE-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "ROLE-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "ROLE-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "ROLE-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "ROLE-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-014",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "THEO-015",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "THEO-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "THEO-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "THEO-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-030",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "THEO-031",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "DREAM-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "DREAM-015",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-008",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-003",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-017",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-001",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-004",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "DREAM-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-010",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true,
+  "reviewed": true
+ },
+ {
+  "id": "DREAM-011",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DREAM-021",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "FAM-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-001",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-014",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAM-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAM-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAM-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FAM-004",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FAM-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-008",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-010",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-011",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-014",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-015",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAR-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "PAR-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INT-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-023",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "INT-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-019",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "INT-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-030",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INT-031",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-032",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-033",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-034",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-035",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-008",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INT-036",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-037",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-038",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "INT-013",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-014",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "INT-001",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-039",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "I think this could be an interesting guess question too"
+ },
+ {
+  "id": "INT-040",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-041",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-042",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INT-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-038",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-039",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CONF-040",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CONF-041",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-042",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-043",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CONF-044",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true,
+  "reviewed": true
+ },
+ {
+  "id": "CONF-037",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-045",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-046",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-047",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-048",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-049",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-036",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-002",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-050",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-051",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-052",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-053",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-054",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-055",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-056",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CONF-029",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-033",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-034",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-057",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-030",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-031",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "CONF-032",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-058",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "CONF-059",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-060",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CONF-061",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-015",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-011",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-010",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-012",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INLAW-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-009",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INLAW-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "INLAW-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "INLAW-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "FUN-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-025",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-026",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-027",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-028",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-029",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-031",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-008",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-009",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-032",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "FUN-033",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-034",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-035",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-036",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-037",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-038",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-007",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-023",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-018",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-019",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "FUN-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "FUN-039",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-022",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-023",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-003",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-025",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-004",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "DEAL-007",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "DEAL-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "DEAL-008",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "DEAL-026",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "DEAL-027",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-017",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-019",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "DEAL-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-011",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "HEALTH-012",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "HEALTH-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-014",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-009",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-016",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "HEALTH-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "HEALTH-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-022",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-005",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "HEALTH-006",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-012",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-017",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-018",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "PAST-019",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-022",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-025",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-026",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-009",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "PAST-028",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-029",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-031",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-001",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-032",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-033",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-034",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "PAST-035",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-001",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-008",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-003",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "CAREER-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-005",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-007",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-009",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "CAREER-004",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CAREER-012",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "CAREER-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-001",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-004",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-028",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-031",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-032",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-008",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-033",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-023",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-029",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-034",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-035",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-036",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-022",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-018",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-037",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-038",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-025",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-026",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-039",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-040",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-041",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-042",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-007",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-043",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "SELF-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-051",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-008",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-052",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-053",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-050",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-035",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-054",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-048",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-055",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-056",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-057",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-058",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-059",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-060",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-049",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-029",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-061",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-062",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-063",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-034",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-064",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-065",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-066",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-067",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-068",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-069",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-070",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-071",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-072",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ]
+ },
+ {
+  "id": "US-073",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-074",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-075",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-076",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-077",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-078",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-079",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-080",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-081",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-082",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-083",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-084",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-085",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-086",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-087",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-088",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-089",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-090",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-091",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-092",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-002",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-093",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-004",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-094",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-095",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-096",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-097",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-098",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-099",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-006",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "Need to come up with a similar question for agree. Id like a rephrased question that can help to see if they agree or not. If they are aligned?"
+ },
+ {
+  "id": "US-100",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-101",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-102",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-103",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-104",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-105",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-106",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-107",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-108",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-109",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-110",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-111",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-040",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-041",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-112",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "US-113",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-114",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-115",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-038",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "US-116",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-117",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-118",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-119",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-011",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "US-120",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "US-121",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "VAL-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-014",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-015",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "VAL-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "VAL-017",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "VAL-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-019",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "VAL-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-021",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-022",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "VAL-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-030",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "VAL-031",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-032",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-033",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "friendsNeedsReword": true
+ },
+ {
+  "id": "VAL-034",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-035",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-036",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-037",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-038",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "VAL-039",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "VAL-040",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ },
+ {
+  "id": "LOYAL-009",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-016",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-005",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-018",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-019",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-020",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-021",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "LOYAL-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-022",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "LOYAL-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-011",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-017",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-023",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-024",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-025",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-026",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "friends",
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-027",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-028",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "LOYAL-029",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-025",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "I don't really like this question to be honest. Maybe a check in question after they've completed the path?"
+ },
+ {
+  "id": "NOW-026",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "Don't like this question either to be honest - again, maybe a check in question - and the slog phrasing isn't universally understood."
+ },
+ {
+  "id": "NOW-027",
+  "kinds": [
+   "know",
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true,
+  "comment": "I think needs to be rephrased to fit know and or agree eg how often would you like us to try new things together"
+ },
+ {
+  "id": "NOW-022",
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "Maybe one to add to check in too"
+ },
+ {
+  "id": "NOW-002",
+  "kinds": [
+   "agree"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-001",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-019",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-003",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-005",
+  "kinds": [
+   "know",
+   "agree",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-028",
+  "kinds": [
+   "know",
+   "agree",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-029",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-009",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-013",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-012",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-021",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-030",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-031",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-032",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-033",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-034",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-010",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-011",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-006",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-007",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-017",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-023",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-020",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-024",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged"
+  ]
+ }
+]

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useState } from "react";
 import { Mark } from "../brand/Mark";
 import { lvlQs, nLevels } from "../lib/leveling";
 import {
@@ -18,7 +18,9 @@ import {
   type ScoreResult,
 } from "../lib/scoring";
 import { type Question } from "../lib/questions";
-import { celebrationTier, PETAL_COUNT, type CelebrationTier } from "../lib/celebrate";
+import { celebrationTier } from "../lib/celebrate";
+import { defaultFinish, shareFinishes } from "../lib/ceremony";
+import { RevealCeremony, type CeremonyRow } from "./RevealCeremony";
 import { revealWords, type Pick } from "../lib/reveal";
 import { ScoreShare } from "../components/ScoreShare";
 import { shareTopic } from "../lib/shareTopic";
@@ -156,52 +158,14 @@ export default function RevealScreen({
   // screen (confetti >75%, denser >90%) with the know-each-other capsule —
   // and only a deliberate "See your answers" step opens the breakdown.
   // Reopening from Results/Decks goes straight to the breakdown.
-  const reduced =
-    typeof window !== "undefined" &&
-    !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const ceremony = !review && hasScore;
   const [phase, setPhase] = useState<"ceremony" | "answers">(
     ceremony ? "ceremony" : "answers",
   );
-  // Within the ceremony: 1 = the two of you meet, 2 = the score takes over.
-  // Reduced-motion users get stage 2 immediately, statically.
-  const [stage, setStage] = useState(reduced ? 2 : 1);
-  const [party, setParty] = useState(false);
-  const skipped = useRef(false);
   const tier = celebrationTier(pct);
-  // The claret room is retired (Dave, Nov 2026, after Dateasy): the reveal
-  // sits on the same light ground and waves as every screen, with one big
-  // number and one card.
-  const lit = false;
   // The same line and verse for both of you (picked when the part opened).
   const words = revealWords(pct, pick, `${code ?? ""}|${slug}|${level}`);
   const [sharing, setSharing] = useState(false);
-
-  useEffect(() => {
-    if (phase !== "ceremony" || reduced) return;
-    // The celebration lands with the number, not before it: stage 2 mounts at
-    // 1.15s and the rings draw for ~1.4s.
-    const ts = [
-      setTimeout(() => setParty(true), 2500),
-      setTimeout(() => setParty(false), 11000),
-    ];
-    return () => ts.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== "ceremony" || reduced) return;
-    const t1 = setTimeout(() => setStage((s) => Math.max(s, 2)), 1150);
-    return () => clearTimeout(t1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-
-  // Skipping the meet fast-forwards; it must never confiscate the celebration.
-  // The excited partner who taps is exactly the one who wants the petals.
-  const skipMeet = () => {
-    skipped.current = true;
-    setStage(2);
-  };
 
   const where =
     (title ?? deckName(slug, lang)) +
@@ -212,144 +176,52 @@ export default function RevealScreen({
         : "");
 
   if (phase === "ceremony") {
+    // The same verdict words the answers screen uses; "Not yet" is shown, unscored.
+    const agreedKind = (v: Verdict) => v === "Agreed" || v === "Complementary" || v === "Shared";
+    const scoredQs = joint.filter((q) => q.type !== "open");
+    const rows: CeremonyRow[] = [
+      ...scoredQs.map((q) => {
+        const v = scoreQ(q, data, role).verdict;
+        return { id: q.id, text: withNames(localizeQuestion(q, lang), names).q, label: t(v, VERDICT_FR[v]), agreed: agreedKind(v) };
+      }),
+      ...notYet.map((q) => ({ id: q.id, text: withNames(localizeQuestion(q, lang), names).q, label: t("Not yet", "Pas encore"), agreed: false })),
+    ];
+    const nAgreed = scoredQs.filter((q) => agreedKind(scoreQ(q, data, role).verdict)).length;
+    const topic = title ?? (multi ? partName(slug, level) : deckName(slug, lang));
     return (
-      <section
-        className={`ceremony${lit ? " lit" : ""}`}
-        onClick={stage < 2 ? skipMeet : undefined}
-      >
-        {/* The claret room. Full-bleed behind the notch and the home indicator —
-            grounds bleed, content stays inside the safe area. */}
-        {lit && <div className="ceremony-ground" aria-hidden="true" />}
-        <TopBar onExit={onDone} title={where} />
-        {party && <Celebration tier={tier} />}
-
-        {stage === 1 && (
-          <div className="meetstage tall">
-            <div className="meetpair">
-              <Avatar name={myName} tone={toneFor(role)} size={58} />
-              <Avatar name={partnerName} tone={toneFor(other(role))} size={58} />
-            </div>
-            <div className="meetnames">
-              <span>{myName}</span>
-              <span>{partnerName}</span>
-            </div>
-            <div className="meetline">
-              {t("You've both answered.", "Vous avez tous les deux répondu.")}
-            </div>
-          </div>
+      <>
+        <RevealCeremony
+          where={where}
+          topic={topic}
+          me={{ name: myName, photo: myPhoto, tone: toneFor(role) }}
+          them={{ name: partnerName, photo: partnerPhoto, tone: toneFor(other(role)) }}
+          pct={pct}
+          rows={rows}
+          agreed={nAgreed}
+          toTalk={scoredQs.length - nAgreed}
+          guesses={know.made ? { right: know.right, made: know.made } : null}
+          finish={defaultFinish(pct)}
+          status={`${t(`You agreed ${pct} percent.`, `Vous êtes d’accord à ${pct} pour cent.`)} ${words.line}`}
+          onExit={onDone}
+          onSeeAnswers={() => setPhase("answers")}
+          onShare={() => setSharing(true)}
+        />
+        {sharing && (
+          <ScoreShare
+            fields={{
+              pct,
+              basis,
+              line: words.line,
+              tier,
+              topic: shareTopic(title ? (shareKey ?? slug) : slug, lang, title ? undefined : level),
+            }}
+            names={`${myName.trim().split(/\s+/)[0]} & ${partnerName.trim().split(/\s+/)[0]}`}
+            finishes={shareFinishes(pct)}
+            defaultFinish={defaultFinish(pct)}
+            onClose={() => setSharing(false)}
+          />
         )}
-
-        {stage >= 2 && (
-          <div className="levelup">
-            {/* 100% only: the two of them settle together above the medallion,
-                the one beat no other range gets. */}
-            {/* The score as one big card (Dave, Nov 2026, after Dateasy's
-                profile card): a warm glow behind the number, how well you
-                know each other in the pill, the number large at the foot. */}
-            <div className="revcard lvlup-rise r1">
-              {know.pct != null && (
-                <span className="revcard-pill">
-                  <span aria-hidden="true">&#9825;</span> {t(`${know.pct}% known`, `${know.pct} % connus`)}
-                </span>
-              )}
-              {/* The two of you across the top of the card (Dave, Nov 2026):
-                  your colours blending into each other, each of you in a
-                  circle, your photo or your initial, fading into white
-                  behind the number. */}
-              <span className="revtop" aria-hidden="true">
-                <span className={`revdisc ${toneFor(role)}`}>
-                  {myPhoto ? <img src={myPhoto} alt="" /> : initialOf(myName)}
-                </span>
-                <span className={`revdisc ${toneFor(other(role))}`}>
-                  {partnerPhoto ? <img src={partnerPhoto} alt="" /> : initialOf(partnerName)}
-                </span>
-              </span>
-              <span className="revcard-body">
-                {tier >= 4 ? (
-                  <span className="medal-badge bignum-badge">{t("Complete alignment", "Accord complet")}</span>
-                ) : (
-                  <span className="bignum-lb">
-                    {t(
-                      `You and ${firstOf(partnerName)} agreed on`,
-                      `${firstOf(partnerName)} et vous êtes d’accord sur`,
-                    )}
-                  </span>
-                )}
-                <span className="bignum">
-                  <CountUp to={pct} ms={1200} />
-                  <span className="bignum-pc">%</span>
-                </span>
-                <span className="revcard-basis">
-                  {t(
-                    `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
-                    `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
-                  )}
-                </span>
-              </span>
-              <span className="revcard-line">{words.line}</span>
-              <span className="revcard-acts">
-                <button className="btn pill" type="button" onClick={() => setPhase("answers")}>
-                  {t("See your answers →", "Voir vos réponses →")}
-                </button>
-                <button
-                  className="pcircle revshare"
-                  type="button"
-                  onClick={() => setSharing(true)}
-                  aria-label={t("Share your score", "Partager votre score")}
-                >
-                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                    <path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </span>
-            </div>
-            {/* The whole ceremony is staged in motion, so without this a blind
-                partner gets none of the arc the animation carries. */}
-            <p className="sr-only" role="status">
-              {t(`You agreed ${pct} percent.`, `Vous êtes d’accord à ${pct} pour cent.`)} {words.line}
-            </p>
-            {firstEver && (
-              <p className="firstline lvlup-rise r2">
-                {t(
-                  "Your first reveal: this is where the two of you meet.",
-                  "Votre première révélation, c’est ici que vous vous retrouvez.",
-                )}
-              </p>
-            )}
-            {/* The range's encouragement and its verse (ESV): the same for both
-                of you, never the same as your last reveal. */}
-            <div className="revwords lvlup-rise r2">
-              <p className="reveal-verse">
-                “{words.verse.text}”
-                <span className="reveal-ref">{words.verse.ref}</span>
-              </p>
-            </div>
-            <div className="lvlup-cta lvlup-rise r4">
-              <button className="btn ghost" type="button" onClick={onDone}>
-                {t("Done for now", "Terminé pour l’instant")}
-              </button>
-            </div>
-            {sharing && (
-              <ScoreShare
-                fields={{
-                  pct,
-                  basis,
-                  line: words.line,
-                  tier,
-                  topic: shareTopic(title ? (shareKey ?? slug) : slug, lang, title ? undefined : level),
-                }}
-                names={`${myName.trim().split(/\s+/)[0]} & ${partnerName.trim().split(/\s+/)[0]}`}
-                onClose={() => setSharing(false)}
-              />
-            )}
-            {tier < 4 && (
-              <p className="notverdict lvlup-rise r4">
-                {t("Not a verdict: a place to start talking.", "Pas un verdict, un point de départ pour discuter.")}
-              </p>
-            )}
-          </div>
-        )}
-      </section>
+      </>
     );
   }
 
@@ -397,6 +269,35 @@ export default function RevealScreen({
       <h1 className="h1 center" style={{ margin: "4px 0 0" }}>
         {hasScore ? t("Your answers, side by side", "Vos réponses, face à face") : t("What you each said", "Ce que chacun a dit")}
       </h1>
+      {/* Fresh from the ceremony: the range's line and verse, the first-reveal
+          line, and the reminder that used to sit on the reveal itself. */}
+      {ceremony && (
+        <div className="rc-words">
+          <p className="rc-words-line">{words.line}</p>
+          <p className="rc-words-verse">
+            “{words.verse.text}” <span>{words.verse.ref}</span>
+          </p>
+          {firstEver && (
+            <p className="rc-words-note">
+              {t(
+                "Your first reveal: this is where the two of you meet.",
+                "Votre première révélation, c’est ici que vous vous retrouvez.",
+              )}
+            </p>
+          )}
+          <p className="rc-words-note">
+            {t(
+              `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
+              `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+            )}
+          </p>
+          {pct < 100 && (
+            <p className="rc-words-note">
+              {t("Not a verdict: a place to start talking.", "Pas un verdict, un point de départ pour discuter.")}
+            </p>
+          )}
+        </div>
+      )}
       {hasScore && (
         <ScoreRings
           agree={pct}
@@ -467,144 +368,6 @@ export default function RevealScreen({
   );
 }
 
-const PETAL_COLOURS = [
-  "var(--ce-gold)",
-  "var(--ce-blush)",
-  "var(--app-spark)",
-  "var(--app-petal-pink)",
-  "var(--ta-honey)",
-  "var(--ce-ink)",
-];
-
-// Full-screen celebration overlay, constrained to the app column and layered by
-// tier (see celebrationTier). Every layer is transform/opacity only so the whole
-// thing composites on the GPU; pointer-events pass through so a tap always
-// reaches the CTA underneath. The parent unmounts it after ~8.5s.
-const FIREWORKS: { x: number; y: number; size: number; delay: number; tone: "gold" | "blush" }[] = [
-  { x: 14, y: 6, size: 110, delay: 0, tone: "gold" },
-  { x: 36, y: 2, size: 60, delay: 0.5, tone: "gold" },
-  { x: 70, y: 5, size: 66, delay: 0.25, tone: "blush" },
-  { x: 86, y: 12, size: 104, delay: 0.8, tone: "gold" },
-  { x: 30, y: 16, size: 70, delay: 1.1, tone: "blush" },
-];
-
-function Celebration({ tier }: { tier: CelebrationTier }) {
-  const count = PETAL_COUNT[tier];
-  // Randomised per mount: the old formulaic left/delay produced petals falling
-  // in visible diagonal chains. Each petal now carries its own sway and spin.
-  const petals = useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        i,
-        left: Math.random() * 102 - 1,
-        delay: Math.random() * (tier >= 3 ? 3.4 : 2.6),
-        dur: 3.6 + Math.random() * 3.8,
-        w: 7 + Math.random() * 7,
-        h: 10 + Math.random() * 9,
-        sway: Math.round((Math.random() * 2 - 1) * 46),
-        spin: Math.round(140 + Math.random() * 300),
-        opacity: (0.7 + Math.random() * 0.3).toFixed(2),
-        colour: PETAL_COLOURS[Math.floor(Math.random() * PETAL_COLOURS.length)],
-      })),
-    [count, tier],
-  );
-
-  // Sparks burst outward from the score as the number lands (tier 3+).
-  const sparks = useMemo(
-    () =>
-      Array.from({ length: 12 }, (_, i) => {
-        const a = (i / 12) * Math.PI * 2;
-        const d = 78 + Math.random() * 46;
-        return {
-          i,
-          dx: `${Math.round(Math.cos(a) * d)}px`,
-          dy: `${Math.round(Math.sin(a) * d)}px`,
-          delay: `${(i % 4) * 0.06}s`,
-        };
-      }),
-    [],
-  );
-
-  return (
-    <div className={`celebrate tier${tier}`} aria-hidden="true">
-      {/* tier 1+ — the room itself: breathing ripples, rising motes, one pass
-          of light across the screen. */}
-      <span className="ce-ripple" />
-      <span className="ce-ripple d2" />
-      <span className="ce-sweep" />
-      {Array.from({ length: tier >= 3 ? 14 : 8 }, (_, i) => (
-        <span
-          key={`m${i}`}
-          className="ce-mote"
-          style={{
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 6}s`,
-            animationDuration: `${7 + Math.random() * 5}s`,
-          }}
-        />
-      ))}
-
-      {/* tier 3+ — the grand bloom: gold rays wheel behind the score, the wash
-          pulses, and sparks burst as the number settles. */}
-      {tier >= 3 && (
-        <>
-          <span className="ce-rays" />
-          <span className="ce-goldwash" />
-          {sparks.map((s) => (
-            <span
-              key={`s${s.i}`}
-              className="ce-spark"
-              style={
-                {
-                  "--dx": s.dx,
-                  "--dy": s.dy,
-                  animationDelay: s.delay,
-                } as CSSProperties
-              }
-            />
-          ))}
-        </>
-      )}
-
-      {/* tier 4 — 100%: gold and blush fireworks across the top. */}
-      {tier >= 4 &&
-        FIREWORKS.map((f, i) => (
-          <span
-            key={`f${i}`}
-            className={`ce-firework ${f.tone}`}
-            style={{ left: `${f.x}%`, top: `${f.y}%`, width: f.size, height: f.size, animationDelay: `${f.delay}s` }}
-          >
-            {Array.from({ length: 12 }, (_, k) => (
-              <i key={k} style={{ transform: `rotate(${k * 30}deg)` }} />
-            ))}
-          </span>
-        ))}
-
-      {/* tier 2+ — the fall */}
-      {petals.map((p) => (
-        <span
-          key={p.i}
-          className="petal"
-          style={
-            {
-              left: `${p.left}%`,
-              width: p.w,
-              height: p.h,
-              background: p.colour,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.dur}s`,
-              "--sway": `${p.sway}px`,
-              "--spin": `${p.spin}deg`,
-              "--o": p.opacity,
-            } as CSSProperties
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
-const initialOf = (n: string) => (n || "?").trim().charAt(0).toUpperCase() || "?";
 const firstOf = (n: string) => n.trim().split(/\s+/)[0] || n;
 
 // Why a card is worth a closer look (item 13): said inside the card, with its
@@ -1031,25 +794,3 @@ function NotYetCard({
   );
 }
 
-// The big number counts up once as it lands; reduced motion shows it at once.
-function CountUp({ to, ms }: { to: number; ms: number }) {
-  const still =
-    typeof window === "undefined" || !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const [n, setN] = useState(still ? to : 0);
-  useEffect(() => {
-    if (still) {
-      setN(to);
-      return;
-    }
-    let raf = 0;
-    const t0 = performance.now();
-    const step = (now: number) => {
-      const k = Math.min(1, (now - t0) / ms);
-      setN(Math.round(to * (1 - Math.pow(1 - k, 3))));
-      if (k < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [to, ms, still]);
-  return <>{n}</>;
-}

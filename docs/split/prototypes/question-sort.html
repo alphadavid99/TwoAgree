@@ -1,0 +1,167 @@
+<title>Question Sort Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a sticky filter bar, then one card per question with its sort controls; changes collect into a copyable list. */
+:root{
+  --bg:#F6F1F3; --fg:#2A1120; --sub:#6B5A61; --card:#FFFFFF; --line:#E6D8DE; --tint:#EBDDE4; --accent:#6E4F61; --on-accent:#FFFFFF;
+  --changed:#8F5A12; --changed-bg:#FBEBDC; --why-bg:#F8EEF2;
+  --display:"Fraunces",Georgia,serif; --ui:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#1B1218; --fg:#F4E9EE; --sub:#BFA9B4; --card:#261A21; --line:#3F2D37; --tint:#3F2D37; --accent:#E0BFD0; --on-accent:#2A1120; --changed:#F3D58E; --changed-bg:#40301A; --why-bg:#2F2129; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#1B1218; --fg:#F4E9EE; --sub:#BFA9B4; --card:#261A21; --line:#3F2D37; --tint:#3F2D37; --accent:#E0BFD0; --on-accent:#2A1120; --changed:#F3D58E; --changed-bg:#40301A; --why-bg:#2F2129; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.45;
+  padding-block:24px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.15;margin:0}
+.lede{color:var(--sub);margin:6px 0 0}
+.key{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:14px}
+.key dt{font-weight:600} .key dd{margin:0;color:var(--sub)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+select,button{font:inherit;color:inherit}
+select{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0;max-width:100%}
+.count{color:var(--sub);font-size:14px;margin-right:auto}
+.copy{background:var(--accent);color:var(--on-accent);border:0;border-radius:99px;padding:9px 16px;font-weight:600;cursor:pointer}
+.copy[disabled]{opacity:.45;cursor:default}
+.list{display:flex;flex-direction:column;gap:12px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q.changed{border-color:var(--changed)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:13px;color:var(--sub);align-items:center}
+.meta b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.flag{background:var(--changed-bg);color:var(--changed);border-radius:99px;padding:1px 9px;font-weight:600}
+.q h2{font-size:17px;font-weight:600;margin:0;line-height:1.3}
+.opts{margin:0;padding-left:18px;color:var(--sub);font-size:14px}
+.why{background:var(--why-bg);border-radius:10px;padding:8px 12px;font-size:14px}
+.why b{font-weight:600}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.ctl > span,.ctl > .lab{font-size:13px;color:var(--sub);min-width:64px}
+textarea.note{font:14px/1.4 var(--ui);min-height:40px;flex:1 1 220px;min-width:0;width:auto;background:var(--card);resize:vertical}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:14px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.out{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.out h2{font-size:17px;margin:0}
+textarea{font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;width:100%;box-sizing:border-box;min-height:120px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.empty{color:var(--sub);padding:24px 0;text-align:center}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Question sort</h1>
+    <p class="lede">Every question has been sorted. The 52 that could fairly go either way are shown first. Change anything you disagree with: a question can be sorted as more than one kind, and each has room for a comment. Then press Copy my changes and paste the result back to Claude.</p>
+  </header>
+  <dl class="key">
+    <dt>Know</dt><dd>About the person: guess only, no Agree score.</dd>
+    <dt>Agree</dt><dd>What the two of you should do or believe: feeds the Agree score in the path.</dd>
+    <dt>Disclosure</dt><dd>An open question inviting something sensitive: never scored.</dd>
+    <dt>Agreement matters</dt><dd>On a Know question, shows "you agreed" or "worth talking about" on the reveal.</dd>
+  </dl>
+
+  <div class="bar">
+    <select id="fView" aria-label="Which questions">
+      <option value="b">Needs your call</option>
+      <option value="all">All questions</option>
+      <option value="know">Know</option>
+      <option value="agree">Agree</option>
+      <option value="disclosure">Disclosure</option>
+      <option value="changed">Changed by you</option>
+    </select>
+    <select id="fTopic" aria-label="Topic"><option value="">All topics</option></select>
+    <span class="count" id="count">Loading…</span>
+    <button class="copy" id="copy" disabled>Copy my changes</button>
+  </div>
+
+  <div class="out" id="out" hidden>
+    <h2>Your changes</h2>
+    <span id="outNote" class="lede" style="margin:0">Copied. Paste this back to Claude.</span>
+    <textarea id="outText" readonly aria-label="Your changes"></textarea>
+  </div>
+
+  <div class="list" id="list"><p class="empty">Loading the questions…</p></div>
+</div>
+
+<script>
+(function(){
+  var KEY='ta-sort-review-v1', STAGES=['friends','relationship','engaged','married'];
+  var STAGE_NAME={friends:'Friends',relationship:'In a relationship',engaged:'Engaged',married:'Married'};
+  var KIND_NAME={know:'Know',agree:'Agree',disclosure:'Disclosure'};
+  var TYPE_NAME={mc:'Pick one',scale:'Scale',rank:'Rank',open:'Open'};
+  var data=[], edits={};
+  try{ edits=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ edits={}; }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(edits)); }catch(e){} }
+  function cur(r){ var e=edits[r.id]||{}; var k=e.k!==undefined?(Array.isArray(e.k)?e.k:[e.k]):[r.k];
+    return {k:k, am:e.am!==undefined?e.am:r.am, st:e.st!==undefined?e.st:r.st, c:e.c||''}; }
+  function same(a,b){ return a.slice().sort().join()===b.slice().sort().join(); }
+  function isChanged(r){ var c=cur(r); return !same(c.k,[r.k])||c.am!==r.am||!same(c.st,r.st)||!!c.c.trim(); }
+  function tidy(r){ var c=cur(r),e={}; if(!same(c.k,[r.k]))e.k=c.k; if(c.am!==r.am)e.am=c.am; if(!same(c.st,r.st))e.st=c.st; if(c.c.trim())e.c=c.c;
+    if(Object.keys(e).length)edits[r.id]=e; else delete edits[r.id]; save(); }
+  function el(tag,cls,text){ var n=document.createElement(tag); if(cls)n.className=cls; if(text!==undefined)n.textContent=text; return n; }
+  function btn(label,on,fn){ var b=el('button',null,label); b.type='button'; b.setAttribute('aria-pressed',on?'true':'false'); b.addEventListener('click',fn); return b; }
+
+  function card(r){
+    var c=cur(r), box=el('article','q'+(isChanged(r)?' changed':''));
+    var meta=el('div','meta'); meta.appendChild(el('b',null,r.id)); meta.appendChild(el('span',null,r.t)); meta.appendChild(el('span',null,TYPE_NAME[r.ty]||r.ty));
+    if(r.fr)meta.appendChild(el('span',null,'Needs rewording for friends'));
+    if(isChanged(r))meta.appendChild(el('span','flag','Changed'));
+    box.appendChild(meta);
+    box.appendChild(el('h2',null,r.q));
+    if(r.o){ if(r.ty==='scale'){ box.appendChild(el('p','opts',r.o[0]+'  →  '+r.o[1])).style.paddingLeft='0'; }
+      else{ var ul=el('ul','opts'); r.o.forEach(function(o){ul.appendChild(el('li',null,o));}); box.appendChild(ul); } }
+    if(r.w){ var w=el('div','why'); w.appendChild(el('b',null,'Why it could go either way: ')); w.appendChild(document.createTextNode(r.w)); box.appendChild(w); }
+
+    var k=el('div','ctl'); k.appendChild(el('span',null,'Sorted as')); var ks=el('div','seg');
+    ['know','agree','disclosure'].forEach(function(v){ ks.appendChild(btn(KIND_NAME[v],c.k.indexOf(v)>=0,function(){
+      var k=cur(r).k.slice(), i=k.indexOf(v); if(i>=0){ if(k.length>1)k.splice(i,1); } else k.push(v); set(r,{k:k}); })); });
+    k.appendChild(ks); box.appendChild(k);
+
+    var a=el('div','ctl'); a.appendChild(el('span',null,'Agreement')); var as=el('div','seg');
+    as.appendChild(btn('Matters',c.am===true,function(){ set(r,{am:true}); }));
+    as.appendChild(btn("Doesn't matter",c.am===false,function(){ set(r,{am:false}); }));
+    a.appendChild(as); box.appendChild(a);
+
+    var s=el('div','ctl'); s.appendChild(el('span',null,'Stages')); var ss=el('div','seg');
+    STAGES.forEach(function(v){ var on=c.st.indexOf(v)>=0; ss.appendChild(btn(STAGE_NAME[v],on,function(){
+      var st=cur(r).st.slice(); var i=st.indexOf(v); if(i>=0)st.splice(i,1); else st.push(v); set(r,{st:st}); })); });
+    s.appendChild(ss); box.appendChild(s);
+
+    var n=el('div','ctl'); var lab=el('label',null,'Comment'); lab.htmlFor='c-'+r.id; lab.className='lab'; n.appendChild(lab);
+    var ta=el('textarea','note'); ta.id='c-'+r.id; ta.rows=1; ta.placeholder='Anything you want to say about this one'; ta.value=c.c;
+    ta.addEventListener('input',function(){ var e=edits[r.id]||{}; e.c=ta.value; edits[r.id]=e; tidy(r); box.classList.toggle('changed',isChanged(r)); bar(); });
+    n.appendChild(ta); box.appendChild(n);
+    box.dataset.id=r.id; return box;
+  }
+  function set(r,patch){ var e=edits[r.id]||{}; for(var p in patch)e[p]=patch[p]; edits[r.id]=e; tidy(r);
+    var old=document.querySelector('.q[data-id="'+r.id+'"]'); if(old)old.replaceWith(card(r)); bar(); }
+
+  function visible(){ var v=document.getElementById('fView').value, t=document.getElementById('fTopic').value;
+    return data.filter(function(r){ if(t&&r.t!==t)return false;
+      if(v==='b')return r.b; if(v==='all')return true; if(v==='changed')return isChanged(r); return cur(r).k.indexOf(v)>=0; }); }
+  function bar(){ var n=Object.keys(edits).length; var b=document.getElementById('copy'); b.disabled=!n;
+    b.textContent=n?('Copy my changes ('+n+')'):'Copy my changes';
+    document.getElementById('count').textContent=visible().length+' shown'; }
+  function render(){ var list=document.getElementById('list'); list.textContent=''; var rows=visible();
+    if(!rows.length){ list.appendChild(el('p','empty','Nothing here.')); } else rows.forEach(function(r){ list.appendChild(card(r)); }); bar(); }
+
+  function report(){ var lines=[]; data.forEach(function(r){ if(!isChanged(r))return; var c=cur(r), bits=[];
+      if(!same(c.k,[r.k]))bits.push(KIND_NAME[r.k]+' -> '+['know','agree','disclosure'].filter(function(v){return c.k.indexOf(v)>=0;}).map(function(v){return KIND_NAME[v];}).join(' + '));
+      if(c.am!==r.am)bits.push('agreement '+(c.am?'matters':"doesn't matter"));
+      if(!same(c.st,r.st))bits.push('stages: '+(STAGES.filter(function(s){return c.st.indexOf(s)>=0;}).map(function(s){return STAGE_NAME[s];}).join(', ')||'none'));
+      if(c.c.trim())bits.push('comment: '+c.c.trim().replace(/\s+/g,' '));
+      lines.push(r.id+': '+bits.join('; ')); });
+    return 'Sort changes ('+lines.length+')\n'+lines.join('\n'); }
+
+  document.getElementById('copy').addEventListener('click',function(){ var text=report(), out=document.getElementById('out'), ta=document.getElementById('outText'), note=document.getElementById('outNote');
+    ta.value=text; out.hidden=false;
+    function fallback(){ note.textContent='Select the text below, copy it, and paste it back to Claude.'; ta.focus(); ta.select(); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ note.textContent='Copied. Paste this back to Claude.'; },fallback); } else fallback();
+    out.scrollIntoView({block:'nearest'}); });
+  document.getElementById('fView').addEventListener('change',render);
+  document.getElementById('fTopic').addEventListener('change',render);
+
+  fetch('sort-data.json').then(function(r){ return r.json(); }).then(function(d){ data=d;
+    var seen={}, sel=document.getElementById('fTopic'); d.forEach(function(r){ if(!seen[r.t]){ seen[r.t]=1; var o=el('option',null,r.t); o.value=r.t; sel.appendChild(o); } });
+    render(); }).catch(function(){ document.getElementById('list').textContent=''; document.getElementById('list').appendChild(el('p','empty','The questions could not be loaded. Reload the page to try again.')); document.getElementById('count').textContent=''; });
+})();
+</script>

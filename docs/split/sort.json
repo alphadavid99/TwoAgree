@@ -1,56 +1,59 @@
 [
  {
   "id": "HOME-012",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-008",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-006",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -59,36 +62,38 @@
    "married"
   ],
   "friendsNeedsReword": true,
-  "borderline": true,
-  "why": "A personal preference, but a difference affects daily life once you share a home."
+  "reviewed": true
  },
  {
   "id": "HOME-010",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-011",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-015",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -97,12 +102,13 @@
    "married"
   ],
   "friendsNeedsReword": true,
-  "borderline": true,
-  "why": "A preference, but pets become a shared decision."
+  "reviewed": true
  },
  {
   "id": "HOME-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -110,102 +116,102 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "HOME-007",
-  "kind": "know",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
-   "friends",
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal value, but it steers a big shared decision."
+  "reviewed": true
  },
  {
   "id": "HOME-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-009",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-018",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HOME-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-018",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -213,159 +219,161 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FIN-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-004",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-025",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-030",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -373,87 +381,89 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Personal values, but they steer shared money decisions."
+  "reviewed": true
  },
  {
   "id": "FIN-031",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-032",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
-   "friends",
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal attitude, but debt is a shared matter once married."
+  "reviewed": true,
+  "comment": "I think it could be interesting to see if they know how each other thinks about debt."
  },
  {
   "id": "FIN-033",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-034",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-035",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-036",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-037",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -461,100 +471,102 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Reads as personal values, but money convictions are worth agreeing on."
+  "reviewed": true,
+  "comment": "Would need a reword for friends - and no need to add 'as christians'"
  },
  {
   "id": "FIN-038",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FIN-039",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-007",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-036",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-031",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-003",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -562,268 +574,269 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal commitment, but giving becomes a shared money decision."
+  "reviewed": true,
+  "comment": "Would need friends reword and know reword"
  },
  {
   "id": "FAITH-033",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-001",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-004",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-037",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-038",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-039",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-040",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-028",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-041",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-042",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-043",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-044",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-045",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-025",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -831,24 +844,25 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAITH-046",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -856,48 +870,49 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAITH-047",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-048",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -905,12 +920,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAITH-049",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -918,100 +934,101 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAITH-050",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAITH-051",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-014",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-015",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1019,12 +1036,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "ROLE-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1032,38 +1050,39 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "ROLE-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1071,51 +1090,52 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "ROLE-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1123,77 +1143,79 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "ROLE-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "ROLE-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-014",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1201,13 +1223,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "How someone reaches a belief is partly about them, not a position to agree on."
+  "reviewed": true
  },
  {
   "id": "THEO-015",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1215,12 +1237,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "THEO-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1228,139 +1251,140 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "THEO-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1368,51 +1392,52 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "THEO-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-030",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "THEO-031",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1420,23 +1445,24 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-006",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1444,35 +1470,36 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-015",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1480,12 +1507,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-008",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1493,51 +1521,52 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-003",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-017",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-001",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-004",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -1545,12 +1574,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1558,126 +1588,129 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "DREAM-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-010",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
-   "friends",
    "relationship",
    "engaged",
    "married"
   ],
   "friendsNeedsReword": true,
-  "borderline": true,
-  "why": "Risk appetite is temperament, but it shapes shared decisions."
+  "reviewed": true
  },
  {
   "id": "DREAM-011",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DREAM-021",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Measures personal willingness more than a position to agree on."
+  "reviewed": true
  },
  {
   "id": "FAM-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-001",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-014",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1685,38 +1718,39 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAM-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1724,25 +1758,26 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAM-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1750,25 +1785,26 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAM-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1776,99 +1812,100 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FAM-004",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FAM-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-008",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-010",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1876,12 +1913,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-011",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1889,49 +1927,50 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-014",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-015",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1939,36 +1978,37 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1976,12 +2016,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -1989,24 +2030,25 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -2014,72 +2056,73 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAR-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -2087,12 +2130,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "PAR-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -2100,37 +2144,38 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INT-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-023",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -2138,361 +2183,365 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal value, but a mismatch in how much attraction matters is worth resolving."
+  "reviewed": true
  },
  {
   "id": "INT-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-019",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-017",
-  "kind": "know",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "About how each person works, but could be read as an expectation to agree on."
+  "reviewed": true
  },
  {
   "id": "INT-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-030",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INT-031",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-032",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-033",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-034",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-035",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-008",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INT-036",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-037",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-038",
-  "kind": "know",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal preference, but the two need to settle how much is shared."
+  "reviewed": true
  },
  {
   "id": "INT-013",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-014",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-001",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-039",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Desired frequency is partly just how each person is, not a position."
+  "reviewed": true,
+  "comment": "I think this could be an interesting guess question too"
  },
  {
   "id": "INT-040",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-041",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-042",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INT-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-038",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-039",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -2500,12 +2549,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CONF-040",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -2513,36 +2563,37 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CONF-041",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-042",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-043",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -2550,12 +2601,14 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CONF-044",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -2564,217 +2617,218 @@
    "married"
   ],
   "friendsNeedsReword": true,
-  "borderline": true,
-  "why": "A preference, but one home has to suit both."
+  "reviewed": true
  },
  {
   "id": "CONF-037",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-045",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-046",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-047",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-048",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-049",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-036",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-002",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-050",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-051",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-052",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-053",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-054",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-055",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-056",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -2782,88 +2836,89 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CONF-029",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-033",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-034",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-057",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-030",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-031",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -2871,147 +2926,147 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Phrased as a view, but it is really about each person's style."
+  "reviewed": true
  },
  {
   "id": "CONF-032",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-058",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "An expectation of a partner, but close to a personal preference."
+  "reviewed": true
  },
  {
   "id": "CONF-059",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-060",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CONF-061",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-015",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-011",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-010",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-012",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3019,72 +3074,73 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INLAW-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-009",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3092,63 +3148,64 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INLAW-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-006",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3156,49 +3213,50 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "INLAW-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "INLAW-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3206,757 +3264,763 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "FUN-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-025",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-026",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-027",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-028",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-029",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-031",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-008",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-009",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-032",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "An expectation for shared life, but a light one; could sit in Agree."
+  "reviewed": true
  },
  {
   "id": "FUN-033",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-034",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-035",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-036",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-037",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-038",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-007",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-023",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-018",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-019",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "FUN-039",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-022",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-023",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-003",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-025",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-004",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal limit rather than a position, but it is the core faith deal-breaker."
+  "reviewed": true
  },
  {
   "id": "DEAL-007",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal limit rather than a position, but children is a core agreement topic."
+  "reviewed": true
  },
  {
   "id": "DEAL-006",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-008",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-026",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-027",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-017",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-019",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "DEAL-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-011",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A lifestyle preference more than a conviction; could sit in Know."
+  "reviewed": true
  },
  {
   "id": "HEALTH-012",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A lifestyle preference more than a conviction; could sit in Know."
+  "reviewed": true
  },
  {
   "id": "HEALTH-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-014",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-009",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-016",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3964,12 +4028,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "HEALTH-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -3977,140 +4042,142 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "HEALTH-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-022",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-005",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "HEALTH-006",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-012",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-017",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-018",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
@@ -4118,301 +4185,303 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Open and personal; could be treated as a disclosure."
+  "reviewed": true
  },
  {
   "id": "PAST-019",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-022",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-025",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-026",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-009",
-  "kind": "disclosure",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Could be a gentler Know question rather than a disclosure."
+  "reviewed": true
  },
  {
   "id": "PAST-028",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-029",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-031",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-001",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-032",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-033",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-034",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "PAST-035",
-  "kind": "disclosure",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-001",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-006",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-008",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-003",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -4420,65 +4489,65 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Personal willingness, but relocating is a joint decision."
+  "reviewed": true
  },
  {
   "id": "CAREER-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-005",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-007",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-009",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "CAREER-004",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -4486,12 +4555,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CAREER-012",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -4499,985 +4569,990 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "CAREER-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-001",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-004",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-028",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-031",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-032",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-008",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-033",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-023",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-029",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-034",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-035",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-036",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-022",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-018",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-037",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-021",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-038",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-025",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-026",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-039",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-040",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-041",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-042",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-006",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-007",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-043",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "SELF-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-051",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-008",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-052",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-053",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-050",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-035",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-054",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-048",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-055",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-056",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-057",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-058",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-059",
-  "kind": "agree",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A view about choosing a spouse; the two don't strictly need to agree on it."
+  "reviewed": true
  },
  {
   "id": "US-060",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-049",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-029",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check; fits neither kind cleanly."
+  "reviewed": true
  },
  {
   "id": "US-061",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-062",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal fact, but the most important thing for a dating couple to match on."
+  "reviewed": true
  },
  {
   "id": "US-063",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Same as US-062: a personal fact whose mismatch matters a great deal."
+  "reviewed": true
  },
  {
   "id": "US-034",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-064",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-065",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-066",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-067",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-068",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-069",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-070",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-071",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-072",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-073",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-074",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-075",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-076",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-077",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-078",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-079",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-080",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-081",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-082",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-083",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-084",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-085",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5485,203 +5560,204 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-086",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-087",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-088",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-089",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-090",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-091",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-092",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-002",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-093",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-004",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-094",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-095",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-096",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-097",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-098",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-099",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-006",
-  "kind": "agree",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5689,97 +5765,98 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A general view of marriage; could be a Know question."
+  "reviewed": true,
+  "comment": "Need to come up with a similar question for agree. Id like a rephrased question that can help to see if they agree or not. If they are aligned?"
  },
  {
   "id": "US-100",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-101",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-102",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-103",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-104",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-105",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-106",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-107",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5787,25 +5864,26 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-108",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-109",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5813,24 +5891,25 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-110",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-111",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5838,36 +5917,37 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-040",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-041",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-112",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -5875,169 +5955,175 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "US-113",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-114",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A personal fact, like US-063, whose mismatch matters a great deal."
+  "reviewed": true
  },
  {
   "id": "US-115",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Open and sensitive, about the relationship rather than the past; close to a disclosure."
+  "reviewed": true
  },
  {
   "id": "US-038",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-116",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-117",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-118",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-119",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-011",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Open and sensitive, about the relationship rather than the past; close to a disclosure."
+  "reviewed": true
  },
  {
   "id": "US-120",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "US-121",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Open and sensitive, about the relationship rather than the past; close to a disclosure."
+  "reviewed": true
  },
  {
   "id": "VAL-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-014",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-015",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6045,13 +6131,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A position, but a couple may not need to share politics; VAL-016 asks whether they do."
+  "reviewed": true
  },
  {
   "id": "VAL-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6059,12 +6145,13 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "VAL-017",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6072,24 +6159,26 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "VAL-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-019",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6097,63 +6186,63 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A conviction, but not one a couple must share."
+  "reviewed": true
  },
  {
   "id": "VAL-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-021",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-022",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6161,75 +6250,76 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "VAL-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-030",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6237,37 +6327,38 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "VAL-031",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-032",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-033",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
@@ -6275,717 +6366,734 @@
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": true,
-  "borderline": false
+  "friendsNeedsReword": true
  },
  {
   "id": "VAL-034",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-035",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-036",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-037",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-038",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-039",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "VAL-040",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-009",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-016",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-005",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-018",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-019",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-020",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-021",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Personal comfort, but it sets a boundary the two need to agree."
+  "reviewed": true
  },
  {
   "id": "LOYAL-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-022",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "Phrased as personal comfort, but it is a boundary to agree."
+  "reviewed": true
  },
  {
   "id": "LOYAL-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-015",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-011",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-017",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-023",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-024",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-025",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-026",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "friends",
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-027",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-028",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "LOYAL-029",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-025",
-  "kind": "agree",
+  "kinds": [
+   "disclosure"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "I don't really like this question to be honest. Maybe a check in question after they've completed the path?"
  },
  {
   "id": "NOW-026",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "Don't like this question either to be honest - again, maybe a check in question - and the slog phrasing isn't universally understood."
  },
  {
   "id": "NOW-027",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true,
+  "comment": "I think needs to be rephrased to fit know and or agree eg how often would you like us to try new things together"
  },
  {
   "id": "NOW-022",
-  "kind": "agree",
-  "agreementMatters": true,
+  "kinds": [
+   "disclosure"
+  ],
+  "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "checkIn": true,
+  "reviewed": true,
+  "comment": "Maybe one to add to check in too"
  },
  {
   "id": "NOW-002",
-  "kind": "agree",
+  "kinds": [
+   "agree"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-001",
-  "kind": "agree",
-  "agreementMatters": true,
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-019",
-  "kind": "agree",
-  "agreementMatters": true,
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-003",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-005",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree",
+   "disclosure"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-028",
-  "kind": "agree",
+  "kinds": [
+   "know",
+   "agree",
+   "disclosure"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-029",
-  "kind": "know",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-009",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-013",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-012",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-021",
-  "kind": "agree",
-  "agreementMatters": true,
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-030",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-031",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-032",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-033",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-034",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-010",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-011",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": false,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-006",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-007",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ],
+  "reviewed": true
+ },
+ {
+  "id": "NOW-015",
+  "kinds": [
+   "know"
+  ],
+  "agreementMatters": true,
+  "stages": [
+   "relationship",
+   "engaged",
+   "married"
+  ]
+ },
+ {
+  "id": "NOW-017",
+  "kinds": [
+   "know",
+   "disclosure"
+  ],
   "agreementMatters": false,
   "stages": [
    "relationship",
    "engaged",
    "married"
   ],
-  "friendsNeedsReword": false,
-  "borderline": false
- },
- {
-  "id": "NOW-006",
-  "kind": "agree",
-  "agreementMatters": true,
-  "stages": [
-   "relationship",
-   "engaged",
-   "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
- },
- {
-  "id": "NOW-007",
-  "kind": "agree",
-  "agreementMatters": true,
-  "stages": [
-   "relationship",
-   "engaged",
-   "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
- },
- {
-  "id": "NOW-015",
-  "kind": "know",
-  "agreementMatters": true,
-  "stages": [
-   "relationship",
-   "engaged",
-   "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
- },
- {
-  "id": "NOW-017",
-  "kind": "agree",
-  "agreementMatters": true,
-  "stages": [
-   "relationship",
-   "engaged",
-   "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": true,
-  "why": "A state-of-us check-in; fits neither Know nor Agree cleanly."
+  "reviewed": true
  },
  {
   "id": "NOW-023",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-020",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged",
    "married"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  },
  {
   "id": "NOW-024",
-  "kind": "know",
+  "kinds": [
+   "know"
+  ],
   "agreementMatters": true,
   "stages": [
    "relationship",
    "engaged"
-  ],
-  "friendsNeedsReword": false,
-  "borderline": false
+  ]
  }
 ]

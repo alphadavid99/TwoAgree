@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { renderScoreCard, shareCardImage, type ScoreCardFields } from "../lib/sharecard";
 import { useT } from "../lib/i18n";
 import { Sheet } from "./Sheet";
+import type { CardFinish } from "../lib/ceremony";
+
+const FINISH_NAME: Record<CardFinish, [string, string]> = {
+  milk: ["Your card", "Votre carte"],
+  goldline: ["Gold line", "Liseré d’or"],
+  gilded: ["Gilded", "Dorée"],
+  claret: ["Claret and gold", "Bordeaux et or"],
+};
 
 // "Share your score" from the reveal (design refresh, item 2): a preview of
 // the exact image that will be shared, and names only if you switch them on.
@@ -9,8 +17,16 @@ import { Sheet } from "./Sheet";
 export function ScoreShare({
   fields,
   names,
+  finishes = [],
+  finish,
+  onFinish,
   onClose,
 }: {
+  /** 100% only: the cards to choose from. The choice changes the card on the
+   *  reveal behind this sheet; the shared image keeps its own design. */
+  finishes?: CardFinish[];
+  finish?: CardFinish;
+  onFinish?: (f: CardFinish) => void;
   fields: Omit<ScoreCardFields, "names">;
   /** "Sarah & Judah" — shown on the card only when switched on. */
   names: string;
@@ -54,6 +70,16 @@ export function ScoreShare({
 
   return (
     <Sheet title={t("Share your score", "Partager votre score")} onClose={onClose}>
+      {finishes.length > 1 && (
+        <div className="rc-thumbs" role="group" aria-label={t("Choose your card", "Choisissez votre carte")}>
+          {finishes.map((f) => (
+            <button key={f} type="button" className="rc-thumb" aria-pressed={f === finish} onClick={() => onFinish?.(f)}>
+              <i className={f}>{fields.pct}%</i>
+              {t(...FINISH_NAME[f])}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="sharepreview">
         {url ? (
           <img src={url} alt={t("Your score card", "Votre carte de score")} />

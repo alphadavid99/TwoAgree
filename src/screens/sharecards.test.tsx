@@ -56,9 +56,12 @@ describe("sensitive topics never reach a shared image", () => {
     render(
       <RevealScreen slug="intimacy-physical" level={0} role="host" deck={deck} myName="Sarah" partnerName="Judah" code="ABCD" onDone={() => {}} />,
     );
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, 1300));
-    });
+    // A tap skips ahead: once to the card, once to land the count. The share
+    // button only appears with the settled card.
+    const ceremony = document.querySelector(".rc") as HTMLElement;
+    expect(screen.queryByRole("button", { name: /Share your score/ })).toBeNull();
+    await userEvent.click(ceremony);
+    await userEvent.click(ceremony);
     await userEvent.click(screen.getByRole("button", { name: /Share your score/ }));
     await act(async () => {
       await new Promise((r) => setTimeout(r, 50));

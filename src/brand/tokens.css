@@ -158,6 +158,14 @@
   --ce-blush:         #F3DED6;  /* the known arc — claret's light counterpart */
   --ce-track:         #57293F;  /* ring track on claret */
 
+  /* The reveal ceremony's result card (docs/split/DECISIONS.md). Bright milk
+     frost under 100%; at 100% a gold-line card, with a gilded and a claret
+     card to choose from when sharing. Gold sits on white here only as a rim,
+     never as type. */
+  --rc-gild-light:    #F3DCA4;  /* gilded card: the pale end of the brushed gold */
+  --rc-gild-shine:    #F6E3B4;  /* gilded card: the highlight band */
+  --rc-row:           #4A2138;  /* a question row on the claret ground */
+
   /* ==========================================================================
      Motion. The language was already right but unnamed, so riseIn ran at five
      different durations and three near-identical rise keyframes drifted apart.

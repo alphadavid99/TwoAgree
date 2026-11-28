@@ -25,6 +25,9 @@ export const ceremony = {
   rose:    '#E7B9CB',
   deep:    '#C6913C',
   lantern: '#F6C46B',
+  gildLight: '#F3DCA4',  // --rc-gild-light
+  gildShine: '#F6E3B4',  // --rc-gild-shine
+  roomTop:   '#4A2138',  // --ce-ground-top
 } as const;
 
 /** The one colour rule: honey gold only ever sits on a claret ground.

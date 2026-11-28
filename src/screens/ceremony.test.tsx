@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 //
 // The reveal ceremony on a fresh reveal (docs/split/DECISIONS.md, "Design"):
-// three beats, a tap skips ahead, the card carries the score with its count,
-// and "Not a verdict" lives on the answers screen, not on the card.
+// three beats, a tap skips ahead, the card carries the score, and the count and
+// "Not a verdict" live on the answers screen, not on the card. The card on the
+// reveal never changes; the choice of finish belongs to sharing.
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -11,10 +12,22 @@ import { overall, type DeckData } from "../lib/scoring";
 
 vi.mock("../firebase", () => ({ app: {}, auth: { currentUser: null }, db: {}, googleProvider: {} }));
 vi.mock("../lib/functions", () => ({ publishPart: vi.fn() }));
+// The share sheet's image: record which finish it was asked to draw.
+const drawn = vi.hoisted(() => [] as (string | undefined)[]);
+vi.mock("../lib/sharecard", () => ({
+  renderScoreCard: vi.fn(async (f: { finish?: string }) => {
+    drawn.push(f.finish);
+    return null;
+  }),
+  shareCardImage: vi.fn(),
+}));
 
 import RevealScreen from "./RevealScreen";
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  drawn.length = 0;
+});
 
 const SLUG = "in-the-home";
 
@@ -60,7 +73,7 @@ describe("the reveal ceremony", () => {
     expect(screen.getByRole("button", { name: /Share your score/ })).toBeTruthy();
   });
 
-  it("shows the real score with its count, the counts and both names", async () => {
+  it("shows the real score, the counts and both names, with the count on the answers screen", async () => {
     const deck = deckWith(2);
     const pct = overall(lvlQs(SLUG, 0), deck, "host");
     expect(pct).toBeLessThan(100);
@@ -70,9 +83,11 @@ describe("the reveal ceremony", () => {
     expect(card.querySelector(".rc-num")!.textContent).toBe(`${pct}%`);
     expect(card.textContent).toContain("Sarah & Judah");
     expect(card.textContent).toMatch(/agreed on /);
-    expect(card.textContent).toMatch(/Based on \d+ questions? you both answered/);
+    expect(card.textContent).not.toMatch(/Based on/);
     expect(card.textContent).toMatch(/\d+ agreed · 2 to talk about/);
     expect(card.className).toContain("milk");
+    await userEvent.click(screen.getByRole("button", { name: /See your answers/ }));
+    expect(screen.getByText(/Based on \d+ questions? you both answered/)).toBeTruthy();
   });
 
   it("keeps 'Not a verdict' off the card and puts it on the answers screen", async () => {
@@ -83,7 +98,7 @@ describe("the reveal ceremony", () => {
     expect(screen.getByText(/Not a verdict: a place to start talking\./)).toBeTruthy();
   });
 
-  it("gives 100% the gold-line card and a choice of three when sharing", async () => {
+  it("gives 100% the gold-line card; the choice of three changes only the shared image", async () => {
     const deck = deckWith(0);
     expect(overall(lvlQs(SLUG, 0), deck, "host")).toBe(100);
     open(deck);
@@ -93,10 +108,14 @@ describe("the reveal ceremony", () => {
     expect(card.textContent).toMatch(/All \d+ agreed/);
     await userEvent.click(screen.getByRole("button", { name: /Share your score/ }));
     expect(screen.getByRole("button", { name: /Gold line/ }).getAttribute("aria-pressed")).toBe("true");
+    expect(drawn.at(-1)).toBe("goldline");
     await userEvent.click(screen.getByRole("button", { name: /Claret and gold/ }));
-    expect(card.className).toContain("claret");
+    expect(drawn.at(-1)).toBe("claret");
     await userEvent.click(screen.getByRole("button", { name: /Gilded/ }));
-    expect(card.className).toContain("gilded");
+    expect(drawn.at(-1)).toBe("gilded");
+    // The card on the reveal is still the one that was revealed.
+    expect(card.className).toContain("goldline");
+    expect(card.className).not.toMatch(/claret|gilded/);
   });
 
   it("offers no card choice under 100%", async () => {
@@ -104,6 +123,7 @@ describe("the reveal ceremony", () => {
     await skipToCard();
     await userEvent.click(screen.getByRole("button", { name: /Share your score/ }));
     expect(screen.queryByRole("button", { name: /Gilded/ })).toBeNull();
+    expect(drawn.at(-1)).toBe("milk");
   });
 
   it("at 100% the answers screen has no 'Not a verdict' line", async () => {

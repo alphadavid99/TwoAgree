@@ -8,7 +8,8 @@
 //
 // 9:16 so it drops straight into a story, claret ground so gold type is legal
 // (brand RULE 1), and nothing on it that the couple didn't choose to put there.
-import { brand } from "../brand/tokens";
+import { brand, ceremony } from "../brand/tokens";
+import type { CardFinish } from "./ceremony";
 import { MARK_D1, MARK_D2, MARK_VIEW_BOX } from "../brand/Mark";
 
 export type CardFields = {
@@ -262,6 +263,9 @@ export type ScoreCardFields = {
   names?: string;
   /** Celebration range, 1–4 (lib/celebrate.ts). */
   tier: 1 | 2 | 3 | 4;
+  /** The card's finish (lib/ceremony.ts). Left out, it is the reveal's own:
+   *  bright milk under 100%, gold line at 100%. */
+  finish?: CardFinish;
 };
 
 // A seeded random so the card is identical however often it's previewed.
@@ -367,62 +371,84 @@ export async function renderScoreCard(f: ScoreCardFields): Promise<Blob | null> 
   c.letterSpacing = "6px";
   c.fillText(f.topic.toUpperCase(), W / 2 + 3, 330);
   c.letterSpacing = "0px";
-  if (f.names) {
-    c.fillStyle = brand.paper;
-    c.font = '600 84px Fraunces, Lora, Georgia, serif';
-    c.fillText(f.names, W / 2, 450);
-  }
-
-  if (f.tier >= 4) {
-    // The gold medallion.
-    c.fillStyle = "rgba(198,145,60,0.25)";
-    c.beginPath();
-    c.arc(W / 2, RY, 360, 0, Math.PI * 2);
-    c.fill();
-    c.strokeStyle = brand.honey;
-    c.lineWidth = 30;
-    c.beginPath();
-    c.arc(W / 2, RY, 320, 0, Math.PI * 2);
-    c.stroke();
-    c.fillStyle = brand.honey;
-    roundRect(c, W / 2 - 250, RY - 400, 500, 76, 38);
-    c.fill();
-    c.fillStyle = brand.claret;
-    c.font = '700 30px "Hanken Grotesk", system-ui, sans-serif';
-    c.letterSpacing = "5px";
-    c.fillText("COMPLETE ALIGNMENT", W / 2 + 2, RY - 352);
-    c.letterSpacing = "0px";
-    c.fillStyle = brand.honeyRaised;
+  // The result card itself, in the finish the reveal showed or the one chosen
+  // when sharing (lib/ceremony.ts): bright milk under 100%; at 100% gold line,
+  // gilded, or claret and gold. Same content as the card on screen, minus
+  // anything the couple didn't choose to share.
+  const finish = f.finish ?? (f.pct >= 100 ? "goldline" : "milk");
+  const CW = 740;
+  const CH = 880;
+  const dark = finish === "claret";
+  const inkCol = dark ? brand.paper : finish === "gilded" ? brand.ink : brand.claret;
+  const subCol = dark ? brand.blush : finish === "gilded" ? brand.claret : brand.grey;
+  c.save();
+  c.translate(W / 2, RY - 40);
+  c.rotate((-2.5 * Math.PI) / 180);
+  c.shadowColor = "rgba(15,6,11,0.5)";
+  c.shadowBlur = 90;
+  c.shadowOffsetY = 40;
+  if (finish === "gilded") {
+    const gg = c.createLinearGradient(-CW / 2, -CH / 2, CW / 2, CH / 2);
+    gg.addColorStop(0, ceremony.gildLight);
+    gg.addColorStop(0.4, ceremony.gold);
+    gg.addColorStop(0.55, ceremony.gildShine);
+    gg.addColorStop(1, brand.honey);
+    c.fillStyle = gg;
+  } else if (dark) {
+    const cg = c.createLinearGradient(-CW / 2, -CH / 2, CW / 2, CH / 2);
+    cg.addColorStop(0, ceremony.roomTop);
+    cg.addColorStop(1, brand.claretDeep);
+    c.fillStyle = cg;
   } else {
-    c.strokeStyle = "rgba(243,222,214,0.14)";
-    c.lineWidth = 34;
-    c.beginPath();
-    c.arc(W / 2, RY, 330, 0, Math.PI * 2);
-    c.stroke();
-    c.strokeStyle = brand.honeyRaised;
-    c.lineCap = "round";
-    c.beginPath();
-    c.arc(W / 2, RY, 330, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * f.pct) / 100);
-    c.stroke();
-    c.lineCap = "butt";
-    c.fillStyle = brand.paper;
+    c.fillStyle = "rgba(255,255,255,0.93)";
   }
-  c.font = '600 250px Fraunces, Lora, Georgia, serif';
+  roundRect(c, -CW / 2, -CH / 2, CW, CH, 72);
+  c.fill();
+  c.shadowColor = "transparent";
+  c.shadowBlur = 0;
+  c.shadowOffsetY = 0;
+  if (finish === "goldline" || dark) {
+    // The double gold rim.
+    c.strokeStyle = dark ? brand.honeyRaised : brand.honey;
+    c.lineWidth = 7;
+    roundRect(c, -CW / 2 + 4, -CH / 2 + 4, CW - 8, CH - 8, 68);
+    c.stroke();
+    c.lineWidth = 2;
+    roundRect(c, -CW / 2 + 22, -CH / 2 + 22, CW - 44, CH - 44, 52);
+    c.stroke();
+  }
+  if (f.names) {
+    c.fillStyle = inkCol;
+    c.font = '600 54px "Hanken Grotesk", system-ui, sans-serif';
+    c.fillText(f.names, 0, -CH / 2 + 150);
+  }
+  c.fillStyle = dark ? brand.honeyRaised : inkCol;
   const num = String(f.pct);
+  // "100" is wider than two digits: step the number down so it clears the rim.
+  const big = num.length > 2 ? 236 : 300;
+  const numFont = `600 ${big}px Fraunces, Lora, Georgia, serif`;
+  const pctFont = `600 ${big / 2}px Fraunces, Lora, Georgia, serif`;
+  c.font = numFont;
   const nw = c.measureText(num).width;
-  c.fillText(num, W / 2 - 30, RY + 70);
-  c.font = '600 110px Fraunces, Lora, Georgia, serif';
+  c.font = pctFont;
+  const pw = c.measureText("%").width;
   c.textAlign = "left";
-  c.fillText("%", W / 2 - 30 + nw / 2 + 6, RY - 20);
+  c.font = numFont;
+  c.fillText(num, -(nw + pw) / 2, 90);
+  c.font = pctFont;
+  c.fillText("%", -(nw + pw) / 2 + nw + 4, 90);
   c.textAlign = "center";
-  c.fillStyle = brand.honeyRaised;
-  c.font = '700 32px "Hanken Grotesk", system-ui, sans-serif';
-  c.letterSpacing = "7px";
-  c.fillText("AGREED", W / 2 + 3, RY + 160);
-  c.letterSpacing = "0px";
-
+  c.fillStyle = inkCol;
+  c.font = '500 76px Fraunces, Lora, Georgia, serif';
+  c.fillText("agreed", 0, 210);
+  c.fillStyle = finish === "gilded" ? brand.claret : dark ? brand.honeyRaised : brand.honey;
+  roundRect(c, -60, 256, 120, 10, 5);
+  c.fill();
+  c.fillStyle = subCol;
   c.font = '500 40px "Hanken Grotesk", system-ui, sans-serif';
-  c.fillText(`based on ${f.basis} question${f.basis === 1 ? "" : "s"}`, W / 2, RY + 450);
+  c.fillText(`based on ${f.basis} question${f.basis === 1 ? "" : "s"}`, 0, 350);
+  c.restore();
+  c.textAlign = "center";
 
   c.fillStyle = brand.paper;
   c.font = '600 84px Fraunces, Lora, Georgia, serif';

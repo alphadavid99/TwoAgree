@@ -19,7 +19,7 @@ import {
 } from "../lib/scoring";
 import { type Question } from "../lib/questions";
 import { celebrationTier } from "../lib/celebrate";
-import { defaultFinish, shareFinishes, type CardFinish } from "../lib/ceremony";
+import { defaultFinish, shareFinishes } from "../lib/ceremony";
 import { RevealCeremony, type CeremonyRow } from "./RevealCeremony";
 import { revealWords, type Pick } from "../lib/reveal";
 import { ScoreShare } from "../components/ScoreShare";
@@ -162,7 +162,6 @@ export default function RevealScreen({
   const [phase, setPhase] = useState<"ceremony" | "answers">(
     ceremony ? "ceremony" : "answers",
   );
-  const [finish, setFinish] = useState<CardFinish>(() => defaultFinish(pct));
   const tier = celebrationTier(pct);
   // The same line and verse for both of you (picked when the part opened).
   const words = revealWords(pct, pick, `${code ?? ""}|${slug}|${level}`);
@@ -197,12 +196,11 @@ export default function RevealScreen({
           me={{ name: myName, photo: myPhoto, tone: toneFor(role) }}
           them={{ name: partnerName, photo: partnerPhoto, tone: toneFor(other(role)) }}
           pct={pct}
-          basis={basis}
           rows={rows}
           agreed={nAgreed}
           toTalk={scoredQs.length - nAgreed}
           guesses={know.made ? { right: know.right, made: know.made } : null}
-          finish={finish}
+          finish={defaultFinish(pct)}
           status={`${t(`You agreed ${pct} percent.`, `Vous êtes d’accord à ${pct} pour cent.`)} ${words.line}`}
           onExit={onDone}
           onSeeAnswers={() => setPhase("answers")}
@@ -219,8 +217,7 @@ export default function RevealScreen({
             }}
             names={`${myName.trim().split(/\s+/)[0]} & ${partnerName.trim().split(/\s+/)[0]}`}
             finishes={shareFinishes(pct)}
-            finish={finish}
-            onFinish={setFinish}
+            defaultFinish={defaultFinish(pct)}
             onClose={() => setSharing(false)}
           />
         )}
@@ -288,6 +285,12 @@ export default function RevealScreen({
               )}
             </p>
           )}
+          <p className="rc-words-note">
+            {t(
+              `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
+              `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
+            )}
+          </p>
           {pct < 100 && (
             <p className="rc-words-note">
               {t("Not a verdict: a place to start talking.", "Pas un verdict, un point de départ pour discuter.")}

@@ -93,12 +93,15 @@ The app splits in two.
   animating; then the result card.
 - **The result card** arrives face down and flips over; the score counts up from
   zero. From 90% the face-down card rockets up from the bottom first.
-- **Card finish:** bright milk frost for every score under 100. At 100% the
-  default is the gold-line card, and the share sheet offers three: gold line,
-  gilded, claret and gold.
-- **The card shows:** the two of you, the number, "agreed on {step}", the counts
-  and the guesses result. "Not a verdict: a place to start talking." moves to
-  the See your answers screen.
+- **Card finish:** bright milk frost for every score under 100; the gold-line
+  card at 100%. The card on the reveal is always that default and never
+  changes. The choice belongs to sharing only: at 100% the share sheet offers
+  gold line, gilded, and claret and gold, and the choice sets the look of the
+  shared image.
+- **The card shows:** the two of you, the number, "agreed on {step}", agreed /
+  to talk about, and the guesses result. "Based on N questions you both
+  answered" and "Not a verdict: a place to start talking." sit on the See your
+  answers screen.
 - **Celebration levels**, all drawn behind the card, never over it:
   0–40 lanterns; 41–60 embers and a ripple; 61–80 daybreak (rays, confetti,
   first fireworks); 81–99 lift-off (hyperspeed stars, flash, shockwaves,

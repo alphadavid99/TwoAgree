@@ -35,7 +35,6 @@ export function RevealCeremony({
   me,
   them,
   pct,
-  basis,
   rows,
   agreed,
   toTalk,
@@ -53,7 +52,6 @@ export function RevealCeremony({
   me: Person;
   them: Person;
   pct: number;
-  basis: number;
   rows: CeremonyRow[];
   agreed: number;
   toTalk: number;
@@ -273,12 +271,6 @@ export function RevealCeremony({
                 <div className="rc-on rc-aft">{t(`agreed on ${topic}`, `d’accord sur ${topic}`)}</div>
                 <div className="rc-bar rc-aft" aria-hidden="true" />
                 <div className="rc-meta rc-aft">
-                  <span>
-                    {t(
-                      `Based on ${basis} question${basis === 1 ? "" : "s"} you both answered`,
-                      `Sur ${basis} question${basis === 1 ? "" : "s"} auxquelles vous avez tous deux répondu`,
-                    )}
-                  </span>
                   <span>
                     {toTalk === 0
                       ? t(`All ${agreed} agreed`, `${agreed} sur ${agreed} en accord`)

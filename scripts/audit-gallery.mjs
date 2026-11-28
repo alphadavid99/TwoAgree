@@ -102,7 +102,11 @@ for (const id of ids) {
     // The reveal's claret room is position:fixed in the app (it covers the
     // phone however far you scroll); in a gallery frame, which uses transform
     // to contain fixed elements, it scrolls away. Measure against the room.
-    const room = el.closest('.ceremony.lit')?.querySelector('.ceremony-ground')
+    const room =
+      el.closest('.ceremony.lit')?.querySelector('.ceremony-ground') ??
+      // The result card paints its own ground (a sibling layer), so only
+      // text straight on the room is measured against the room.
+      (el.closest('.rc-card') ? null : el.closest('.rc')?.querySelector('.rc-ground'))
     if (room) {
       const stop = getComputedStyle(room).backgroundImage.match(/rgba?\([^)]+\)/g)
       if (stop) {

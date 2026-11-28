@@ -18,29 +18,29 @@ export function ScoreShare({
   fields,
   names,
   finishes = [],
-  finish,
-  onFinish,
+  defaultFinish,
   onClose,
 }: {
-  /** 100% only: the cards to choose from. The choice changes the card on the
-   *  reveal behind this sheet; the shared image keeps its own design. */
+  /** 100% only: the cards to choose from. The choice decides the look of the
+   *  image that is shared; the card on the reveal itself never changes. */
   finishes?: CardFinish[];
-  finish?: CardFinish;
-  onFinish?: (f: CardFinish) => void;
-  fields: Omit<ScoreCardFields, "names">;
+  /** The finish the reveal showed: the shared image starts as this one. */
+  defaultFinish: CardFinish;
+  fields: Omit<ScoreCardFields, "names" | "finish">;
   /** "Sarah & Judah" — shown on the card only when switched on. */
   names: string;
   onClose: () => void;
 }) {
   const t = useT();
   const [withNames, setWithNames] = useState(false);
+  const [finish, setFinish] = useState<CardFinish>(defaultFinish);
   const [blob, setBlob] = useState<Blob | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
     let live = true;
-    void renderScoreCard({ ...fields, ...(withNames ? { names } : {}) })
+    void renderScoreCard({ ...fields, finish, ...(withNames ? { names } : {}) })
       .catch(() => null)
       .then((b) => {
         if (!live) return;
@@ -54,7 +54,7 @@ export function ScoreShare({
       live = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withNames]);
+  }, [withNames, finish]);
 
   const share = async () => {
     if (!blob) return;
@@ -73,7 +73,7 @@ export function ScoreShare({
       {finishes.length > 1 && (
         <div className="rc-thumbs" role="group" aria-label={t("Choose your card", "Choisissez votre carte")}>
           {finishes.map((f) => (
-            <button key={f} type="button" className="rc-thumb" aria-pressed={f === finish} onClick={() => onFinish?.(f)}>
+            <button key={f} type="button" className="rc-thumb" aria-pressed={f === finish} onClick={() => setFinish(f)}>
               <i className={f}>{fields.pct}%</i>
               {t(...FINISH_NAME[f])}
             </button>

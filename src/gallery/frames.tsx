@@ -255,7 +255,9 @@ const revealTier = (id: string, title: string, hit: number, note: string, firstE
   return {
     id, flow: 'reveal', title, note,
     db: dbWith((c) => sessionOf(seat(c))),
-    steps: [{ wait: 3800 }, ...more],
+    // A tap skips ahead: once to the card, once to land the count. Then let
+    // the celebration play behind the settled card.
+    steps: [{ wait: 600 }, { sel: '.rc' }, { wait: 300 }, { sel: '.rc' }, { wait: 2600 }, ...more],
     render: (c) => (
       <RevealScreen slug="fun-icebreakers" level={0} role="host" deck={tuned.deck} myName="Sarah"
         partnerName="Judah" questions={tuned.qs} firstEver={firstEver} code={c.code} pick={{ line: 0, verse: 0 }} onDone={() => {}}
@@ -521,11 +523,11 @@ export const FRAMES: FrameDef[] = [
   }),
 
   // ============ 11 · Reveal ============
-  revealTier('reveal-t0', 'Reveal: 0–33%, the discovery stage', 27, 'Claret room, gold ripples. Line and verse for this range.'),
-  revealTier('reveal-t1', 'Reveal: 34–60%, finding your rhythm', 50, 'Claret room, gold ripples.'),
-  revealTier('reveal-t2', 'Reveal: 61–90%, a strong stride', 77, '+ falling petals'),
-  revealTier('reveal-t3', 'Reveal: 91–99%, deeply in sync', 95, '+ gold rays and sparks'),
-  revealTier('reveal-t4', 'Reveal: 100%, complete alignment', 100, 'Fireworks, the gold medallion, the two of you meeting. No "Not a verdict" line.'),
+  revealTier('reveal-t0', 'Reveal: 0–40%, lanterns', 27, 'Claret room, lanterns rising behind the bright-milk card.'),
+  revealTier('reveal-t1', 'Reveal: 41–60%, embers', 50, 'Sparks, a ripple of light and shooting stars.'),
+  revealTier('reveal-t2', 'Reveal: 61–80%, daybreak', 77, 'Rays, confetti and the first fireworks, all behind the card.'),
+  revealTier('reveal-t3', 'Reveal: 81–99%, lift-off', 95, 'From 90% the face-down card rockets in before it flips.'),
+  revealTier('reveal-t4', 'Reveal: 100%, glory', 100, 'The gold-line card, dawn and the long finale. Sharing offers three cards.'),
   revealTier('reveal-share', 'Share your score: the preview', 77, 'Names are off until switched on.', false, [{ click: /Share your score/ }, { wait: 600 }]),
   revealTier('reveal-share-names', 'Share your score: names on', 77, '', false, [{ click: /Share your score/ }, { wait: 300 }, { click: /Include our names/ }, { wait: 600 }]),
   revealTier('reveal-photos', 'Reveal: with both of your photos', 77, 'Each circle shows that person’s photo when they have one.', false, [], true),

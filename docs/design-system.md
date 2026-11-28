@@ -20,7 +20,8 @@ Decisions behind it: the design review walkthrough (items 1–17) and the UX law
 - A raw hex outside `src/brand/tokens.css` (exceptions are listed in CLAUDE.md §10.1).
 - More than one honey button on a screen.
 - Telling one partner what the other has or hasn't ticked in "We talked". Ask, don't report.
-- Animation on a low score or on private text. Motion is for celebration and feedback only, and always respects reduce-motion.
+- Loud celebration on a low score, or any animation on private text. Every reveal gets a moment, but a low score gets the quiet one (lanterns), never confetti. Motion always respects reduce-motion.
+- Anything from the celebration drawn over the result. Stars, rays, confetti and fireworks sit behind the card and the words.
 
 ## The kit
 
@@ -33,7 +34,7 @@ Build from these. Don't hand-style a one-off when a kit piece fits. The look (Da
 | Home card stack | One solid white card (radius 28) with the next cards peeking out underneath; swipe or drag sideways. Dots under it say where you are. Each card says what it's for in a small pill and has one **filled** button (`--app-mauve-deep`, white words): the one place a button is filled. |
 | Conversation card (Home) | The topic's big circle with its **parts ring** (`<PartsRing>`), a line saying what you've explored together, the name as large as fits one line, "Part 2 · its name", the filled button and a quiet link. **No score on Home**: it's about what you've explored together; the numbers live on Together. |
 | Parts ring | One segment per part, from twelve o'clock, clockwise, equal gaps. **One colour** (`--app-mauve-deep`) fills each segment by how much of it you've answered, over a pale track (`--app-mauve-tint`). Never a second shade for a state. |
-| Reveal card | One solid white card filling the screen: the two of you across its top (your colours blending into each other, each in a circle with your photo or initial), the number large in the middle, the line and the next step under it. |
+| Reveal card | The reveal is a full-screen ceremony in the claret room, in three beats: the two of you come together; each question lands with its tick drawing; then the result card arrives face down and turns over while the score counts up from zero (from 90% it rockets in first). The card shows the two of you, the number, "agreed on {part}", the count ("Based on 6 questions you both answered"), agreed / to talk about, and the guesses result. Bright milk frost under 100%; a gold-line card at 100%, where sharing offers gold line, gilded, and claret and gold. One gold pill (See your answers) and the share circle sit under it. Rules: `lib/ceremony.ts`; screen: `screens/RevealCeremony.tsx`. |
 | Main button | A white pill with a 1.5px `--app-mauve` edge and `--app-mauve-deep` words, 56px on the question and reveal screens. One per screen. |
 | Secondary button | A plain white pill (`.btn.out`). Text buttons stay text, still 44px+ to tap. |
 | Red button | Deleting only. |
@@ -92,7 +93,7 @@ Only display numbers and names over 30px step outside them (the reveal's number,
 
 ## Motion
 
-Fast, quiet and for a reason: celebration and feedback only, never on a low score or private text. Tokens live in `tokens.css` (`--dur-*`, `--ease-*`). Adopted Nov 2026 from the animation and design-hack reviews:
+Fast, quiet and for a reason: celebration and feedback only, never on private text. Tokens live in `tokens.css` (`--dur-*`, `--ease-*`). Adopted Nov 2026 from the animation and design-hack reviews:
 
 - **Arrive in place** from 0.97 scale and 4px down, 220ms (`arrive`, `--dur-arrive`). A screen's parts stagger 30ms apart, capped at 120ms, so its button is there by ~340ms.
 - **Sheets rise from their edge** and fall back on close. Drag the grip or header: past 40% or a flick (over 500px/s) closes it, otherwise it springs home (`spring` in `lib/motion.ts`: stiffness 300, damping 30).
@@ -101,7 +102,8 @@ Fast, quiet and for a reason: celebration and feedback only, never on a low scor
 - **Press:** instant down, springy release. Scale by size: about 0.98 full-width, 0.95 pills, 0.92 small circles. Only the filled button darkens.
 - **Transform and opacity only.** Never animate `left`, `width`, `height`, `margin` or `padding`, and never `transition: all`. A progress fill is full width and slides in with `translateX`.
 - **Swaps blur** (`.swap-in`, 180ms) when one word or icon becomes another in the same place.
-- Every motion has a reduce-motion fallback. Nothing blocks a tap for more than 300ms; the reveal ceremony is the one place that is slow on purpose.
+- Every motion has a reduce-motion fallback. Nothing blocks a tap for more than 300ms; the reveal ceremony is the one place that is slow on purpose, and a tap skips ahead in it without losing the celebration.
+- **The reveal's five levels** are set by the Agree score alone (`ceremonyLevel`): 0–40 lanterns; 41–60 embers and a ripple; 61–80 daybreak (rays, confetti, first fireworks); 81–99 lift-off (streaming stars, flash, shockwaves, cannons); 100 glory (all of it, and the room turns to dawn). GSAP moves the elements; the light is one canvas behind them (`lib/ceremonyFx.ts`) that stops itself when the last particle fades.
 
 ## Details
 
@@ -121,7 +123,7 @@ Fast, quiet and for a reason: celebration and feedback only, never on a low scor
 - Short, warm, direct. "You" and the partner's name.
 - Questions in plain words anyone can follow and a translator can carry: no idioms ("take a back seat", "dropping by"), at most 100 characters. The plain-language pass of Oct 2026 rewrote the 91 that ran longer.
 - Scores always carry their count: "Based on 22 questions you both answered", "7 of 10 guesses right".
-- "Not a verdict: a place to start talking." on every reveal except 100%.
+- "Not a verdict: a place to start talking." on the answers screen that the reveal leads to, except at 100%. It is not on the result card.
 - Scripture is ESV, except Amos 3:3 (NKJV).
 
 ## Checking a screen
